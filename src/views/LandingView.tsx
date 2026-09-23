@@ -8,7 +8,6 @@ import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { SubscribeModal } from '../components/SubscribeModal';
 import { SubscriptionStatusModal } from '../components/SubscriptionStatusModal';
-import { RegistrationCountdown } from '../components/RegistrationCountdown';
 import { useRegistrationDeadline } from '../hooks/useRegistrationDeadline';
 import { useLanguage } from '../context/LanguageContext';
 import {
@@ -328,15 +327,6 @@ export const LandingView: React.FC<LandingViewProps> = ({
             )}
           </motion.h2>
 
-          {/* Modern Sleek Registration Countdown Timer */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="w-full max-w-xl mx-auto"
-          >
-            <RegistrationCountdown onOpenVerifyModal={() => handleTriggerVerifyModal()} />
-          </motion.div>
 
           {/* Clean High-Contrast Action Buttons with Fixed Compact Padding & 5px Radius */}
           <motion.div

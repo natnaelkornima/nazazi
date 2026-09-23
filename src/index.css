@@ -5,7 +5,32 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Primary Amharic Body Font: Shiromeda SemBd */
+/* Primary Amharic Body Font: Kefa */
+@font-face {
+  font-family: "Kefa";
+  src: url("/fonts/Kefa_7ded22bb46.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Kefa";
+  src: url("/fonts/Kefa_7ded22bb46.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Kefa";
+  src: url("/fonts/Kefa_7ded22bb46.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Fallback Amharic Fonts */
 @font-face {
   font-family: "Shiromeda SemBd";
   src: url("/fonts/shiromeda-semibold.woff2") format("woff2"),
@@ -26,7 +51,32 @@
   font-display: swap;
 }
 
-/* Dedicated Brand Font for ናዛዚ: Habesha Serif */
+/* Dedicated Brand Font for the word ናዛዚ: Bela Bereka */
+@font-face {
+  font-family: "Bela Bereka";
+  src: url("/fonts/Bela_Bereka_6a62aa4ee7.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bela Bereka";
+  src: url("/fonts/Bela_Bereka_6a62aa4ee7.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bela Bereka";
+  src: url("/fonts/Bela_Bereka_6a62aa4ee7.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Fallback Brand Font: Habesha Serif */
 @font-face {
   font-family: "Habesha Serif";
   src: url("/fonts/habesha_serif.woff2") format("woff2"),
@@ -38,9 +88,11 @@
 
 @theme {
   --font-sans: 'Stack Sans Headline', system-ui, -apple-system, sans-serif;
-  --font-amharic: 'Shiromeda SemBd', system-ui, sans-serif;
+  --font-amharic: 'Kefa', 'Shiromeda SemBd', system-ui, sans-serif;
+  --font-kefa: 'Kefa', system-ui, sans-serif;
   --font-shiromeda: 'Shiromeda SemBd', system-ui, sans-serif;
   --font-habesha-serif: 'Habesha Serif', system-ui, -apple-system, sans-serif;
+  --font-bela-bereka: 'Bela Bereka', system-ui, sans-serif;
   --radius-xs: 2px;
   --radius-sm: 4px;
   --radius-md: 5px;
@@ -67,28 +119,28 @@ html[lang="en"]:not(.lang-am) body:not(.lang-am) {
 
 /* ========================================================
    Amharic Typography Engine
-   Default all Amharic texts to "Shiromeda SemBd", system-ui, sans-serif
+   Default all Amharic texts to "Kefa", system-ui, sans-serif
    ======================================================== */
 html[lang="am"],
 html[lang="am"] body,
 body.lang-am,
 .lang-am,
 .lang-am * {
-  font-family: "Shiromeda SemBd", "Shiromeda", system-ui, sans-serif !important;
+  font-family: "Kefa", "Shiromeda SemBd", system-ui, sans-serif !important;
 }
 
-/* Special styling ONLY for the brand word ናዛዚ - Habesha Serif */
+/* Special styling ONLY for the brand word ናዛዚ in the home page - Bela Bereka */
 .font-nazazi,
-.font-habesha-serif,
+.font-bela-bereka,
 html[lang="am"] .font-nazazi,
-html[lang="am"] .font-habesha-serif,
+html[lang="am"] .font-bela-bereka,
 body.lang-am .font-nazazi,
-body.lang-am .font-habesha-serif,
+body.lang-am .font-bela-bereka,
 .lang-am .font-nazazi,
-.lang-am .font-habesha-serif,
+.lang-am .font-bela-bereka,
 [lang="am"] .font-nazazi,
-[lang="am"] .font-habesha-serif {
-  font-family: "Habesha Serif", system-ui, -apple-system, sans-serif !important;
+[lang="am"] .font-bela-bereka {
+  font-family: "Bela Bereka", "Habesha Serif", system-ui, -apple-system, sans-serif !important;
 }
 
 /* Enforce 5px border-radius for all buttons and interactive triggers across the website */
