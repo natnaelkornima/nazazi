@@ -21,6 +21,12 @@ import {
   ArrowLeft,
   CheckCircle2,
   Lock,
+  Zap,
+  ShieldCheck,
+  Upload,
+  Loader2,
+  Sparkles,
+  Building2,
 } from 'lucide-react';
 import { useRegistrationDeadline } from '../hooks/useRegistrationDeadline';
 
@@ -39,7 +45,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
   onSuccess,
   onOpenVerifyModal,
 }) => {
-  const { submitPayment } = usePayment();
+  const { submitPayment, verifyPaymentOnline } = usePayment();
   const { error, info, success } = useToast();
   const { language } = useLanguage();
   const { isClosed } = useRegistrationDeadline();
@@ -80,10 +86,15 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
   const [nameTouched, setNameTouched] = useState(false);
   const [phone, setPhone] = useState('');
   const [phoneTouched, setPhoneTouched] = useState(false);
+  const [transactionId, setTransactionId] = useState('');
+  const [transactionIdTouched, setTransactionIdTouched] = useState(false);
+  const [selectedBank, setSelectedBank] = useState<'cbe' | 'telebirr' | 'auto'>('auto');
   const [screenshotDataUrl, setScreenshotDataUrl] = useState<string | null>(null);
   const [screenshotFile, setScreenshotFile] = useState<File | null>(null);
   const [screenshotTouched, setScreenshotTouched] = useState(false);
+  const [showImageUpload, setShowImageUpload] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isVerifyingWithBank, setIsVerifyingWithBank] = useState(false);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   // Real-time validation
@@ -185,7 +196,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
 
     setNameTouched(true);
     setPhoneTouched(true);
-    setScreenshotTouched(true);
+    setTransactionIdTouched(true);
 
     if (!nameValidation.isValid) {
       error(
@@ -203,40 +214,110 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
       return;
     }
 
-    if (!screenshotDataUrl) {
+    const cleanRef = transactionId.trim();
+
+    if (!cleanRef && !screenshotDataUrl) {
       error(
-        isAmharic ? 'የደረሰኝ ፎቶ ያስገቡ' : 'Receipt required',
-        isAmharic ? 'እባክዎ የክፍያ ደረሰኝ ፎቶ (Screenshot) ያስገቡ' : 'Please upload your payment screenshot.'
+        isAmharic ? 'የትራንዛክሽን ቁጥር ወይም ደረሰኝ ያስፈልጋል' : 'Transaction ID or receipt required',
+        isAmharic
+          ? 'እባክዎ ከባንክ ወይም ከቴሌብር የደረሰዎትን የትራንዛክሽን ቁጥር (Transaction ID) ወይም የደረሰኝ ፎቶ ያስገቡ'
+          : 'Please enter your bank/Telebirr transaction reference number or upload a screenshot.'
       );
       return;
     }
 
     setIsSubmitting(true);
+    if (cleanRef) {
+      setIsVerifyingWithBank(true);
+    }
 
     try {
-      // 1. Prepare and compress the image before sending to avoid payload limits / slow uploads
-      let imageToUpload: File | string = screenshotFile || screenshotDataUrl;
-      try {
-        const compressed = await compressImage(screenshotFile || screenshotDataUrl, 1400, 0.82);
-        imageToUpload = compressed.file;
-      } catch (compErr) {
-        console.warn('Compression skipped, using original file:', compErr);
+      // 1. If transaction ID is provided, verify directly with Verify.et!
+      if (cleanRef) {
+        const verifyRes = await verifyPaymentOnline({
+          reference: cleanRef,
+          bank: selectedBank !== 'auto' ? selectedBank : undefined,
+          name: name.trim(),
+          phone: phone.trim(),
+          planName: selectedPlan,
+          amount: planAmount,
+          screenshotUrl: screenshotDataUrl || undefined,
+        });
+
+        if (verifyRes.success && verifyRes.verified && verifyRes.submission) {
+          success(
+            isAmharic ? '✅ ክፍያዎ በ Verify.ET ተረጋግጧል!' : '✅ Payment Verified via Verify.ET!',
+            isAmharic
+              ? 'የደንበኝነት ምዝገባዎ ወዲያውኑ ገቢር ሆኗል (ራስ-ሰር ማረጋገጫ ተጠናቋል)'
+              : 'Your subscription is now active! Auto-approval complete.'
+          );
+
+          setName('');
+          setPhone('');
+          setTransactionId('');
+          setScreenshotDataUrl(null);
+          setScreenshotFile(null);
+          setCurrentStep(1);
+
+          onClose();
+          onSuccess(verifyRes.submission);
+          return;
+        } else if (verifyRes.success && verifyRes.submission) {
+          // Queued in background
+          info(
+            isAmharic ? 'የክፍያ ማረጋገጫ በሂደት ላይ ነው' : 'Verification In Progress',
+            verifyRes.message || (isAmharic ? 'ከባንክ ጋር በማረጋገጥ ላይ ነው። ጥቂት ሰከንዶች ውስጥ ይፀድቃል።' : 'Checking with bank.')
+          );
+
+          setName('');
+          setPhone('');
+          setTransactionId('');
+          setScreenshotDataUrl(null);
+          setScreenshotFile(null);
+          setCurrentStep(1);
+
+          onClose();
+          onSuccess(verifyRes.submission);
+          return;
+        } else if (!screenshotDataUrl) {
+          error(
+            isAmharic ? 'የክፍያ ማረጋገጫ አልተሳካም' : 'Verification Failed',
+            verifyRes.error ||
+              (isAmharic
+                ? 'የተጠቀሰው የትራንዛክሽን ቁጥር በባንክ አልተገኘም። እባክዎ በትክክል ያረጋግጡ።'
+                : 'Transaction reference not found in bank records.')
+          );
+          setIsSubmitting(false);
+          setIsVerifyingWithBank(false);
+          return;
+        }
       }
 
-      // 2. Prepare FormData to submit to server route (/api/register)
+      // 2. Fallback: upload screenshot to /api/register
+      let imageToUpload: File | string = screenshotFile || screenshotDataUrl || '';
+      if (screenshotDataUrl) {
+        try {
+          const compressed = await compressImage(screenshotFile || screenshotDataUrl, 1400, 0.82);
+          imageToUpload = compressed.file;
+        } catch (compErr) {
+          console.warn('Compression skipped:', compErr);
+        }
+      }
+
       const formData = new FormData();
       formData.append('name', name.trim());
       formData.append('phone_number', phone.trim());
       formData.append('plan_name', selectedPlan);
       formData.append('amount', String(planAmount));
+      if (cleanRef) formData.append('transaction_id', cleanRef);
+      if (selectedBank !== 'auto') formData.append('bank', selectedBank);
 
       if (imageToUpload instanceof File) {
         formData.append('payment_image', imageToUpload);
-      } else {
+      } else if (typeof imageToUpload === 'string' && imageToUpload) {
         formData.append('payment_image', String(imageToUpload));
       }
 
-      // 3. Call backend route with multi-channel plan hints (crucial for Instagram WebViews)
       const registerUrl = new URL('/api/register', typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
       registerUrl.searchParams.set('plan_name', selectedPlan);
       registerUrl.searchParams.set('amount', String(planAmount));
@@ -271,40 +352,38 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
         throw new Error(errorMsg);
       }
 
-      // 4. Update state directly using the server's registered record (one-way live path)
       const reg = result?.registration;
-      const effectivePlanName =
-        (reg?.amount && reg.amount > 200) || (planAmount > 200 && reg?.amount === 200)
-          ? selectedPlan
-          : (reg?.plan_name || selectedPlan);
-
-      const effectiveAmount =
-        planAmount > 200
-          ? planAmount
-          : (reg?.amount || planAmount);
+      const isAutoApproved = Boolean(result?.verified);
 
       const newSub = await submitPayment({
         id: reg?.id,
         userName: reg?.name || name.trim(),
         userPhone: reg?.phone_number || phone.trim(),
-        planName: effectivePlanName,
-        amount: effectiveAmount,
+        planName: selectedPlan,
+        amount: planAmount,
         payerName: reg?.name || name.trim(),
-        transactionId: reg?.id
-          ? `TXN-${String(reg.id).replace(/[^a-zA-Z0-9]/g, '').slice(-8).toUpperCase()}`
-          : `TXN-${Date.now().toString().slice(-6)}`,
-        screenshotUrl: reg?.payment_image_url || screenshotDataUrl,
+        transactionId: cleanRef || reg?.transaction_id || `TXN-${Date.now().toString().slice(-6)}`,
+        screenshotUrl: reg?.payment_image_url || screenshotDataUrl || '',
+        status: isAutoApproved ? 'approved' : 'pending',
+        verificationMethod: isAutoApproved ? 'verify_et' : 'manual',
+        bank: selectedBank !== 'auto' ? selectedBank : undefined,
       });
 
       success(
-        isAmharic ? 'ምዝገባዎ በተሳካ ሁኔታ ተጠናቋል!' : 'Registration Submitted!',
-        isAmharic ? 'ስም፣ ስልክ ቁጥር እና ደረሰኝ ተመዝግቧል' : 'Your name, phone and payment receipt have been saved.'
+        isAutoApproved
+          ? (isAmharic ? '✅ ክፍያዎ በ Verify.ET ተረጋግጧል!' : '✅ Payment Verified via Verify.ET!')
+          : (isAmharic ? 'ምዝገባዎ በተሳካ ሁኔታ ተጠናቋል!' : 'Registration Submitted!'),
+        isAutoApproved
+          ? (isAmharic ? 'የደንበኝነት አገልግሎትዎ ወዲያውኑ ገቢር ሆኗል' : 'Your subscription is now active.')
+          : (isAmharic ? 'ስም፣ ስልክ ቁጥር እና ደረሰኝ ተመዝግቧል' : 'Your name, phone and payment receipt have been saved.')
       );
 
       setName('');
       setNameTouched(false);
       setPhone('');
       setPhoneTouched(false);
+      setTransactionId('');
+      setTransactionIdTouched(false);
       setScreenshotDataUrl(null);
       setScreenshotFile(null);
       setScreenshotTouched(false);
@@ -318,6 +397,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
       error(isAmharic ? 'የምዝገባ ስህተት' : 'Submission Error', errMsg);
     } finally {
       setIsSubmitting(false);
+      setIsVerifyingWithBank(false);
     }
   };
 
@@ -625,24 +705,167 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                   />
                 </div>
 
-                {/* Clean Receipt Upload */}
-                <GlassFolderUploader
-                  label={isAmharic ? 'የክፍያ ደረሰኝ ምስል (እስከ 5MB)' : 'Payment Image (Max 5MB)'}
-                  selectedImageUrl={screenshotDataUrl}
-                  onFileSelect={(dataUrl, file) => {
-                    setScreenshotDataUrl(dataUrl);
-                    setScreenshotFile(file);
-                  }}
-                  onClear={() => {
-                    setScreenshotDataUrl(null);
-                    setScreenshotFile(null);
-                  }}
-                  error={
-                    screenshotTouched && !screenshotDataUrl
-                      ? (isAmharic ? 'እባክዎ የደረሰኝ ምስል ይጫኑ' : 'Please upload payment image')
-                      : undefined
-                  }
-                />
+                {/* Verify.ET Automated Verification Callout */}
+                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-start gap-2.5">
+                  <div className="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                    <Zap className="w-3.5 h-3.5" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <p className="text-xs font-bold text-emerald-950 dark:text-emerald-200">
+                        {isAmharic ? 'በ Verify.ET ፈጣን ራስ-ሰር ማረጋገጫ' : 'Instant Automated Bank Verification (Verify.ET)'}
+                      </p>
+                      <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded-full bg-emerald-600 text-white uppercase tracking-wider">
+                        {isAmharic ? 'ፈጣን' : 'Automated'}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-emerald-800/80 dark:text-emerald-300/80 mt-0.5 leading-relaxed">
+                      {isAmharic
+                        ? 'የትራንዛክሽን ቁጥሩን ሲያስገቡ ወዲያውኑ ከባንክ ጋር ተገናኝቶ ይረጋገጣል። ምንም የአድሚን ፍተሻ መጠበቅ አያስፈልግም!'
+                        : 'Your transaction reference is verified directly with the bank via Verify.ET — zero waiting for manual admin approval!'}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Name & Phone */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <Input
+                    label={isAmharic ? 'ሙሉ ስም' : 'Full Name'}
+                    placeholder={isAmharic ? 'ስምዎን ያስገቡ' : 'Your full name'}
+                    value={name}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                      if (!nameTouched) setNameTouched(true);
+                    }}
+                    onBlur={() => setNameTouched(true)}
+                    error={nameError}
+                    success={nameSuccess}
+                    leftIcon={<User className="w-3.5 h-3.5 text-zinc-400" />}
+                    required
+                  />
+
+                  <Input
+                    label={isAmharic ? 'የስልክ ቁጥር' : 'Phone Number'}
+                    placeholder={isAmharic ? '0911234567 ወይም 07...' : '0911234567 or 07...'}
+                    value={phone}
+                    onChange={(e) => {
+                      setPhone(e.target.value);
+                      if (!phoneTouched) setPhoneTouched(true);
+                    }}
+                    onBlur={() => setPhoneTouched(true)}
+                    error={phoneError}
+                    success={phoneSuccess}
+                    helperText={
+                      !phoneError && !phoneSuccess
+                        ? (isAmharic ? 'ምሳሌ፡ 0911234567' : 'e.g. 0911234567')
+                        : undefined
+                    }
+                    leftIcon={<Smartphone className="w-3.5 h-3.5 text-zinc-400" />}
+                    required
+                  />
+                </div>
+
+                {/* Bank Selector Pills & Transaction ID */}
+                <div className="space-y-2 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                      {isAmharic ? 'የከፈሉበት ባንክ / ዘዴ' : 'Payment Method Used'}
+                    </label>
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedBank('auto')}
+                        className={`px-2 py-0.5 rounded-md text-[10px] font-bold cursor-pointer transition-colors ${
+                          selectedBank === 'auto'
+                            ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900'
+                            : 'bg-zinc-200/80 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300'
+                        }`}
+                      >
+                        {isAmharic ? 'ራስ-ሰር ለይ' : 'Auto'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedBank('cbe')}
+                        className={`px-2 py-0.5 rounded-md text-[10px] font-bold cursor-pointer transition-colors ${
+                          selectedBank === 'cbe'
+                            ? 'bg-amber-600 text-white'
+                            : 'bg-zinc-200/80 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300'
+                        }`}
+                      >
+                        CBE
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedBank('telebirr')}
+                        className={`px-2 py-0.5 rounded-md text-[10px] font-bold cursor-pointer transition-colors ${
+                          selectedBank === 'telebirr'
+                            ? 'bg-emerald-600 text-white'
+                            : 'bg-zinc-200/80 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300'
+                        }`}
+                      >
+                        Telebirr
+                      </button>
+                    </div>
+                  </div>
+
+                  <Input
+                    label={
+                      isAmharic
+                        ? 'የትራንዛክሽን ቁጥር (Transaction ID / Reference) ወይም የደረሰኝ ሊንክ'
+                        : 'Transaction ID / Reference Number or Receipt Link'
+                    }
+                    placeholder={
+                      selectedBank === 'telebirr'
+                        ? (isAmharic ? 'ምሳሌ፡ CI72984X12 (ከቴሌብር SMS)' : 'e.g. CI72984X12 (from Telebirr SMS)')
+                        : selectedBank === 'cbe'
+                        ? (isAmharic ? 'ምሳሌ፡ fHCxyTVljBcl... ወይም CBE Receipt Link' : 'e.g. fHCxyTVljBcl... or CBE receipt URL')
+                        : (isAmharic ? 'የትራንዛክሽን ቁጥር ወይም የደረሰኝ ሊንክ እዚህ ያስገቡ' : 'Enter transaction reference or link')
+                    }
+                    value={transactionId}
+                    onChange={(e) => {
+                      setTransactionId(e.target.value);
+                      if (!transactionIdTouched) setTransactionIdTouched(true);
+                    }}
+                    onBlur={() => setTransactionIdTouched(true)}
+                    leftIcon={<Zap className="w-3.5 h-3.5 text-amber-500" />}
+                    helperText={
+                      isAmharic
+                        ? 'ከባንክ ወይም ከቴሌብር የደረሰዎትን አጭር የትራንዛክሽን ኮድ ወይም የደረሰኝ ዌብሳይት ሊንክ እዚህ ይለጥፉ'
+                        : 'Paste the reference ID or CBE receipt link to verify instantly'
+                    }
+                  />
+                </div>
+
+                {/* Optional Screenshot Attachment Toggle */}
+                <div className="pt-0.5">
+                  <button
+                    type="button"
+                    onClick={() => setShowImageUpload(!showImageUpload)}
+                    className="text-xs text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white flex items-center gap-1.5 cursor-pointer underline underline-offset-2"
+                  >
+                    <Upload className="w-3.5 h-3.5" />
+                    {showImageUpload
+                      ? (isAmharic ? 'የደረሰኝ ፎቶ መጫኛን ደብቅ' : 'Hide receipt screenshot uploader')
+                      : (isAmharic ? '+ የደረሰኝ ፎቶ (Screenshot) ማያያዝ ይፈልጋሉ? (አማራጭ)' : '+ Attach receipt screenshot (Optional)')}
+                  </button>
+
+                  {showImageUpload && (
+                    <div className="mt-2.5">
+                      <GlassFolderUploader
+                        label={isAmharic ? 'የክፍያ ደረሰኝ ምስል (አማራጭ)' : 'Payment Image Screenshot (Optional)'}
+                        selectedImageUrl={screenshotDataUrl}
+                        onFileSelect={(dataUrl, file) => {
+                          setScreenshotDataUrl(dataUrl);
+                          setScreenshotFile(file);
+                        }}
+                        onClear={() => {
+                          setScreenshotDataUrl(null);
+                          setScreenshotFile(null);
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
 
                 {/* Bottom Actions */}
                 <div className="flex items-center justify-between gap-2.5 pt-3 border-t border-zinc-100 dark:border-zinc-800">
@@ -662,12 +885,20 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                     type="submit"
                     size="sm"
                     isLoading={isSubmitting}
-                    className="text-xs font-bold bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-900 shadow-xs px-5 cursor-pointer"
-                    rightIcon={<CheckCircle2 className="w-3.5 h-3.5" />}
+                    className="text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs px-5 cursor-pointer"
+                    rightIcon={
+                      isVerifyingWithBank ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      ) : (
+                        <ShieldCheck className="w-3.5 h-3.5" />
+                      )
+                    }
                   >
-                    {isSubmitting
-                      ? (isAmharic ? 'በመላክ ላይ...' : 'Submitting...')
-                      : (isAmharic ? 'ይመዝገቡ' : 'Submit Registration')}
+                    {isVerifyingWithBank
+                      ? (isAmharic ? 'በ Verify.ET በማረጋገጥ ላይ...' : 'Verifying via Verify.ET...')
+                      : isSubmitting
+                      ? (isAmharic ? 'በመመዝገብ ላይ...' : 'Submitting...')
+                      : (isAmharic ? 'ወዲያውኑ አረጋግጥ እና አግብር ⚡' : 'Verify & Activate Instantly ⚡')}
                   </Button>
                 </div>
               </form>

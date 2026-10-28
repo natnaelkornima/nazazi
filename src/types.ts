@@ -108,6 +108,11 @@ export interface PaymentSubmission {
   submittedAt: string;
   reviewedAt?: string;
   notes?: string;
+  verificationMethod?: 'verify_et' | 'manual';
+  bank?: string;
+  verifiedAt?: string;
+  verifyRequestId?: string;
+  verifiedAmount?: number;
 }
 
 export type SmsProviderType = 'generic_http' | 'twilio' | 'africas_talking' | 'infobip' | 'simulation';

@@ -25,12 +25,35 @@ interface PaymentContextType {
     userPhone: string;
     planName: string;
     amount: number;
-    screenshotUrl: string;
+    screenshotUrl?: string;
     userId?: string;
     userEmail?: string;
     payerName?: string;
     transactionId?: string;
+    status?: PaymentStatus;
+    verificationMethod?: 'verify_et' | 'manual';
+    bank?: string;
+    verifiedAt?: string;
+    verifyRequestId?: string;
   }) => Promise<PaymentSubmission>;
+  verifyPaymentOnline: (data: {
+    reference: string;
+    bank?: string;
+    name: string;
+    phone: string;
+    planName: string;
+    amount: number;
+    screenshotUrl?: string;
+    suffix?: string;
+  }) => Promise<{
+    success: boolean;
+    verified: boolean;
+    status: string;
+    submission?: PaymentSubmission;
+    message?: string;
+    error?: string;
+    details?: any;
+  }>;
   approvePayment: (id: string, phone?: string) => Promise<void>;
   rejectPayment: (id: string, phone?: string) => Promise<void>;
   updatePaymentPlan: (id: string, planName: string, amount: number, phone?: string) => Promise<void>;
@@ -195,6 +218,18 @@ export const PaymentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const { planName: plan, amount } = normalizePlanAndAmount(rawPlan, rawAmount);
     const submittedAt = record.created_at || record.submittedAt || new Date().toISOString();
 
+    const recAny = record as any;
+    const transactionId =
+      recAny.transaction_id ||
+      recAny.transactionId ||
+      recAny.reference ||
+      `TXN-${String(record.id).replace(/[^a-zA-Z0-9]/g, '').slice(-8).toUpperCase() || 'SUB'}`;
+
+    const verificationMethod: 'verify_et' | 'manual' =
+      recAny.verification_method ||
+      recAny.verificationMethod ||
+      (status === 'approved' && (recAny.transaction_id || recAny.transactionId) ? 'verify_et' : 'manual');
+
     return {
       id: String(record.id),
       userId: `usr_${String(record.id).replace(/\D/g, '').slice(-6) || Math.random().toString(36).substring(2, 7)}`,
@@ -205,11 +240,15 @@ export const PaymentProvider: React.FC<{ children: React.ReactNode }> = ({ child
       amount,
       currency: 'ETB',
       payerName: name,
-      transactionId: `TXN-${String(record.id).replace(/[^a-zA-Z0-9]/g, '').slice(-8).toUpperCase() || 'SUB'}`,
+      transactionId,
       screenshotUrl: imageUrl,
       status,
       submittedAt,
       reviewedAt: record.reviewed_at || undefined,
+      verificationMethod,
+      bank: recAny.bank || undefined,
+      verifiedAt: recAny.verified_at || (status === 'approved' ? record.reviewed_at || undefined : undefined),
+      verifyRequestId: recAny.verify_request_id || recAny.verifyRequestId || undefined,
     };
   };
 
@@ -363,11 +402,16 @@ export const PaymentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     userPhone: string;
     planName: string;
     amount: number;
-    screenshotUrl: string;
+    screenshotUrl?: string;
     userId?: string;
     userEmail?: string;
     payerName?: string;
     transactionId?: string;
+    status?: PaymentStatus;
+    verificationMethod?: 'verify_et' | 'manual';
+    bank?: string;
+    verifiedAt?: string;
+    verifyRequestId?: string;
   }): Promise<PaymentSubmission> => {
     // If an authentic server record ID is already provided, use it directly
     if (data.id) {
@@ -382,9 +426,14 @@ export const PaymentProvider: React.FC<{ children: React.ReactNode }> = ({ child
         currency: 'ETB',
         payerName: data.payerName || data.userName,
         transactionId: data.transactionId || `TXN-${String(data.id).replace(/[^a-zA-Z0-9]/g, '').slice(-8).toUpperCase() || 'SUB'}`,
-        screenshotUrl: data.screenshotUrl,
-        status: 'pending',
+        screenshotUrl: data.screenshotUrl || '',
+        status: data.status || 'pending',
         submittedAt: new Date().toISOString(),
+        reviewedAt: data.status === 'approved' ? (data.verifiedAt || new Date().toISOString()) : undefined,
+        verificationMethod: data.verificationMethod || (data.status === 'approved' ? 'verify_et' : 'manual'),
+        bank: data.bank,
+        verifiedAt: data.verifiedAt || (data.status === 'approved' ? new Date().toISOString() : undefined),
+        verifyRequestId: data.verifyRequestId,
       };
 
       setSubmissions((prev) => {
@@ -413,9 +462,11 @@ export const PaymentProvider: React.FC<{ children: React.ReactNode }> = ({ child
         body: JSON.stringify({
           name: data.userName,
           phone_number: data.userPhone,
-          payment_image: data.screenshotUrl,
+          payment_image: data.screenshotUrl || '',
           plan_name: data.planName,
           amount: data.amount,
+          transaction_id: data.transactionId,
+          bank: data.bank,
         }),
       });
 
@@ -453,14 +504,85 @@ export const PaymentProvider: React.FC<{ children: React.ReactNode }> = ({ child
       amount: data.amount,
       currency: 'ETB',
       payerName: data.payerName || data.userName,
-      transactionId: `TXN-${Date.now().toString().slice(-6)}`,
-      screenshotUrl: data.screenshotUrl,
-      status: 'pending',
+      transactionId: data.transactionId || `TXN-${Date.now().toString().slice(-6)}`,
+      screenshotUrl: data.screenshotUrl || '',
+      status: data.status || 'pending',
       submittedAt: new Date().toISOString(),
+      reviewedAt: data.status === 'approved' ? (data.verifiedAt || new Date().toISOString()) : undefined,
+      verificationMethod: data.verificationMethod || (data.status === 'approved' ? 'verify_et' : 'manual'),
+      bank: data.bank,
+      verifiedAt: data.verifiedAt,
+      verifyRequestId: data.verifyRequestId,
     };
 
     setSubmissions((prev) => [fallbackSubmission, ...prev.filter((s) => s.id !== fallbackId)]);
     return fallbackSubmission;
+  };
+
+  /**
+   * Online Verification via Verify.et API (Automated Bank Check)
+   */
+  const verifyPaymentOnline = async (data: {
+    reference: string;
+    bank?: string;
+    name: string;
+    phone: string;
+    planName: string;
+    amount: number;
+    screenshotUrl?: string;
+    suffix?: string;
+  }) => {
+    removeLocalTombstone(data.phone);
+    try {
+      const response = await fetch('/api/verify-payment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      const resJson = await response.json().catch(() => ({}));
+
+      if (response.ok && resJson.success && resJson.registration) {
+        const finalSubmission = mapRecordToSubmission(resJson.registration);
+        setSubmissions((prev) => {
+          const cleanPhone = data.phone.replace(/\D/g, '');
+          const filtered = prev.filter(
+            (s) => s.id !== finalSubmission.id && (!cleanPhone || s.userPhone.replace(/\D/g, '') !== cleanPhone)
+          );
+          const updated = [finalSubmission, ...filtered];
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('nazazi_payment_submissions', JSON.stringify(updated));
+          }
+          return updated;
+        });
+
+        return {
+          success: true,
+          verified: Boolean(resJson.verified),
+          status: resJson.status || (resJson.verified ? 'approved' : 'pending'),
+          submission: finalSubmission,
+          message: resJson.message,
+          details: resJson.verificationDetails,
+        };
+      }
+
+      return {
+        success: false,
+        verified: false,
+        status: resJson.status || 'failed',
+        error: resJson.error || 'Verification failed. Please check transaction reference.',
+      };
+    } catch (err: unknown) {
+      const errorMsg = err instanceof Error ? err.message : 'Network error during verification';
+      return {
+        success: false,
+        verified: false,
+        status: 'failed',
+        error: errorMsg,
+      };
+    }
   };
 
   const approvePayment = async (id: string, phone?: string) => {
@@ -674,6 +796,7 @@ export const PaymentProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setSelectedPlanForCheckout,
         fetchRegistrations,
         submitPayment,
+        verifyPaymentOnline,
         approvePayment,
         rejectPayment,
         updatePaymentPlan,

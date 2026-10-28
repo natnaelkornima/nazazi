@@ -25,6 +25,8 @@ import {
   ChevronRight,
   ArrowLeft,
   AlertCircle,
+  ShieldCheck,
+  Zap,
 } from 'lucide-react';
 
 interface SubscriptionStatusModalProps {
@@ -603,6 +605,39 @@ export const SubscriptionStatusModal: React.FC<SubscriptionStatusModalProps> = (
                       </p>
                     </div>
                   </div>
+
+                  {/* Auto-Verified by Verify.ET badge */}
+                  {(activeSubmission.verificationMethod === 'verify_et' || (isApproved && activeSubmission.transactionId)) && (
+                    <div className="flex items-center justify-between py-1.5 px-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 dark:text-emerald-300 text-xs font-semibold">
+                      <span className="inline-flex items-center gap-1.5">
+                        <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                        <span>{isAmharic ? 'በ Verify.ET በራስ-ሰር የተረጋገጠ' : 'Auto-Verified by Verify.ET'}</span>
+                      </span>
+                      {activeSubmission.bank && (
+                        <span className="text-[10px] uppercase px-1.5 py-0.5 rounded-md bg-emerald-600 text-white font-mono font-bold">
+                          {activeSubmission.bank}
+                        </span>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Transaction ID if available */}
+                  {activeSubmission.transactionId && (
+                    <div className="p-2.5 rounded-xl bg-white dark:bg-zinc-950/60 border border-zinc-200/60 dark:border-zinc-800/80 space-y-0.5 shadow-2xs text-xs">
+                      <div className="flex items-center justify-between text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+                        <span className="flex items-center gap-1">
+                          <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+                          <span>{isAmharic ? 'የግብይት መለያ (TxID)' : 'Transaction ID'}</span>
+                        </span>
+                        {activeSubmission.bank && (
+                          <span className="font-mono text-zinc-500 uppercase">{activeSubmission.bank}</span>
+                        )}
+                      </div>
+                      <p className="font-mono font-bold text-zinc-900 dark:text-zinc-100 text-xs break-all select-all">
+                        {activeSubmission.transactionId}
+                      </p>
+                    </div>
+                  )}
 
                   {/* Screenshot Preview Button if exists */}
                   {activeSubmission.screenshotUrl && (

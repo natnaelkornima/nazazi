@@ -31,6 +31,11 @@ export interface RegistrationRecord {
   status?: 'pending' | 'approved' | 'rejected';
   created_at: string;
   reviewed_at?: string | null;
+  transaction_id?: string;
+  bank?: string;
+  verification_method?: 'verify_et' | 'manual';
+  verified_at?: string;
+  verify_request_id?: string;
 }
 
 let cachedClient: SupabaseClient | null = null;
@@ -614,10 +619,15 @@ function sanitizeImageUrlForSupabase(url?: string | null): string | null {
 export async function saveRegistrationToSupabase(data: {
   name: string;
   phone_number: string;
-  payment_image_url: string;
+  payment_image_url?: string;
   plan_name?: string;
   amount?: number;
   status?: 'pending' | 'approved' | 'rejected';
+  transaction_id?: string;
+  bank?: string;
+  verification_method?: 'verify_et' | 'manual';
+  verified_at?: string;
+  verify_request_id?: string;
 }): Promise<{ record: RegistrationRecord; savedToSupabase: boolean; error?: string }> {
   const fallbackId = `reg_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
   const nowIso = new Date().toISOString();
@@ -628,7 +638,7 @@ export async function saveRegistrationToSupabase(data: {
   );
 
   // Strictly enforce link only for Supabase: never store base64 in Supabase
-  const safeSupabaseImageUrl = sanitizeImageUrlForSupabase(data.payment_image_url);
+  const safeSupabaseImageUrl = sanitizeImageUrlForSupabase(data.payment_image_url || '');
 
   const record: RegistrationRecord = {
     id: fallbackId,
@@ -639,7 +649,25 @@ export async function saveRegistrationToSupabase(data: {
     amount: normalizedAmount,
     status: data.status || 'pending',
     created_at: nowIso,
+    reviewed_at: data.status === 'approved' ? (data.verified_at || nowIso) : undefined,
+    transaction_id: data.transaction_id,
+    bank: data.bank,
+    verification_method: data.verification_method,
+    verified_at: data.verified_at,
+    verify_request_id: data.verify_request_id,
   };
+
+  // If auto-verified by Verify.et, also save status override so it persists as approved
+  if (data.status === 'approved') {
+    statusOverridesMap.set(fallbackId, {
+      status: 'approved',
+      reviewed_at: data.verified_at || nowIso,
+    });
+    statusOverridesMap.set(normalizePhoneKey(record.phone_number), {
+      status: 'approved',
+      reviewed_at: data.verified_at || nowIso,
+    });
+  }
 
   // Un-tombstone phone if user is submitting a new registration
   removeTombstone(undefined, record.phone_number);

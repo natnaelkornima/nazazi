@@ -4,6 +4,7 @@ import { saveRegistrationToSupabase } from '@/lib/supabaseServer';
 import { validateFullName, validateEthiopianPhone } from '@/lib/validation';
 import { normalizePlanAndAmount } from '@/lib/planUtils';
 import { isRegistrationClosed } from '@/lib/deadlineConfig';
+import { verifyTransactionWithVerifyEt } from '@/lib/verifyEt';
 
 export const dynamic = 'force-dynamic';
 
@@ -53,11 +54,16 @@ export async function POST(req: NextRequest) {
 
     const contentType = req.headers.get('content-type') || '';
 
+    let transactionId: string | null = null;
+    let bank: string | null = null;
+
     if (contentType.includes('application/json')) {
       const body = await req.json();
       name = body.name || body.userName || body.payerName;
       phoneNumber = body.phone_number || body.phoneNumber || body.userPhone;
       paymentImage = body.payment_image || body.paymentImage || body.screenshotUrl || body.image;
+      transactionId = body.transaction_id || body.transactionId || body.reference;
+      bank = body.bank || null;
       if (body.plan_name || body.planName) rawPlanName = body.plan_name || body.planName;
       if (body.amount !== undefined && body.amount !== null && body.amount !== '') {
         rawAmount = body.amount;
@@ -67,6 +73,8 @@ export async function POST(req: NextRequest) {
       name = (formData.get('name') || formData.get('userName') || formData.get('payerName')) as string | null;
       phoneNumber = (formData.get('phone_number') || formData.get('phoneNumber') || formData.get('userPhone')) as string | null;
       paymentImage = formData.get('payment_image') || formData.get('paymentImage') || formData.get('screenshotUrl');
+      transactionId = (formData.get('transaction_id') || formData.get('transactionId') || formData.get('reference')) as string | null;
+      bank = formData.get('bank') as string | null;
       const pName = formData.get('plan_name') || formData.get('planName');
       if (pName && typeof pName === 'string' && pName.trim()) {
         rawPlanName = pName.trim();
@@ -106,17 +114,17 @@ export async function POST(req: NextRequest) {
 
     const cleanPhone = phoneValidation.cleanPhone;
 
-    // 3. Process & Validate Payment Image (Upload to Cloudinary only, ZERO base64 in Supabase)
+    // 3. Process & Validate Payment Image (Optional if valid transaction reference is provided)
     let finalCloudinaryUrl = '';
     let uploadedToCloudinary = false;
     let uploadError: string | null = null;
     let cloudNameResult: string | null = null;
 
-    if (!paymentImage) {
+    if (!paymentImage && !transactionId) {
       return NextResponse.json(
         {
           success: false,
-          error: 'Payment image / receipt screenshot is required.',
+          error: 'Please enter your Transaction Reference Number (e.g. from Telebirr/CBE) or upload a payment receipt.',
         },
         { status: 400 }
       );
@@ -192,25 +200,71 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 5. Store in Supabase (Strictly lightweight link or empty, NEVER image binary/base64)
+    // 5. Automatic Verification via Verify.et if transaction reference is provided
+    let isAutoApproved = false;
+    let verifiedBank = bank || undefined;
+    let verifiedRequestId: string | undefined = undefined;
+    let verificationError: string | null = null;
+    let verifiedDetails: any = null;
+
+    if (transactionId) {
+      try {
+        const verification = await verifyTransactionWithVerifyEt({
+          reference: transactionId,
+          bank: (bank && bank !== 'auto' ? bank : undefined) as any,
+          phoneNumber: cleanPhone,
+          waitMs: 6000,
+        });
+
+        if (verification.verified && verification.status === 'success') {
+          isAutoApproved = true;
+          verifiedBank = verification.bank || verifiedBank || 'cbe';
+          verifiedRequestId = verification.requestId;
+          verifiedDetails = {
+            bank: verification.bank,
+            amount: verification.amount,
+            senderName: verification.senderName,
+            receiverName: verification.receiverName,
+            timestamp: verification.timestamp,
+          };
+        } else if (verification.errorMessage) {
+          verificationError = verification.errorMessage;
+        }
+      } catch (vErr) {
+        console.warn('Verify.et auto-check error (will save as pending):', vErr);
+      }
+    }
+
+    // 6. Store in Supabase / State (auto-approved if verified by Verify.et!)
     const { record, savedToSupabase, error: dbError } = await saveRegistrationToSupabase({
       name: name.trim(),
       phone_number: cleanPhone,
       payment_image_url: finalCloudinaryUrl,
       plan_name: planName,
       amount: isNaN(amount) ? 200 : amount,
-      status: 'pending',
+      status: isAutoApproved ? 'approved' : 'pending',
+      transaction_id: transactionId || undefined,
+      bank: verifiedBank,
+      verification_method: isAutoApproved ? 'verify_et' : 'manual',
+      verified_at: isAutoApproved ? new Date().toISOString() : undefined,
+      verify_request_id: verifiedRequestId,
     });
 
     return NextResponse.json(
       {
         success: true,
-        message: savedToSupabase
+        verified: isAutoApproved,
+        status: isAutoApproved ? 'approved' : 'pending',
+        message: isAutoApproved
+          ? 'ክፍያዎ በ Verify.ET በራስ-ሰር ተረጋግጧል! የአገልግሎት ምዝገባዎ ወዲያውኑ ገቢር ሆኗል (Auto-approved via Verify.ET).'
+          : savedToSupabase
           ? 'Registration stored in Supabase database successfully.'
           : 'Registration processed locally.',
         savedToSupabase,
         uploadedToCloudinary,
         cloudinaryError: uploadError || null,
+        verificationError: verificationError || null,
+        verificationDetails: verifiedDetails,
         cloudName: cloudNameResult || null,
         dbError: dbError || null,
         registration: record,
