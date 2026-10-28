@@ -99,7 +99,7 @@ export const UserDashboardView: React.FC<UserDashboardViewProps> = ({ onNavigate
       {/* Bento Grid Summary Tiles (Top Row: 3 White Tiles + 1 Solid Dark Accent Tile) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Bento Tile 1 */}
-        <div className="bg-white dark:bg-zinc-900 border border-[#E5E7EB] dark:border-zinc-800 rounded-[6px] p-5 flex flex-col justify-between shadow-sm transition-all hover:shadow-md">
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 flex flex-col justify-between shadow-xs transition-all hover:shadow-sm">
           <div className="flex justify-between items-start">
             <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">
               {isAmharic ? 'የደንበኝነት እቅድ' : 'Subscription Tier'}
@@ -117,7 +117,7 @@ export const UserDashboardView: React.FC<UserDashboardViewProps> = ({ onNavigate
         </div>
 
         {/* Bento Tile 2 */}
-        <div className="bg-white dark:bg-zinc-900 border border-[#E5E7EB] dark:border-zinc-800 rounded-[6px] p-5 flex flex-col justify-between shadow-sm transition-all hover:shadow-md">
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 flex flex-col justify-between shadow-xs transition-all hover:shadow-sm">
           <div className="flex justify-between items-start">
             <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">
               Today&apos;s Volume
@@ -135,7 +135,7 @@ export const UserDashboardView: React.FC<UserDashboardViewProps> = ({ onNavigate
         </div>
 
         {/* Bento Tile 3 */}
-        <div className="bg-white dark:bg-zinc-900 border border-[#E5E7EB] dark:border-zinc-800 rounded-[6px] p-5 flex flex-col justify-between shadow-sm transition-all hover:shadow-md">
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 flex flex-col justify-between shadow-xs transition-all hover:shadow-sm">
           <div className="flex justify-between items-start">
             <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">
               Monthly Spend
@@ -153,7 +153,7 @@ export const UserDashboardView: React.FC<UserDashboardViewProps> = ({ onNavigate
         </div>
 
         {/* Bento Tile 4 (Solid Black High-Contrast Bento Block) */}
-        <div className="bg-black text-white rounded-[6px] p-5 flex flex-col justify-between shadow-lg">
+        <div className="bg-black text-white rounded-2xl p-5 flex flex-col justify-between shadow-sm">
           <div className="flex justify-between items-start">
             <span className="text-[10px] font-semibold uppercase tracking-wider opacity-60">
               Edge Infrastructure
@@ -171,7 +171,7 @@ export const UserDashboardView: React.FC<UserDashboardViewProps> = ({ onNavigate
       </div>
 
       {/* Main Bento Grid Module: Analytics Chart */}
-      <div className="bg-white dark:bg-zinc-900 border border-[#E5E7EB] dark:border-zinc-800 rounded-[6px] p-6 shadow-sm space-y-6">
+      <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 shadow-xs space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h2 className="text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-50">

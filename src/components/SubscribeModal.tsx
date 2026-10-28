@@ -490,7 +490,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                 <span
                   className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all shrink-0 ${
                     currentStep === 1
-                      ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 shadow-xs ring-2 ring-zinc-900/10 dark:ring-white/20'
+                      ? 'bg-[#981C00] text-white shadow-xs ring-2 ring-[#981C00]/20'
                       : 'bg-emerald-600 text-white'
                   }`}
                 >
@@ -504,7 +504,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
               {/* Progress Connecting Line */}
               <div className="flex-1 max-w-[40px] sm:max-w-[70px] h-1 rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden shrink-0">
                 <div
-                  className="h-full bg-zinc-900 dark:bg-white transition-all duration-300"
+                  className="h-full bg-[#981C00] dark:bg-[#C43214] transition-all duration-300"
                   style={{ width: currentStep === 2 ? '100%' : '0%' }}
                 />
               </div>
@@ -514,7 +514,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                 <span
                   className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all shrink-0 ${
                     currentStep === 2
-                      ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 shadow-xs ring-2 ring-zinc-900/10 dark:ring-white/20'
+                      ? 'bg-[#981C00] text-white shadow-xs ring-2 ring-[#981C00]/20'
                       : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-400'
                   }`}
                 >
@@ -574,7 +574,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                       onClick={() => handleSelectPlan(p.id as '1m' | '3m' | '6m')}
                       className={`relative p-3 rounded-xl text-left border transition-all cursor-pointer ${
                         isSelected
-                          ? 'border-zinc-900 dark:border-white bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 shadow-xs ring-1 ring-zinc-900 dark:ring-white'
+                          ? 'border-[#981C00] bg-[#981C00] text-white shadow-xs ring-1 ring-[#981C00]'
                           : 'border-zinc-200 dark:border-zinc-800 bg-zinc-50/80 dark:bg-zinc-900/60 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-700'
                       }`}
                     >
@@ -582,7 +582,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                         <span
                           className={`absolute -top-2 right-2 text-[9px] font-bold px-1.5 py-0.2 rounded-full uppercase tracking-wider ${
                             isSelected
-                              ? 'bg-white text-zinc-950 dark:bg-zinc-900 dark:text-white'
+                              ? 'bg-white text-[#981C00]'
                               : 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950'
                           }`}
                         >
@@ -659,9 +659,10 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                 </Button>
                 <Button
                   type="button"
+                  variant="brand"
                   size="sm"
                   onClick={goToNextStep}
-                  className="text-xs font-bold bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-900 shadow-xs px-5 cursor-pointer"
+                  className="text-xs font-bold px-5 cursor-pointer shadow-xs"
                   rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
                 >
                   {isAmharic ? 'ቀጣይ፡ መረጃ አስገባ' : 'Next: Enter Details'}
@@ -944,9 +945,10 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
 
                   <Button
                     type="submit"
+                    variant="brand"
                     size="sm"
                     isLoading={isSubmitting}
-                    className="text-xs font-bold bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-900 shadow-xs px-5 cursor-pointer"
+                    className="text-xs font-bold shadow-xs px-5 cursor-pointer"
                     rightIcon={
                       isVerifyingWithBank ? (
                         <Loader2 className="w-3.5 h-3.5 animate-spin" />

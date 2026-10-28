@@ -814,7 +814,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
         <div className="flex items-center gap-2">
           {/* Public Registration Countdown & Status Indicator */}
           <div
-            className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl sm:rounded-2xl border text-xs font-bold ${
+            className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold ${
               isRegistrationClosedDeadline
                 ? 'bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400'
                 : 'bg-zinc-100 dark:bg-zinc-850 border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300'
@@ -845,7 +845,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               info('Synced', 'Registrations refreshed & synchronized across all devices.');
             }}
             disabled={isLoading}
-            className="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl sm:rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-all flex items-center gap-1.5 sm:gap-2 text-xs font-bold cursor-pointer group shadow-2xs disabled:opacity-50"
+            className="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-all flex items-center gap-1.5 sm:gap-2 text-xs font-bold cursor-pointer group shadow-2xs disabled:opacity-50"
             title="Auto-sync active every 3s. Click to force instant cloud refresh."
           >
             <span className="relative flex h-2 w-2">
@@ -860,7 +860,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
           <div className="relative" ref={settingsRef}>
           <button
             onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-            className={`p-2 sm:px-3 sm:py-2.5 rounded-xl sm:rounded-2xl border transition-all flex items-center gap-1.5 sm:gap-2 text-xs font-bold cursor-pointer group shadow-xs ${
+            className={`p-2 sm:px-3 sm:py-2 rounded-xl border transition-all flex items-center gap-1.5 sm:gap-2 text-xs font-bold cursor-pointer group shadow-xs ${
               isSettingsOpen
                 ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 border-zinc-900 dark:border-zinc-100'
                 : 'bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800'
@@ -1153,7 +1153,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
           >
             <Send className="w-3.5 h-3.5 text-zinc-900 dark:text-zinc-100" />
             <span>2. SMS Console</span>
-            <span className="px-1.5 py-0.2 bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-[10px] font-bold rounded-md">
+            <span className="px-1.5 py-0.2 bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-[10px] font-bold rounded-full">
               {approvedCount}
             </span>
           </button>
@@ -1168,7 +1168,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
           >
             <History className="w-3.5 h-3.5 text-sky-500" />
             <span>3. Logs</span>
-            <span className="px-1.5 py-0.2 bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-[10px] font-bold rounded-md">
+            <span className="px-1.5 py-0.2 bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-[10px] font-bold rounded-full">
               {smsLogs.length}
             </span>
           </button>
@@ -1842,26 +1842,25 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                           <td className="py-3 px-4 text-right">
                             <div className="flex items-center justify-end gap-1.5 whitespace-nowrap">
                               {sub.status === 'pending' && (
-                                <div className="inline-flex items-center bg-zinc-100 dark:bg-zinc-800/80 p-0.5 rounded-lg border border-zinc-200/80 dark:border-zinc-700/80 shadow-2xs">
+                                <div className="inline-flex items-center gap-1.5">
                                   <button
                                     type="button"
                                     onClick={() => {
                                       approvePayment(sub.id, sub.userPhone);
                                       success('Approved!', `Activated SMS subscription for ${sub.userPhone}`);
                                     }}
-                                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-bold text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-600 transition-all cursor-pointer"
+                                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-2xs transition-all cursor-pointer"
                                     title="Approve and activate"
                                   >
-                                    <Check className="w-3.5 h-3.5" /> Approve
+                                    <Check className="w-3.5 h-3.5 stroke-[2.5]" /> Approve
                                   </button>
-                                  <div className="w-[1px] h-3.5 bg-zinc-300 dark:bg-zinc-700 mx-0.5" />
                                   <button
                                     type="button"
                                     onClick={() => {
                                       rejectPayment(sub.id, sub.userPhone);
                                       info('Rejected', `Marked ${sub.userPhone} as rejected`);
                                     }}
-                                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-500 hover:text-white dark:hover:bg-rose-600 transition-all cursor-pointer"
+                                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/50 transition-all cursor-pointer border border-rose-200 dark:border-rose-900"
                                     title="Reject registration"
                                   >
                                     <X className="w-3.5 h-3.5" /> Reject
@@ -2353,7 +2352,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               >
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-xs">1. 09... (Spaced)</span>
-                  <span className="text-[9px] px-1 py-0.2 rounded-sm bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 font-bold uppercase">
+                  <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 font-bold uppercase">
                     Default
                   </span>
                 </div>

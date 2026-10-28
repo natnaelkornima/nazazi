@@ -322,9 +322,10 @@ export const SubscriptionStatusModal: React.FC<SubscriptionStatusModalProps> = (
 
                   <Button
                     type="submit"
+                    variant="brand"
                     size="sm"
                     disabled={isSearching}
-                    className="w-full font-extrabold text-xs bg-zinc-950 hover:bg-zinc-900 text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-950 h-10 rounded-xl cursor-pointer shadow-sm"
+                    className="w-full font-bold text-xs h-10 cursor-pointer shadow-xs"
                     leftIcon={
                       isSearching ? (
                         <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -390,9 +391,10 @@ export const SubscriptionStatusModal: React.FC<SubscriptionStatusModalProps> = (
 
                 <div className="flex flex-col gap-2 pt-2 max-w-xs mx-auto">
                   <Button
+                    variant="brand"
                     size="sm"
                     onClick={handleResubmitAction}
-                    className="w-full font-bold text-xs bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 h-10 rounded-xl cursor-pointer"
+                    className="w-full font-bold text-xs h-10 cursor-pointer shadow-xs"
                   >
                     {isAmharic ? 'አዲስ ደረሰኝ ላክ' : 'Submit Receipt Now'}
                   </Button>
@@ -669,9 +671,10 @@ export const SubscriptionStatusModal: React.FC<SubscriptionStatusModalProps> = (
                     </Button>
                   ) : (
                     <Button
+                      variant="brand"
                       size="md"
                       onClick={onClose}
-                      className="w-full font-bold text-xs bg-zinc-950 hover:bg-zinc-900 text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-950 h-10 rounded-xl shadow-sm cursor-pointer"
+                      className="w-full font-bold text-xs h-10 shadow-xs cursor-pointer"
                     >
                       {isAmharic ? 'እሺ (ተጠናቋል)' : 'Done'}
                     </Button>

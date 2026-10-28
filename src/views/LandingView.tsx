@@ -418,7 +418,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
               <button
                 onClick={isClosed ? () => setIsSubscribeModalOpen(true) : scrollToPricing}
-                className="px-6 py-3.5 rounded-md bg-[#981C00] hover:bg-[#7A1D28] text-white text-sm font-bold tracking-tight transition-all duration-150 cursor-pointer flex items-center justify-center gap-2 shadow-sm"
+                className="px-6 py-3.5 rounded-xl bg-[#981C00] hover:bg-[#7A1D28] text-white text-sm font-bold tracking-tight transition-all duration-150 cursor-pointer flex items-center justify-center gap-2 shadow-xs"
               >
                 {isClosed ? (
                   <span className="inline-flex items-center gap-2">
@@ -435,7 +435,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
               <button
                 onClick={() => handleTriggerVerifyModal(null)}
-                className="px-5 py-3.5 rounded-md bg-[#FFFFFF] dark:bg-[#1D1A18] hover:bg-[#F3EFEA] dark:hover:bg-[#25221F] border border-[#E8E4DF] dark:border-[#2C2825] text-sm font-semibold text-[#24211F] dark:text-[#FAF8F5] transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
+                className="px-5 py-3.5 rounded-xl bg-[#FFFFFF] dark:bg-[#1D1A18] hover:bg-[#F3EFEA] dark:hover:bg-[#25221F] border border-[#E8E4DF] dark:border-[#2C2825] text-sm font-semibold text-[#24211F] dark:text-[#FAF8F5] transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
               >
                 <Smartphone className="w-4 h-4 text-[#706A65] dark:text-[#A8A19A]" />
                 <span>{isAmharic ? 'የአባልነት ማረጋገጫ በስልክ' : 'Check Approval Status'}</span>
@@ -782,7 +782,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               <div>
                 <button
                   onClick={() => handleTriggerVerifyModal(null)}
-                  className="px-3.5 py-1.5 rounded text-xs font-bold bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] text-[#24211F] dark:text-[#FAF8F5] cursor-pointer"
+                  className="px-4 py-2 rounded-xl text-xs font-bold bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] text-[#24211F] dark:text-[#FAF8F5] cursor-pointer shadow-xs"
                 >
                   {isAmharic ? 'የአባልነት ማረጋገጫ በስልክ' : 'Verify Status'}
                 </button>
@@ -1077,7 +1077,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               onClick={isClosed ? () => setIsSubscribeModalOpen(true) : scrollToPricing}
-              className="w-full sm:w-auto px-6 py-3 rounded-md bg-white text-[#981C00] hover:bg-zinc-100 text-xs sm:text-sm font-bold tracking-tight transition-colors cursor-pointer shadow-xs"
+              className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white text-[#981C00] hover:bg-zinc-100 text-xs sm:text-sm font-bold tracking-tight transition-colors cursor-pointer shadow-xs"
             >
               {isClosed ? (
                 <span className="inline-flex items-center gap-1.5">
@@ -1090,7 +1090,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             </button>
             <button
               onClick={() => handleTriggerVerifyModal(null)}
-              className="w-full sm:w-auto px-5 py-3 rounded-md bg-transparent hover:bg-black/10 border border-white/40 text-white text-xs sm:text-sm font-semibold transition-colors cursor-pointer"
+              className="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-transparent hover:bg-black/10 border border-white/40 text-white text-xs sm:text-sm font-semibold transition-colors cursor-pointer"
             >
               {isAmharic ? 'የአባልነት ማረጋገጫ በስልክ ቁጥር' : 'Check Approval Status'}
             </button>

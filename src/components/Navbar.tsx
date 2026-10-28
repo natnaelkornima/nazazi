@@ -98,7 +98,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             aria-label="ናዛዚ መነሻ ገጽ"
           >
             {/* Minimal Spiritual Cross & Lettermark Emblem */}
-            <div className="w-8 h-8 rounded-md bg-[#981C00] text-white flex items-center justify-center font-bold text-sm tracking-tight shadow-xs group-hover:bg-[#7A1D28] transition-colors shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-[#981C00] text-white flex items-center justify-center font-bold text-sm tracking-tight shadow-xs group-hover:bg-[#7A1D28] transition-colors shrink-0">
               <span>N</span>
             </div>
             <div className="flex flex-col">
@@ -148,7 +148,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Verify Approval Status Link */}
           <button
             onClick={handleVerifyClick}
-            className="px-3 py-1.5 rounded-md text-xs font-semibold text-[#24211F] dark:text-[#FAF8F5] hover:bg-[#EAE5DF] dark:hover:bg-[#25221F] transition-colors cursor-pointer flex items-center gap-1.5"
+            className="px-3.5 py-2 rounded-xl text-xs font-semibold text-[#24211F] dark:text-[#FAF8F5] hover:bg-[#EAE5DF] dark:hover:bg-[#25221F] transition-colors cursor-pointer flex items-center gap-1.5"
             title={isAmharic ? 'የአባልነት ማረጋገጫ በስልክ ቁጥር' : 'Check approval status'}
           >
             <Smartphone className="w-3.5 h-3.5 text-[#706A65] dark:text-[#A8A19A]" />
@@ -158,7 +158,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Language Toggle */}
           <button
             onClick={toggleLanguage}
-            className="px-2.5 py-1.5 rounded-md text-xs font-semibold text-[#706A65] dark:text-[#A8A19A] hover:text-[#24211F] dark:hover:text-[#FAF8F5] hover:bg-[#EAE5DF] dark:hover:bg-[#25221F] transition-colors cursor-pointer"
+            className="px-3 py-2 rounded-xl text-xs font-semibold text-[#706A65] dark:text-[#A8A19A] hover:text-[#24211F] dark:hover:text-[#FAF8F5] hover:bg-[#EAE5DF] dark:hover:bg-[#25221F] transition-colors cursor-pointer"
             aria-label={isAmharic ? 'ወደ እንግሊዝኛ ቀይር' : 'Switch to Amharic'}
           >
             {isAmharic ? 'EN' : 'አማርኛ'}
@@ -167,7 +167,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="p-1.5 rounded-md text-[#706A65] dark:text-[#A8A19A] hover:text-[#24211F] dark:hover:text-[#FAF8F5] hover:bg-[#EAE5DF] dark:hover:bg-[#25221F] transition-colors cursor-pointer"
+            className="p-2 rounded-xl text-[#706A65] dark:text-[#A8A19A] hover:text-[#24211F] dark:hover:text-[#FAF8F5] hover:bg-[#EAE5DF] dark:hover:bg-[#25221F] transition-colors cursor-pointer"
             aria-label={theme === 'light' ? 'ወደ ጨለማ ገጽታ ቀይር' : 'ወደ ብርሃን ገጽታ ቀይር'}
           >
             {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
@@ -176,7 +176,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Primary CTA Button */}
           <button
             onClick={handleSubscribeClick}
-            className="ml-1 px-4 py-2 rounded-md bg-[#981C00] hover:bg-[#7A1D28] text-white text-xs font-bold tracking-tight transition-all cursor-pointer flex items-center gap-1.5 shadow-xs"
+            className="ml-1 px-4 py-2 rounded-xl bg-[#981C00] hover:bg-[#7A1D28] text-white text-xs font-bold tracking-tight transition-all cursor-pointer flex items-center gap-1.5 shadow-xs"
           >
             <span>{isAmharic ? 'ይመዝገቡ' : 'Subscribe'}</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -188,14 +188,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Quick Language Toggle on Mobile */}
           <button
             onClick={toggleLanguage}
-            className="px-2 py-1 rounded text-xs font-bold text-[#706A65] dark:text-[#A8A19A] hover:bg-[#EAE5DF] dark:hover:bg-[#25221F]"
+            className="px-2.5 py-1.5 rounded-xl text-xs font-bold text-[#706A65] dark:text-[#A8A19A] hover:bg-[#EAE5DF] dark:hover:bg-[#25221F]"
           >
             {isAmharic ? 'EN' : 'አማርኛ'}
           </button>
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-md text-[#24211F] dark:text-[#FAF8F5] hover:bg-[#EAE5DF] dark:hover:bg-[#25221F] transition-colors cursor-pointer"
+            className="p-2 rounded-xl text-[#24211F] dark:text-[#FAF8F5] hover:bg-[#EAE5DF] dark:hover:bg-[#25221F] transition-colors cursor-pointer"
             aria-expanded={mobileMenuOpen}
             aria-label="ዋና ማውጫ"
           >
@@ -237,7 +237,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="pt-3 border-t border-[#E8E4DF] dark:border-[#2C2825] space-y-2.5">
             <button
               onClick={handleVerifyClick}
-              className="w-full py-2.5 px-3 rounded-md bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] text-xs font-bold text-[#24211F] dark:text-[#FAF8F5] flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+              className="w-full py-2.5 px-3 rounded-xl bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] text-xs font-bold text-[#24211F] dark:text-[#FAF8F5] flex items-center justify-center gap-2 cursor-pointer shadow-xs"
             >
               <Smartphone className="w-3.5 h-3.5 text-[#981C00] dark:text-[#C43214]" />
               <span>{isAmharic ? 'የአባልነት ማረጋገጫ በስልክ ቁጥር' : 'Verify Approval Status'}</span>
@@ -245,7 +245,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={handleSubscribeClick}
-              className="w-full py-2.5 px-4 rounded-md bg-[#981C00] text-white text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:bg-[#7A1D28] transition-colors"
+              className="w-full py-2.5 px-4 rounded-xl bg-[#981C00] text-white text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:bg-[#7A1D28] transition-colors"
             >
               <span>{isAmharic ? 'አሁኑኑ ይመዝገቡ' : 'Subscribe Now'}</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -255,7 +255,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="font-medium">{isAmharic ? 'የገጽታ ቀለም' : 'Theme Mode'}</span>
               <button
                 onClick={toggleTheme}
-                className="p-1.5 rounded-md hover:bg-[#EAE5DF] dark:hover:bg-[#25221F] text-[#24211F] dark:text-[#FAF8F5]"
+                className="p-1.5 rounded-xl hover:bg-[#EAE5DF] dark:hover:bg-[#25221F] text-[#24211F] dark:text-[#FAF8F5]"
               >
                 {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
               </button>

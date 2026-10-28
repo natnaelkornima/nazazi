@@ -1872,7 +1872,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                     isLoading={progress.isDispatching}
                     onClick={handleStartBatchDispatch}
                     disabled={activeRecipients.length === 0}
-                    className="w-full font-extrabold bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-zinc-200 rounded-2xl py-3.5 text-sm shadow-md cursor-pointer disabled:opacity-50"
+                    className="w-full font-extrabold bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-zinc-200 rounded-xl py-3 text-sm shadow-sm cursor-pointer disabled:opacity-50"
                     leftIcon={<Send className="w-4 h-4" />}
                   >
                     Send Message to {activeRecipients.length} {activeRecipients.length === 1 ? 'Recipient' : 'Recipients'}
@@ -1884,7 +1884,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                     isLoading={isCreatingSchedule}
                     onClick={handleCreateSchedule}
                     disabled={activeRecipients.length === 0}
-                    className="w-full font-extrabold bg-emerald-600 text-white hover:bg-emerald-700 dark:bg-emerald-500 dark:text-zinc-950 dark:hover:bg-emerald-400 rounded-2xl py-3.5 text-sm shadow-md cursor-pointer disabled:opacity-50"
+                    className="w-full font-extrabold bg-emerald-600 text-white hover:bg-emerald-700 dark:bg-emerald-500 dark:text-zinc-950 dark:hover:bg-emerald-400 rounded-xl py-3 text-sm shadow-sm cursor-pointer disabled:opacity-50"
                     leftIcon={<Calendar className="w-4 h-4" />}
                   >
                     Schedule Daily Campaign for {activeRecipients.length} {activeRecipients.length === 1 ? 'Member' : 'Members'}

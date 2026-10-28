@@ -3,7 +3,7 @@ import { cn } from '../../lib/utils';
 import { Loader2 } from 'lucide-react';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline' | 'brand' | 'success';
   size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
   leftIcon?: React.ReactNode;
@@ -26,25 +26,29 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      'inline-flex items-center justify-center font-medium tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-950 dark:focus-visible:ring-zinc-300 disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98] select-none rounded-[5px] cursor-pointer';
+      'inline-flex items-center justify-center font-medium tracking-tight transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#981C00] dark:focus-visible:ring-zinc-300 disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98] select-none rounded-xl cursor-pointer';
 
     const variants = {
+      brand:
+        'bg-[#981C00] hover:bg-[#7A1D28] text-white shadow-xs hover:shadow-sm',
       primary:
-        'bg-zinc-900 text-zinc-50 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-zinc-200 shadow-sm hover:shadow-md hover:-translate-y-0.5',
+        'bg-zinc-900 text-zinc-50 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-zinc-200 shadow-xs hover:shadow-sm',
       secondary:
-        'bg-white text-zinc-900 border border-zinc-200 hover:bg-zinc-50 hover:border-zinc-300 dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-800 dark:hover:bg-zinc-800/80 shadow-xs hover:-translate-y-0.5',
+        'bg-zinc-100 text-zinc-900 border border-zinc-200/80 hover:bg-zinc-200/70 dark:bg-zinc-800 dark:text-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-750 shadow-2xs',
       outline:
-        'bg-transparent border border-zinc-200 text-zinc-800 hover:bg-zinc-100/60 dark:border-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-800/50',
+        'bg-transparent border border-zinc-300 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100/80 dark:hover:bg-zinc-800/80',
       ghost:
-        'bg-transparent text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800/60',
+        'bg-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800/60',
       danger:
-        'bg-red-600 text-white hover:bg-red-700 shadow-sm hover:shadow-md dark:bg-red-600 dark:hover:bg-red-500 hover:-translate-y-0.5',
+        'bg-rose-600 text-white hover:bg-rose-700 shadow-xs dark:bg-rose-600 dark:hover:bg-rose-500',
+      success:
+        'bg-emerald-600 text-white hover:bg-emerald-700 shadow-xs dark:bg-emerald-600 dark:hover:bg-emerald-500',
     };
 
     const sizes = {
       sm: 'h-9 px-3.5 text-xs gap-1.5',
       md: 'h-10 px-4 text-sm gap-2',
-      lg: 'h-12 px-6 text-base gap-2.5 rounded-[5px]',
+      lg: 'h-12 px-6 text-base gap-2.5 rounded-xl',
     };
 
     return (
