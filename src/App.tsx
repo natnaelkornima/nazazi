@@ -42,7 +42,7 @@ function MainApp() {
   };
 
   return (
-    <div className={`min-h-screen bg-white dark:bg-[#09090B] text-zinc-900 dark:text-zinc-50 transition-colors duration-200 selection:bg-zinc-900 selection:text-zinc-50 dark:selection:bg-zinc-100 dark:selection:text-zinc-900 flex flex-col justify-between ${language === 'am' ? 'lang-am' : 'font-sans'}`}>
+    <div className={`min-h-screen bg-[#FAF8F5] dark:bg-[#141211] text-[#24211F] dark:text-[#FAF8F5] transition-colors duration-200 selection:bg-[#981C00] selection:text-white dark:selection:bg-[#C43214] dark:selection:text-white flex flex-col justify-between ${language === 'am' ? 'lang-am' : 'font-sans'}`}>
       <div>
         {/* Navigation Header - Rendered only on user-facing pages, hidden in Admin Console */}
         {activeTab !== 'admin' && (
