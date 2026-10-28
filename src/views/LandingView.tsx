@@ -11,6 +11,7 @@ import {
   ArrowRight,
   Check,
   ChevronDown,
+  ChevronLeft,
   Smartphone,
   Lock,
   ShieldCheck,
@@ -19,6 +20,9 @@ import {
   Clock,
   Sparkles,
   MessageSquare,
+  Plus,
+  Mic,
+  Info,
 } from 'lucide-react';
 
 interface LandingViewProps {
@@ -29,9 +33,11 @@ interface LandingViewProps {
 }
 
 interface SampleVerse {
+  day: string;
   reference: string;
   verse: string;
   reflection: string;
+  signoff: string;
   time: string;
 }
 
@@ -62,42 +68,54 @@ export const LandingView: React.FC<LandingViewProps> = ({
   const sampleVerses: SampleVerse[] = isAmharic
     ? [
         {
+          day: 'ሰኞ',
           reference: 'መዝሙር 46:1',
           verse: '«እግዚአብሔር መጠጊያችንና ኃይላችን፥ በሚደርስብን መከራ ሁሉ ታላቅ ረዳታችን ነው።»',
           reflection: 'ሰላም ወዳጄ፤ የዛሬው ቀን የድካም ሳይሆን የእግዚአብሔር አዲስ ምሕረት የሚገለጥበት የተስፋ ቀን ይሁንልዎ።',
-          time: 'ዛሬ 12:30 ጥዋት',
+          signoff: 'ናዛዚ የዕለት አገልግሎት',
+          time: '12:30 ጥዋት',
         },
         {
+          day: 'ማክሰኞ',
           reference: 'ኢሳይያስ 40:29',
           verse: '«ለደከመው ኃይልን ይሰጣል፥ ጉልበት ለሌለውም ብርታትን ይጨምራል።»',
-          reflection: 'በሚያስጨንቅዎት ነገር ሁሉ ጌታ ከጎንዎ ነው። በሰላሙ ልብዎን ያሳርፈው።',
-          time: 'ዛሬ 12:30 ጥዋት',
+          reflection: 'ሰላም ወዳጄ፤ በሚያስጨንቅዎት ነገር ሁሉ ጌታ ከጎንዎ ነው። በሰላሙ ልብዎን ያሳርፈው።',
+          signoff: 'ናዛዚ የዕለት አገልግሎት',
+          time: '12:30 ጥዋት',
         },
         {
+          day: 'ረቡዕ',
           reference: 'ማቴዎስ 11:28',
           verse: '«እናንተ ደካሞች ሸክማችሁ የከበደ ሁሉ፥ ወደ እኔ ኑ፥ እኔም አሳርፋችኋለሁ።»',
-          reflection: 'ከእግዚአብሔር ጋር የተጀመረ ቀን በበረከት እና በዕረፍት ይጠናቀቃል። ናዛዚ',
-          time: 'ዛሬ 12:30 ጥዋት',
+          reflection: 'ሰላም ወዳጄ፤ ከእግዚአብሔር ጋር የተጀመረ ቀን በበረከት እና በዕረፍት ይጠናቀቃል።',
+          signoff: 'ናዛዚ የዕለት አገልግሎት',
+          time: '12:30 ጥዋት',
         },
       ]
     : [
         {
+          day: 'Monday',
           reference: 'Psalm 46:1',
           verse: '"God is our refuge and strength, an ever-present help in trouble."',
           reflection: 'Good morning friend; may today bring renewed peace and spiritual strength to your spirit.',
-          time: 'Today 6:30 AM',
+          signoff: 'Nazazi Daily Ministry',
+          time: '6:30 AM',
         },
         {
+          day: 'Tuesday',
           reference: 'Isaiah 40:29',
           verse: '"He gives strength to the weary and increases the power of the weak."',
-          reflection: 'Whatever weight you carry today, God walks right beside you. Stand in courage.',
-          time: 'Today 6:30 AM',
+          reflection: 'Good morning friend; whatever weight you carry today, God walks right beside you.',
+          signoff: 'Nazazi Daily Ministry',
+          time: '6:30 AM',
         },
         {
+          day: 'Wednesday',
           reference: 'Matthew 11:28',
           verse: '"Come to me, all you who are weary and burdened, and I will give you rest."',
-          reflection: 'Begin this day in peace and confidence. Nazazi Daily Encouragement.',
-          time: 'Today 6:30 AM',
+          reflection: 'Good morning friend; begin this day in peace and confidence.',
+          signoff: 'Nazazi Daily Ministry',
+          time: '6:30 AM',
         },
       ];
 
@@ -409,89 +427,198 @@ export const LandingView: React.FC<LandingViewProps> = ({
             </div>
           </div>
 
-          {/* Hero Right Column: Authentic SMS Phone Preview */}
+          {/* Hero Right Column: Authentic Physical Smartphone & SMS Messages App Preview */}
           <div className="lg:col-span-5 flex flex-col items-center">
-            {/* Phone Device Frame */}
-            <div className="w-full max-w-[340px] sm:max-w-[360px] rounded-[38px] p-3.5 bg-[#E8E4DF] dark:bg-[#2C2825] border border-[#DCD6CE] dark:border-[#38332F] shadow-xl">
-              <div className="rounded-[30px] bg-[#FAF8F5] dark:bg-[#181615] overflow-hidden border border-[#D8D2CA] dark:border-[#2A2623] flex flex-col">
-                {/* Phone Status Bar */}
-                <div className="px-5 pt-3 pb-2 flex items-center justify-between text-[11px] font-semibold text-[#706A65] dark:text-[#A8A19A] border-b border-[#EFECE6] dark:border-[#221F1D]">
-                  <span>ethio telecom 4G</span>
-                  <div className="w-12 h-3.5 rounded-full bg-[#E0DAD1] dark:bg-[#2A2623]" />
-                  <span>12:30</span>
-                </div>
+            {/* Physical Smartphone Chassis with Realistic Hardware Details */}
+            <div className="relative w-full max-w-[330px] sm:max-w-[350px]">
+              {/* Soft Ambient Ground Shadow */}
+              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-4/5 h-8 bg-black/35 blur-xl rounded-full pointer-events-none" />
 
-                {/* SMS Conversation Header */}
-                <div className="px-5 py-3.5 bg-[#FFFFFF] dark:bg-[#1D1A18] border-b border-[#E8E4DF] dark:border-[#2C2825] flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#981C00] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
-                    N
-                  </div>
-                  <div className="flex-1 min-w-0">
+              {/* Outer Phone Aluminum/Titanium Frame */}
+              <div className="relative rounded-[52px] p-[10px] bg-gradient-to-b from-[#38353F] via-[#201F25] to-[#121116] shadow-[0_32px_75px_-15px_rgba(0,0,0,0.65),0_0_0_1px_rgba(255,255,255,0.18),inset_0_1.5px_2px_rgba(255,255,255,0.35)]">
+                {/* Physical Hardware Buttons */}
+                {/* Left Silent / Action Switch */}
+                <div className="absolute -left-[3.5px] top-22 w-[3.5px] h-6 bg-[#323038] rounded-l-xs shadow-xs border-y border-l border-white/20" />
+                {/* Left Volume Up */}
+                <div className="absolute -left-[3.5px] top-33 w-[3.5px] h-10 bg-[#323038] rounded-l-xs shadow-xs border-y border-l border-white/20" />
+                {/* Left Volume Down */}
+                <div className="absolute -left-[3.5px] top-46 w-[3.5px] h-10 bg-[#323038] rounded-l-xs shadow-xs border-y border-l border-white/20" />
+                {/* Right Power Button */}
+                <div className="absolute -right-[3.5px] top-30 w-[3.5px] h-14 bg-[#323038] rounded-r-xs shadow-xs border-y border-r border-white/20" />
+
+                {/* Top Speaker Ear-piece Micro Slit */}
+                <div className="w-12 h-1 bg-[#0F0E13] rounded-full mx-auto mb-1 opacity-90" />
+
+                {/* Inner Screen Display (Apple/Flagship Messages App Layout) */}
+                <div className="rounded-[42px] overflow-hidden bg-[#FFFFFF] dark:bg-[#000000] border border-black/40 relative flex flex-col justify-between select-none min-h-[570px] shadow-inner">
+                  {/* Glass Sheen / Specular Light Reflection */}
+                  <div className="absolute inset-0 pointer-events-none rounded-[42px] bg-gradient-to-tr from-transparent via-white/[0.02] to-white/[0.08] z-30" />
+
+                  {/* Top iOS Status Bar */}
+                  <div className="pt-2 px-5 pb-1 flex items-center justify-between text-[#000000] dark:text-[#FFFFFF] text-[11px] font-semibold tracking-tight z-20">
+                    {/* Time & Carrier */}
                     <div className="flex items-center gap-1.5">
-                      <p className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5] truncate">
-                        ናዛዚ • NAZAZI
-                      </p>
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
+                      <span className="font-bold text-[11px] tracking-tight">{isAmharic ? '12:30' : '9:41'}</span>
+                      <span className="text-[9px] font-medium text-[#71717A] dark:text-[#A1A1AA] tracking-tight">ethio telecom</span>
                     </div>
-                    <p className="text-[10px] text-[#706A65] dark:text-[#A8A19A]">
-                      {isAmharic ? 'የተረጋገጠ መንፈሳዊ SMS' : 'Verified Spiritual SMS'}
-                    </p>
-                  </div>
-                </div>
 
-                {/* Messages Body */}
-                <div className="p-4 space-y-3.5 min-h-[290px] flex flex-col justify-end">
-                  <div className="text-center">
-                    <span className="text-[10px] px-2.5 py-1 rounded bg-[#EFECE6] dark:bg-[#221F1D] text-[#706A65] dark:text-[#A8A19A] font-medium">
-                      {currentVerse.time}
-                    </span>
+                    {/* Dynamic Island Notch */}
+                    <div className="w-22 h-5.5 bg-black rounded-full flex items-center justify-between px-2.5 shadow-sm">
+                      <div className="w-2.5 h-2.5 rounded-full bg-[#16161a] border border-[#27272a]/70 flex items-center justify-center">
+                        <div className="w-1 h-1 rounded-full bg-[#0a0a14]" />
+                      </div>
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#09090b]" />
+                    </div>
+
+                    {/* Carrier Signal, 4G & Battery Icons */}
+                    <div className="flex items-center gap-1.5 text-current">
+                      <span className="text-[9px] font-bold leading-none tracking-tight">4G</span>
+
+                      {/* Signal Bars */}
+                      <div className="flex items-end gap-[1.5px] h-2.5">
+                        <span className="w-[2px] h-1 bg-current rounded-[0.5px]" />
+                        <span className="w-[2px] h-1.5 bg-current rounded-[0.5px]" />
+                        <span className="w-[2px] h-2 bg-current rounded-[0.5px]" />
+                        <span className="w-[2px] h-2.5 bg-current rounded-[0.5px]" />
+                      </div>
+
+                      {/* Battery Pill */}
+                      <div className="w-4.5 h-2.5 rounded-[3px] border border-current p-[1px] flex items-center relative ml-0.5">
+                        <div className="w-[85%] h-full bg-current rounded-[1px]" />
+                        <div className="w-0.5 h-1 bg-current rounded-r-[0.5px] absolute -right-1 top-1/2 -translate-y-1/2" />
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Message Bubble: The Bible Verse */}
-                  <div className="bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] rounded-2xl rounded-tl-xs p-4 shadow-xs space-y-2">
-                    <p className="text-[11px] font-bold text-[#981C00] dark:text-[#C43214] tracking-wide">
-                      {currentVerse.reference}
-                    </p>
-                    <p className="text-xs sm:text-[13px] text-[#24211F] dark:text-[#FAF8F5] leading-relaxed font-medium">
-                      {currentVerse.verse}
-                    </p>
+                  {/* Messages App Navigation Bar */}
+                  <div className="px-4 py-2 bg-[#F9F9FB]/95 dark:bg-[#161618]/95 backdrop-blur-md border-b border-[#D1D1D6] dark:border-[#2C2C2E] flex items-center justify-between z-10">
+                    <div className="flex items-center gap-0.5 text-[#007AFF] dark:text-[#0A84FF] font-medium text-xs">
+                      <ChevronLeft className="w-4 h-4 -ml-1 stroke-[2.5]" />
+                      <span>{isAmharic ? 'መልእክቶች' : 'Messages'}</span>
+                      <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-[#007AFF]/10 dark:bg-[#0A84FF]/20 font-bold ml-0.5">
+                        3
+                      </span>
+                    </div>
+
+                    {/* Contact Profile in Center */}
+                    <div className="flex flex-col items-center">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-b from-[#7A1D28] to-[#981C00] text-white flex items-center justify-center font-bold text-xs shadow-xs mb-0.5 ring-1 ring-black/5 dark:ring-white/10">
+                        N
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-[12px] font-bold text-[#000000] dark:text-[#FFFFFF] leading-none">
+                          {isAmharic ? 'ናዛዚ • NAZAZI' : 'NAZAZI'}
+                        </span>
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#007AFF] fill-[#007AFF] text-white inline-block shrink-0" />
+                      </div>
+                      <span className="text-[9px] text-[#8E8E93] leading-none pt-0.5 font-medium">
+                        {isAmharic ? 'የተረጋገጠ መንፈሳዊ SMS' : 'Verified Spiritual SMS'}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-[#007AFF] dark:text-[#0A84FF]">
+                      <Info className="w-4 h-4" />
+                    </div>
                   </div>
 
-                  {/* Message Bubble: The Reflection / Comfort Note */}
-                  <div className="bg-[#FAF4F2] dark:bg-[#251A18] border border-[#E8DCD9] dark:border-[#382622] rounded-2xl rounded-tl-xs p-3.5 shadow-2xs">
-                    <p className="text-xs text-[#7A1D28] dark:text-[#E89382] leading-relaxed font-normal">
-                      {currentVerse.reflection}
-                    </p>
-                  </div>
-                </div>
+                  {/* Real SMS Conversation Thread Canvas */}
+                  <div className="p-4 flex-1 flex flex-col justify-end space-y-2.5 bg-[#FFFFFF] dark:bg-[#000000] overflow-hidden">
+                    {/* Centered Date Badge */}
+                    <div className="text-center my-0.5">
+                      <span className="text-[10px] font-semibold text-[#8E8E93] bg-[#E5E5EA]/75 dark:bg-[#2C2C2E]/75 px-3 py-0.5 rounded-full shadow-2xs">
+                        {isAmharic ? `ዛሬ ${currentVerse.time}` : `Today ${currentVerse.time}`}
+                      </span>
+                    </div>
 
-                {/* Phone SMS Input Bar */}
-                <div className="px-4 py-3 bg-[#FFFFFF] dark:bg-[#1D1A18] border-t border-[#E8E4DF] dark:border-[#2C2825] flex items-center justify-between text-xs text-[#A8A19A]">
-                  <span className="text-[11px] text-[#706A65] dark:text-[#A8A19A]">
-                    {isAmharic ? 'ናዛዚ የዕለት አገልግሎት' : 'Nazazi Daily Service'}
-                  </span>
-                  <span className="text-[10px] font-mono">SMS</span>
+                    {/* Text Message Divider */}
+                    <div className="text-center pb-0.5">
+                      <span className="text-[8.5px] uppercase tracking-wider text-[#8E8E93] font-bold">
+                        {isAmharic ? 'የጽሑፍ መልእክት • SMS' : 'Text Message • SMS'}
+                      </span>
+                    </div>
+
+                    {/* Single Authentic Received SMS Message Bubble */}
+                    <div className="flex flex-col items-start max-w-[95%] space-y-1">
+                      <div className="relative bg-[#E9E9EB] dark:bg-[#26252A] text-[#000000] dark:text-[#FFFFFF] rounded-2xl rounded-bl-[4px] p-3.5 shadow-xs border border-black/5 dark:border-white/5 space-y-2">
+                        {/* Scripture Reference Header */}
+                        <div className="flex items-center justify-between border-b border-black/6 dark:border-white/10 pb-1.5">
+                          <span className="text-[12px] font-bold text-[#981C00] dark:text-[#E89382] tracking-wide font-sans">
+                            {currentVerse.reference}
+                          </span>
+                          <span className="text-[8.5px] font-bold uppercase tracking-wider text-[#8E8E93] bg-black/5 dark:bg-white/10 px-1.5 py-0.2 rounded">
+                            SMS
+                          </span>
+                        </div>
+
+                        {/* Scripture Verse Quote */}
+                        <p className="text-[12.5px] leading-[1.6] text-[#000000] dark:text-[#FFFFFF] font-semibold font-amharic">
+                          {currentVerse.verse}
+                        </p>
+
+                        {/* Pastoral Encouragement */}
+                        <p className="text-[11.5px] leading-[1.65] text-[#2C2C2E] dark:text-[#E5E5EA] font-normal font-amharic">
+                          {currentVerse.reflection}
+                        </p>
+
+                        {/* Ministry Sign-off */}
+                        <div className="pt-2 border-t border-black/6 dark:border-white/10 flex items-center justify-between text-[10px] text-[#636366] dark:text-[#A1A1A6] font-medium font-amharic">
+                          <span>{currentVerse.signoff}</span>
+                          <span className="text-[8.5px] font-bold text-[#8E8E93]">SMS</span>
+                        </div>
+                      </div>
+
+                      {/* Delivery Status Metadata */}
+                      <div className="flex items-center gap-1.5 pl-2 pt-0.5 text-[9px] text-[#8E8E93] font-medium">
+                        <span>{isAmharic ? `ዛሬ ${currentVerse.time}` : `Today ${currentVerse.time}`}</span>
+                        <span>•</span>
+                        <span>{isAmharic ? 'በSMS ደርሷል' : 'Delivered via SMS'}</span>
+                        <Check className="w-2.5 h-2.5 text-[#34C759] stroke-[2.5]" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Messages Compose Bar & Bottom Home Indicator */}
+                  <div className="bg-[#F9F9FB] dark:bg-[#161618] border-t border-[#D1D1D6] dark:border-[#2C2C2E] px-3 pt-2 pb-2">
+                    <div className="flex items-center gap-2">
+                      {/* Plus icon */}
+                      <div className="w-6.5 h-6.5 rounded-full bg-[#E5E5EA] dark:bg-[#2C2C2E] flex items-center justify-center text-[#8E8E93] shrink-0">
+                        <Plus className="w-3.5 h-3.5" />
+                      </div>
+
+                      {/* Text Input Pill */}
+                      <div className="flex-1 h-7.5 px-3 rounded-full border border-[#D1D1D6] dark:border-[#3A3A3C] bg-white dark:bg-black flex items-center justify-between text-xs text-[#8E8E93]">
+                        <span className="text-[10.5px] truncate">
+                          {isAmharic ? 'የጽሑፍ መልእክት (SMS)...' : 'Text Message (SMS)...'}
+                        </span>
+                        <Mic className="w-3.5 h-3.5 text-[#8E8E93] shrink-0" />
+                      </div>
+                    </div>
+
+                    {/* Bottom Home Swipe Bar */}
+                    <div className="w-28 h-1 bg-[#1C1C1E] dark:bg-[#FFFFFF] rounded-full mx-auto mt-2 opacity-35" />
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Interactive Preview Switcher: Allows visitor to preview sample verses */}
-            <div className="mt-4 flex items-center gap-2">
-              <span className="text-[11px] text-[#706A65] dark:text-[#A8A19A] font-medium">
-                {isAmharic ? 'የናሙና ጥቅሶች ይቀይሩ:' : 'Sample verses:'}
+            {/* Interactive Day/Verse Switcher Controls */}
+            <div className="mt-5 flex flex-col items-center gap-2">
+              <span className="text-xs text-[#706A65] dark:text-[#A8A19A] font-semibold">
+                {isAmharic ? 'የቀናት የናሙና መልእክቶች ይቀይሩ:' : 'Preview daily morning messages:'}
               </span>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 p-1 rounded-lg bg-[#EAE5DF] dark:bg-[#25221F] border border-[#DCD6CE] dark:border-[#332E2A]">
                 {sampleVerses.map((v, i) => (
                   <button
                     key={v.reference}
                     onClick={() => setActiveVerseIndex(i)}
-                    className={`px-2 py-1 rounded text-[10px] font-bold transition-colors cursor-pointer ${
+                    className={`px-3 py-1 rounded-md text-xs font-bold transition-all cursor-pointer ${
                       activeVerseIndex === i
-                        ? 'bg-[#981C00] text-white'
-                        : 'bg-[#EAE5DF] dark:bg-[#25221F] text-[#706A65] dark:text-[#A8A19A] hover:text-[#24211F]'
+                        ? 'bg-[#981C00] text-white shadow-xs'
+                        : 'text-[#706A65] dark:text-[#A8A19A] hover:text-[#24211F] dark:hover:text-[#FAF8F5]'
                     }`}
                   >
-                    {i + 1}
+                    <span>{v.day}</span>
+                    <span className="ml-1 opacity-80 text-[10px]">({v.reference.split(' ')[0]})</span>
                   </button>
                 ))}
               </div>
