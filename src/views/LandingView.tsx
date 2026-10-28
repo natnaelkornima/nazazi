@@ -427,43 +427,43 @@ export const LandingView: React.FC<LandingViewProps> = ({
             </div>
           </div>
 
-          {/* Hero Right Column: Authentic Physical Smartphone & SMS Messages App Preview */}
+          {/* Hero Right Column: Authentic Physical Smartphone & SMS Messages App Preview (1320 × 2868 Native Flagship Dimensions) */}
           <div className="lg:col-span-5 flex flex-col items-center">
-            {/* Physical Smartphone Chassis with Realistic Hardware Details */}
-            <div className="relative w-full max-w-[330px] sm:max-w-[350px]">
+            {/* Physical Smartphone Chassis with 1320 × 2868 Eye-Catching Proportions */}
+            <div className="relative w-full max-w-[340px] sm:max-w-[380px] lg:max-w-[400px]">
               {/* Soft Ambient Ground Shadow */}
-              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-4/5 h-8 bg-black/35 blur-xl rounded-full pointer-events-none" />
+              <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-[88%] h-10 bg-black/40 blur-2xl rounded-full pointer-events-none" />
 
               {/* Outer Phone Aluminum/Titanium Frame */}
-              <div className="relative rounded-[52px] p-[10px] bg-gradient-to-b from-[#38353F] via-[#201F25] to-[#121116] shadow-[0_32px_75px_-15px_rgba(0,0,0,0.65),0_0_0_1px_rgba(255,255,255,0.18),inset_0_1.5px_2px_rgba(255,255,255,0.35)]">
+              <div className="relative rounded-[56px] p-[10px] sm:p-[12px] bg-gradient-to-b from-[#3C3944] via-[#222127] to-[#121116] shadow-[0_36px_85px_-15px_rgba(0,0,0,0.7),0_0_0_1px_rgba(255,255,255,0.18),inset_0_1.5px_2px_rgba(255,255,255,0.4)]">
                 {/* Physical Hardware Buttons */}
                 {/* Left Silent / Action Switch */}
-                <div className="absolute -left-[3.5px] top-22 w-[3.5px] h-6 bg-[#323038] rounded-l-xs shadow-xs border-y border-l border-white/20" />
+                <div className="absolute -left-[3.5px] top-24 w-[3.5px] h-7 bg-[#323038] rounded-l-xs shadow-xs border-y border-l border-white/20" />
                 {/* Left Volume Up */}
-                <div className="absolute -left-[3.5px] top-33 w-[3.5px] h-10 bg-[#323038] rounded-l-xs shadow-xs border-y border-l border-white/20" />
+                <div className="absolute -left-[3.5px] top-37 w-[3.5px] h-12 bg-[#323038] rounded-l-xs shadow-xs border-y border-l border-white/20" />
                 {/* Left Volume Down */}
-                <div className="absolute -left-[3.5px] top-46 w-[3.5px] h-10 bg-[#323038] rounded-l-xs shadow-xs border-y border-l border-white/20" />
+                <div className="absolute -left-[3.5px] top-53 w-[3.5px] h-12 bg-[#323038] rounded-l-xs shadow-xs border-y border-l border-white/20" />
                 {/* Right Power Button */}
-                <div className="absolute -right-[3.5px] top-30 w-[3.5px] h-14 bg-[#323038] rounded-r-xs shadow-xs border-y border-r border-white/20" />
+                <div className="absolute -right-[3.5px] top-34 w-[3.5px] h-16 bg-[#323038] rounded-r-xs shadow-xs border-y border-r border-white/20" />
 
                 {/* Top Speaker Ear-piece Micro Slit */}
-                <div className="w-12 h-1 bg-[#0F0E13] rounded-full mx-auto mb-1 opacity-90" />
+                <div className="w-14 h-1 bg-[#0F0E13] rounded-full mx-auto mb-1.5 opacity-90" />
 
-                {/* Inner Screen Display (Apple/Flagship Messages App Layout) */}
-                <div className="rounded-[42px] overflow-hidden bg-[#FFFFFF] dark:bg-[#000000] border border-black/40 relative flex flex-col justify-between select-none min-h-[570px] shadow-inner">
+                {/* Inner Screen Display (Exact 1320 × 2868 Aspect Ratio) */}
+                <div className="w-full aspect-[1320/2868] rounded-[44px] overflow-hidden bg-[#FFFFFF] dark:bg-[#000000] border border-black/40 relative flex flex-col justify-between select-none shadow-inner">
                   {/* Glass Sheen / Specular Light Reflection */}
-                  <div className="absolute inset-0 pointer-events-none rounded-[42px] bg-gradient-to-tr from-transparent via-white/[0.02] to-white/[0.08] z-30" />
+                  <div className="absolute inset-0 pointer-events-none rounded-[44px] bg-gradient-to-tr from-transparent via-white/[0.02] to-white/[0.08] z-30" />
 
                   {/* Top iOS Status Bar */}
-                  <div className="pt-2 px-5 pb-1 flex items-center justify-between text-[#000000] dark:text-[#FFFFFF] text-[11px] font-semibold tracking-tight z-20">
+                  <div className="pt-2.5 px-5 pb-1 flex items-center justify-between text-[#000000] dark:text-[#FFFFFF] text-[11px] font-semibold tracking-tight z-20">
                     {/* Time & Carrier */}
                     <div className="flex items-center gap-1.5">
-                      <span className="font-bold text-[11px] tracking-tight">{isAmharic ? '12:30' : '9:41'}</span>
-                      <span className="text-[9px] font-medium text-[#71717A] dark:text-[#A1A1AA] tracking-tight">ethio telecom</span>
+                      <span className="font-bold text-[11.5px] tracking-tight">{isAmharic ? '12:30' : '9:41'}</span>
+                      <span className="text-[9.5px] font-medium text-[#71717A] dark:text-[#A1A1AA] tracking-tight">ethio telecom</span>
                     </div>
 
                     {/* Dynamic Island Notch */}
-                    <div className="w-22 h-5.5 bg-black rounded-full flex items-center justify-between px-2.5 shadow-sm">
+                    <div className="w-24 h-6 bg-black rounded-full flex items-center justify-between px-2.5 shadow-sm">
                       <div className="w-2.5 h-2.5 rounded-full bg-[#16161a] border border-[#27272a]/70 flex items-center justify-center">
                         <div className="w-1 h-1 rounded-full bg-[#0a0a14]" />
                       </div>
@@ -472,7 +472,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
                     {/* Carrier Signal, 4G & Battery Icons */}
                     <div className="flex items-center gap-1.5 text-current">
-                      <span className="text-[9px] font-bold leading-none tracking-tight">4G</span>
+                      <span className="text-[9.5px] font-bold leading-none tracking-tight">4G</span>
 
                       {/* Signal Bars */}
                       <div className="flex items-end gap-[1.5px] h-2.5">
@@ -483,7 +483,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                       </div>
 
                       {/* Battery Pill */}
-                      <div className="w-4.5 h-2.5 rounded-[3px] border border-current p-[1px] flex items-center relative ml-0.5">
+                      <div className="w-5 h-2.5 rounded-[3px] border border-current p-[1px] flex items-center relative ml-0.5">
                         <div className="w-[85%] h-full bg-current rounded-[1px]" />
                         <div className="w-0.5 h-1 bg-current rounded-r-[0.5px] absolute -right-1 top-1/2 -translate-y-1/2" />
                       </div>
@@ -491,7 +491,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   </div>
 
                   {/* Messages App Navigation Bar */}
-                  <div className="px-4 py-2 bg-[#F9F9FB]/95 dark:bg-[#161618]/95 backdrop-blur-md border-b border-[#D1D1D6] dark:border-[#2C2C2E] flex items-center justify-between z-10">
+                  <div className="px-4 py-2.5 bg-[#F9F9FB]/95 dark:bg-[#161618]/95 backdrop-blur-md border-b border-[#D1D1D6] dark:border-[#2C2C2E] flex items-center justify-between z-10">
                     <div className="flex items-center gap-0.5 text-[#007AFF] dark:text-[#0A84FF] font-medium text-xs">
                       <ChevronLeft className="w-4 h-4 -ml-1 stroke-[2.5]" />
                       <span>{isAmharic ? 'መልእክቶች' : 'Messages'}</span>
@@ -502,16 +502,16 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
                     {/* Contact Profile in Center */}
                     <div className="flex flex-col items-center">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-b from-[#7A1D28] to-[#981C00] text-white flex items-center justify-center font-bold text-xs shadow-xs mb-0.5 ring-1 ring-black/5 dark:ring-white/10">
+                      <div className="w-8.5 h-8.5 rounded-full bg-gradient-to-b from-[#7A1D28] to-[#981C00] text-white flex items-center justify-center font-bold text-xs shadow-xs mb-0.5 ring-1 ring-black/5 dark:ring-white/10">
                         N
                       </div>
                       <div className="flex items-center gap-1">
-                        <span className="text-[12px] font-bold text-[#000000] dark:text-[#FFFFFF] leading-none">
+                        <span className="text-[12.5px] font-bold text-[#000000] dark:text-[#FFFFFF] leading-none">
                           {isAmharic ? 'ናዛዚ • NAZAZI' : 'NAZAZI'}
                         </span>
                         <CheckCircle2 className="w-3.5 h-3.5 text-[#007AFF] fill-[#007AFF] text-white inline-block shrink-0" />
                       </div>
-                      <span className="text-[9px] text-[#8E8E93] leading-none pt-0.5 font-medium">
+                      <span className="text-[9.5px] text-[#8E8E93] leading-none pt-0.5 font-medium">
                         {isAmharic ? 'የተረጋገጠ መንፈሳዊ SMS' : 'Verified Spiritual SMS'}
                       </span>
                     </div>
@@ -522,7 +522,22 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   </div>
 
                   {/* Real SMS Conversation Thread Canvas */}
-                  <div className="p-4 flex-1 flex flex-col justify-end space-y-2.5 bg-[#FFFFFF] dark:bg-[#000000] overflow-hidden">
+                  <div className="p-4 sm:p-5 flex-1 flex flex-col justify-end space-y-3 bg-[#FFFFFF] dark:bg-[#000000] overflow-hidden">
+                    {/* Previous Day Contextual SMS */}
+                    <div className="opacity-75 flex flex-col items-start max-w-[88%] space-y-1 mb-1">
+                      <div className="bg-[#E9E9EB] dark:bg-[#26252A] text-[#1C1C1E] dark:text-[#E5E5EA] rounded-2xl rounded-bl-[4px] p-2.5 text-[11px] leading-relaxed shadow-2xs font-amharic">
+                        <span className="font-semibold text-[#981C00] dark:text-[#E89382] mr-1 block text-[10.5px]">
+                          {isAmharic ? 'ትናንት • ኢሳይያስ 26:4' : 'Yesterday • Isaiah 26:4'}
+                        </span>
+                        {isAmharic
+                          ? '«በእግዚአብሔር ለዘላለም ታመኑ፥ እግዚአብሔር አምላክ የዘላለም አለት ነውና።»'
+                          : '"Trust in the LORD forever, for the LORD GOD is an everlasting rock."'}
+                      </div>
+                      <span className="text-[8.5px] text-[#8E8E93] pl-2">
+                        {isAmharic ? 'ትናንት 12:30 ጥዋት' : 'Yesterday 6:30 AM'}
+                      </span>
+                    </div>
+
                     {/* Centered Date Badge */}
                     <div className="text-center my-0.5">
                       <span className="text-[10px] font-semibold text-[#8E8E93] bg-[#E5E5EA]/75 dark:bg-[#2C2C2E]/75 px-3 py-0.5 rounded-full shadow-2xs">
@@ -539,7 +554,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
                     {/* Single Authentic Received SMS Message Bubble */}
                     <div className="flex flex-col items-start max-w-[95%] space-y-1">
-                      <div className="relative bg-[#E9E9EB] dark:bg-[#26252A] text-[#000000] dark:text-[#FFFFFF] rounded-2xl rounded-bl-[4px] p-3.5 shadow-xs border border-black/5 dark:border-white/5 space-y-2">
+                      <div className="relative bg-[#E9E9EB] dark:bg-[#26252A] text-[#000000] dark:text-[#FFFFFF] rounded-2xl rounded-bl-[4px] p-3.5 sm:p-4 shadow-xs border border-black/5 dark:border-white/5 space-y-2">
                         {/* Scripture Reference Header */}
                         <div className="flex items-center justify-between border-b border-black/6 dark:border-white/10 pb-1.5">
                           <span className="text-[12px] font-bold text-[#981C00] dark:text-[#E89382] tracking-wide font-sans">
@@ -551,24 +566,24 @@ export const LandingView: React.FC<LandingViewProps> = ({
                         </div>
 
                         {/* Scripture Verse Quote */}
-                        <p className="text-[12.5px] leading-[1.6] text-[#000000] dark:text-[#FFFFFF] font-semibold font-amharic">
+                        <p className="text-[13px] leading-[1.6] text-[#000000] dark:text-[#FFFFFF] font-semibold font-amharic">
                           {currentVerse.verse}
                         </p>
 
                         {/* Pastoral Encouragement */}
-                        <p className="text-[11.5px] leading-[1.65] text-[#2C2C2E] dark:text-[#E5E5EA] font-normal font-amharic">
+                        <p className="text-[12px] leading-[1.65] text-[#2C2C2E] dark:text-[#E5E5EA] font-normal font-amharic">
                           {currentVerse.reflection}
                         </p>
 
                         {/* Ministry Sign-off */}
-                        <div className="pt-2 border-t border-black/6 dark:border-white/10 flex items-center justify-between text-[10px] text-[#636366] dark:text-[#A1A1A6] font-medium font-amharic">
+                        <div className="pt-2 border-t border-black/6 dark:border-white/10 flex items-center justify-between text-[10.5px] text-[#636366] dark:text-[#A1A1A6] font-medium font-amharic">
                           <span>{currentVerse.signoff}</span>
                           <span className="text-[8.5px] font-bold text-[#8E8E93]">SMS</span>
                         </div>
                       </div>
 
                       {/* Delivery Status Metadata */}
-                      <div className="flex items-center gap-1.5 pl-2 pt-0.5 text-[9px] text-[#8E8E93] font-medium">
+                      <div className="flex items-center gap-1.5 pl-2 pt-0.5 text-[9.5px] text-[#8E8E93] font-medium">
                         <span>{isAmharic ? `ዛሬ ${currentVerse.time}` : `Today ${currentVerse.time}`}</span>
                         <span>•</span>
                         <span>{isAmharic ? 'በSMS ደርሷል' : 'Delivered via SMS'}</span>
@@ -578,16 +593,16 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   </div>
 
                   {/* Messages Compose Bar & Bottom Home Indicator */}
-                  <div className="bg-[#F9F9FB] dark:bg-[#161618] border-t border-[#D1D1D6] dark:border-[#2C2C2E] px-3 pt-2 pb-2">
+                  <div className="bg-[#F9F9FB] dark:bg-[#161618] border-t border-[#D1D1D6] dark:border-[#2C2C2E] px-3.5 pt-2.5 pb-2.5">
                     <div className="flex items-center gap-2">
                       {/* Plus icon */}
-                      <div className="w-6.5 h-6.5 rounded-full bg-[#E5E5EA] dark:bg-[#2C2C2E] flex items-center justify-center text-[#8E8E93] shrink-0">
-                        <Plus className="w-3.5 h-3.5" />
+                      <div className="w-7 h-7 rounded-full bg-[#E5E5EA] dark:bg-[#2C2C2E] flex items-center justify-center text-[#8E8E93] shrink-0">
+                        <Plus className="w-4 h-4" />
                       </div>
 
                       {/* Text Input Pill */}
-                      <div className="flex-1 h-7.5 px-3 rounded-full border border-[#D1D1D6] dark:border-[#3A3A3C] bg-white dark:bg-black flex items-center justify-between text-xs text-[#8E8E93]">
-                        <span className="text-[10.5px] truncate">
+                      <div className="flex-1 h-8 px-3.5 rounded-full border border-[#D1D1D6] dark:border-[#3A3A3C] bg-white dark:bg-black flex items-center justify-between text-xs text-[#8E8E93]">
+                        <span className="text-[11px] truncate">
                           {isAmharic ? 'የጽሑፍ መልእክት (SMS)...' : 'Text Message (SMS)...'}
                         </span>
                         <Mic className="w-3.5 h-3.5 text-[#8E8E93] shrink-0" />
@@ -595,7 +610,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                     </div>
 
                     {/* Bottom Home Swipe Bar */}
-                    <div className="w-28 h-1 bg-[#1C1C1E] dark:bg-[#FFFFFF] rounded-full mx-auto mt-2 opacity-35" />
+                    <div className="w-32 h-1 bg-[#1C1C1E] dark:bg-[#FFFFFF] rounded-full mx-auto mt-2.5 opacity-35" />
                   </div>
                 </div>
               </div>
