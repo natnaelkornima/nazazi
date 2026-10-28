@@ -667,8 +667,9 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                 </button>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-3.5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* 1. Subscriber Name & Phone (Single clean row) */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <Input
                     label={isAmharic ? 'ሙሉ ስም' : 'Full Name'}
                     placeholder={isAmharic ? 'ስምዎን ያስገቡ' : 'Your full name'}
@@ -705,91 +706,39 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                   />
                 </div>
 
-                {/* Verify.ET Automated Verification Callout */}
-                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-start gap-2.5">
-                  <div className="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5 font-bold">
-                    <Zap className="w-3.5 h-3.5" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      <p className="text-xs font-bold text-emerald-950 dark:text-emerald-200">
-                        {isAmharic ? 'በ Verify.ET ፈጣን ራስ-ሰር ማረጋገጫ' : 'Instant Automated Bank Verification (Verify.ET)'}
-                      </p>
+                {/* 2. Streamlined Verify.ET Card */}
+                <div className="space-y-2.5 p-3.5 rounded-xl bg-emerald-500/5 dark:bg-emerald-950/20 border border-emerald-500/20 shadow-2xs">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <div className="flex items-center gap-1.5">
+                      <Zap className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                      <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                        {isAmharic ? 'በ Verify.ET ራስ-ሰር ማረጋገጫ' : 'Verify.ET Auto-Verification'}
+                      </span>
                       <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded-full bg-emerald-600 text-white uppercase tracking-wider">
-                        {isAmharic ? 'ፈጣን' : 'Automated'}
+                        {isAmharic ? 'ፈጣን' : 'Instant'}
                       </span>
                     </div>
-                    <p className="text-[11px] text-emerald-800/80 dark:text-emerald-300/80 mt-0.5 leading-relaxed">
-                      {isAmharic
-                        ? 'የትራንዛክሽን ቁጥሩን ሲያስገቡ ወዲያውኑ ከባንክ ጋር ተገናኝቶ ይረጋገጣል። ምንም የአድሚን ፍተሻ መጠበቅ አያስፈልግም!'
-                        : 'Your transaction reference is verified directly with the bank via Verify.ET — zero waiting for manual admin approval!'}
-                    </p>
-                  </div>
-                </div>
 
-                {/* Name & Phone */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <Input
-                    label={isAmharic ? 'ሙሉ ስም' : 'Full Name'}
-                    placeholder={isAmharic ? 'ስምዎን ያስገቡ' : 'Your full name'}
-                    value={name}
-                    onChange={(e) => {
-                      setName(e.target.value);
-                      if (!nameTouched) setNameTouched(true);
-                    }}
-                    onBlur={() => setNameTouched(true)}
-                    error={nameError}
-                    success={nameSuccess}
-                    leftIcon={<User className="w-3.5 h-3.5 text-zinc-400" />}
-                    required
-                  />
-
-                  <Input
-                    label={isAmharic ? 'የስልክ ቁጥር' : 'Phone Number'}
-                    placeholder={isAmharic ? '0911234567 ወይም 07...' : '0911234567 or 07...'}
-                    value={phone}
-                    onChange={(e) => {
-                      setPhone(e.target.value);
-                      if (!phoneTouched) setPhoneTouched(true);
-                    }}
-                    onBlur={() => setPhoneTouched(true)}
-                    error={phoneError}
-                    success={phoneSuccess}
-                    helperText={
-                      !phoneError && !phoneSuccess
-                        ? (isAmharic ? 'ምሳሌ፡ 0911234567' : 'e.g. 0911234567')
-                        : undefined
-                    }
-                    leftIcon={<Smartphone className="w-3.5 h-3.5 text-zinc-400" />}
-                    required
-                  />
-                </div>
-
-                {/* Bank Selector Pills & Transaction ID */}
-                <div className="space-y-2 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800">
-                  <div className="flex items-center justify-between">
-                    <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-                      {isAmharic ? 'የከፈሉበት ባንክ / ዘዴ' : 'Payment Method Used'}
-                    </label>
-                    <div className="flex items-center gap-1">
+                    {/* Bank selector pills */}
+                    <div className="flex items-center gap-1 bg-white/70 dark:bg-zinc-900/70 p-0.5 rounded-lg border border-zinc-200/80 dark:border-zinc-800">
                       <button
                         type="button"
                         onClick={() => setSelectedBank('auto')}
                         className={`px-2 py-0.5 rounded-md text-[10px] font-bold cursor-pointer transition-colors ${
                           selectedBank === 'auto'
-                            ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900'
-                            : 'bg-zinc-200/80 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300'
+                            ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-2xs'
+                            : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900'
                         }`}
                       >
-                        {isAmharic ? 'ራስ-ሰር ለይ' : 'Auto'}
+                        {isAmharic ? 'ራስ-ሰር' : 'Auto'}
                       </button>
                       <button
                         type="button"
                         onClick={() => setSelectedBank('cbe')}
                         className={`px-2 py-0.5 rounded-md text-[10px] font-bold cursor-pointer transition-colors ${
                           selectedBank === 'cbe'
-                            ? 'bg-amber-600 text-white'
-                            : 'bg-zinc-200/80 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300'
+                            ? 'bg-amber-600 text-white shadow-2xs'
+                            : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900'
                         }`}
                       >
                         CBE
@@ -799,8 +748,8 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                         onClick={() => setSelectedBank('telebirr')}
                         className={`px-2 py-0.5 rounded-md text-[10px] font-bold cursor-pointer transition-colors ${
                           selectedBank === 'telebirr'
-                            ? 'bg-emerald-600 text-white'
-                            : 'bg-zinc-200/80 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300'
+                            ? 'bg-emerald-600 text-white shadow-2xs'
+                            : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900'
                         }`}
                       >
                         Telebirr
@@ -827,7 +776,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                       if (!transactionIdTouched) setTransactionIdTouched(true);
                     }}
                     onBlur={() => setTransactionIdTouched(true)}
-                    leftIcon={<Zap className="w-3.5 h-3.5 text-amber-500" />}
+                    leftIcon={<Zap className="w-3.5 h-3.5 text-emerald-500" />}
                     helperText={
                       isAmharic
                         ? 'ከባንክ ወይም ከቴሌብር የደረሰዎትን አጭር የትራንዛክሽን ኮድ ወይም የደረሰኝ ዌብሳይት ሊንክ እዚህ ይለጥፉ'
