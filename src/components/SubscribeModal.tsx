@@ -419,8 +419,8 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="" description="" maxWidth="xl">
-      <div className="text-zinc-900 dark:text-zinc-100 max-h-[85vh] overflow-y-auto px-1 sm:px-3 py-1">
+    <Modal isOpen={isOpen} onClose={onClose} title="" description="" maxWidth="lg">
+      <div className="text-zinc-900 dark:text-zinc-100 max-h-[85vh] overflow-y-auto px-2 sm:px-4 py-2 sm:py-3">
         {isClosed ? (
           /* ================= REGISTRATION CLOSED STATE ================= */
           <div className="py-6 sm:py-8 px-2 sm:px-4 text-center space-y-5">
@@ -470,11 +470,11 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
         ) : (
         <>
         {/* Connected Step-by-Step Progress Header */}
-        <div className="pb-3.5 mb-4 border-b border-zinc-150 dark:border-zinc-800 pr-9 sm:pr-10">
-          <div className="flex items-center justify-between gap-3">
+        <div className="pb-4 mb-6 border-b border-zinc-100 dark:border-zinc-800 pr-10">
+          <div className="flex items-center justify-between gap-4">
             {/* Step Tabs with Visual Connecting Line */}
-            <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-              {/* Step 1 Pill */}
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              {/* Step 1 */}
               <button
                 type="button"
                 onClick={() => {
@@ -483,38 +483,37 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                 className={`flex items-center gap-2 text-left transition-all ${
                   currentStep === 1
                     ? 'text-zinc-900 dark:text-white'
-                    : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white cursor-pointer'
+                    : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white cursor-pointer'
                 }`}
-                title={currentStep === 2 ? (isAmharic ? 'ወደ ደረጃ 1 ተመለስ' : 'Return to Step 1') : undefined}
               >
                 <span
-                  className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all shrink-0 ${
+                  className={`w-5.5 h-5.5 rounded-full flex items-center justify-center text-[11px] font-bold transition-all shrink-0 ${
                     currentStep === 1
-                      ? 'bg-[#981C00] text-white shadow-xs ring-2 ring-[#981C00]/20'
+                      ? 'bg-[#981C00] text-white shadow-xs'
                       : 'bg-emerald-600 text-white'
                   }`}
                 >
-                  {currentStep === 2 ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : '1'}
+                  {currentStep === 2 ? <Check className="w-3 h-3 stroke-[3]" /> : '1'}
                 </span>
                 <span className="text-xs font-bold whitespace-nowrap">
-                  {isAmharic ? '1. እቅድና ክፍያ' : '1. Plan & Transfer'}
+                  {isAmharic ? '1. ክፍያ' : '1. Transfer'}
                 </span>
               </button>
 
-              {/* Progress Connecting Line */}
-              <div className="flex-1 max-w-[40px] sm:max-w-[70px] h-1 rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden shrink-0">
+              {/* Progress Line */}
+              <div className="flex-1 max-w-[36px] sm:max-w-[56px] h-0.5 rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden shrink-0">
                 <div
-                  className="h-full bg-[#981C00] dark:bg-[#C43214] transition-all duration-300"
+                  className="h-full bg-[#981C00] transition-all duration-300"
                   style={{ width: currentStep === 2 ? '100%' : '0%' }}
                 />
               </div>
 
-              {/* Step 2 Pill */}
+              {/* Step 2 */}
               <div className="flex items-center gap-2 text-left">
                 <span
-                  className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all shrink-0 ${
+                  className={`w-5.5 h-5.5 rounded-full flex items-center justify-center text-[11px] font-bold transition-all shrink-0 ${
                     currentStep === 2
-                      ? 'bg-[#981C00] text-white shadow-xs ring-2 ring-[#981C00]/20'
+                      ? 'bg-[#981C00] text-white shadow-xs'
                       : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-400'
                   }`}
                 >
@@ -524,16 +523,16 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                   className={`text-xs font-bold whitespace-nowrap ${
                     currentStep === 2
                       ? 'text-zinc-900 dark:text-white'
-                      : 'text-zinc-400 dark:text-zinc-500'
+                      : 'text-zinc-400'
                   }`}
                 >
-                  {isAmharic ? '2. መረጃና ማረጋገጫ' : '2. Details & Verification'}
+                  {isAmharic ? '2. ማረጋገጫ' : '2. Verify'}
                 </span>
               </div>
             </div>
 
             {/* Selected Amount Pill */}
-            <span className="text-[11px] font-bold font-mono px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 shrink-0 border border-zinc-200/60 dark:border-zinc-700/60 shadow-2xs">
+            <span className="text-xs font-bold font-mono px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shrink-0 border border-zinc-200/80 dark:border-zinc-700 shadow-2xs">
               {planAmount} {isAmharic ? 'ብር' : 'ETB'}
             </span>
           </div>
@@ -549,22 +548,22 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 16 }}
               transition={{ duration: 0.2 }}
-              className="space-y-4 pt-1"
+              className="space-y-6 pt-1"
             >
               {/* Header */}
-              <div>
-                <h3 className="text-lg font-bold tracking-tight text-zinc-900 dark:text-white">
-                  {isAmharic ? 'የአገልግሎት እቅድ እና የክፍያ አካውንቶች' : 'Select Plan & Transfer'}
+              <div className="space-y-1">
+                <h3 className="text-base sm:text-lg font-bold tracking-tight text-zinc-900 dark:text-white">
+                  {isAmharic ? 'ክፍያ ያስተላልፉ' : 'Transfer Payment'}
                 </h3>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
                   {isAmharic
-                    ? 'የሚፈልጉትን እቅድ ይምረጡና ክፍያውን ከታች ወዳሉት አካውንቶች ያስተላልፉ'
-                    : 'Choose your plan and transfer the amount to one of the accounts below'}
+                    ? 'የመረጡትን ክፍያ ወደ አንዱ አካውንት ይላኩ'
+                    : 'Transfer the selected amount to either account'}
                 </p>
               </div>
 
               {/* Plan Choice Pills */}
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-3 gap-2.5">
                 {plans.map((p) => {
                   const isSelected = selectedPlanId === p.id;
                   return (
@@ -572,10 +571,10 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                       key={p.id}
                       type="button"
                       onClick={() => handleSelectPlan(p.id as '1m' | '3m' | '6m')}
-                      className={`relative p-3 rounded-xl text-left border transition-all cursor-pointer ${
+                      className={`relative p-3.5 rounded-xl text-left border transition-all cursor-pointer ${
                         isSelected
-                          ? 'border-[#981C00] bg-[#981C00] text-white shadow-xs ring-1 ring-[#981C00]'
-                          : 'border-zinc-200 dark:border-zinc-800 bg-zinc-50/80 dark:bg-zinc-900/60 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-700'
+                          ? 'border-[#981C00] bg-[#981C00] text-white shadow-xs'
+                          : 'border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-700'
                       }`}
                     >
                       {p.tag && (
@@ -589,8 +588,8 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                           {p.tag}
                         </span>
                       )}
-                      <p className="text-xs font-semibold truncate">{p.name}</p>
-                      <p className="text-sm font-extrabold font-mono mt-0.5">
+                      <p className="text-xs font-semibold">{p.name}</p>
+                      <p className="text-sm sm:text-base font-extrabold font-mono mt-1">
                         {p.price}{' '}
                         <span className="text-[10px] font-normal opacity-80">
                           {isAmharic ? 'ብር' : 'ETB'}
@@ -601,53 +600,47 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                 })}
               </div>
 
-              {/* Squared Bank Account Cards */}
-              <div className="space-y-2">
-                <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-                  {isAmharic ? 'የክፍያ አካውንቶች (CBE እና Telebirr)' : 'Official Payment Accounts'}
-                </label>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  {bankAccounts.map((acc) => (
-                    <div
-                      key={acc.key}
-                      className="p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-3 shadow-2xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
-                    >
-                      <div className="min-w-0 space-y-0.5">
-                        <div className="flex items-center gap-1.5">
-                          <span
-                            className={`w-2 h-2 rounded-xs ${
-                              acc.key === 'cbe' ? 'bg-amber-500' : 'bg-emerald-500'
-                            }`}
-                          />
-                          <p className="text-xs font-bold text-zinc-800 dark:text-zinc-200 truncate">
-                            {acc.name}
-                          </p>
-                        </div>
-                        <p className="font-mono text-sm font-extrabold text-zinc-950 dark:text-white tracking-wider select-all">
-                          {acc.accountNumber}
+              {/* Bank Account Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {bankAccounts.map((acc) => (
+                  <div
+                    key={acc.key}
+                    className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-3 shadow-2xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
+                  >
+                    <div className="min-w-0 space-y-1">
+                      <div className="flex items-center gap-1.5">
+                        <span
+                          className={`w-2 h-2 rounded-full ${
+                            acc.key === 'cbe' ? 'bg-amber-500' : 'bg-emerald-500'
+                          }`}
+                        />
+                        <p className="text-xs font-bold text-zinc-800 dark:text-zinc-200 truncate">
+                          {acc.name}
                         </p>
                       </div>
-
-                      <button
-                        type="button"
-                        onClick={() => copyToClipboard(acc.accountNumber, acc.name, acc.key)}
-                        className="shrink-0 p-2 rounded-lg bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:border-zinc-300 dark:hover:border-zinc-600 transition-all cursor-pointer shadow-2xs"
-                        title={isAmharic ? 'ቁጥር ቅዳ' : 'Copy Number'}
-                      >
-                        {copiedKey === acc.key ? (
-                          <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 stroke-[2.5]" />
-                        ) : (
-                          <Copy className="w-4 h-4" />
-                        )}
-                      </button>
+                      <p className="font-mono text-sm font-extrabold text-zinc-950 dark:text-white tracking-wider select-all">
+                        {acc.accountNumber}
+                      </p>
                     </div>
-                  ))}
-                </div>
+
+                    <button
+                      type="button"
+                      onClick={() => copyToClipboard(acc.accountNumber, acc.name, acc.key)}
+                      className="shrink-0 p-2.5 rounded-lg bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:border-zinc-300 dark:hover:border-zinc-600 transition-all cursor-pointer shadow-2xs"
+                      title={isAmharic ? 'ቁጥር ቅዳ' : 'Copy Number'}
+                    >
+                      {copiedKey === acc.key ? (
+                        <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 stroke-[2.5]" />
+                      ) : (
+                        <Copy className="w-4 h-4" />
+                      )}
+                    </button>
+                  </div>
+                ))}
               </div>
 
-              {/* Bottom Actions */}
-              <div className="flex items-center justify-between gap-2.5 pt-3 border-t border-zinc-100 dark:border-zinc-800">
+              {/* Bottom Actions with Breathing Room */}
+              <div className="flex items-center justify-between gap-3 pt-5 border-t border-zinc-100 dark:border-zinc-800">
                 <Button
                   type="button"
                   variant="secondary"
@@ -665,7 +658,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                   className="text-xs font-bold px-5 cursor-pointer shadow-xs"
                   rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
                 >
-                  {isAmharic ? 'ቀጣይ፡ መረጃ አስገባ' : 'Next: Enter Details'}
+                  {isAmharic ? 'ቀጣይ →' : 'Next →'}
                 </Button>
               </div>
             </motion.div>
@@ -678,33 +671,32 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -16 }}
               transition={{ duration: 0.2 }}
-              className="space-y-4 pt-1"
+              className="space-y-6 pt-1"
             >
-              {/* Cohesive Selected Plan Summary & Breadcrumb */}
-              <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-2 text-xs">
-                <div className="flex items-center gap-2 min-w-0">
-                  <span className="text-zinc-500 dark:text-zinc-400 shrink-0">
-                    {isAmharic ? 'የተመረጠ እቅድ፡' : 'Selected Plan:'}
-                  </span>
-                  <span className="font-bold text-zinc-900 dark:text-white truncate">
-                    {planLabel} • <span className="font-mono">{planAmount}</span> {isAmharic ? 'ብር' : 'ETB'}
+              {/* Minimal Plan Reminder */}
+              <div className="flex items-center justify-between text-xs pb-1">
+                <div className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-300">
+                  <span className="font-bold text-zinc-900 dark:text-white">{planLabel}</span>
+                  <span className="text-zinc-300 dark:text-zinc-600">•</span>
+                  <span className="font-mono font-bold text-[#981C00] dark:text-rose-400">
+                    {planAmount} {isAmharic ? 'ብር' : 'ETB'}
                   </span>
                 </div>
                 <button
                   type="button"
                   onClick={goToPrevStep}
-                  className="text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white underline underline-offset-2 cursor-pointer shrink-0"
+                  className="text-[11px] font-semibold text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 cursor-pointer"
                 >
-                  {isAmharic ? 'እቅድ ቀይር' : 'Change Plan'}
+                  {isAmharic ? 'ቀይር' : 'Change'}
                 </button>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
-                {/* 1. Subscriber Name & Phone (Single clean row) */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {/* 1. Subscriber Name & Phone */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <Input
                     label={isAmharic ? 'ሙሉ ስም' : 'Full Name'}
-                    placeholder={isAmharic ? 'ስምዎን ያስገቡ' : 'Your full name'}
+                    placeholder={isAmharic ? 'ስም' : 'Full name'}
                     value={name}
                     onChange={(e) => {
                       setName(e.target.value);
@@ -712,14 +704,13 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                     }}
                     onBlur={() => setNameTouched(true)}
                     error={nameError}
-                    success={nameSuccess}
                     leftIcon={<User className="w-3.5 h-3.5 text-zinc-400" />}
                     required
                   />
 
                   <Input
                     label={isAmharic ? 'የስልክ ቁጥር' : 'Phone Number'}
-                    placeholder={isAmharic ? '0911234567 ወይም 07...' : '0911234567 or 07...'}
+                    placeholder="09... / 07..."
                     value={phone}
                     onChange={(e) => {
                       setPhone(e.target.value);
@@ -727,194 +718,105 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                     }}
                     onBlur={() => setPhoneTouched(true)}
                     error={phoneError}
-                    success={phoneSuccess}
-                    helperText={
-                      !phoneError && !phoneSuccess
-                        ? (isAmharic ? 'የዕለቱ መልእክት የሚላክበት ስልክ ቁጥር' : 'SMS delivery phone number')
-                        : undefined
-                    }
                     leftIcon={<Smartphone className="w-3.5 h-3.5 text-zinc-400" />}
                     required
                   />
                 </div>
 
-                {/* 2. Eye-Catching Shadcn-Style Verify.ET Bank Verification Card */}
-                <div className="rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-4 sm:p-5 shadow-xs space-y-4">
-                  {/* Clean Header with Verified Live Badge */}
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="w-8 h-8 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center shrink-0 shadow-2xs">
-                        <Zap className="w-4 h-4 fill-amber-400 text-amber-400" />
-                      </div>
-                      <div className="min-w-0">
-                        <h4 className="text-xs sm:text-sm font-bold tracking-tight text-zinc-900 dark:text-white truncate">
-                          {isAmharic ? 'ፈጣን የባንክ ማረጋገጫ' : 'Automated Bank Verification'}
-                        </h4>
-                        <p className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
-                          {isAmharic ? 'ያለ ሰው እጅ በ2 ሰከንድ ውስጥ በቀጥታ ይረጋገጣል' : 'Instant check directly with bank'}
-                        </p>
-                      </div>
-                    </div>
+                {/* 2. Streamlined Transaction ID Input */}
+                <div className="space-y-2 pt-1">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">
+                      {isAmharic ? 'የትራንዛክሽን ቁጥር (Transaction ID)' : 'Transaction ID / Reference'}
+                    </label>
 
-                    {/* Live Pulse Badge */}
-                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-[11px] font-semibold shrink-0">
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                      </span>
-                      <span>Verify.ET Live</span>
-                    </div>
-                  </div>
-
-                  {/* Shadcn Segmented Tab Selector */}
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-xs">
-                      <label className="font-semibold text-zinc-700 dark:text-zinc-300">
-                        {isAmharic ? 'የከፈሉበት ዘዴ' : 'Payment Method'}
-                      </label>
-                      <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
-                        {selectedBank === 'auto'
-                          ? (isAmharic ? 'በራሱ የሚለይ' : 'Auto detection')
-                          : selectedBank === 'telebirr'
-                          ? 'Telebirr SMS'
-                          : 'CBE Mobile'}
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-3 p-1 rounded-xl bg-zinc-100/90 dark:bg-zinc-800/80 border border-zinc-200/50 dark:border-zinc-700/60 text-xs">
-                      <button
-                        type="button"
-                        onClick={() => setSelectedBank('auto')}
-                        className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg font-semibold transition-all cursor-pointer ${
-                          selectedBank === 'auto'
-                            ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-2xs font-bold'
-                            : 'text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200'
-                        }`}
-                      >
-                        <Sparkles className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500" />
-                        <span>{isAmharic ? 'ራስ-ሰር ለይ' : 'Auto'}</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => setSelectedBank('cbe')}
-                        className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg font-semibold transition-all cursor-pointer ${
-                          selectedBank === 'cbe'
-                            ? 'bg-white dark:bg-zinc-900 text-amber-700 dark:text-amber-400 shadow-2xs font-bold'
-                            : 'text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200'
-                        }`}
-                      >
-                        <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
-                        <span>CBE</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => setSelectedBank('telebirr')}
-                        className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg font-semibold transition-all cursor-pointer ${
-                          selectedBank === 'telebirr'
-                            ? 'bg-white dark:bg-zinc-900 text-emerald-700 dark:text-emerald-400 shadow-2xs font-bold'
-                            : 'text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200'
-                        }`}
-                      >
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
-                        <span>Telebirr</span>
-                      </button>
+                    {/* Method Selector Pills */}
+                    <div className="flex items-center gap-1 p-0.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-[11px]">
+                      {(['auto', 'cbe', 'telebirr'] as const).map((b) => (
+                        <button
+                          key={b}
+                          type="button"
+                          onClick={() => setSelectedBank(b)}
+                          className={`px-2 py-0.5 rounded-md font-semibold transition-all cursor-pointer ${
+                            selectedBank === b
+                              ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-2xs font-bold'
+                              : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
+                          }`}
+                        >
+                          {b === 'auto'
+                            ? (isAmharic ? 'ራስ-ሰር' : 'Auto')
+                            : b === 'cbe'
+                            ? 'CBE'
+                            : 'Telebirr'}
+                        </button>
+                      ))}
                     </div>
                   </div>
 
-                  {/* Transaction ID Input with Inline Paste / Clear Action */}
-                  <div className="space-y-1.5 pt-0.5">
-                    <div className="flex items-center justify-between">
-                      <label className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-                        {isAmharic ? 'የትራንዛክሽን ቁጥር (Transaction ID)' : 'Transaction ID / Reference'}
-                      </label>
-                      {transactionId && (
-                        <span className="text-[10px] font-mono text-zinc-400 dark:text-zinc-500">
-                          {transactionId.length} {isAmharic ? 'ቁምፊ' : 'chars'}
-                        </span>
+                  <div className="relative flex items-center">
+                    <input
+                      type="text"
+                      value={transactionId}
+                      onChange={(e) => {
+                        setTransactionId(e.target.value);
+                        if (!transactionIdTouched) setTransactionIdTouched(true);
+                      }}
+                      onBlur={() => setTransactionIdTouched(true)}
+                      placeholder={
+                        selectedBank === 'telebirr'
+                          ? (isAmharic ? 'ምሳሌ፡ CI72984X12' : 'e.g. CI72984X12')
+                          : selectedBank === 'cbe'
+                          ? (isAmharic ? 'ምሳሌ፡ fHCxyTV... ወይም ሊንክ' : 'e.g. fHCxyTV... or link')
+                          : (isAmharic ? 'ምሳሌ፡ CI72984X12 ወይም fHCxyTV...' : 'e.g. CI72984X12 or link')
+                      }
+                      className="w-full h-11 px-3.5 pr-20 text-xs sm:text-sm font-mono font-medium rounded-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border border-zinc-200/90 dark:border-zinc-800 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 focus:ring-2 focus:ring-zinc-900/10 dark:focus:ring-white/10 shadow-2xs transition-all placeholder:text-zinc-400 placeholder:font-sans"
+                    />
+
+                    {/* Inline Clear or Paste Action */}
+                    <div className="absolute right-2 flex items-center">
+                      {transactionId ? (
+                        <button
+                          type="button"
+                          onClick={() => setTransactionId('')}
+                          className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                          title={isAmharic ? 'አጽዳ' : 'Clear'}
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={handlePasteFromClipboard}
+                          className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-750 text-zinc-700 dark:text-zinc-300 border border-zinc-200/60 dark:border-zinc-700 transition-all cursor-pointer shadow-2xs"
+                          title={isAmharic ? 'ከክሊፕቦርድ ለጥፍ' : 'Paste from clipboard'}
+                        >
+                          <ClipboardPaste className="w-3.5 h-3.5 text-zinc-500" />
+                          <span className="text-[11px]">{isAmharic ? 'ለጥፍ' : 'Paste'}</span>
+                        </button>
                       )}
                     </div>
-
-                    <div className="relative flex items-center">
-                      <div className="absolute left-3.5 text-zinc-400 pointer-events-none">
-                        <Zap className="w-4 h-4" />
-                      </div>
-
-                      <input
-                        type="text"
-                        value={transactionId}
-                        onChange={(e) => {
-                          setTransactionId(e.target.value);
-                          if (!transactionIdTouched) setTransactionIdTouched(true);
-                        }}
-                        onBlur={() => setTransactionIdTouched(true)}
-                        placeholder={
-                          selectedBank === 'telebirr'
-                            ? (isAmharic ? 'ምሳሌ፡ CI72984X12 (ከSMS)' : 'e.g. CI72984X12 (from SMS)')
-                            : selectedBank === 'cbe'
-                            ? (isAmharic ? 'ምሳሌ፡ fHCxyTV... ወይም ደረሰኝ ሊንክ' : 'e.g. fHCxyTV... or receipt link')
-                            : (isAmharic ? 'ምሳሌ፡ CI72984X12 ወይም fHCxyTV...' : 'e.g. CI72984X12 or receipt link')
-                        }
-                        className="w-full h-11 pl-10 pr-20 text-xs sm:text-sm font-mono font-medium rounded-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border border-zinc-200/90 dark:border-zinc-800 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 focus:ring-2 focus:ring-zinc-900/10 dark:focus:ring-white/10 shadow-2xs transition-all placeholder:text-zinc-400 placeholder:font-sans"
-                      />
-
-                      {/* Right Action: Clear or One-Tap Paste */}
-                      <div className="absolute right-2 flex items-center">
-                        {transactionId ? (
-                          <button
-                            type="button"
-                            onClick={() => setTransactionId('')}
-                            className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
-                            title={isAmharic ? 'አጽዳ' : 'Clear'}
-                          >
-                            <X className="w-3.5 h-3.5" />
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={handlePasteFromClipboard}
-                            className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-750 text-zinc-700 dark:text-zinc-300 border border-zinc-200/60 dark:border-zinc-700 transition-all cursor-pointer shadow-2xs"
-                            title={isAmharic ? 'ከክሊፕቦርድ ለጥፍ' : 'Paste from clipboard'}
-                          >
-                            <ClipboardPaste className="w-3.5 h-3.5 text-zinc-500" />
-                            <span className="text-[11px]">{isAmharic ? 'ለጥፍ' : 'Paste'}</span>
-                          </button>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Clean contextual hint without duplicate repetition */}
-                    <p className="text-[11px] text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 pt-0.5">
-                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-500 shrink-0" />
-                      <span>
-                        {selectedBank === 'telebirr'
-                          ? (isAmharic ? 'ከቴሌብር በደረሰዎት አጭር የጽሁፍ መልእክት (SMS) ላይ የሚገኝ ኮድ' : 'Code from your Telebirr SMS notification')
-                          : selectedBank === 'cbe'
-                          ? (isAmharic ? 'የንግድ ባንክ ደረሰኝ ኮድ ወይም የድረ-ገጽ ሊንክ (URL)' : 'CBE receipt reference code or web link')
-                          : (isAmharic ? 'ከባንክ ወይም ከቴሌብር የደረሰዎትን አጭር ኮድ ወይም የደረሰኝ ሊንክ እዚህ ያስገቡ' : 'Paste your bank SMS code or receipt URL to verify')}
-                      </span>
-                    </p>
                   </div>
                 </div>
 
-                {/* Optional Screenshot Attachment Toggle */}
-                <div className="pt-0.5">
+                {/* 3. Optional Screenshot Attachment */}
+                <div className="pt-1">
                   <button
                     type="button"
                     onClick={() => setShowImageUpload(!showImageUpload)}
-                    className="text-xs text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white flex items-center gap-1.5 cursor-pointer underline underline-offset-2"
+                    className="text-xs text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white flex items-center gap-1.5 cursor-pointer"
                   >
                     <Upload className="w-3.5 h-3.5" />
-                    {showImageUpload
-                      ? (isAmharic ? 'የደረሰኝ ፎቶ መጫኛን ደብቅ' : 'Hide receipt screenshot uploader')
-                      : (isAmharic ? '+ የደረሰኝ ፎቶ (Screenshot) ማያያዝ ይፈልጋሉ? (አማራጭ)' : '+ Attach receipt screenshot (Optional)')}
+                    <span>
+                      {showImageUpload
+                        ? (isAmharic ? 'የደረሰኝ ፎቶ መጫኛን ደብቅ' : 'Hide receipt upload')
+                        : (isAmharic ? '+ የደረሰኝ ፎቶ ያያይዙ (አማራጭ)' : '+ Attach receipt screenshot (Optional)')}
+                    </span>
                   </button>
 
                   {showImageUpload && (
-                    <div className="mt-2.5">
+                    <div className="mt-3">
                       <GlassFolderUploader
-                        label={isAmharic ? 'የክፍያ ደረሰኝ ምስል (አማራጭ)' : 'Payment Image Screenshot (Optional)'}
+                        label={isAmharic ? 'የክፍያ ደረሰኝ ምስል' : 'Receipt Screenshot'}
                         selectedImageUrl={screenshotDataUrl}
                         onFileSelect={(dataUrl, file) => {
                           setScreenshotDataUrl(dataUrl);
@@ -929,8 +831,8 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                   )}
                 </div>
 
-                {/* Bottom Actions - Matched styling with Step 1 */}
-                <div className="flex items-center justify-between gap-2.5 pt-3 border-t border-zinc-100 dark:border-zinc-800">
+                {/* Bottom Actions with Breathing Room */}
+                <div className="flex items-center justify-between gap-3 pt-6 border-t border-zinc-100 dark:border-zinc-800">
                   <Button
                     type="button"
                     variant="secondary"
@@ -948,7 +850,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                     variant="brand"
                     size="sm"
                     isLoading={isSubmitting}
-                    className="text-xs font-bold shadow-xs px-5 cursor-pointer"
+                    className="text-xs font-bold shadow-xs px-6 cursor-pointer"
                     rightIcon={
                       isVerifyingWithBank ? (
                         <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -958,10 +860,10 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                     }
                   >
                     {isVerifyingWithBank
-                      ? (isAmharic ? 'በ Verify.ET በማረጋገጥ ላይ...' : 'Verifying via Verify.ET...')
+                      ? (isAmharic ? 'በማረጋገጥ ላይ...' : 'Verifying...')
                       : isSubmitting
                       ? (isAmharic ? 'በመመዝገብ ላይ...' : 'Submitting...')
-                      : (isAmharic ? 'ወዲያውኑ አረጋግጥ እና አግብር ⚡' : 'Verify & Activate Instantly ⚡')}
+                      : (isAmharic ? 'አረጋግጥ እና አግብር ⚡' : 'Verify & Activate ⚡')}
                   </Button>
                 </div>
               </form>
