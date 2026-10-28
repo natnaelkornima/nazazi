@@ -207,10 +207,15 @@ export const LandingView: React.FC<LandingViewProps> = ({
           savingsBadge: null,
           recommended: false,
           cta: 'ለ1 ወር ይመዝገቡ',
+          description:
+            'የናዛዚን መንፈሳዊ አገልግሎት ለመሞከር እና በየዕለቱ ማለዳ በሚደርሱ የእግዚአብሔር ቃላት ለመጽናናት ተስማሚ የሆነ የመግቢያ እቅድ።',
+          monthlyBreakdown: '200 ብር / በወር',
           features: [
             'የየዕለቱ የሚያጽናና SMS መልእክት',
-            'ቀጥታ ወደ ሞባይል ስልክ የሚላክ',
+            'ቀጥታ ወደ ሞባይል ስልክ የሚላክ (ኢትዮ ቴሌኮም)',
             'ፈጣን የስልክ ቁጥር ማረጋገጫ',
+            'ምንም ዓይነት መለያ ወይም የይለፍ ቃል አያስፈልግም',
+            'በCBE ወይም በTelebirr ቀላል ክፍያ',
           ],
         },
         {
@@ -223,10 +228,15 @@ export const LandingView: React.FC<LandingViewProps> = ({
           savingsBadge: null,
           recommended: false,
           cta: 'ለ3 ወር ይመዝገቡ',
+          description:
+            'ለተከታታይ 3 ወራት (90 ቀናት) ማለዳዎን በእግዚአብሔር ቃል ለመክፈትና መንፈሳዊ ብርታትን ያለማቋረጥ ለማግኘት ተመራጭ እቅድ።',
+          monthlyBreakdown: '200 ብር / በወር',
           features: [
             'የየዕለቱ የሚያጽናና SMS መልእክት',
-            'ያለማቋረጥ ለ3 ወራት የሚላክ',
-            'የቅድሚያ SMS ስርጭት',
+            'ያለማቋረጥ ለ3 ወራት (90 ቀናት) የሚላክ',
+            'የቅድሚያ SMS ስርጭት ስርዓት',
+            'የስልክ ቁጥር መቀየር ካለ ፈጣን ድጋፍ',
+            'የአባልነት ሁኔታን በማንኛውም ጊዜ የማረጋገጥ ዕድል',
           ],
         },
         {
@@ -239,10 +249,16 @@ export const LandingView: React.FC<LandingViewProps> = ({
           savingsBadge: '200 ብር ቅናሽ',
           recommended: true,
           cta: 'ለ6 ወር ይመዝገቡ',
+          description:
+            'የላቀ የ200 ብር ቅናሽ ያካተተ፤ ለግማሽ ዓመት (180 ቀናት) ያለማቋረጥ የዕለት ተስፋ እና ማጽናኛን በቅድሚያ የሚያረጋግጥ ምርጥ እቅድ።',
+          monthlyBreakdown: 'በወር 166 ብር ብቻ (200 ብር ቁጠባ)',
           features: [
             'የየዕለቱ የሚያጽናና SMS መልእክት',
-            'ያለማቋረጥ ለ6 ወራት የሚላክ',
-            'የ200 ብር ቅናሽ እና ቅድሚያ ድጋፍ',
+            'ያለማቋረጥ ለ6 ወራት (180 ቀናት) የሚላክ',
+            'የ200 ብር ቅናሽ (ከ1,200 ብር ወደ 1,000 ብር)',
+            'ቅድሚያ የሚሰጠው የSMS ማሰራጫ ቅደም ተከተል',
+            'ቀጥታ የቴሌግራም የደንበኞች ድጋፍ አገልግሎት',
+            'የአገልግሎት ማጠናቀቂያ ማስታወሻ አስቀድሞ የሚላክ',
           ],
         },
       ]
@@ -257,10 +273,15 @@ export const LandingView: React.FC<LandingViewProps> = ({
           savingsBadge: null,
           recommended: false,
           cta: 'Register for 1 Month',
+          description:
+            'An ideal introductory plan to experience daily spiritual peace, uplifting scriptures, and comforting words on your mobile phone.',
+          monthlyBreakdown: '200 ETB / month',
           features: [
             'Daily spiritual SMS encouragement',
-            'Direct mobile phone delivery',
-            'Instant phone status lookup',
+            'Direct mobile phone delivery (ethio telecom)',
+            'Instant phone approval status check',
+            'No password or registration account required',
+            'Seamless CBE or Telebirr bank transfer',
           ],
         },
         {
@@ -273,10 +294,15 @@ export const LandingView: React.FC<LandingViewProps> = ({
           savingsBadge: null,
           recommended: false,
           cta: 'Register for 3 Months',
+          description:
+            'A continuous 90-day spiritual walk to keep your mornings rooted in encouragement, renewed hope, and God\'s Word.',
+          monthlyBreakdown: '200 ETB / month',
           features: [
             'Daily spiritual SMS encouragement',
-            '3 months continuous broadcasts',
-            'Priority queue dispatch',
+            '3 months (90 days) uninterrupted morning broadcasts',
+            'Priority queue message dispatch',
+            'Quick assistance if your phone number changes',
+            'Real-time status lookup available anytime',
           ],
         },
         {
@@ -289,10 +315,16 @@ export const LandingView: React.FC<LandingViewProps> = ({
           savingsBadge: 'Save 200 ETB',
           recommended: true,
           cta: 'Register for 6 Months',
+          description:
+            'Our most dedicated plan with 200 ETB instant savings, ensuring half a year of uninterrupted morning spiritual nourishment.',
+          monthlyBreakdown: 'Only 166 ETB / month (Save 200 ETB)',
           features: [
             'Daily spiritual SMS encouragement',
-            '6 months continuous broadcasts',
-            'Save 200 ETB & priority support',
+            '6 months (180 days) uninterrupted morning broadcasts',
+            'Instant 200 ETB discount included',
+            'Highest priority queue message dispatch',
+            'Direct priority Telegram subscriber support',
+            'Advance renewal notification before term concludes',
           ],
         },
       ];
@@ -718,19 +750,20 @@ export const LandingView: React.FC<LandingViewProps> = ({
           Real plans: 1m (200), 3m (600), 6m (1000 - discount from 1200)
           ======================================================== */}
       <section id="pricing" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
-        <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] pt-14 space-y-10">
+        <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] pt-16 sm:pt-20 space-y-12">
           {/* Section Header */}
-          <div className="text-center max-w-xl mx-auto space-y-2">
-            <p className="text-xs font-bold uppercase tracking-wider text-[#981C00] dark:text-[#C43214]">
-              {isAmharic ? 'ግልጽ እና ተመጣጣኝ ዋጋ' : 'Transparent Pricing'}
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#24211F] dark:text-[#FAF8F5]">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#981C00] dark:text-[#C43214]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#981C00] dark:bg-[#C43214]" />
+              <span>{isAmharic ? 'ግልጽ እና ተመጣጣኝ ዋጋ' : 'Transparent Pricing'}</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#24211F] dark:text-[#FAF8F5]">
               {isAmharic ? 'የደንበኝነት እቅዶች' : 'Subscription Plans'}
             </h2>
-            <p className="text-sm text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
+            <p className="text-sm sm:text-base text-[#706A65] dark:text-[#A8A19A] leading-relaxed max-w-xl mx-auto">
               {isAmharic
                 ? 'ምንም የተደበቀ ወጪ የለም። ለእርሶ የሚስማማውን የአገልግሎት ጊዜ ይምረጡ።'
-                : 'No hidden fees or subscriptions traps. Choose the duration that suits you best.'}
+                : 'No hidden fees or unexpected charges. Choose the duration that suits you best.'}
             </p>
           </div>
 
@@ -758,84 +791,112 @@ export const LandingView: React.FC<LandingViewProps> = ({
           )}
 
           {/* Pricing Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto items-stretch pt-4">
             {pricingPlans.map((plan) => (
               <div
                 key={plan.id}
-                className={`relative flex flex-col justify-between p-6 sm:p-7 rounded-2xl transition-all ${
+                className={`relative flex flex-col justify-between p-7 sm:p-8 rounded-[28px] transition-all duration-200 ${
                   plan.recommended
-                    ? 'bg-[#FFFFFF] dark:bg-[#1D1A18] border-2 border-[#981C00] dark:border-[#C43214] shadow-md'
-                    : 'bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] shadow-xs'
+                    ? 'bg-gradient-to-b from-[#FFFFFF] via-[#FAF6F2] to-[#F5EFE9] dark:from-[#201A18] dark:via-[#191513] dark:to-[#141110] border-2 border-[#981C00] dark:border-[#C43214] shadow-[0_20px_50px_-15px_rgba(152,28,0,0.18),0_1px_3px_rgba(0,0,0,0.06)] md:-translate-y-2'
+                    : 'bg-[#FFFFFF] dark:bg-[#1A1715] border border-[#E2DDD5] dark:border-[#2C2723] hover:border-[#D1C9BE] dark:hover:border-[#3D3732] shadow-[0_4px_24px_-6px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.03)]'
                 }`}
               >
-                {/* Recommended Badge */}
+                {/* Floating Recommended Luxury Badge */}
                 {plan.recommended && (
-                  <div className="absolute -top-3 left-6">
-                    <span className="px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#981C00] text-white shadow-2xs">
-                      {plan.badge}
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                    <span className="px-4 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-[#981C00] text-white shadow-md inline-flex items-center gap-1.5 whitespace-nowrap">
+                      <Sparkles className="w-3 h-3 text-[#FFD6A5]" />
+                      <span>{plan.badge}</span>
                     </span>
                   </div>
                 )}
 
-                <div className="space-y-4">
-                  {/* Plan Header */}
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-base font-bold text-[#24211F] dark:text-[#FAF8F5] tracking-tight">
-                      {plan.name}
-                    </h3>
-                    {!plan.recommended && (
-                      <span className="text-[10px] font-semibold text-[#706A65] dark:text-[#A8A19A] px-2 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#141211] border border-[#E8E4DF] dark:border-[#2C2825]">
-                        {plan.badge}
-                      </span>
-                    )}
+                <div className="space-y-5">
+                  {/* Card Title & Top Indicator */}
+                  <div className="flex items-start justify-between gap-3 pt-1">
+                    <div>
+                      <h3 className="text-xl font-bold text-[#24211F] dark:text-[#FAF8F5] tracking-tight">
+                        {plan.name}
+                      </h3>
+                      {!plan.recommended && (
+                        <span className="inline-block mt-1 text-[11px] font-semibold text-[#706A65] dark:text-[#A8A19A] px-2.5 py-0.5 rounded-full bg-[#FAF8F5] dark:bg-[#141211] border border-[#E8E4DF] dark:border-[#2C2825]">
+                          {plan.badge}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
+                  {/* Substantive Plan Description */}
+                  <p className="text-xs text-[#706A65] dark:text-[#A8A19A] leading-relaxed font-normal min-h-[44px]">
+                    {plan.description}
+                  </p>
+
                   {/* Price Block */}
-                  <div className="space-y-1">
-                    {plan.originalPrice && (
+                  <div className="pt-2 pb-1 space-y-1.5">
+                    {plan.originalPrice ? (
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-semibold text-[#A8A19A] line-through">
                           {plan.originalPrice} {isAmharic ? 'ብር' : 'ETB'}
                         </span>
                         {plan.savingsBadge && (
-                          <span className="text-[10px] font-bold text-[#981C00] dark:text-[#C43214] bg-[#FAF4F2] dark:bg-[#2A1D1A] px-1.5 py-0.5 rounded">
+                          <span className="text-[10.5px] font-bold text-[#981C00] dark:text-[#E89382] bg-[#FAF0ED] dark:bg-[#321C18] px-2 py-0.5 rounded-full border border-[#F3D5CD] dark:border-[#4A2620]">
                             {plan.savingsBadge}
                           </span>
                         )}
                       </div>
+                    ) : (
+                      <div className="h-5" />
                     )}
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-3xl font-black text-[#24211F] dark:text-[#FAF8F5] tracking-tight">
+
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-4xl sm:text-5xl font-black text-[#24211F] dark:text-[#FAF8F5] tracking-tight font-sans">
                         {plan.price}
                       </span>
-                      <span className="text-xs font-semibold text-[#706A65] dark:text-[#A8A19A]">
-                        {isAmharic ? 'ብር' : 'ETB'} / {plan.period}
-                      </span>
+                      <div className="flex flex-col">
+                        <span className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5] uppercase tracking-wider leading-none">
+                          {isAmharic ? 'ብር' : 'ETB'}
+                        </span>
+                        <span className="text-[11px] font-medium text-[#706A65] dark:text-[#A8A19A] pt-0.5">
+                          {plan.period}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Monthly Breakdown Value Tag */}
+                    <div className="text-[11px] font-semibold text-[#981C00] dark:text-[#E89382] pt-0.5">
+                      {plan.monthlyBreakdown}
                     </div>
                   </div>
 
-                  {/* Feature Bullets */}
-                  <div className="space-y-2.5 pt-4 border-t border-[#E8E4DF] dark:border-[#2C2825]">
-                    {plan.features.map((feat) => (
-                      <div key={feat} className="flex items-start gap-2 text-xs text-[#24211F] dark:text-[#FAF8F5]">
-                        <Check className="w-3.5 h-3.5 text-[#981C00] dark:text-[#C43214] stroke-[3] shrink-0 mt-0.5" />
-                        <span className="leading-tight">{feat}</span>
-                      </div>
-                    ))}
+                  {/* Features List */}
+                  <div className="pt-5 border-t border-[#EAE5DF] dark:border-[#2C2723] space-y-3">
+                    <p className="text-[10.5px] font-bold uppercase tracking-wider text-[#A8A19A] dark:text-[#706A65]">
+                      {isAmharic ? 'የሚያካትታቸው አገልግሎቶች:' : 'What is included:'}
+                    </p>
+                    <div className="space-y-2.5">
+                      {plan.features.map((feat) => (
+                        <div key={feat} className="flex items-start gap-2.5 text-xs text-[#24211F] dark:text-[#FAF8F5]">
+                          <div className="w-4 h-4 rounded-full bg-[#FAF0ED] dark:bg-[#2A1D1A] flex items-center justify-center shrink-0 mt-0.5 text-[#981C00] dark:text-[#E89382]">
+                            <Check className="w-2.5 h-2.5 stroke-[3]" />
+                          </div>
+                          <span className="leading-snug font-normal">{feat}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
                 {/* Plan Action Button */}
-                <div className="pt-6 mt-4">
+                <div className="pt-8 mt-4">
                   <button
                     onClick={() => handleOpenSubscribe(plan.name, plan.price)}
                     disabled={isClosed}
-                    className={`w-full py-2.5 px-4 rounded-md text-xs font-bold tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                    className={`w-full py-3.5 px-5 rounded-xl text-xs sm:text-sm font-bold tracking-tight transition-all duration-150 cursor-pointer flex items-center justify-center gap-2 ${
                       isClosed
                         ? 'bg-[#EAE5DF] text-[#706A65] cursor-not-allowed'
                         : plan.recommended
-                        ? 'bg-[#981C00] hover:bg-[#7A1D28] text-white shadow-xs'
-                        : 'bg-[#FAF8F5] hover:bg-[#EAE5DF] dark:bg-[#141211] dark:hover:bg-[#25221F] text-[#24211F] dark:text-[#FAF8F5] border border-[#E8E4DF] dark:border-[#2C2825]'
+                        ? 'bg-[#981C00] hover:bg-[#7A1D28] text-white shadow-sm hover:shadow'
+                        : 'bg-[#FAF8F5] hover:bg-[#EFEAE4] dark:bg-[#141211] dark:hover:bg-[#25221F] text-[#24211F] dark:text-[#FAF8F5] border border-[#DDD7CF] dark:border-[#2C2723]'
                     }`}
                   >
                     {isClosed ? (
@@ -844,12 +905,31 @@ export const LandingView: React.FC<LandingViewProps> = ({
                         <span>{isAmharic ? 'ምዝገባ ተጠናቋል' : 'Closed'}</span>
                       </span>
                     ) : (
-                      <span>{plan.cta}</span>
+                      <>
+                        <span>{plan.cta}</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </>
                     )}
                   </button>
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Bottom Assurance Bar */}
+          <div className="pt-8 max-w-4xl mx-auto flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs text-[#706A65] dark:text-[#A8A19A] border-t border-[#E8E4DF] dark:border-[#2C2825]">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-[#981C00] dark:text-[#C43214]" />
+              <span>{isAmharic ? 'ምንም አውቶማቲክ ቅነሳ የለም — አንድ ጊዜ ብቻ የሚከፈል' : 'One-time payment — no auto-debit renewals'}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Smartphone className="w-4 h-4 text-[#981C00] dark:text-[#C43214]" />
+              <span>{isAmharic ? 'በTelebirr እና በCBE ቀላል ክፍያ' : 'Pay seamlessly with Telebirr & CBE'}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <UserCheck className="w-4 h-4 text-[#981C00] dark:text-[#C43214]" />
+              <span>{isAmharic ? 'ፈጣን የአባልነት ሁኔታ ማረጋገጫ' : 'Instant phone approval status check'}</span>
+            </div>
           </div>
         </div>
       </section>

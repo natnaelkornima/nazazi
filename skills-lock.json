@@ -6,6 +6,12 @@
       "sourceType": "github",
       "skillPath": "skills/taste-skill/SKILL.md",
       "computedHash": "6ac8ba6089dcbc303744a507a4587113c5d845ca2f658b3ce2b0b5eab108fb0d"
+    },
+    "verify-et-api": {
+      "source": "NegusNati/verify-et-api",
+      "sourceType": "github",
+      "skillPath": "skills/verify-et-api/SKILL.md",
+      "computedHash": "0df120494bae53315138b370144cc1dbd465a5f3e9f3b28f9ed9a91f40e6642c"
     }
   }
 }
