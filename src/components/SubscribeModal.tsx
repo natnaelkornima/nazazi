@@ -131,6 +131,21 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
     }, 2000);
   };
 
+  const handlePasteFromClipboard = async () => {
+    try {
+      if (typeof navigator !== 'undefined' && navigator.clipboard?.readText) {
+        const text = await navigator.clipboard.readText();
+        if (text) {
+          setTransactionId(text.trim());
+          setTransactionIdTouched(true);
+          info(isAmharic ? 'የትራንዛክሽን ኮድ ተለጥፏል' : 'Pasted from clipboard', text.trim());
+        }
+      }
+    } catch {
+      // Browsers may block clipboard read if permission is not granted
+    }
+  };
+
   const planAmount = selectedPlanId === '6m' ? 1000 : selectedPlanId === '3m' ? 600 : 200;
   const selectedPlan = selectedPlanId === '6m'
     ? (isAmharic ? 'የ6 ወር አገልግሎት (1000 ብር)' : '6 Months Access (1,000 Birr)')
@@ -722,83 +737,164 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                   />
                 </div>
 
-                {/* 2. Unified Verify.ET Bank Verification Card */}
-                <div className="space-y-3 p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 shadow-2xs">
-                  <div className="flex items-center justify-between gap-2 flex-wrap">
-                    <div className="flex items-center gap-1.5">
-                      <Zap className="w-4 h-4 text-amber-500 dark:text-amber-400 shrink-0" />
-                      <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                        {isAmharic ? 'ፈጣን የባንክ ማረጋገጫ (Verify.ET)' : 'Automated Bank Verification'}
+                {/* 2. Eye-Catching Shadcn-Style Verify.ET Bank Verification Card */}
+                <div className="rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-4 sm:p-5 shadow-xs space-y-4">
+                  {/* Clean Header with Verified Live Badge */}
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-8 h-8 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center shrink-0 shadow-2xs">
+                        <Zap className="w-4 h-4 fill-amber-400 text-amber-400" />
+                      </div>
+                      <div className="min-w-0">
+                        <h4 className="text-xs sm:text-sm font-bold tracking-tight text-zinc-900 dark:text-white truncate">
+                          {isAmharic ? 'ፈጣን የባንክ ማረጋገጫ' : 'Automated Bank Verification'}
+                        </h4>
+                        <p className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
+                          {isAmharic ? 'ያለ ሰው እጅ በ2 ሰከንድ ውስጥ በቀጥታ ይረጋገጣል' : 'Instant check directly with bank'}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Live Pulse Badge */}
+                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-[11px] font-semibold shrink-0">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                       </span>
-                      <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 uppercase tracking-wider">
-                        {isAmharic ? 'ራስ-ሰር' : 'Instant'}
+                      <span>Verify.ET Live</span>
+                    </div>
+                  </div>
+
+                  {/* Shadcn Segmented Tab Selector */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between text-xs">
+                      <label className="font-semibold text-zinc-700 dark:text-zinc-300">
+                        {isAmharic ? 'የከፈሉበት ዘዴ' : 'Payment Method'}
+                      </label>
+                      <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                        {selectedBank === 'auto'
+                          ? (isAmharic ? 'በራሱ የሚለይ' : 'Auto detection')
+                          : selectedBank === 'telebirr'
+                          ? 'Telebirr SMS'
+                          : 'CBE Mobile'}
                       </span>
                     </div>
 
-                    {/* Bank selector pills */}
-                    <div className="flex items-center gap-1 bg-white dark:bg-zinc-800 p-0.5 rounded-lg border border-zinc-200/80 dark:border-zinc-700">
+                    <div className="grid grid-cols-3 p-1 rounded-xl bg-zinc-100/90 dark:bg-zinc-800/80 border border-zinc-200/50 dark:border-zinc-700/60 text-xs">
                       <button
                         type="button"
                         onClick={() => setSelectedBank('auto')}
-                        className={`px-2 py-0.5 rounded-md text-[10px] font-bold cursor-pointer transition-colors ${
+                        className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg font-semibold transition-all cursor-pointer ${
                           selectedBank === 'auto'
-                            ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-2xs'
-                            : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+                            ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-2xs font-bold'
+                            : 'text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200'
                         }`}
                       >
-                        {isAmharic ? 'ራስ-ሰር' : 'Auto'}
+                        <Sparkles className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500" />
+                        <span>{isAmharic ? 'ራስ-ሰር ለይ' : 'Auto'}</span>
                       </button>
+
                       <button
                         type="button"
                         onClick={() => setSelectedBank('cbe')}
-                        className={`px-2 py-0.5 rounded-md text-[10px] font-bold cursor-pointer transition-colors ${
+                        className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg font-semibold transition-all cursor-pointer ${
                           selectedBank === 'cbe'
-                            ? 'bg-amber-600 text-white shadow-2xs'
-                            : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+                            ? 'bg-white dark:bg-zinc-900 text-amber-700 dark:text-amber-400 shadow-2xs font-bold'
+                            : 'text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200'
                         }`}
                       >
-                        CBE
+                        <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
+                        <span>CBE</span>
                       </button>
+
                       <button
                         type="button"
                         onClick={() => setSelectedBank('telebirr')}
-                        className={`px-2 py-0.5 rounded-md text-[10px] font-bold cursor-pointer transition-colors ${
+                        className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg font-semibold transition-all cursor-pointer ${
                           selectedBank === 'telebirr'
-                            ? 'bg-emerald-600 text-white shadow-2xs'
-                            : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+                            ? 'bg-white dark:bg-zinc-900 text-emerald-700 dark:text-emerald-400 shadow-2xs font-bold'
+                            : 'text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200'
                         }`}
                       >
-                        Telebirr
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+                        <span>Telebirr</span>
                       </button>
                     </div>
                   </div>
 
-                  <Input
-                    label={
-                      isAmharic
-                        ? 'የትራንዛክሽን ቁጥር (Transaction ID / Reference) ወይም የደረሰኝ ሊንክ'
-                        : 'Transaction ID / Reference Number or Receipt Link'
-                    }
-                    placeholder={
-                      selectedBank === 'telebirr'
-                        ? (isAmharic ? 'ምሳሌ፡ CI72984X12 (ከቴሌብር SMS)' : 'e.g. CI72984X12 (from Telebirr SMS)')
-                        : selectedBank === 'cbe'
-                        ? (isAmharic ? 'ምሳሌ፡ fHCxyTVljBcl... ወይም CBE Receipt Link' : 'e.g. fHCxyTVljBcl... or CBE receipt URL')
-                        : (isAmharic ? 'የትራንዛክሽን ቁጥር ወይም የደረሰኝ ሊንክ እዚህ ያስገቡ' : 'Enter transaction reference or link')
-                    }
-                    value={transactionId}
-                    onChange={(e) => {
-                      setTransactionId(e.target.value);
-                      if (!transactionIdTouched) setTransactionIdTouched(true);
-                    }}
-                    onBlur={() => setTransactionIdTouched(true)}
-                    leftIcon={<Zap className="w-3.5 h-3.5 text-zinc-400" />}
-                    helperText={
-                      isAmharic
-                        ? 'ከባንክ ወይም ከቴሌብር የደረሰዎትን አጭር የትራንዛክሽን ኮድ ወይም የደረሰኝ ዌብሳይት ሊንክ እዚህ ይለጥፉ'
-                        : 'Paste the reference ID or CBE receipt link to verify instantly'
-                    }
-                  />
+                  {/* Transaction ID Input with Inline Paste / Clear Action */}
+                  <div className="space-y-1.5 pt-0.5">
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                        {isAmharic ? 'የትራንዛክሽን ቁጥር (Transaction ID)' : 'Transaction ID / Reference'}
+                      </label>
+                      {transactionId && (
+                        <span className="text-[10px] font-mono text-zinc-400 dark:text-zinc-500">
+                          {transactionId.length} {isAmharic ? 'ቁምፊ' : 'chars'}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="relative flex items-center">
+                      <div className="absolute left-3.5 text-zinc-400 pointer-events-none">
+                        <Zap className="w-4 h-4" />
+                      </div>
+
+                      <input
+                        type="text"
+                        value={transactionId}
+                        onChange={(e) => {
+                          setTransactionId(e.target.value);
+                          if (!transactionIdTouched) setTransactionIdTouched(true);
+                        }}
+                        onBlur={() => setTransactionIdTouched(true)}
+                        placeholder={
+                          selectedBank === 'telebirr'
+                            ? (isAmharic ? 'ምሳሌ፡ CI72984X12 (ከSMS)' : 'e.g. CI72984X12 (from SMS)')
+                            : selectedBank === 'cbe'
+                            ? (isAmharic ? 'ምሳሌ፡ fHCxyTV... ወይም ደረሰኝ ሊንክ' : 'e.g. fHCxyTV... or receipt link')
+                            : (isAmharic ? 'ምሳሌ፡ CI72984X12 ወይም fHCxyTV...' : 'e.g. CI72984X12 or receipt link')
+                        }
+                        className="w-full h-11 pl-10 pr-20 text-xs sm:text-sm font-mono font-medium rounded-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border border-zinc-200/90 dark:border-zinc-800 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 focus:ring-2 focus:ring-zinc-900/10 dark:focus:ring-white/10 shadow-2xs transition-all placeholder:text-zinc-400 placeholder:font-sans"
+                      />
+
+                      {/* Right Action: Clear or One-Tap Paste */}
+                      <div className="absolute right-2 flex items-center">
+                        {transactionId ? (
+                          <button
+                            type="button"
+                            onClick={() => setTransactionId('')}
+                            className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                            title={isAmharic ? 'አጽዳ' : 'Clear'}
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={handlePasteFromClipboard}
+                            className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-750 text-zinc-700 dark:text-zinc-300 border border-zinc-200/60 dark:border-zinc-700 transition-all cursor-pointer shadow-2xs"
+                            title={isAmharic ? 'ከክሊፕቦርድ ለጥፍ' : 'Paste from clipboard'}
+                          >
+                            <ClipboardPaste className="w-3.5 h-3.5 text-zinc-500" />
+                            <span className="text-[11px]">{isAmharic ? 'ለጥፍ' : 'Paste'}</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Clean contextual hint without duplicate repetition */}
+                    <p className="text-[11px] text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 pt-0.5">
+                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-500 shrink-0" />
+                      <span>
+                        {selectedBank === 'telebirr'
+                          ? (isAmharic ? 'ከቴሌብር በደረሰዎት አጭር የጽሁፍ መልእክት (SMS) ላይ የሚገኝ ኮድ' : 'Code from your Telebirr SMS notification')
+                          : selectedBank === 'cbe'
+                          ? (isAmharic ? 'የንግድ ባንክ ደረሰኝ ኮድ ወይም የድረ-ገጽ ሊንክ (URL)' : 'CBE receipt reference code or web link')
+                          : (isAmharic ? 'ከባንክ ወይም ከቴሌብር የደረሰዎትን አጭር ኮድ ወይም የደረሰኝ ሊንክ እዚህ ያስገቡ' : 'Paste your bank SMS code or receipt URL to verify')}
+                      </span>
+                    </p>
+                  </div>
                 </div>
 
                 {/* Optional Screenshot Attachment Toggle */}
