@@ -87,10 +87,10 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigate }) => {
   return (
     <div className="min-h-[calc(100vh-10rem)] flex items-center justify-center p-4 py-8">
       {/* Main Authentication Card with Sleek Shadow */}
-      <div className="w-full max-w-4xl bg-white dark:bg-zinc-900 rounded-[3px] overflow-hidden grid grid-cols-1 lg:grid-cols-12 border border-zinc-200/80 dark:border-zinc-800/90 shadow-2xl shadow-zinc-300/40 dark:shadow-black/50 min-h-[580px]">
+      <div className="w-full max-w-4xl bg-white dark:bg-zinc-900 rounded-[5px] overflow-hidden grid grid-cols-1 lg:grid-cols-12 border border-zinc-200/80 dark:border-zinc-800/90 shadow-2xl shadow-zinc-300/40 dark:shadow-black/50 min-h-[580px]">
         
         {/* Left Column: Visual Brand Banner */}
-        <div className="lg:col-span-5 bg-zinc-950 p-8 lg:p-10 flex flex-col justify-between relative overflow-hidden text-white rounded-[3px] m-2 min-h-[280px] lg:min-h-[540px]">
+        <div className="lg:col-span-5 bg-zinc-950 p-8 lg:p-10 flex flex-col justify-between relative overflow-hidden text-white rounded-[5px] m-2 min-h-[280px] lg:min-h-[540px]">
             {/* Glowing Amber Light Effect */}
             <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-gradient-to-tr from-amber-600 via-orange-500 to-amber-300 opacity-40 blur-3xl rounded-full pointer-events-none" />
             <div className="absolute top-1/2 -right-20 w-60 h-60 bg-gradient-to-br from-orange-600 via-amber-500 to-amber-700 opacity-25 blur-2xl rounded-full pointer-events-none" />

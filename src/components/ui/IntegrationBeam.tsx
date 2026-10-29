@@ -96,7 +96,7 @@ export function IntegrationBeam({
         <img
           src="/images/logos/verifyet.png"
           alt="Verify.ET"
-          className="w-full h-full object-contain rounded-[3px] shadow-2xs"
+          className="w-full h-full object-contain rounded-[5px] shadow-2xs"
           draggable={false}
         />
       ),
@@ -145,7 +145,7 @@ export function IntegrationBeam({
   const defaultCenter: BeamCenter = {
     name: isAmharic ? "ናዛዚ" : "Nazazi",
     logo: (
-      <div className="w-9 h-9 rounded-[3px] bg-gradient-to-b from-[#7A1D28] via-[#981C00] to-[#5C1000] text-white flex items-center justify-center font-bold text-sm shadow-md ring-2 ring-[#FAF8F5]/20">
+      <div className="w-9 h-9 rounded-[5px] bg-gradient-to-b from-[#7A1D28] via-[#981C00] to-[#5C1000] text-white flex items-center justify-center font-bold text-sm shadow-md ring-2 ring-[#FAF8F5]/20">
         <span className="font-bela-bereka text-base tracking-tighter">ና</span>
       </div>
     ),

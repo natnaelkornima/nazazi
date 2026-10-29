@@ -12,7 +12,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={cn(
-          'rounded-[3px] border bg-white dark:bg-[#1D1A18] border-[#E8E4DF] dark:border-[#2C2825] text-[#141413] dark:text-[#FAF8F5] shadow-xs transition-all duration-150',
+          'rounded-[5px] border bg-white dark:bg-[#1D1A18] border-[#E8E4DF] dark:border-[#2C2825] text-[#141413] dark:text-[#FAF8F5] shadow-xs transition-all duration-150',
           hoverEffect &&
             'hover:shadow-md hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40 hover:-translate-y-0.5',
           glass &&
