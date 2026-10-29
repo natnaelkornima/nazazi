@@ -69,63 +69,36 @@ export function IntegrationBeam({
       name: isAmharic ? "ቴሌብር (Telebirr)" : "Telebirr",
       subtitle: isAmharic ? "የሞባይል ክፍያ" : "Mobile Money",
       logo: (
-        <svg viewBox="0 0 28 28" fill="none" className="w-full h-full" aria-hidden="true">
-          <rect width="28" height="28" rx="7" fill="#00A3E0" />
-          <path
-            d="M8 8.5C8 7.67 8.67 7 9.5 7H18.5C19.33 7 20 7.67 20 8.5V19.5C20 20.33 19.33 21 18.5 21H9.5C8.67 21 8 20.33 8 19.5V8.5Z"
-            fill="white"
-            fillOpacity="0.15"
-          />
-          <path
-            d="M10.5 11H17.5M14 11V18M11.5 18H16.5"
-            stroke="white"
-            strokeWidth="2.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <circle cx="14" cy="7.5" r="1" fill="#FFC836" />
-        </svg>
+        <img
+          src="/images/logos/telebirr.png"
+          alt="Telebirr"
+          className="w-full h-full object-contain p-0.5"
+          draggable={false}
+        />
       ),
     },
     {
       name: isAmharic ? "ንግድ ባንክ (CBE)" : "Commercial Bank (CBE)",
       subtitle: isAmharic ? "የባንክ ማስተላለፊያ" : "Bank Transfer",
       logo: (
-        <svg viewBox="0 0 28 28" fill="none" className="w-full h-full" aria-hidden="true">
-          <rect width="28" height="28" rx="7" fill="#58167D" />
-          <path
-            d="M14 6L21 14L14 22L7 14L14 6Z"
-            stroke="#F4B41A"
-            strokeWidth="1.8"
-            fill="#F4B41A"
-            fillOpacity="0.25"
-          />
-          <circle cx="14" cy="14" r="3" fill="#F4B41A" />
-        </svg>
+        <img
+          src="/images/logos/cbe.png"
+          alt="Commercial Bank of Ethiopia (CBE)"
+          className="w-full h-full object-contain p-0.5"
+          draggable={false}
+        />
       ),
     },
     {
       name: isAmharic ? "Verify.ET" : "Verify.ET",
       subtitle: isAmharic ? "ቅጽበታዊ ማረጋገጫ" : "Instant Verification",
       logo: (
-        <svg viewBox="0 0 28 28" fill="none" className="w-full h-full" aria-hidden="true">
-          <rect width="28" height="28" rx="7" fill="#0E1B26" />
-          <path
-            d="M14 6L7 9.5V14.5C7 18.8 9.9 22.8 14 24C18.1 22.8 21 18.8 21 14.5V9.5L14 6Z"
-            fill="#059669"
-            fillOpacity="0.2"
-            stroke="#10B981"
-            strokeWidth="1.6"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M11 14.2L13 16.2L17.5 11.8"
-            stroke="#34D399"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <img
+          src="/images/logos/verifyet.png"
+          alt="Verify.ET"
+          className="w-full h-full object-contain rounded-[7px] shadow-2xs"
+          draggable={false}
+        />
       ),
     },
   ];
@@ -777,7 +750,8 @@ const css = /* css */ `
   height: 32px;
   transition: transform 300ms var(--ui-ib-ease), filter 300ms var(--ui-ib-ease), opacity 300ms var(--ui-ib-ease);
 }
-.ui-ib__logo > svg { width: 100%; height: 100%; }
+.ui-ib__logo > svg,
+.ui-ib__logo > img { width: 100%; height: 100%; object-fit: contain; }
 @media (hover: hover) {
   .ui-ib__tool:hover { transform: translateY(-2px); box-shadow: 0 16px 32px -10px rgba(152, 28, 0, 0.15), var(--ui-ib-shadow); }
   .ui-ib__tool:hover .ui-ib__logo { transform: scale(1.08); }
