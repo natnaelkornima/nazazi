@@ -69,10 +69,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header
-      className={`sticky top-0 z-40 w-full transition-all duration-200 border-b ${
+      className={`sticky top-0 z-40 w-full transition-all duration-200 border-b border-dashed border-[#DDD7CF] dark:border-[#2C2825] ${
         scrolled
-          ? 'bg-[#FAF8F5]/95 dark:bg-[#141211]/95 backdrop-blur-md border-[#E8E4DF] dark:border-[#2C2825] shadow-xs'
-          : 'bg-[#FAF8F5] dark:bg-[#141211] border-transparent'
+          ? 'bg-[#FAF8F5]/95 dark:bg-[#141211]/95 backdrop-blur-md shadow-2xs'
+          : 'bg-[#FAF8F5] dark:bg-[#141211]'
       }`}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
@@ -187,7 +187,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="sm:hidden border-b border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] px-5 py-5 space-y-4 shadow-lg animate-in fade-in slide-in-from-top-2 duration-150">
+        <div className="sm:hidden border-b border-dashed border-[#DDD7CF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] px-5 py-5 space-y-4 shadow-lg animate-in fade-in slide-in-from-top-2 duration-150">
           <nav className="flex flex-col space-y-3 text-sm font-semibold text-[#24211F] dark:text-[#FAF8F5]">
             <button
               onClick={() => handleNavClick('#how-it-works')}
@@ -221,7 +221,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </nav>
 
-          <div className="pt-3 border-t border-[#E8E4DF] dark:border-[#2C2825] space-y-2.5">
+          <div className="pt-3 border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825] space-y-2.5">
             <button
               onClick={handleSubscribeClick}
               className="w-full py-2.5 px-4 rounded-xl bg-[#981C00] text-white text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:bg-[#7A1D28] transition-colors"

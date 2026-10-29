@@ -36,7 +36,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenVerifyModal })
   };
 
   return (
-    <footer className="w-full bg-[#F3EFEA] dark:bg-[#0E0D0C] border-t border-[#E8E4DF] dark:border-[#2C2825] text-[#706A65] dark:text-[#A8A19A] text-xs transition-colors">
+    <footer className="w-full bg-[#F3EFEA] dark:bg-[#0E0D0C] border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825] text-[#706A65] dark:text-[#A8A19A] text-xs transition-colors">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-12">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
           {/* Brand Column */}
@@ -136,7 +136,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenVerifyModal })
         </div>
 
         {/* Bottom Bar: Copyright & Discrete Admin Entry */}
-        <div className="pt-8 border-t border-[#E8E4DF] dark:border-[#2C2825] flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[#A8A19A] dark:text-[#706A65]">
+        <div className="pt-8 border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825] flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[#A8A19A] dark:text-[#706A65]">
           <p>© {new Date().getFullYear()} NAZAZI. {isAmharic ? 'መብቱ በህግ የተጠበቀ ነው።' : 'All rights reserved.'}</p>
           
           {/* Discrete, unobtrusive administrator access separate from customer flows */}

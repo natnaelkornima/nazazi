@@ -826,7 +826,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
           Clear 3-step journey with generous breathing room and rich descriptions.
           ======================================================== */}
       <section id="how-it-works" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20">
-        <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] py-20 sm:py-24 space-y-12 sm:space-y-16">
+        <div className="border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825] py-20 sm:py-24 space-y-12 sm:space-y-16">
           {/* Section Header with Generous White Space */}
           <div className="text-center max-w-2xl mx-auto space-y-3 sm:space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[3px] text-xs font-bold uppercase tracking-wider bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#C43214] border border-[#E8DCD9] dark:border-[#3A2420]">
@@ -923,7 +923,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
           Real plans: 1m (200), 3m (600), 6m (1000 - discount from 1200)
           ======================================================== */}
       <section id="pricing" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20">
-        <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] py-20 sm:py-24 space-y-12">
+        <div className="border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825] py-20 sm:py-24 space-y-12">
           {/* Section Header */}
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#981C00] dark:text-[#C43214]">
@@ -1090,7 +1090,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
           </div>
 
           {/* Bottom Assurance Bar */}
-          <div className="pt-8 max-w-4xl mx-auto flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs text-[#706A65] dark:text-[#A8A19A] border-t border-[#E8E4DF] dark:border-[#2C2825]">
+          <div className="pt-8 max-w-4xl mx-auto flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs text-[#706A65] dark:text-[#A8A19A] border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-[#981C00] dark:text-[#C43214]" />
               <span>{isAmharic ? 'ምንም አውቶማቲክ ቅነሳ የለም — አንድ ጊዜ ብቻ የሚከፈል' : 'One-time payment — no auto-debit renewals'}</span>
@@ -1112,7 +1112,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
           Real, verifiable facts without fake marketing hype.
           ======================================================== */}
       <section id="trust" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20">
-        <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] py-20 sm:py-24 space-y-12">
+        <div className="border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825] py-20 sm:py-24 space-y-12">
           <div className="max-w-xl space-y-2">
             <p className="text-xs font-bold uppercase tracking-wider text-[#981C00] dark:text-[#C43214]">
               {isAmharic ? 'ደህንነት እና ግልጽነት' : 'Trust & Reliability'}
@@ -1188,7 +1188,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
           Clean, minimal moving carousel that pauses on hover
           ======================================================== */}
       <section id="testimonials" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20">
-        <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] py-20 sm:py-24 space-y-8">
+        <div className="border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825] py-20 sm:py-24 space-y-8">
           {/* Minimal Header */}
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div className="space-y-1.5">
@@ -1294,7 +1294,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
           Clean, accessible accordion with keyboard navigation.
           ======================================================== */}
       <section id="faq" className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20">
-        <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] py-20 sm:py-24 space-y-8">
+        <div className="border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825] py-20 sm:py-24 space-y-8">
           <div className="text-center space-y-2">
             <p className="text-xs font-bold uppercase tracking-wider text-[#981C00] dark:text-[#C43214]">
               FAQ
@@ -1325,7 +1325,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                     />
                   </button>
                   {isOpen && (
-                    <div className="px-4 sm:px-5 pb-5 pt-1 text-xs sm:text-sm text-[#706A65] dark:text-[#A8A19A] leading-relaxed border-t border-[#E8E4DF]/60 dark:border-[#2C2825]/60">
+                    <div className="px-4 sm:px-5 pb-5 pt-1 text-xs sm:text-sm text-[#706A65] dark:text-[#A8A19A] leading-relaxed border-t border-dashed border-[#DDD7CF]/70 dark:border-[#2C2825]/70">
                       {faq.a}
                     </div>
                   )}
