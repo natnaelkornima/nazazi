@@ -108,89 +108,36 @@ export function IntegrationBeam({
       name: isAmharic ? "ቀጥታ SMS" : "Direct SMS",
       subtitle: isAmharic ? "ያለ ኢንተርኔት" : "Offline Delivery",
       logo: (
-        <svg viewBox="0 0 28 28" fill="none" className="w-full h-full" aria-hidden="true">
-          <rect width="28" height="28" rx="7" fill="#FAF4F2" className="dark:fill-[#2A1D1A]" />
-          <rect
-            x="7"
-            y="6"
-            width="14"
-            height="16"
-            rx="2.5"
-            stroke="#981C00"
-            className="dark:stroke-[#C43214]"
-            strokeWidth="1.6"
-          />
-          <path
-            d="M10 10H18M10 13H15M13 18H15"
-            stroke="#981C00"
-            className="dark:stroke-[#C43214]"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-        </svg>
+        <img
+          src="/images/icons/sms.png"
+          alt="Direct SMS"
+          className="w-full h-full object-contain p-0.5"
+          draggable={false}
+        />
       ),
     },
     {
       name: isAmharic ? "የዕለቱ ቃል" : "Daily Scripture",
       subtitle: isAmharic ? "የመንፈስ ብርታት" : "Spiritual Verses",
       logo: (
-        <svg viewBox="0 0 28 28" fill="none" className="w-full h-full" aria-hidden="true">
-          <rect width="28" height="28" rx="7" fill="#FAF4F2" className="dark:fill-[#2A1D1A]" />
-          <path
-            d="M7 8C7 7.4 7.4 7 8 7H13.2C13.7 7 14 7.3 14 7.8V20.5C13.6 20.2 12.8 20 12 20H8C7.4 20 7 19.6 7 19V8Z"
-            fill="#981C00"
-            fillOpacity="0.2"
-            stroke="#981C00"
-            className="dark:fill-[#C43214] dark:stroke-[#C43214]"
-            strokeWidth="1.5"
-          />
-          <path
-            d="M21 8C21 7.4 20.6 7 20 7H14.8C14.3 7 14 7.3 14 7.8V20.5C14.4 20.2 15.2 20 16 20H20C20.6 20 21 19.6 21 19V8Z"
-            fill="#981C00"
-            fillOpacity="0.2"
-            stroke="#981C00"
-            className="dark:fill-[#C43214] dark:stroke-[#C43214]"
-            strokeWidth="1.5"
-          />
-          <path
-            d="M14 8.5V20M10 11H12M16 11H18"
-            stroke="#981C00"
-            className="dark:stroke-[#C43214]"
-            strokeWidth="1.4"
-            strokeLinecap="round"
-          />
-        </svg>
+        <img
+          src="/images/icons/fire.png"
+          alt="Daily Scripture"
+          className="w-full h-full object-contain p-0.5"
+          draggable={false}
+        />
       ),
     },
     {
       name: isAmharic ? "ማለዳ 12:30" : "Dawn 12:30",
       subtitle: isAmharic ? "በየዕለቱ በሰዓቱ" : "Every Morning",
       logo: (
-        <svg viewBox="0 0 28 28" fill="none" className="w-full h-full" aria-hidden="true">
-          <rect width="28" height="28" rx="7" fill="#FAF4F2" className="dark:fill-[#2A1D1A]" />
-          <circle
-            cx="14"
-            cy="14"
-            r="7"
-            stroke="#F59E0B"
-            strokeWidth="1.6"
-            fill="#F59E0B"
-            fillOpacity="0.15"
-          />
-          <path
-            d="M14 10V14L16.5 15.5"
-            stroke="#F59E0B"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M14 4V5.5M14 22.5V24M4 14H5.5M22.5 14H24"
-            stroke="#F59E0B"
-            strokeWidth="1.4"
-            strokeLinecap="round"
-          />
-        </svg>
+        <img
+          src="/images/icons/sun.png"
+          alt="Dawn 12:30"
+          className="w-full h-full object-contain p-0.5"
+          draggable={false}
+        />
       ),
     },
   ];
