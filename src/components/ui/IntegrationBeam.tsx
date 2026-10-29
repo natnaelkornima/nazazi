@@ -72,7 +72,7 @@ export function IntegrationBeam({
         <img
           src="/images/logos/telebirr.png"
           alt="Telebirr"
-          className="w-full h-full object-contain p-0.5"
+          className="w-full h-full object-contain p-0.5 rounded-[15px]"
           draggable={false}
         />
       ),
@@ -84,7 +84,7 @@ export function IntegrationBeam({
         <img
           src="/images/logos/cbe.png"
           alt="Commercial Bank of Ethiopia (CBE)"
-          className="w-full h-full object-contain p-0.5"
+          className="w-full h-full object-contain p-0.5 rounded-[15px]"
           draggable={false}
         />
       ),
@@ -111,7 +111,7 @@ export function IntegrationBeam({
         <img
           src="/images/icons/sms.png"
           alt="Direct SMS"
-          className="w-full h-full object-contain p-0.5"
+          className="w-full h-full object-contain p-0.5 rounded-[15px]"
           draggable={false}
         />
       ),
@@ -123,7 +123,7 @@ export function IntegrationBeam({
         <img
           src="/images/icons/fire.png"
           alt="Daily Scripture"
-          className="w-full h-full object-contain p-0.5"
+          className="w-full h-full object-contain p-0.5 rounded-[15px]"
           draggable={false}
         />
       ),
@@ -135,7 +135,7 @@ export function IntegrationBeam({
         <img
           src="/images/icons/sun.png"
           alt="Dawn 12:30"
-          className="w-full h-full object-contain p-0.5"
+          className="w-full h-full object-contain p-0.5 rounded-[15px]"
           draggable={false}
         />
       ),
@@ -145,8 +145,13 @@ export function IntegrationBeam({
   const defaultCenter: BeamCenter = {
     name: isAmharic ? "ናዛዚ" : "Nazazi",
     logo: (
-      <div className="w-9 h-9 rounded-[15px] bg-gradient-to-b from-[#7A1D28] via-[#981C00] to-[#5C1000] text-white flex items-center justify-center font-bold text-sm shadow-md ring-2 ring-[#FAF8F5]/20">
-        <span className="font-bela-bereka text-base tracking-tighter">ና</span>
+      <div className="flex flex-col items-center justify-center gap-1 select-none">
+        <div className="w-8 h-8 rounded-[15px] bg-gradient-to-b from-[#7A1D28] via-[#981C00] to-[#5C1000] text-white flex items-center justify-center font-bold text-sm shadow-xs ring-1 ring-white/20">
+          <span className="font-bela-bereka text-base leading-none">ና</span>
+        </div>
+        <span className="font-serif font-bold text-xs tracking-wider text-[#981C00] dark:text-[#E89382] leading-tight">
+          {isAmharic ? "ናዛዚ" : "Nazazi"}
+        </span>
       </div>
     ),
   };
@@ -608,9 +613,10 @@ const css = /* css */ `
   --ui-ib-tip-color: #F59E0B;
   --ui-ib-ring: rgba(152, 28, 0, 0.28);
   --ui-ib-glow: rgba(196, 50, 20, 0.38);
-  --ui-ib-hub: #1C1917;
-  --ui-ib-hub-mark: #FAF8F5;
-  --ui-ib-hub-edge: rgba(152, 28, 0, 0.35);
+  --ui-ib-hub: #FFFFFF;
+  --ui-ib-hub-mark: #24211F;
+  --ui-ib-hub-edge: rgba(152, 28, 0, 0.22);
+  --ui-ib-hub-shadow: 0 0 0 1px var(--ui-ib-hub-edge), 0 2px 4px rgba(0, 0, 0, 0.04), 0 12px 28px -8px rgba(152, 28, 0, 0.15);
   --ui-ib-tooltip: #1C1917;
   --ui-ib-tooltip-text: #FAF8F5;
   --ui-ib-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.03), 0 12px 24px -10px rgba(0, 0, 0, 0.12);
@@ -681,7 +687,7 @@ const css = /* css */ `
   height: 62px;
   padding: 0;
   border: 0;
-  border-radius: 3px;
+  border-radius: 15px;
   background: var(--ui-ib-card);
   box-shadow: var(--ui-ib-shadow);
   color: var(--ui-ib-ink);
@@ -724,7 +730,7 @@ const css = /* css */ `
   top: 50%;
   left: calc(100% + 12px);
   padding: 6px 11px;
-  border-radius: 3px;
+  border-radius: 15px;
   background: var(--ui-ib-tooltip);
   color: var(--ui-ib-tooltip-text);
   font-size: 12px;
@@ -747,14 +753,15 @@ const css = /* css */ `
   position: relative;
   display: grid;
   place-items: center;
-  width: 86px;
-  height: 86px;
-  border-radius: 3px;
+  width: 92px;
+  height: 92px;
+  border-radius: 15px;
   background: var(--ui-ib-hub);
-  box-shadow: 0 0 0 1px var(--ui-ib-hub-edge), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 16px 36px -12px rgba(152, 28, 0, 0.45);
+  box-shadow: var(--ui-ib-hub-shadow);
   color: var(--ui-ib-hub-mark);
+  transition: background-color 300ms var(--ui-ib-ease), box-shadow 300ms var(--ui-ib-ease);
 }
-.ui-ib__mark { display: grid; place-items: center; width: 44px; height: 44px; }
+.ui-ib__mark { display: flex; align-items: center; justify-content: center; width: auto; height: auto; }
 .ui-ib__ring--center { inset: -1px; }
 
 /* Status chip */
@@ -766,7 +773,7 @@ const css = /* css */ `
   display: block;
   height: 28px;
   overflow: hidden;
-  border-radius: 3px;
+  border-radius: 15px;
   background: var(--ui-ib-card);
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.05);
   transition: width 320ms var(--ui-ib-ease);
@@ -817,8 +824,8 @@ const css = /* css */ `
     padding: 0 0 8px;
   }
   .ui-ib__group { flex-direction: row; gap: clamp(14px, 7cqw, 34px); }
-  .ui-ib__tool { width: 56px; height: 56px; border-radius: 3px; }
-  .ui-ib__center { width: 78px; height: 78px; border-radius: 3px; }
+  .ui-ib__tool { width: 56px; height: 56px; border-radius: 15px; }
+  .ui-ib__center { width: 84px; height: 84px; border-radius: 15px; }
   .ui-ib__tip,
   .ui-ib__group--out .ui-ib__tip {
     --ui-ib-tip-from: translate(-50%, -4px);
@@ -852,9 +859,10 @@ const css = /* css */ `
   --ui-ib-tip-color: #FDE68A;
   --ui-ib-ring: rgba(196, 50, 20, 0.35);
   --ui-ib-glow: rgba(232, 147, 130, 0.4);
-  --ui-ib-hub: #2A1D1A;
+  --ui-ib-hub: #211D1A;
   --ui-ib-hub-mark: #FAF8F5;
-  --ui-ib-hub-edge: rgba(196, 50, 20, 0.3);
+  --ui-ib-hub-edge: rgba(196, 50, 20, 0.35);
+  --ui-ib-hub-shadow: 0 0 0 1px var(--ui-ib-hub-edge), inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 16px 36px -12px rgba(0, 0, 0, 0.6);
   --ui-ib-tooltip: #FAF8F5;
   --ui-ib-tooltip-text: #1C1917;
   --ui-ib-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 2px 4px rgba(0, 0, 0, 0.4), 0 14px 28px -10px rgba(0, 0, 0, 0.6);

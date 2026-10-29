@@ -1007,22 +1007,6 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
       ? charsPerSegment
       : charsPerSegment - (messageText.length % charsPerSegment || charsPerSegment);
 
-  // Live Phone Preview Formatter
-  const previewMessage = useMemo(() => {
-    const sampleName =
-      targetPlan === 'single' && (singlePhone || customPhone)
-        ? approvedAll.find((s) => s.userPhone === (singlePhone || customPhone))?.userName || 'Abebe Kebede'
-        : 'Abebe Kebede';
-    const sampleDate = new Date().toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-    });
-    return (
-      messageText
-        .replace(/{name}/g, sampleName)
-        .replace(/{date}/g, sampleDate) || 'Good morning! Nazazi blessing...'
-    );
-  }, [messageText, targetPlan, singlePhone, customPhone, approvedAll]);
 
   const dispatchPercentage =
     progress.totalRecipients > 0
@@ -1717,307 +1701,160 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
             {/* RIGHT COLUMN: STEP 3 (MESSAGE CONTENT, VARIABLES & LIVE PHONE PREVIEW) */}
             {/* ========================================================================= */}
             <div className="lg:col-span-7 xl:col-span-8 space-y-4">
-              <Card className="p-5 sm:p-6 bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[15px] shadow-xs space-y-5">
-                {/* Step Header */}
+              <Card className="p-5 sm:p-6 bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[15px] shadow-xs space-y-4">
+                {/* Header */}
                 <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#E8E4DF] dark:border-[#2C2825]">
-                  <div className="flex items-center gap-3">
-                    <div className="w-7 h-7 rounded-[15px] bg-[#981C00]/10 dark:bg-[#981C00]/25 text-[#981C00] dark:text-[#E89382] flex items-center justify-center font-bold text-xs">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-6 h-6 rounded-[15px] bg-[#981C00]/10 dark:bg-[#981C00]/25 text-[#981C00] dark:text-[#E89382] flex items-center justify-center font-bold text-xs">
                       3
                     </div>
                     <div>
-                      <h2 className="text-sm sm:text-base font-serif font-bold text-[#24211F] dark:text-[#F3EFEA]">
-                        Step 3. Message Content & Dynamic Variables
+                      <h2 className="text-sm font-semibold text-[#24211F] dark:text-[#F3EFEA]">
+                        Message Content
                       </h2>
-                      <p className="text-xs text-[#706A65] dark:text-[#A8A29D]">
-                        Craft or select an inspired faith message. Real-time preview renders dynamic tags automatically.
-                      </p>
                     </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    {messageText.trim().length > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => handleOpenNewTemplateModal(messageText)}
+                        className="px-2.5 py-1 rounded-[15px] text-xs font-medium bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] text-[#706A65] hover:text-[#24211F] dark:text-[#A8A29D] dark:hover:text-[#F3EFEA] transition-colors cursor-pointer flex items-center gap-1.5"
+                        title="Save as template"
+                      >
+                        <BookmarkPlus className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
+                        <span>Save Draft</span>
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => handleOpenNewTemplateModal()}
+                      className="px-2.5 py-1 rounded-[15px] text-xs font-medium bg-[#981C00] hover:bg-[#7A1D28] text-white transition-all cursor-pointer flex items-center gap-1 shadow-xs"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>Add Template</span>
+                    </button>
                   </div>
                 </div>
 
-                {/* 2-Column Responsive Layout: Left Composer, Right Phone Preview */}
-                <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
-                  {/* Left Column: Composer (7 cols on XL) */}
-                  <div className="xl:col-span-7 space-y-4">
-                    {/* Saved Sample Texts & Custom Samples */}
-                    <div className="space-y-2">
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <div>
-                          <span className="block text-xs font-bold text-[#24211F] dark:text-[#F3EFEA]">
-                            Sample Texts & Templates:
-                          </span>
-                          <span className="text-[11px] text-[#706A65] dark:text-[#A8A29D]">
-                            {customTemplates.length === 0
-                              ? 'Create your own sample texts to use for instant broadcasts or recurring schedules.'
-                              : 'Select a sample text below to load it into the composer or campaign scheduler.'}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          {messageText.trim().length > 0 && (
-                            <button
-                              type="button"
-                              onClick={() => handleOpenNewTemplateModal(messageText)}
-                              className="px-2.5 py-1 rounded-[15px] text-xs font-semibold bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] text-[#24211F] dark:text-[#F3EFEA] transition-colors cursor-pointer flex items-center gap-1"
-                              title="Save current message as a reusable sample"
-                            >
-                              <BookmarkPlus className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
-                              <span>Save Draft</span>
-                            </button>
-                          )}
+                {/* Templates Pill Bar */}
+                {customTemplates.length > 0 && (
+                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                    <span className="text-xs text-[#706A65] dark:text-[#A8A29D] shrink-0 font-medium mr-1">
+                      Templates:
+                    </span>
+                    {customTemplates.map((tmpl) => {
+                      const isSelected = messageText === tmpl.text;
+                      return (
+                        <div
+                          key={tmpl.id}
+                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-[15px] text-xs transition-all shrink-0 border ${
+                            isSelected
+                              ? 'bg-[#981C00] text-white border-[#981C00] font-medium shadow-xs'
+                              : 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-[#E8E4DF] dark:border-[#2C2825] text-[#24211F] dark:text-[#F3EFEA] hover:border-[#981C00]'
+                          }`}
+                        >
                           <button
                             type="button"
-                            onClick={() => handleOpenNewTemplateModal()}
-                            className="px-3 py-1 rounded-[15px] text-xs font-bold bg-[#981C00] hover:bg-[#7A1D28] text-white shadow-xs transition-all cursor-pointer flex items-center gap-1"
+                            onClick={() => setMessageText(tmpl.text)}
+                            className="cursor-pointer"
                           >
-                            <Plus className="w-3.5 h-3.5" />
-                            <span>Add Sample</span>
+                            {tmpl.title}
                           </button>
-                        </div>
-                      </div>
-
-                      {customTemplates.length === 0 ? (
-                        <div className="p-4 rounded-[15px] border border-dashed border-[#DDD7CF] dark:border-[#2C2825] bg-[#FAF8F5]/60 dark:bg-[#1E1B19]/30 text-center space-y-2">
-                          <div className="w-8 h-8 mx-auto rounded-[15px] bg-[#F3EFEA] dark:bg-[#2C2825] flex items-center justify-center text-[#706A65] dark:text-[#A8A29D]">
-                            <MessageSquare className="w-4 h-4" />
-                          </div>
-                          <div>
-                            <p className="text-xs font-semibold text-[#24211F] dark:text-[#F3EFEA]">
-                              No sample texts saved yet
-                            </p>
-                            <p className="text-[11px] text-[#706A65] dark:text-[#A8A29D] max-w-sm mx-auto">
-                              Add scriptures, devotional greetings, or announcements with dynamic placeholders like &#123;name&#125; and &#123;date&#125; to reuse in instant and scheduled campaigns.
-                            </p>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => handleOpenNewTemplateModal()}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[15px] text-xs font-bold bg-[#981C00] hover:bg-[#7A1D28] text-white cursor-pointer shadow-xs transition-all"
-                          >
-                            <Plus className="w-3.5 h-3.5" />
-                            <span>+ Add Sample Text</span>
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                          {customTemplates.map((tmpl) => {
-                            const isSelected = messageText === tmpl.text;
-                            return (
-                              <div
-                                key={tmpl.id}
-                                className={`p-3 rounded-[15px] border transition-all flex flex-col justify-between ${
-                                  isSelected
-                                    ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-[#981C00] dark:border-[#E89382] shadow-xs'
-                                    : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF] bg-white dark:bg-[#181615]'
-                                }`}
+                          {isSelected && (
+                            <div className="flex items-center gap-1 ml-1 pl-1.5 border-l border-white/30">
+                              <button
+                                type="button"
+                                onClick={() => handleOpenEditTemplateModal(tmpl)}
+                                title="Edit template"
+                                className="hover:opacity-75 cursor-pointer"
                               >
-                                <div
-                                  onClick={() => setMessageText(tmpl.text)}
-                                  className="cursor-pointer group"
-                                >
-                                  <div className="flex items-center justify-between gap-1 mb-1">
-                                    <span className="font-bold text-xs text-[#24211F] dark:text-[#F3EFEA] group-hover:text-[#981C00] dark:group-hover:text-[#E89382] transition-colors line-clamp-1">
-                                      {tmpl.title}
-                                    </span>
-                                    <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-[15px] bg-[#F3EFEA] dark:bg-[#2C2825] text-[#706A65] dark:text-[#A8A29D] shrink-0">
-                                      {tmpl.tag}
-                                    </span>
-                                  </div>
-                                  <p className="text-[11px] text-[#706A65] dark:text-[#A8A29D] line-clamp-2 leading-relaxed">
-                                    {tmpl.text}
-                                  </p>
-                                </div>
-
-                                <div className="flex items-center justify-between gap-1 pt-2 mt-2 border-t border-[#E8E4DF] dark:border-[#2C2825]">
-                                  <button
-                                    type="button"
-                                    onClick={() => setMessageText(tmpl.text)}
-                                    className={`text-[11px] font-bold px-2 py-0.5 rounded-[15px] transition-all cursor-pointer ${
-                                      isSelected
-                                        ? 'bg-[#981C00] text-white'
-                                        : 'text-[#981C00] dark:text-[#E89382] hover:bg-[#981C00]/10'
-                                    }`}
-                                  >
-                                    {isSelected ? 'In Composer' : 'Use in SMS'}
-                                  </button>
-
-                                  <div className="flex items-center gap-1">
-                                    <button
-                                      type="button"
-                                      onClick={() => handleUseTemplateInSchedule(tmpl)}
-                                      title="Use this sample for a scheduled campaign"
-                                      className="p-1 rounded-[15px] text-[#706A65] hover:text-[#981C00] hover:bg-[#FAF8F5] dark:hover:bg-[#1E1B19] cursor-pointer transition-colors"
-                                    >
-                                      <Calendar className="w-3.5 h-3.5" />
-                                    </button>
-                                    <button
-                                      type="button"
-                                      onClick={() => handleOpenEditTemplateModal(tmpl)}
-                                      title="Edit sample text"
-                                      className="p-1 rounded-[15px] text-[#706A65] hover:text-[#24211F] dark:hover:text-[#F3EFEA] hover:bg-[#FAF8F5] dark:hover:bg-[#1E1B19] cursor-pointer transition-colors"
-                                    >
-                                      <Pencil className="w-3.5 h-3.5" />
-                                    </button>
-                                    <button
-                                      type="button"
-                                      onClick={() => handleDeleteTemplate(tmpl.id, tmpl.title)}
-                                      title="Delete sample text"
-                                      className="p-1 rounded-[15px] text-[#706A65] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 cursor-pointer transition-colors"
-                                    >
-                                      <Trash2 className="w-3.5 h-3.5" />
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Personalization Tag Buttons */}
-                    <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-[#24211F] dark:text-[#F3EFEA]">
-                          Personalize:
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => insertPlaceholder('{name}')}
-                          className="px-2.5 py-1 rounded-[15px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] text-[#24211F] dark:text-[#F3EFEA] font-bold text-xs cursor-pointer transition-all flex items-center gap-1.5"
-                        >
-                          + Name
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => insertPlaceholder('{date}')}
-                          className="px-2.5 py-1 rounded-[15px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] text-[#24211F] dark:text-[#F3EFEA] font-bold text-xs cursor-pointer transition-all flex items-center gap-1.5"
-                        >
-                          + Date
-                        </button>
-                      </div>
-
-                      <div className="flex items-center gap-1">
-                        {customTemplates.length > 0 && (
-                          <button
-                            type="button"
-                            onClick={() => setMessageText(customTemplates[0].text)}
-                            className="px-2 py-1 rounded-[15px] text-[11px] font-semibold text-[#706A65] hover:text-[#24211F] dark:hover:text-[#F3EFEA] hover:bg-[#FAF8F5] dark:hover:bg-[#1E1B19] cursor-pointer flex items-center gap-1"
-                            title="Reset to first saved sample text"
-                          >
-                            <RotateCcw className="w-3 h-3" />
-                            First Sample
-                          </button>
-                        )}
-                        <button
-                          type="button"
-                          onClick={() => setMessageText('')}
-                          className="px-2 py-1 rounded-[15px] text-[11px] font-semibold text-[#706A65] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 cursor-pointer"
-                          title="Clear message"
-                        >
-                          Clear
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Textarea */}
-                    <div className="space-y-1.5">
-                      <textarea
-                        ref={textareaRef}
-                        rows={6}
-                        value={messageText}
-                        onChange={(e) => setMessageText(e.target.value)}
-                        placeholder="Type your message, morning scripture, or encouragement here (or choose/create a sample text above)..."
-                        className="w-full p-3.5 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-sm text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden resize-none leading-relaxed"
-                      />
-
-                      {/* Character & SMS Part Status Bar */}
-                      <div className="flex flex-wrap items-center justify-between text-xs px-1 text-[#706A65] dark:text-[#A8A29D] gap-2">
-                        <div className="flex items-center gap-2">
-                          <span>Include greetings & encouragement</span>
-                          {isUnicodeMessage && (
-                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-[15px] bg-[#981C00]/10 dark:bg-[#981C00]/25 text-[#981C00] dark:text-[#E89382]">
-                              Amharic / Unicode (70 chars/part)
-                            </span>
+                                <Pencil className="w-3 h-3" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteTemplate(tmpl.id, tmpl.title)}
+                                title="Delete template"
+                                className="hover:opacity-75 cursor-pointer"
+                              >
+                                <Trash2 className="w-3 h-3" />
+                              </button>
+                            </div>
                           )}
                         </div>
-                        <div className="font-mono text-right font-bold text-[#24211F] dark:text-[#F3EFEA]">
-                          {messageText.length} chars • {currentSegmentCount} SMS {currentSegmentCount === 1 ? 'part' : 'parts'}
-                          <span className="text-[11px] text-[#706A65] dark:text-[#A8A29D] ml-1 font-normal">
-                            ({charsRemainingInSegment} chars left in part)
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Personalize & Quick Controls */}
+                <div className="flex items-center justify-between gap-2 pt-1">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs text-[#706A65] dark:text-[#A8A29D]">Insert:</span>
+                    <button
+                      type="button"
+                      onClick={() => insertPlaceholder('{name}')}
+                      className="px-2.5 py-0.5 rounded-[15px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] text-xs font-mono font-medium text-[#24211F] dark:text-[#F3EFEA] cursor-pointer transition-colors"
+                      title="Insert recipient name"
+                    >
+                      {`{name}`}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertPlaceholder('{date}')}
+                      className="px-2.5 py-0.5 rounded-[15px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] text-xs font-mono font-medium text-[#24211F] dark:text-[#F3EFEA] cursor-pointer transition-colors"
+                      title="Insert date"
+                    >
+                      {`{date}`}
+                    </button>
                   </div>
 
-                  {/* Right Column: Authentic Mobile SMS Preview (5 cols on XL) */}
-                  <div className="xl:col-span-5 flex flex-col justify-between space-y-4">
-                    <div className="rounded-[15px] border border-[#2C2825] bg-[#141211] p-3.5 shadow-sm space-y-3">
-                      {/* Phone Status Bar */}
-                      <div className="flex items-center justify-between px-3 pt-1 text-[11px] font-mono text-[#706A65]">
-                        <span>06:30 AM</span>
-                        <div className="w-12 h-1 bg-[#2C2825] rounded-[2px] mx-auto" />
-                        <span>4G LTE</span>
-                      </div>
+                  {messageText.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setMessageText('')}
+                      className="text-xs text-[#706A65] hover:text-red-600 dark:hover:text-red-400 transition-colors cursor-pointer"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
 
-                      {/* Phone App Header */}
-                      <div className="flex items-center justify-between px-3 py-1.5 border-b border-[#2C2825]">
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 rounded-[15px] bg-[#981C00] text-white font-bold text-xs flex items-center justify-center">
-                            N
-                          </div>
-                          <div>
-                            <p className="text-xs font-bold text-white leading-tight">NAZAZI SMS</p>
-                            <p className="text-[10px] text-[#706A65]">Official Sender ID</p>
-                          </div>
-                        </div>
-                        <span className="text-[10px] px-1.5 py-0.5 rounded-[15px] bg-[#1E1B19] text-[#E89382] font-mono">
-                          Verified
-                        </span>
-                      </div>
+                {/* Composer Textarea */}
+                <div>
+                  <textarea
+                    ref={textareaRef}
+                    rows={5}
+                    value={messageText}
+                    onChange={(e) => setMessageText(e.target.value)}
+                    placeholder="Type your message here..."
+                    className="w-full p-3.5 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-sm text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden resize-none leading-relaxed transition-colors"
+                  />
+                </div>
 
-                      {/* Live SMS Bubble */}
-                      <div className="min-h-[160px] p-3 rounded-[15px] bg-[#181615] flex flex-col justify-end space-y-2">
-                        <div className="text-center text-[10px] text-[#706A65] font-mono">
-                          Today • Ethio Telecom / Safaricom
-                        </div>
+                {/* Status Bar */}
+                <div className="flex flex-wrap items-center justify-between text-xs px-1 text-[#706A65] dark:text-[#A8A29D] gap-2 pt-1 border-t border-[#E8E4DF] dark:border-[#2C2825]">
+                  <div className="flex items-center gap-2">
+                    {isUnicodeMessage ? (
+                      <span className="text-[11px] font-medium px-2 py-0.5 rounded-[15px] bg-[#981C00]/10 dark:bg-[#981C00]/25 text-[#981C00] dark:text-[#E89382]">
+                        Amharic / Unicode (70 chars/part)
+                      </span>
+                    ) : (
+                      <span className="text-[11px] text-[#706A65] dark:text-[#A8A29D]">
+                        GSM 7-bit (160 chars/part)
+                      </span>
+                    )}
+                    <span className="text-xs text-[#706A65] dark:text-[#A8A29D]">
+                      • Audience: <strong className="text-[#24211F] dark:text-[#F3EFEA]">{activeRecipients.length} members</strong>
+                    </span>
+                  </div>
 
-                        <div className="self-start max-w-[92%] p-3.5 rounded-[15px] bg-[#981C00] text-white text-xs leading-relaxed shadow-xs space-y-1.5">
-                          <p className="font-sans whitespace-pre-wrap">{previewMessage}</p>
-                          <div className="text-[9px] text-[#E89382] text-right font-mono flex items-center justify-end gap-1">
-                            <span>06:30 AM</span>
-                            <Check className="w-3 h-3" />
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Phone Footer Info */}
-                      <div className="px-2 pt-1 pb-1 text-center">
-                        <p className="text-[10px] text-[#706A65]">
-                          {`{name} dynamically becomes recipient's actual registered name`}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Summary Box under Preview */}
-                    <div className="p-3.5 rounded-[15px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] text-xs space-y-1.5">
-                      <div className="flex items-center justify-between text-[#706A65] dark:text-[#A8A29D]">
-                        <span>Target Audience:</span>
-                        <strong className="text-[#24211F] dark:text-[#F3EFEA]">
-                          {selectedPlans.includes('all')
-                            ? 'All Verified Members'
-                            : selectedPlans.includes('single')
-                            ? 'Single Recipient'
-                            : selectedPlans.map((p) => `${p} ETB`).join(' + ')}
-                        </strong>
-                      </div>
-                      <div className="flex items-center justify-between text-[#706A65] dark:text-[#A8A29D]">
-                        <span>Recipients:</span>
-                        <strong className="text-[#981C00] dark:text-[#E89382] font-bold">
-                          {activeRecipients.length} members
-                        </strong>
-                      </div>
-                    </div>
+                  <div className="font-mono text-xs text-[#24211F] dark:text-[#F3EFEA]">
+                    {messageText.length} chars • {currentSegmentCount} {currentSegmentCount === 1 ? 'part' : 'parts'}
+                    <span className="text-[#706A65] dark:text-[#A8A29D] ml-1.5 font-normal">
+                      ({charsRemainingInSegment} left in part)
+                    </span>
                   </div>
                 </div>
               </Card>

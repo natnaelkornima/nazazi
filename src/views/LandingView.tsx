@@ -639,15 +639,15 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   <div className="absolute inset-0 pointer-events-none rounded-[46px] bg-gradient-to-tr from-transparent via-white/[0.02] to-white/[0.08] z-30" />
 
                   {/* Top iOS Status Bar */}
-                  <div className="pt-2.5 px-5 pb-1 flex items-center justify-between text-[#000000] dark:text-[#FFFFFF] text-[11px] font-semibold tracking-tight z-20">
+                  <div className="relative pt-2.5 px-5 pb-1 flex items-center justify-between text-[#000000] dark:text-[#FFFFFF] text-[11px] font-semibold tracking-tight z-20">
                     {/* Time & Carrier */}
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1.5 z-10">
                       <span className="font-bold text-[11.5px] tracking-tight">{isAmharic ? '12:30' : '9:41'}</span>
                       <span className="text-[9.5px] font-medium text-[#71717A] dark:text-[#A1A1AA] tracking-tight">ethio telecom</span>
                     </div>
 
-                    {/* Dynamic Island Notch */}
-                    <div className="w-24 h-6 bg-black rounded-full flex items-center justify-between px-2.5 shadow-sm">
+                    {/* Dynamic Island Notch - Perfectly Centered */}
+                    <div className="absolute left-1/2 -translate-x-1/2 top-2.5 w-24 h-6 bg-black rounded-full flex items-center justify-between px-2.5 shadow-sm z-30 pointer-events-none">
                       <div className="w-2.5 h-2.5 rounded-full bg-[#16161a] border border-[#27272a]/70 flex items-center justify-center">
                         <div className="w-1 h-1 rounded-full bg-[#0a0a14]" />
                       </div>
@@ -655,7 +655,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                     </div>
 
                     {/* Carrier Signal, 4G & Battery Icons */}
-                    <div className="flex items-center gap-1.5 text-current">
+                    <div className="flex items-center gap-1.5 text-current z-10">
                       <span className="text-[9.5px] font-bold leading-none tracking-tight">4G</span>
 
                       {/* Signal Bars */}
