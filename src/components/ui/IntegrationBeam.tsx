@@ -96,7 +96,7 @@ export function IntegrationBeam({
         <img
           src="/images/logos/verifyet.png"
           alt="Verify.ET"
-          className="w-full h-full object-contain rounded-[7px] shadow-2xs"
+          className="w-full h-full object-contain rounded-[3px] shadow-2xs"
           draggable={false}
         />
       ),
@@ -198,7 +198,7 @@ export function IntegrationBeam({
   const defaultCenter: BeamCenter = {
     name: isAmharic ? "ናዛዚ" : "Nazazi",
     logo: (
-      <div className="w-9 h-9 rounded-2xl bg-gradient-to-b from-[#7A1D28] via-[#981C00] to-[#5C1000] text-white flex items-center justify-center font-bold text-sm shadow-md ring-2 ring-[#FAF8F5]/20">
+      <div className="w-9 h-9 rounded-[3px] bg-gradient-to-b from-[#7A1D28] via-[#981C00] to-[#5C1000] text-white flex items-center justify-center font-bold text-sm shadow-md ring-2 ring-[#FAF8F5]/20">
         <span className="font-bela-bereka text-base tracking-tighter">ና</span>
       </div>
     ),
@@ -734,7 +734,7 @@ const css = /* css */ `
   height: 62px;
   padding: 0;
   border: 0;
-  border-radius: 20px;
+  border-radius: 3px;
   background: var(--ui-ib-card);
   box-shadow: var(--ui-ib-shadow);
   color: var(--ui-ib-ink);
@@ -777,7 +777,7 @@ const css = /* css */ `
   top: 50%;
   left: calc(100% + 12px);
   padding: 6px 11px;
-  border-radius: 10px;
+  border-radius: 3px;
   background: var(--ui-ib-tooltip);
   color: var(--ui-ib-tooltip-text);
   font-size: 12px;
@@ -802,7 +802,7 @@ const css = /* css */ `
   place-items: center;
   width: 86px;
   height: 86px;
-  border-radius: 26px;
+  border-radius: 3px;
   background: var(--ui-ib-hub);
   box-shadow: 0 0 0 1px var(--ui-ib-hub-edge), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 16px 36px -12px rgba(152, 28, 0, 0.45);
   color: var(--ui-ib-hub-mark);
@@ -819,7 +819,7 @@ const css = /* css */ `
   display: block;
   height: 28px;
   overflow: hidden;
-  border-radius: 999px;
+  border-radius: 3px;
   background: var(--ui-ib-card);
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.05);
   transition: width 320ms var(--ui-ib-ease);
@@ -870,8 +870,8 @@ const css = /* css */ `
     padding: 0 0 8px;
   }
   .ui-ib__group { flex-direction: row; gap: clamp(14px, 7cqw, 34px); }
-  .ui-ib__tool { width: 56px; height: 56px; border-radius: 17px; }
-  .ui-ib__center { width: 78px; height: 78px; border-radius: 24px; }
+  .ui-ib__tool { width: 56px; height: 56px; border-radius: 3px; }
+  .ui-ib__center { width: 78px; height: 78px; border-radius: 3px; }
   .ui-ib__tip,
   .ui-ib__group--out .ui-ib__tip {
     --ui-ib-tip-from: translate(-50%, -4px);

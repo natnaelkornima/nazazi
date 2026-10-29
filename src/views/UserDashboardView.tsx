@@ -104,7 +104,7 @@ export const UserDashboardView: React.FC<UserDashboardViewProps> = ({ onNavigate
             <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">
               {isAmharic ? 'የደንበኝነት እቅድ' : 'Subscription Tier'}
             </span>
-            <span className="px-2 py-0.5 bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400 text-[10px] font-bold rounded-full">
+            <span className="px-2 py-0.5 bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400 text-[10px] font-bold rounded-[3px]">
               {isAmharic ? 'ንቁ' : 'Active Scale'}
             </span>
           </div>
@@ -122,7 +122,7 @@ export const UserDashboardView: React.FC<UserDashboardViewProps> = ({ onNavigate
             <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">
               Today&apos;s Volume
             </span>
-            <span className="px-2 py-0.5 bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400 text-[10px] font-bold rounded-full">
+            <span className="px-2 py-0.5 bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400 text-[10px] font-bold rounded-[3px]">
               +18.4%
             </span>
           </div>
@@ -140,7 +140,7 @@ export const UserDashboardView: React.FC<UserDashboardViewProps> = ({ onNavigate
             <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">
               Monthly Spend
             </span>
-            <span className="px-2 py-0.5 bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 text-[10px] font-bold rounded-full">
+            <span className="px-2 py-0.5 bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 text-[10px] font-bold rounded-[3px]">
               Auto-renew
             </span>
           </div>

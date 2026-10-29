@@ -829,7 +829,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
         <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] pt-16 sm:pt-20 space-y-12 sm:space-y-16">
           {/* Section Header with Generous White Space */}
           <div className="text-center max-w-2xl mx-auto space-y-3 sm:space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#C43214] border border-[#E8DCD9] dark:border-[#3A2420]">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[3px] text-xs font-bold uppercase tracking-wider bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#C43214] border border-[#E8DCD9] dark:border-[#3A2420]">
               <span className="w-1.5 h-1.5 rounded-full bg-[#981C00] dark:bg-[#C43214]" />
               <span>{isAmharic ? 'ቀላል የ3-ደረጃ ሂደት' : 'Simple 3-Step Process'}</span>
             </div>
@@ -846,15 +846,15 @@ export const LandingView: React.FC<LandingViewProps> = ({
           {/* Side-by-side: Integration Beam (Left) & Vertical 3 Steps (Right) */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
             {/* Left: Interactive Integration Beam Scene */}
-            <div className="lg:col-span-7 relative rounded-[32px] p-4 sm:p-7 md:p-8 bg-gradient-to-b from-[#FAF4F2]/70 via-white/90 to-[#FAF4F2]/50 dark:from-[#211A18]/70 dark:via-[#1D1A18]/90 dark:to-[#211A18]/50 border border-[#E8DCD9] dark:border-[#382622] shadow-[0_20px_50px_-20px_rgba(152,28,0,0.08)] backdrop-blur-xs flex items-center justify-center">
+            <div className="lg:col-span-7 relative rounded-[3px] p-4 sm:p-7 md:p-8 bg-gradient-to-b from-[#FAF4F2]/70 via-white/90 to-[#FAF4F2]/50 dark:from-[#211A18]/70 dark:via-[#1D1A18]/90 dark:to-[#211A18]/50 border border-[#E8DCD9] dark:border-[#382622] shadow-[0_20px_50px_-20px_rgba(152,28,0,0.08)] backdrop-blur-xs flex items-center justify-center">
               <IntegrationBeam isAmharic={isAmharic} />
             </div>
 
             {/* Right: Vertical 3-Step Simple Guide */}
             <div className="lg:col-span-5 flex flex-col justify-center gap-3.5 sm:gap-4">
               {/* Step 1 */}
-              <div className="flex items-start gap-3.5 p-4 sm:p-5 rounded-2xl bg-white/70 dark:bg-[#1D1A18]/70 border border-[#E8E4DF] dark:border-[#2C2825] transition-colors hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40 shadow-xs">
-                <span className="font-mono text-xs font-bold text-[#981C00] dark:text-[#C43214] bg-[#FAF4F2] dark:bg-[#2A1D1A] px-2.5 py-1 rounded-lg border border-[#E8DCD9] dark:border-[#3A2420] shrink-0 mt-0.5">
+              <div className="flex items-start gap-3.5 p-4 sm:p-5 rounded-[3px] bg-white/70 dark:bg-[#1D1A18]/70 border border-[#E8E4DF] dark:border-[#2C2825] transition-colors hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40 shadow-xs">
+                <span className="font-mono text-xs font-bold text-[#981C00] dark:text-[#C43214] bg-[#FAF4F2] dark:bg-[#2A1D1A] px-2.5 py-1 rounded-[3px] border border-[#E8DCD9] dark:border-[#3A2420] shrink-0 mt-0.5">
                   01
                 </span>
                 <div className="space-y-1">
@@ -870,8 +870,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
               </div>
 
               {/* Step 2 */}
-              <div className="flex items-start gap-3.5 p-4 sm:p-5 rounded-2xl bg-white/70 dark:bg-[#1D1A18]/70 border border-[#E8E4DF] dark:border-[#2C2825] transition-colors hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40 shadow-xs">
-                <span className="font-mono text-xs font-bold text-[#981C00] dark:text-[#C43214] bg-[#FAF4F2] dark:bg-[#2A1D1A] px-2.5 py-1 rounded-lg border border-[#E8DCD9] dark:border-[#3A2420] shrink-0 mt-0.5">
+              <div className="flex items-start gap-3.5 p-4 sm:p-5 rounded-[3px] bg-white/70 dark:bg-[#1D1A18]/70 border border-[#E8E4DF] dark:border-[#2C2825] transition-colors hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40 shadow-xs">
+                <span className="font-mono text-xs font-bold text-[#981C00] dark:text-[#C43214] bg-[#FAF4F2] dark:bg-[#2A1D1A] px-2.5 py-1 rounded-[3px] border border-[#E8DCD9] dark:border-[#3A2420] shrink-0 mt-0.5">
                   02
                 </span>
                 <div className="space-y-1">
@@ -887,8 +887,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
               </div>
 
               {/* Step 3 */}
-              <div className="flex items-start gap-3.5 p-4 sm:p-5 rounded-2xl bg-white/70 dark:bg-[#1D1A18]/70 border border-[#E8E4DF] dark:border-[#2C2825] transition-colors hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40 shadow-xs">
-                <span className="font-mono text-xs font-bold text-[#981C00] dark:text-[#C43214] bg-[#FAF4F2] dark:bg-[#2A1D1A] px-2.5 py-1 rounded-lg border border-[#E8DCD9] dark:border-[#3A2420] shrink-0 mt-0.5">
+              <div className="flex items-start gap-3.5 p-4 sm:p-5 rounded-[3px] bg-white/70 dark:bg-[#1D1A18]/70 border border-[#E8E4DF] dark:border-[#2C2825] transition-colors hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40 shadow-xs">
+                <span className="font-mono text-xs font-bold text-[#981C00] dark:text-[#C43214] bg-[#FAF4F2] dark:bg-[#2A1D1A] px-2.5 py-1 rounded-[3px] border border-[#E8DCD9] dark:border-[#3A2420] shrink-0 mt-0.5">
                   03
                 </span>
                 <div className="space-y-1">
@@ -907,7 +907,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               <div className="pt-1">
                 <a
                   href="#pricing"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold bg-[#FAF4F2] hover:bg-[#F2EAE7] dark:bg-[#251A18] dark:hover:bg-[#2E201D] text-[#981C00] dark:text-[#C43214] border border-[#E8DCD9] dark:border-[#382622] transition-all duration-200 cursor-pointer shadow-2xs group"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[3px] text-xs font-bold bg-[#FAF4F2] hover:bg-[#F2EAE7] dark:bg-[#251A18] dark:hover:bg-[#2E201D] text-[#981C00] dark:text-[#C43214] border border-[#E8DCD9] dark:border-[#382622] transition-all duration-200 cursor-pointer shadow-2xs group"
                 >
                   <span>{isAmharic ? 'የደንበኝነት እቅዶችን ይመልከቱ' : 'Explore Subscription Plans'}</span>
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
@@ -968,7 +968,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             {pricingPlans.map((plan) => (
               <div
                 key={plan.id}
-                className={`relative flex flex-col justify-between p-7 sm:p-8 rounded-[28px] transition-all duration-200 ${
+                className={`relative flex flex-col justify-between p-7 sm:p-8 rounded-[3px] transition-all duration-200 ${
                   plan.recommended
                     ? 'bg-gradient-to-b from-[#FFFFFF] via-[#FAF6F2] to-[#F5EFE9] dark:from-[#201A18] dark:via-[#191513] dark:to-[#141110] border-2 border-[#981C00] dark:border-[#C43214] shadow-[0_20px_50px_-15px_rgba(152,28,0,0.18),0_1px_3px_rgba(0,0,0,0.06)] md:-translate-y-2'
                     : 'bg-[#FFFFFF] dark:bg-[#1A1715] border border-[#E2DDD5] dark:border-[#2C2723] hover:border-[#D1C9BE] dark:hover:border-[#3D3732] shadow-[0_4px_24px_-6px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.03)]'
@@ -977,7 +977,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                 {/* Floating Recommended Luxury Badge */}
                 {plan.recommended && (
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                    <span className="px-4 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-[#981C00] text-white shadow-md inline-flex items-center gap-1.5 whitespace-nowrap">
+                    <span className="px-4 py-1 rounded-[3px] text-[11px] font-black uppercase tracking-wider bg-[#981C00] text-white shadow-md inline-flex items-center gap-1.5 whitespace-nowrap">
                       <Sparkles className="w-3 h-3 text-[#FFD6A5]" />
                       <span>{plan.badge}</span>
                     </span>
@@ -992,7 +992,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                         {plan.name}
                       </h3>
                       {!plan.recommended && (
-                        <span className="inline-block mt-1 text-[11px] font-semibold text-[#706A65] dark:text-[#A8A19A] px-2.5 py-0.5 rounded-full bg-[#FAF8F5] dark:bg-[#141211] border border-[#E8E4DF] dark:border-[#2C2825]">
+                        <span className="inline-block mt-1 text-[11px] font-semibold text-[#706A65] dark:text-[#A8A19A] px-2.5 py-0.5 rounded-[3px] bg-[#FAF8F5] dark:bg-[#141211] border border-[#E8E4DF] dark:border-[#2C2825]">
                           {plan.badge}
                         </span>
                       )}
@@ -1012,7 +1012,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                           {plan.originalPrice} {isAmharic ? 'ብር' : 'ETB'}
                         </span>
                         {plan.savingsBadge && (
-                          <span className="text-[10.5px] font-bold text-[#981C00] dark:text-[#E89382] bg-[#FAF0ED] dark:bg-[#321C18] px-2 py-0.5 rounded-full border border-[#F3D5CD] dark:border-[#4A2620]">
+                          <span className="text-[10.5px] font-bold text-[#981C00] dark:text-[#E89382] bg-[#FAF0ED] dark:bg-[#321C18] px-2 py-0.5 rounded-[3px] border border-[#F3D5CD] dark:border-[#4A2620]">
                             {plan.savingsBadge}
                           </span>
                         )}
@@ -1236,7 +1236,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                           <Star key={i} className="w-3 h-3 fill-amber-400 text-amber-400" />
                         ))}
                       </div>
-                      <span className="text-[10.5px] font-medium text-[#706A65] dark:text-[#A8A19A] px-2 py-0.5 rounded-full bg-[#FAF8F5] dark:bg-[#25221F] border border-[#E8E4DF]/60 dark:border-[#2C2825]">
+                      <span className="text-[10.5px] font-medium text-[#706A65] dark:text-[#A8A19A] px-2 py-0.5 rounded-[3px] bg-[#FAF8F5] dark:bg-[#25221F] border border-[#E8E4DF]/60 dark:border-[#2C2825]">
                         {item.plan}
                       </span>
                     </div>
