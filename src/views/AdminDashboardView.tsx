@@ -785,15 +785,14 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
   }
 
   return (
-    <div className="space-y-6 pb-12 max-w-6xl mx-auto">
+    <div className="space-y-6 pb-16 max-w-7xl mx-auto">
       {/* 1. Header Bar with Settings Popover */}
-      {/* 1. Header Bar with Settings Popover */}
-      <div className="flex items-center justify-between gap-3 pb-3 sm:pb-4 border-b border-zinc-200/80 dark:border-zinc-800">
+      <div className="flex items-center justify-between gap-3 pb-4 border-b border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
         <div className="flex items-center gap-2 sm:gap-3">
           {onExitAdmin && (
             <button
               onClick={onExitAdmin}
-              className="p-2 sm:px-3 sm:py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 transition-colors flex items-center gap-1.5 text-xs font-semibold cursor-pointer border border-zinc-200/60 dark:border-zinc-700/60"
+              className="p-2 sm:px-3 sm:py-1.5 rounded-[3px] bg-white dark:bg-[#181615] hover:bg-[#FAF8F5] dark:hover:bg-[#201D1B] text-[#24211F] dark:text-[#FAF8F5] transition-colors flex items-center gap-1.5 text-xs font-semibold cursor-pointer border border-[#E8E4DF] dark:border-[#2C2825] shadow-2xs"
               title="Back to Public Site"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
@@ -801,17 +800,19 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
             </button>
           )}
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 font-black flex items-center justify-center shadow-xs text-sm">
+            <div className="w-8 h-8 rounded-[3px] bg-[#981C00] text-white font-black flex items-center justify-center shadow-xs text-sm">
               N
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-base sm:text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-50 leading-tight">
+                <h1 className="text-base sm:text-lg font-bold tracking-tight text-[#24211F] dark:text-[#FAF8F5] leading-tight">
                   Nazazi Admin
                 </h1>
-                <Badge variant="zinc">Portal</Badge>
+                <span className="px-2 py-0.5 rounded-[3px] bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#E89382] border border-[#E8DCD9] dark:border-[#3A2420] text-[10px] font-bold uppercase tracking-wider">
+                  Portal
+                </span>
               </div>
-              <p className="text-[11px] text-zinc-500 dark:text-zinc-400 font-normal">
+              <p className="text-[11px] text-[#706A65] dark:text-[#A8A19A] font-normal">
                 Subscriptions & SMS Broadcast Engine
               </p>
             </div>
@@ -821,10 +822,10 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
         <div className="flex items-center gap-2">
           {/* Public Registration Countdown & Status Indicator */}
           <div
-            className={`hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-medium ${
+            className={`hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-[3px] border text-xs font-medium ${
               isRegistrationClosedDeadline
                 ? 'bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400'
-                : 'bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200/80 dark:border-zinc-700/60 text-zinc-700 dark:text-zinc-300'
+                : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] text-[#706A65] dark:text-[#A8A19A]'
             }`}
             title={
               isRegistrationClosedDeadline
@@ -839,7 +840,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               </>
             ) : (
               <>
-                <Clock className="w-3.5 h-3.5 text-amber-500" />
+                <Clock className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
                 <span>Reg: {days}d {hours}h left</span>
               </>
             )}
@@ -852,14 +853,14 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               info('Synced', 'Registrations refreshed & synchronized across all devices.');
             }}
             disabled={isLoading}
-            className="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-lg border border-zinc-200/80 dark:border-zinc-700/60 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-all flex items-center gap-2 text-xs font-medium cursor-pointer shadow-2xs disabled:opacity-50"
+            className="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] hover:bg-[#FAF8F5] dark:hover:bg-[#201D1B] text-[#24211F] dark:text-[#FAF8F5] transition-all flex items-center gap-2 text-xs font-medium cursor-pointer shadow-2xs disabled:opacity-50"
             title="Auto-sync active every 3s. Click to force instant cloud refresh."
           >
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin text-amber-500' : 'text-zinc-400'}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin text-[#981C00]' : 'text-[#706A65]'}`} />
             <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hidden md:inline">Live</span>
           </button>
 
@@ -867,194 +868,198 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
           <div className="relative" ref={settingsRef}>
             <button
               onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-              className={`p-1.5 sm:px-3 sm:py-1.5 rounded-lg border transition-all flex items-center gap-1.5 text-xs font-medium cursor-pointer shadow-2xs ${
+              className={`p-1.5 sm:px-3 sm:py-1.5 rounded-[3px] border transition-all flex items-center gap-1.5 text-xs font-medium cursor-pointer shadow-2xs ${
                 isSettingsOpen
-                  ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 border-zinc-900 dark:border-zinc-100'
-                  : 'bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-zinc-200/80 dark:border-zinc-700/60 hover:bg-zinc-50 dark:hover:bg-zinc-800'
+                  ? 'bg-[#981C00] text-white border-[#981C00]'
+                  : 'bg-white dark:bg-[#181615] text-[#24211F] dark:text-[#FAF8F5] border-[#E8E4DF] dark:border-[#2C2825] hover:bg-[#FAF8F5] dark:hover:bg-[#201D1B]'
               }`}
               title="Admin Settings & Actions"
             >
               {isSettingsOpen ? (
                 <X className="w-4 h-4" />
               ) : (
-                <Settings className="w-4 h-4 transition-transform duration-300 group-hover:rotate-90 text-zinc-500" />
+                <Settings className="w-4 h-4 transition-transform duration-300 group-hover:rotate-90 text-[#706A65]" />
               )}
               <span className="hidden sm:inline">Settings</span>
             </button>
 
-          <AnimatePresence>
-            {isSettingsOpen && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 10 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                transition={{ duration: 0.18, ease: 'easeOut' }}
-                className="absolute right-0 mt-2 w-72 sm:w-80 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xl p-2.5 z-50 space-y-1 divide-y divide-zinc-100 dark:divide-zinc-800/60"
-              >
-                {/* Popover Header */}
-                <div className="pb-2 px-2.5 flex items-center justify-between text-[11px] font-bold text-zinc-400 uppercase tracking-wider">
-                  <span>Admin Settings</span>
-                  <Settings className="w-3.5 h-3.5" />
-                </div>
+            <AnimatePresence>
+              {isSettingsOpen && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                  transition={{ duration: 0.18, ease: 'easeOut' }}
+                  className="absolute right-0 mt-2 w-72 sm:w-80 rounded-[3px] bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] shadow-2xl p-2.5 z-50 space-y-1 divide-y divide-[#E8E4DF]/60 dark:divide-[#2C2825]/60"
+                >
+                  {/* Popover Header */}
+                  <div className="pb-2 px-2.5 flex items-center justify-between text-[11px] font-bold text-[#706A65] dark:text-[#A8A19A] uppercase tracking-wider">
+                    <span>Admin Settings</span>
+                    <Settings className="w-3.5 h-3.5" />
+                  </div>
 
-                <div className="pt-2 space-y-1">
-                  {/* 1. Language Switcher */}
-                  <button
-                    onClick={() => {
-                      toggleLanguage();
-                    }}
-                    className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors cursor-pointer text-left group"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 flex items-center justify-center font-bold text-sm border border-zinc-200 dark:border-zinc-700">
-                        <Globe className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
+                  <div className="pt-2 space-y-1">
+                    {/* 1. Language Switcher */}
+                    <button
+                      onClick={() => {
+                        toggleLanguage();
+                      }}
+                      className="w-full flex items-center justify-between p-2.5 rounded-[3px] hover:bg-[#FAF8F5] dark:hover:bg-[#201D1B] transition-colors cursor-pointer text-left group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-[3px] bg-[#FAF8F5] dark:bg-[#221F1D] text-[#24211F] dark:text-[#FAF8F5] flex items-center justify-center font-bold text-sm border border-[#E8E4DF] dark:border-[#2C2825]">
+                          <Globe className="w-4 h-4 text-[#706A65] dark:text-[#A8A19A]" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">
+                            {language === 'en' ? 'Language Switcher' : 'ቋንቋ ቀይር'}
+                          </p>
+                          <p className="text-[11px] text-[#706A65] dark:text-[#A8A19A]">
+                            {language === 'en' ? '🇺🇸 English (Switch to አማርኛ)' : '🇪🇹 አማርኛ (Switch to English)'}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                          {language === 'en' ? 'Language Switcher' : 'ቋንቋ ቀይር'}
-                        </p>
-                        <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                          {language === 'en' ? '🇺🇸 English (Switch to አማርኛ)' : '🇪🇹 አማርኛ (Switch to English)'}
-                        </p>
-                      </div>
-                    </div>
-                    <span className="text-[11px] font-bold text-zinc-500 uppercase px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800">
-                      {language.toUpperCase()}
-                    </span>
-                  </button>
+                      <span className="text-[11px] font-bold text-[#706A65] uppercase px-2 py-0.5 rounded-[3px] bg-[#FAF8F5] dark:bg-[#221F1D] border border-[#E8E4DF] dark:border-[#2C2825]">
+                        {language.toUpperCase()}
+                      </span>
+                    </button>
 
-                  {/* 2. Theme Changer */}
-                  <button
-                    onClick={() => {
-                      toggleTheme();
-                    }}
-                    className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors cursor-pointer text-left group"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 flex items-center justify-center font-bold text-sm border border-zinc-200 dark:border-zinc-700">
-                        {theme === 'dark' ? (
-                          <Moon className="w-4 h-4 text-amber-400" />
-                        ) : (
-                          <Sun className="w-4 h-4 text-amber-600" />
-                        )}
+                    {/* 2. Theme Changer */}
+                    <button
+                      onClick={() => {
+                        toggleTheme();
+                      }}
+                      className="w-full flex items-center justify-between p-2.5 rounded-[3px] hover:bg-[#FAF8F5] dark:hover:bg-[#201D1B] transition-colors cursor-pointer text-left group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-[3px] bg-[#FAF8F5] dark:bg-[#221F1D] text-[#24211F] dark:text-[#FAF8F5] flex items-center justify-center font-bold text-sm border border-[#E8E4DF] dark:border-[#2C2825]">
+                          {theme === 'dark' ? (
+                            <Moon className="w-4 h-4 text-[#E89382]" />
+                          ) : (
+                            <Sun className="w-4 h-4 text-[#981C00]" />
+                          )}
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">
+                            {language === 'en' ? 'Theme Changer' : 'ገጽታ ቀይር'}
+                          </p>
+                          <p className="text-[11px] text-[#706A65] dark:text-[#A8A19A]">
+                            {theme === 'dark' ? 'Dark Mode (Switch to Light)' : 'Light Mode (Switch to Dark)'}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                          {language === 'en' ? 'Theme Changer' : 'ገጽታ ቀይር'}
-                        </p>
-                        <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                          {theme === 'dark' ? 'Dark Mode (Switch to Light)' : 'Light Mode (Switch to Dark)'}
-                        </p>
-                      </div>
-                    </div>
-                    <span className="text-[11px] font-bold text-zinc-500 capitalize px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800">
-                      {theme}
-                    </span>
-                  </button>
+                      <span className="text-[11px] font-bold text-[#706A65] capitalize px-2 py-0.5 rounded-[3px] bg-[#FAF8F5] dark:bg-[#221F1D] border border-[#E8E4DF] dark:border-[#2C2825]">
+                        {theme}
+                      </span>
+                    </button>
 
-                  {/* 3. Sync Database */}
-                  <button
-                    onClick={() => {
-                      fetchRegistrations();
-                      info('Refreshed', 'Synced latest registrations from Supabase.');
-                      setIsSettingsOpen(false);
-                    }}
-                    className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors cursor-pointer text-left group"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 flex items-center justify-center font-bold text-sm border border-zinc-200 dark:border-zinc-700">
-                        <RefreshCw className={`w-4 h-4 text-zinc-700 dark:text-zinc-300 ${isLoading ? 'animate-spin' : ''}`} />
+                    {/* 3. Sync Database */}
+                    <button
+                      onClick={() => {
+                        fetchRegistrations();
+                        info('Refreshed', 'Synced latest registrations from Supabase.');
+                        setIsSettingsOpen(false);
+                      }}
+                      className="w-full flex items-center justify-between p-2.5 rounded-[3px] hover:bg-[#FAF8F5] dark:hover:bg-[#201D1B] transition-colors cursor-pointer text-left group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-[3px] bg-[#FAF8F5] dark:bg-[#221F1D] text-[#24211F] dark:text-[#FAF8F5] flex items-center justify-center font-bold text-sm border border-[#E8E4DF] dark:border-[#2C2825]">
+                          <RefreshCw className={`w-4 h-4 text-[#706A65] dark:text-[#A8A19A] ${isLoading ? 'animate-spin' : ''}`} />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">
+                            Sync Database
+                          </p>
+                          <p className="text-[11px] text-[#706A65] dark:text-[#A8A19A]">
+                            Refresh registrations from database
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                          Sync Database
-                        </p>
-                        <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                          Refresh registrations from database
-                        </p>
-                      </div>
-                    </div>
-                    <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-0.5 transition-transform" />
-                  </button>
+                      <ChevronRight className="w-4 h-4 text-[#706A65] group-hover:translate-x-0.5 transition-transform" />
+                    </button>
 
-                  {/* 4. Clear Data */}
-                  <button
-                    onClick={() => {
-                      setIsSettingsOpen(false);
-                      setShowResetModal(true);
-                    }}
-                    className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-600 dark:text-rose-400 transition-colors cursor-pointer text-left group"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-rose-100 dark:bg-rose-950 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold text-sm border border-rose-200 dark:border-rose-800/50">
-                        <Trash2 className="w-4 h-4" />
+                    {/* 4. Clear Data */}
+                    <button
+                      onClick={() => {
+                        setIsSettingsOpen(false);
+                        setShowResetModal(true);
+                      }}
+                      className="w-full flex items-center justify-between p-2.5 rounded-[3px] hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-600 dark:text-rose-400 transition-colors cursor-pointer text-left group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-[3px] bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold text-sm border border-rose-200 dark:border-rose-900/50">
+                          <Trash2 className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold">
+                            Clear Data
+                          </p>
+                          <p className="text-[11px] text-rose-500/80 dark:text-rose-400/80">
+                            Reset all registrations & logs
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-xs font-bold">
-                          Clear Data
-                        </p>
-                        <p className="text-[11px] text-rose-500/80 dark:text-rose-400/80">
-                          Reset all registrations & logs
-                        </p>
-                      </div>
-                    </div>
-                    <ChevronRight className="w-4 h-4 text-rose-400 group-hover:translate-x-0.5 transition-transform" />
-                  </button>
+                      <ChevronRight className="w-4 h-4 text-rose-400 group-hover:translate-x-0.5 transition-transform" />
+                    </button>
 
-                  {/* 5. Lock Console */}
-                  <button
-                    onClick={() => {
-                      setIsSettingsOpen(false);
-                      handleLogout();
-                    }}
-                    className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors cursor-pointer text-left group"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-zinc-900 text-amber-400 flex items-center justify-center font-bold text-sm shadow-xs">
-                        <Lock className="w-4 h-4" />
+                    {/* 5. Lock Console */}
+                    <button
+                      onClick={() => {
+                        setIsSettingsOpen(false);
+                        handleLogout();
+                      }}
+                      className="w-full flex items-center justify-between p-2.5 rounded-[3px] hover:bg-[#FAF8F5] dark:hover:bg-[#201D1B] transition-colors cursor-pointer text-left group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-[3px] bg-[#981C00] text-white flex items-center justify-center font-bold text-sm shadow-xs">
+                          <Lock className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">
+                            Lock Console
+                          </p>
+                          <p className="text-[11px] text-[#706A65] dark:text-[#A8A19A]">
+                            Securely lock admin session
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                          Lock Console
-                        </p>
-                        <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                          Securely lock admin session
-                        </p>
-                      </div>
-                    </div>
-                    <LogOut className="w-4 h-4 text-rose-500" />
-                  </button>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                      <LogOut className="w-4 h-4 text-rose-500" />
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
-    </div>
 
-      {/* 2. Top Metric Cards */}
+      {/* 2. Top Metric Cards - Clean, Type-First App-Screen Layout */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <div
           onClick={() => {
             setActiveTab('approvals');
             setStatusFilter('pending');
           }}
-          className={`p-4 rounded-xl border transition-all cursor-pointer bg-white dark:bg-zinc-900 ${
+          className={`p-4 sm:p-5 rounded-[3px] border transition-all cursor-pointer bg-white dark:bg-[#181615] ${
             activeTab === 'approvals' && statusFilter === 'pending'
-              ? 'border-amber-500/80 shadow-xs ring-1 ring-amber-500/40'
-              : 'border-zinc-200/80 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 shadow-2xs'
+              ? 'border-[#981C00] dark:border-[#C43214] ring-1 ring-[#981C00]/30 shadow-xs'
+              : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00]/40 dark:hover:border-[#C43214]/40 shadow-2xs'
           }`}
         >
-          <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
-            <span className="text-xs font-medium">Pending Approvals</span>
-            <div className="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
-              <Clock className="w-3.5 h-3.5" />
-            </div>
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#706A65] dark:text-[#A8A19A]">
+              Pending Approvals
+            </span>
+            {pendingCount > 0 && (
+              <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-[3px] bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                Action
+              </span>
+            )}
           </div>
-          <p className="text-2xl font-bold font-mono tracking-tight text-zinc-900 dark:text-zinc-50 mt-2">
+          <p className="text-2xl sm:text-3xl font-bold font-mono tracking-tight text-[#24211F] dark:text-[#FAF8F5] mt-2.5">
             {pendingCount}
           </p>
-          <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 truncate">
+          <p className="text-[11px] text-[#706A65] dark:text-[#A8A19A] mt-1 truncate">
             Requires verification
           </p>
         </div>
@@ -1063,40 +1068,34 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
           onClick={() => {
             setActiveTab('send_sms');
           }}
-          className={`p-4 rounded-xl border transition-all cursor-pointer bg-white dark:bg-zinc-900 ${
+          className={`p-4 sm:p-5 rounded-[3px] border transition-all cursor-pointer bg-white dark:bg-[#181615] ${
             activeTab === 'send_sms'
-              ? 'border-zinc-900 dark:border-zinc-100 shadow-xs ring-1 ring-zinc-900/30 dark:ring-zinc-100/30'
-              : 'border-zinc-200/80 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 shadow-2xs'
+              ? 'border-[#981C00] dark:border-[#C43214] ring-1 ring-[#981C00]/30 shadow-xs'
+              : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00]/40 dark:hover:border-[#C43214]/40 shadow-2xs'
           }`}
         >
-          <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
-            <span className="text-xs font-medium">Approved Members</span>
-            <div className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-              <CheckCircle2 className="w-3.5 h-3.5" />
-            </div>
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#706A65] dark:text-[#A8A19A]">
+              Approved Members
+            </span>
+            <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-[3px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+              Active
+            </span>
           </div>
-          <p className="text-2xl font-bold font-mono tracking-tight text-zinc-900 dark:text-zinc-50 mt-2">
+          <p className="text-2xl sm:text-3xl font-bold font-mono tracking-tight text-[#24211F] dark:text-[#FAF8F5] mt-2.5">
             {approvedCount}
           </p>
-          <div className="flex items-center justify-between mt-1 pt-1.5 border-t border-zinc-100 dark:border-zinc-800/80 text-[11px]">
-            <span className="text-zinc-500 dark:text-zinc-400 truncate">Ready for SMS</span>
+          <div className="flex items-center justify-between mt-1 pt-1.5 border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825] text-[11px]">
+            <span className="text-[#706A65] dark:text-[#A8A19A] truncate">Ready for SMS</span>
             <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
               <button
                 type="button"
                 onClick={() => executeCopyApprovedToClipboard('ordered_spaced')}
-                className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-semibold text-[10px] transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-[3px] bg-[#FAF4F2] hover:bg-[#F3E6E2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#E89382] font-semibold text-[10px] transition-colors cursor-pointer border border-[#E8DCD9] dark:border-[#3A2420]"
                 title="Quick copy ordered phone list (1. 09...)"
               >
                 <Copy className="w-3 h-3" />
                 <span>{hasCopiedApproved ? 'Copied' : 'Copy'}</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsCopyApprovedModalOpen(true)}
-                className="text-[10px] font-medium text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 cursor-pointer"
-                title="View copy options & formats"
-              >
-                Options
               </button>
             </div>
           </div>
@@ -1107,44 +1106,48 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
             setActiveTab('approvals');
             setStatusFilter('approved');
           }}
-          className={`p-4 rounded-xl border transition-all cursor-pointer bg-white dark:bg-zinc-900 ${
+          className={`p-4 sm:p-5 rounded-[3px] border transition-all cursor-pointer bg-white dark:bg-[#181615] ${
             activeTab === 'approvals' && statusFilter === 'approved'
-              ? 'border-emerald-500/80 shadow-xs ring-1 ring-emerald-500/40'
-              : 'border-zinc-200/80 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 shadow-2xs'
+              ? 'border-[#981C00] dark:border-[#C43214] ring-1 ring-[#981C00]/30 shadow-xs'
+              : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00]/40 dark:hover:border-[#C43214]/40 shadow-2xs'
           }`}
         >
-          <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
-            <span className="text-xs font-medium">Verified Revenue</span>
-            <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-200/60 dark:border-emerald-800/50">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#706A65] dark:text-[#A8A19A]">
+              Verified Revenue
+            </span>
+            <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-[3px] bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#E89382] border border-[#E8DCD9] dark:border-[#3A2420]">
               ETB
             </span>
           </div>
-          <p className="text-2xl font-bold font-mono tracking-tight text-zinc-900 dark:text-zinc-50 mt-2 truncate">
+          <p className="text-2xl sm:text-3xl font-bold font-mono tracking-tight text-[#24211F] dark:text-[#FAF8F5] mt-2.5 truncate">
             {totalCollectedRevenue.toLocaleString()}
           </p>
-          <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 truncate">
+          <p className="text-[11px] text-[#706A65] dark:text-[#A8A19A] mt-1 truncate">
             Total collected
           </p>
         </div>
 
         <div
           onClick={() => setActiveTab('logs')}
-          className={`p-4 rounded-xl border transition-all cursor-pointer bg-white dark:bg-zinc-900 ${
+          className={`p-4 sm:p-5 rounded-[3px] border transition-all cursor-pointer bg-white dark:bg-[#181615] ${
             activeTab === 'logs'
-              ? 'border-sky-500/80 shadow-xs ring-1 ring-sky-500/40'
-              : 'border-zinc-200/80 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 shadow-2xs'
+              ? 'border-[#981C00] dark:border-[#C43214] ring-1 ring-[#981C00]/30 shadow-xs'
+              : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00]/40 dark:hover:border-[#C43214]/40 shadow-2xs'
           }`}
         >
-          <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
-            <span className="text-xs font-medium">Dispatched SMS</span>
-            <div className="w-7 h-7 rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center">
-              <History className="w-3.5 h-3.5" />
-            </div>
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#706A65] dark:text-[#A8A19A]">
+              Dispatched SMS
+            </span>
+            <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-[3px] bg-[#FAF8F5] dark:bg-[#221F1D] text-[#706A65] dark:text-[#A8A19A] border border-[#E8E4DF] dark:border-[#2C2825]">
+              Logs
+            </span>
           </div>
-          <p className="text-2xl font-bold font-mono tracking-tight text-zinc-900 dark:text-zinc-50 mt-2">
+          <p className="text-2xl sm:text-3xl font-bold font-mono tracking-tight text-[#24211F] dark:text-[#FAF8F5] mt-2.5">
             {smsLogs.length}
           </p>
-          <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 truncate">
+          <p className="text-[11px] text-[#706A65] dark:text-[#A8A19A] mt-1 truncate">
             Audit history
           </p>
         </div>
@@ -1152,19 +1155,19 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
 
       {/* 3. Purpose Tab Navigation - Clean Segmented Pill */}
       <div className="w-full overflow-x-auto pb-0.5 no-scrollbar">
-        <div className="inline-flex items-center gap-1 p-1 bg-zinc-100 dark:bg-zinc-800/60 rounded-xl border border-zinc-200/80 dark:border-zinc-700/60 min-w-max">
+        <div className="inline-flex items-center gap-1 p-1 bg-[#F3EFEA] dark:bg-[#1E1B19] rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] min-w-max">
           <button
             onClick={() => setActiveTab('approvals')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-[3px] text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${
               activeTab === 'approvals'
-                ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-zinc-50 shadow-xs'
-                : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
+                ? 'bg-white dark:bg-[#141211] text-[#24211F] dark:text-[#FAF8F5] shadow-xs'
+                : 'text-[#706A65] hover:text-[#24211F] dark:text-[#A8A19A] dark:hover:text-[#FAF8F5]'
             }`}
           >
-            <ShieldCheck className="w-3.5 h-3.5 text-amber-500" />
+            <ShieldCheck className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
             <span>Approvals</span>
             {pendingCount > 0 && (
-              <span className="px-1.5 py-0.2 bg-amber-500 text-white text-[10px] font-bold rounded-full animate-pulse">
+              <span className="px-1.5 py-0.2 bg-[#981C00] text-white text-[10px] font-bold rounded-[3px]">
                 {pendingCount}
               </span>
             )}
@@ -1172,30 +1175,30 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
 
           <button
             onClick={() => setActiveTab('send_sms')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-[3px] text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${
               activeTab === 'send_sms'
-                ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-zinc-50 shadow-xs'
-                : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
+                ? 'bg-white dark:bg-[#141211] text-[#24211F] dark:text-[#FAF8F5] shadow-xs'
+                : 'text-[#706A65] hover:text-[#24211F] dark:text-[#A8A19A] dark:hover:text-[#FAF8F5]'
             }`}
           >
-            <Send className="w-3.5 h-3.5 text-zinc-700 dark:text-zinc-300" />
+            <Send className="w-3.5 h-3.5 text-[#706A65] dark:text-[#A8A19A]" />
             <span>SMS Console</span>
-            <span className="px-1.5 py-0.2 bg-zinc-200/80 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-[10px] font-bold rounded-full">
+            <span className="px-1.5 py-0.2 bg-[#E8E4DF] dark:bg-[#2C2825] text-[#24211F] dark:text-[#FAF8F5] text-[10px] font-bold rounded-[3px]">
               {approvedCount}
             </span>
           </button>
 
           <button
             onClick={() => setActiveTab('logs')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-[3px] text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${
               activeTab === 'logs'
-                ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-zinc-50 shadow-xs'
-                : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
+                ? 'bg-white dark:bg-[#141211] text-[#24211F] dark:text-[#FAF8F5] shadow-xs'
+                : 'text-[#706A65] hover:text-[#24211F] dark:text-[#A8A19A] dark:hover:text-[#FAF8F5]'
             }`}
           >
-            <History className="w-3.5 h-3.5 text-sky-500" />
+            <History className="w-3.5 h-3.5 text-[#706A65] dark:text-[#A8A19A]" />
             <span>Audit Logs</span>
-            <span className="px-1.5 py-0.2 bg-zinc-200/80 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-[10px] font-bold rounded-full">
+            <span className="px-1.5 py-0.2 bg-[#E8E4DF] dark:bg-[#2C2825] text-[#24211F] dark:text-[#FAF8F5] text-[10px] font-bold rounded-[3px]">
               {smsLogs.length}
             </span>
           </button>
@@ -1206,58 +1209,61 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
       {/* PURPOSE 1: PAYMENT APPROVALS */}
       {/* ========================================================================= */}
       {activeTab === 'approvals' && (
-        <Card className="p-4 sm:p-6 space-y-4 sm:space-y-5 border-zinc-200/80 dark:border-zinc-800 rounded-xl shadow-xs">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-zinc-100 dark:border-zinc-800">
+        <Card className="p-4 sm:p-6 space-y-4 sm:space-y-5 border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] rounded-[3px] shadow-xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E8E4DF] dark:border-[#2C2825]">
             <div>
-              <h2 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-50">
+              <h2 className="text-base sm:text-lg font-serif font-bold text-[#24211F] dark:text-[#FAF8F5] tracking-tight">
                 Payment Approvals
               </h2>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+              <p className="text-xs text-[#706A65] dark:text-[#A8A29D] mt-0.5">
                 Verify member payments, approve subscriptions, and manage verified directories.
               </p>
             </div>
 
             {/* Filter Pills */}
-            <div className="inline-flex items-center gap-1 p-1 bg-zinc-100 dark:bg-zinc-800/60 rounded-lg border border-zinc-200/60 dark:border-zinc-700/60 text-xs font-medium overflow-x-auto no-scrollbar">
+            <div className="inline-flex items-center gap-1 p-1 bg-[#F3EFEA] dark:bg-[#1E1B19] rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] text-xs font-medium overflow-x-auto no-scrollbar">
               <button
                 onClick={() => setStatusFilter('all')}
-                className={`px-2.5 py-1 rounded-md transition-all cursor-pointer whitespace-nowrap text-xs font-semibold ${
+                className={`px-2.5 py-1 rounded-[3px] transition-all cursor-pointer whitespace-nowrap text-xs font-semibold ${
                   statusFilter === 'all'
-                    ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-zinc-50 shadow-2xs'
-                    : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
+                    ? 'bg-white dark:bg-[#2A2624] text-[#24211F] dark:text-[#FAF8F5] shadow-2xs'
+                    : 'text-[#706A65] dark:text-[#A8A29D] hover:text-[#24211F] dark:hover:text-[#FAF8F5]'
                 }`}
               >
                 All ({submissions.length})
               </button>
               <button
                 onClick={() => setStatusFilter('pending')}
-                className={`px-2.5 py-1 rounded-md transition-all cursor-pointer whitespace-nowrap text-xs font-semibold ${
+                className={`px-2.5 py-1 rounded-[3px] transition-all cursor-pointer whitespace-nowrap text-xs font-semibold flex items-center gap-1.5 ${
                   statusFilter === 'pending'
-                    ? 'bg-amber-500 text-white shadow-2xs'
-                    : 'text-amber-600 dark:text-amber-400 hover:bg-amber-500/10'
+                    ? 'bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800/80 shadow-2xs'
+                    : 'text-amber-700 dark:text-amber-400 hover:bg-amber-500/10'
                 }`}
               >
-                Pending ({pendingCount})
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
+                <span>Pending ({pendingCount})</span>
               </button>
               <button
                 onClick={() => setStatusFilter('approved')}
-                className={`px-2.5 py-1 rounded-md transition-all cursor-pointer whitespace-nowrap text-xs font-semibold ${
+                className={`px-2.5 py-1 rounded-[3px] transition-all cursor-pointer whitespace-nowrap text-xs font-semibold flex items-center gap-1.5 ${
                   statusFilter === 'approved'
-                    ? 'bg-emerald-600 text-white shadow-2xs'
-                    : 'text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10'
+                    ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800/80 shadow-2xs'
+                    : 'text-emerald-700 dark:text-emerald-400 hover:bg-emerald-500/10'
                 }`}
               >
-                Approved ({approvedCount})
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 shrink-0" />
+                <span>Approved ({approvedCount})</span>
               </button>
               <button
                 onClick={() => setStatusFilter('rejected')}
-                className={`px-2.5 py-1 rounded-md transition-all cursor-pointer whitespace-nowrap text-xs font-semibold ${
+                className={`px-2.5 py-1 rounded-[3px] transition-all cursor-pointer whitespace-nowrap text-xs font-semibold flex items-center gap-1.5 ${
                   statusFilter === 'rejected'
-                    ? 'bg-rose-600 text-white shadow-2xs'
-                    : 'text-rose-600 dark:text-rose-400 hover:bg-rose-500/10'
+                    ? 'bg-rose-100 dark:bg-rose-950/60 text-rose-900 dark:text-rose-200 border border-rose-300 dark:border-rose-800/80 shadow-2xs'
+                    : 'text-rose-700 dark:text-rose-400 hover:bg-rose-500/10'
                 }`}
               >
-                Rejected ({rejectedCount})
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
+                <span>Rejected ({rejectedCount})</span>
               </button>
             </div>
           </div>
@@ -1269,7 +1275,8 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                 placeholder="Search member, phone, plan..."
                 value={paymentSearch}
                 onChange={(e) => setPaymentSearch(e.target.value)}
-                leftIcon={<Search className="w-3.5 h-3.5 text-zinc-400" />}
+                leftIcon={<Search className="w-3.5 h-3.5 text-[#706A65]" />}
+                className="rounded-[3px] border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#181615] focus:border-[#981C00] focus:ring-[#981C00]/20 text-xs"
               />
             </div>
 
@@ -1279,15 +1286,15 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                 type="button"
                 onClick={() => setIsCopyApprovedModalOpen(true)}
                 title="Copy approved phone numbers with ordering (#) and plenty of space"
-                className="inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-lg text-xs font-semibold border border-emerald-500/30 bg-emerald-50/80 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition-all cursor-pointer shadow-2xs"
+                className="inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-[3px] text-xs font-semibold border border-emerald-300 dark:border-emerald-800/80 bg-emerald-50/70 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100/80 dark:hover:bg-emerald-900/50 transition-all cursor-pointer shadow-2xs"
               >
                 {hasCopiedApproved ? (
-                  <CheckCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <CheckCheck className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" />
                 ) : (
-                  <Copy className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <Copy className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" />
                 )}
                 <span>Copy Approved</span>
-                <span className="px-1.5 py-0.5 rounded-full bg-emerald-200/80 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 text-[10px] font-mono font-bold">
+                <span className="px-1.5 py-0.5 rounded-[3px] bg-emerald-200/80 dark:bg-emerald-900 text-emerald-900 dark:text-emerald-200 text-[10px] font-mono font-bold">
                   {approvedCount}
                 </span>
               </button>
@@ -1299,7 +1306,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                 disabled={isExportingCsv}
                 aria-label="Export to CSV"
                 title="Export list as CSV"
-                className="inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-lg text-xs font-semibold border border-zinc-200/80 dark:border-zinc-700/60 bg-white dark:bg-zinc-850 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-50 transition-all cursor-pointer shadow-2xs"
+                className="inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-[3px] text-xs font-semibold border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] hover:bg-[#FAF8F5] dark:hover:bg-[#2A2624] disabled:opacity-50 transition-all cursor-pointer shadow-2xs"
               >
                 <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                 <span className="hidden sm:inline">CSV</span>
@@ -1313,42 +1320,42 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                   disabled={isExportingPdf}
                   aria-label="Export to PDF options"
                   title="Export PDF reports"
-                  className="inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-lg text-xs font-semibold border border-zinc-200/80 dark:border-zinc-700/60 bg-white dark:bg-zinc-850 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-50 transition-all cursor-pointer shadow-2xs"
+                  className="inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-[3px] text-xs font-semibold border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] hover:bg-[#FAF8F5] dark:hover:bg-[#2A2624] disabled:opacity-50 transition-all cursor-pointer shadow-2xs"
                 >
-                  <FileText className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
+                  <FileText className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
                   <span className="hidden sm:inline">PDF</span>
-                  <ChevronDown className="w-3 h-3 text-zinc-400" />
+                  <ChevronDown className="w-3 h-3 text-[#706A65]" />
                 </button>
 
                 {isPdfDropdownOpen && (
-                  <div className="absolute right-0 top-full mt-1.5 w-60 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 shadow-xl py-1.5 z-30 text-xs">
+                  <div className="absolute right-0 top-full mt-1.5 w-60 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] shadow-xl py-1.5 z-30 text-xs animate-in fade-in zoom-in-95 duration-150">
                     <button
                       type="button"
                       onClick={() => {
                         setIsPdfDropdownOpen(false);
                         exportToPDF();
                       }}
-                      className="w-full text-left px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 flex items-center gap-2.5 cursor-pointer text-zinc-800 dark:text-zinc-200"
+                      className="w-full text-left px-3 py-2 hover:bg-[#FAF8F5] dark:hover:bg-[#24211F] flex items-center gap-2.5 cursor-pointer text-[#24211F] dark:text-[#FAF8F5]"
                     >
-                      <FileText className="w-4 h-4 text-rose-500 shrink-0" />
+                      <FileText className="w-4 h-4 text-[#981C00] shrink-0" />
                       <div>
                         <p className="font-semibold text-xs leading-tight">Master Report PDF</p>
-                        <p className="text-[10px] text-zinc-500 mt-0.5">All currently filtered rows</p>
+                        <p className="text-[10px] text-[#706A65] dark:text-[#A8A29D] mt-0.5">All currently filtered rows</p>
                       </div>
                     </button>
-                    <div className="border-t border-zinc-100 dark:border-zinc-700/70 my-1" />
+                    <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] my-1" />
                     <button
                       type="button"
                       onClick={() => {
                         setIsPdfDropdownOpen(false);
                         exportApprovedPhonesPDF();
                       }}
-                      className="w-full text-left px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 flex items-center gap-2.5 cursor-pointer text-zinc-800 dark:text-zinc-200"
+                      className="w-full text-left px-3 py-2 hover:bg-[#FAF8F5] dark:hover:bg-[#24211F] flex items-center gap-2.5 cursor-pointer text-[#24211F] dark:text-[#FAF8F5]"
                     >
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                       <div>
                         <p className="font-semibold text-xs leading-tight">Approved Phones Only PDF</p>
-                        <p className="text-[10px] text-zinc-500 mt-0.5">
+                        <p className="text-[10px] text-[#706A65] dark:text-[#A8A29D] mt-0.5">
                           Verified directory ({approvedCount} phones)
                         </p>
                       </div>
@@ -1371,10 +1378,10 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                       setIsSelectionMode(true);
                     }
                   }}
-                  className={`inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-lg text-xs font-semibold border transition-all cursor-pointer shadow-2xs ${
+                  className={`inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-[3px] text-xs font-semibold border transition-all cursor-pointer shadow-2xs ${
                     isSelectionMode || selectedIds.length > 0
-                      ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 border-zinc-900 dark:border-white shadow-xs'
-                      : 'bg-white dark:bg-zinc-850 text-zinc-700 dark:text-zinc-300 border-zinc-200/80 dark:border-zinc-700/60 hover:bg-zinc-50 dark:hover:bg-zinc-800'
+                      ? 'bg-[#24211F] text-[#FAF8F5] dark:bg-[#FAF8F5] dark:text-[#24211F] border-[#24211F] dark:border-[#FAF8F5] shadow-xs'
+                      : 'bg-white dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] border-[#E8E4DF] dark:border-[#2C2825] hover:bg-[#FAF8F5] dark:hover:bg-[#24211F]'
                   }`}
                   aria-label="Select items"
                   title="Toggle multi-item select mode"
@@ -1386,8 +1393,8 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
 
               {/* Active Selection Floating Pill */}
               {selectedIds.length > 0 && (
-                <div className="flex items-center gap-1.5 sm:gap-2 bg-zinc-100 dark:bg-zinc-800 p-1 px-2 rounded-xl border border-zinc-200 dark:border-zinc-700 text-xs">
-                  <span className="font-bold text-zinc-800 dark:text-zinc-200 font-mono text-[11px]">
+                <div className="flex items-center gap-1.5 sm:gap-2 bg-[#F3EFEA] dark:bg-[#1E1B19] p-1 px-2.5 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] text-xs">
+                  <span className="font-bold text-[#24211F] dark:text-[#FAF8F5] font-mono text-[11px]">
                     {selectedIds.length}
                   </span>
                   <Button
@@ -1395,7 +1402,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                     variant="danger"
                     onClick={() => setShowBatchDeleteModal(true)}
                     leftIcon={<Trash2 className="w-3 h-3" />}
-                    className="text-xs py-0.5 h-6.5 px-2"
+                    className="text-xs py-0.5 h-6.5 px-2 rounded-[3px]"
                   >
                     <span className="hidden sm:inline">Delete Selected</span>
                     <span className="sm:hidden">Delete</span>
@@ -1406,7 +1413,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                       setSelectedIds([]);
                       setIsSelectionMode(false);
                     }}
-                    className="text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 text-[11px] underline cursor-pointer px-0.5"
+                    className="text-[#706A65] hover:text-[#24211F] dark:hover:text-[#FAF8F5] text-[11px] underline cursor-pointer px-0.5"
                   >
                     Clear
                   </button>
@@ -1417,11 +1424,11 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
 
           {/* Registrations List - Mobile Cards View + Desktop Table View */}
           {filteredSubmissions.length === 0 ? (
-            <div className="py-14 text-center text-xs text-zinc-400 space-y-3 bg-zinc-50/50 dark:bg-zinc-900/40 rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800">
-              <AlertCircle className="w-9 h-9 mx-auto text-zinc-300 dark:text-zinc-700" />
+            <div className="py-14 text-center text-xs text-[#706A65] dark:text-[#A8A29D] space-y-3 bg-[#FAF8F5]/60 dark:bg-[#1A1816]/40 rounded-[3px] border border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
+              <AlertCircle className="w-9 h-9 mx-auto text-[#706A65]/50" />
               <div>
-                <p className="font-bold text-zinc-700 dark:text-zinc-300 text-sm">No registrations found</p>
-                <p className="text-zinc-500 text-xs mt-0.5">
+                <p className="font-bold text-[#24211F] dark:text-[#FAF8F5] text-sm">No registrations found</p>
+                <p className="text-[#706A65] dark:text-[#A8A29D] text-xs mt-0.5">
                   Submissions from the registration form will appear here in real-time.
                 </p>
               </div>
@@ -1430,6 +1437,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                 variant="secondary"
                 onClick={() => fetchRegistrations()}
                 leftIcon={<RefreshCw className="w-3.5 h-3.5" />}
+                className="rounded-[3px]"
               >
                 Refresh
               </Button>
@@ -1448,10 +1456,10 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                       onClick={() => {
                         if (isSelectionMode) handleToggleSelect(sub.id);
                       }}
-                      className={`p-3 rounded-xl border transition-all ${
+                      className={`p-3 rounded-[3px] border transition-all ${
                         isSelected
-                          ? 'bg-zinc-100/90 dark:bg-zinc-800 border-zinc-900 dark:border-zinc-100 shadow-2xs'
-                          : 'bg-white dark:bg-zinc-900/80 border-zinc-200 dark:border-zinc-800'
+                          ? 'bg-[#F3EFEA] dark:bg-[#24211F] border-[#24211F] dark:border-[#FAF8F5] shadow-2xs'
+                          : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825]'
                       }`}
                     >
                       {/* Main Card Layout: Left Info & Actions, Right Receipt Thumbnail */}
@@ -1469,20 +1477,20 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                       e.stopPropagation();
                                       handleToggleSelect(sub.id);
                                     }}
-                                    className={`w-5 h-5 rounded-md flex items-center justify-center transition-all cursor-pointer border shrink-0 ${
+                                    className={`w-5 h-5 rounded-[3px] flex items-center justify-center transition-all cursor-pointer border shrink-0 ${
                                       isSelected
-                                        ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 border-zinc-900 dark:border-white shadow-2xs'
-                                        : 'border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800'
+                                        ? 'bg-[#24211F] text-[#FAF8F5] dark:bg-[#FAF8F5] dark:text-[#24211F] border-[#24211F] dark:border-[#FAF8F5] shadow-2xs'
+                                        : 'border-[#DDD7CF] dark:border-[#3D3834] bg-white dark:bg-[#1E1B19]'
                                     }`}
                                     aria-label={isSelected ? 'Deselect member' : 'Select member'}
                                   >
                                     {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                                   </button>
                                 )}
-                                <span className="text-[11px] font-mono font-bold text-zinc-400 dark:text-zinc-500 shrink-0">
+                                <span className="text-[11px] font-mono font-bold text-[#706A65] shrink-0">
                                   #{absoluteIndex}
                                 </span>
-                                <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm leading-tight truncate" title={sub.userName}>
+                                <h3 className="font-bold text-[#24211F] dark:text-[#FAF8F5] text-sm leading-tight truncate" title={sub.userName}>
                                   {sub.userName}
                                 </h3>
                               </div>
@@ -1495,12 +1503,12 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                             </div>
 
                             {/* Phone & Date */}
-                            <div className="flex items-center justify-between text-[11px] font-mono text-zinc-600 dark:text-zinc-300 font-semibold gap-1">
+                            <div className="flex items-center justify-between text-[11px] font-mono text-[#4A443F] dark:text-[#D1CBC5] font-semibold gap-1">
                               <span className="flex items-center gap-1 truncate">
-                                <Smartphone className="w-3 h-3 text-zinc-400 shrink-0" />
+                                <Smartphone className="w-3 h-3 text-[#706A65] shrink-0" />
                                 {sub.userPhone}
                               </span>
-                              <span className="text-[10px] text-zinc-400 font-normal shrink-0">
+                              <span className="text-[10px] text-[#706A65] font-normal shrink-0">
                                 {new Date(sub.submittedAt).toLocaleDateString([], { month: 'numeric', day: 'numeric' })}
                               </span>
                             </div>
@@ -1508,13 +1516,13 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                             {/* Verify.ET Auto-Verified Badge / TxID */}
                             {(sub.verificationMethod === 'verify_et' || sub.transactionId) && (
                               <div className="flex items-center gap-1.5 flex-wrap mt-1">
-                                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20">
+                                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-[3px] text-[10px] font-bold bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
                                   <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                                   <span>Verify.ET</span>
                                   {sub.bank && <span className="uppercase font-mono text-[9px]">{sub.bank}</span>}
                                 </span>
                                 {sub.transactionId && (
-                                  <span className="font-mono text-[10px] text-zinc-500 truncate max-w-[140px]" title={sub.transactionId}>
+                                  <span className="font-mono text-[10px] text-[#706A65] truncate max-w-[140px]" title={sub.transactionId}>
                                     Tx: {sub.transactionId}
                                   </span>
                                 )}
@@ -1522,18 +1530,10 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                             )}
                           </div>
 
-                          {/* Plan Badge & Amount Display (Dropdown Removed) */}
+                          {/* Plan Badge & Amount Display */}
                           <div className="flex items-center justify-between gap-2 pt-0.5">
-                            <span
-                              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold tracking-tight border ${
-                                sub.amount >= 1000 || sub.planName.toLowerCase().includes('6')
-                                  ? 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/20'
-                                  : sub.amount >= 600 || sub.planName.toLowerCase().includes('3')
-                                  ? 'bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/20'
-                                  : 'bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border-zinc-200 dark:border-zinc-700'
-                              }`}
-                            >
-                              <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70" />
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[3px] text-xs font-semibold tracking-tight border border-[#E8E4DF] dark:border-[#2C2825] bg-[#F3EFEA] dark:bg-[#201D1B] text-[#24211F] dark:text-[#FAF8F5]">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#981C00] dark:bg-[#E89382]" />
                               <span>
                                 {sub.amount >= 1000 || sub.planName.toLowerCase().includes('6')
                                   ? '6 Months'
@@ -1542,7 +1542,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                   : '1 Month'}
                               </span>
                             </span>
-                            <span className="text-xs font-mono font-bold text-zinc-900 dark:text-zinc-100">
+                            <span className="text-xs font-mono font-bold text-[#24211F] dark:text-[#FAF8F5]">
                               {Number(sub.amount).toLocaleString()} ETB
                             </span>
                           </div>
@@ -1558,7 +1558,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                     approvePayment(sub.id, sub.userPhone);
                                     success('Approved!', `Activated for ${sub.userPhone}`);
                                   }}
-                                  className="flex-1 inline-flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 transition-all cursor-pointer shadow-2xs"
+                                  className="flex-1 inline-flex items-center justify-center gap-1 py-1.5 px-2 rounded-[3px] text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 transition-all cursor-pointer shadow-2xs"
                                   title="Approve registration"
                                 >
                                   <Check className="w-3.5 h-3.5 stroke-[2.5]" /> Approve
@@ -1570,7 +1570,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                     rejectPayment(sub.id, sub.userPhone);
                                     info('Rejected', `Marked ${sub.userPhone} as rejected`);
                                   }}
-                                  className="inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 transition-all cursor-pointer border border-rose-200 dark:border-rose-900"
+                                  className="inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-[3px] text-xs font-semibold text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 transition-all cursor-pointer border border-rose-300 dark:border-rose-900"
                                   title="Reject registration"
                                 >
                                   <X className="w-3.5 h-3.5" />
@@ -1586,9 +1586,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                   setSelectedSmsPhone(sub.userPhone);
                                   setActiveTab('send_sms');
                                 }}
-                                className="flex-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-xs font-bold text-zinc-900 dark:text-zinc-100 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 transition-colors cursor-pointer border border-zinc-200 dark:border-zinc-700"
+                                className="flex-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-[3px] text-xs font-bold text-[#24211F] dark:text-[#FAF8F5] bg-[#FAF8F5] hover:bg-[#F3EFEA] dark:bg-[#1E1B19] dark:hover:bg-[#2C2825] transition-colors cursor-pointer border border-[#E8E4DF] dark:border-[#2C2825]"
                               >
-                                <Send className="w-3 h-3" /> Send SMS
+                                <Send className="w-3 h-3 text-[#981C00] dark:text-[#E89382]" /> Send SMS
                               </button>
                             )}
 
@@ -1600,7 +1600,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                   approvePayment(sub.id, sub.userPhone);
                                   success('Approved', `Status updated to active for ${sub.userPhone}`);
                                 }}
-                                className="flex-1 inline-flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/50 transition-colors cursor-pointer border border-emerald-200 dark:border-emerald-800"
+                                className="flex-1 inline-flex items-center justify-center gap-1 py-1.5 px-2 rounded-[3px] text-xs font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/50 transition-colors cursor-pointer border border-emerald-300 dark:border-emerald-800"
                               >
                                 <Check className="w-3 h-3" /> Re-Approve
                               </button>
@@ -1612,7 +1612,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                 e.stopPropagation();
                                 setItemToDelete(sub);
                               }}
-                              className="p-1.5 text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg transition-colors cursor-pointer shrink-0"
+                              className="p-1.5 text-[#706A65] hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-[3px] transition-colors cursor-pointer shrink-0"
                               title="Delete this record"
                               aria-label="Delete registration"
                             >
@@ -1629,7 +1629,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                 e.stopPropagation();
                                 setPreviewSubmission(sub);
                               }}
-                              className="relative w-full h-full min-h-[112px] rounded-xl overflow-hidden border-2 border-zinc-200 dark:border-zinc-700 bg-zinc-950 cursor-pointer group shadow-xs flex items-center justify-center"
+                              className="relative w-full h-full min-h-[112px] rounded-[3px] overflow-hidden border border-[#E8E4DF] dark:border-[#2C2825] bg-[#141211] cursor-pointer group shadow-xs flex items-center justify-center"
                               title="Tap to enlarge receipt"
                             >
                               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -1640,14 +1640,14 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                               />
                               <div className="absolute inset-0 bg-black/30 flex flex-col items-center justify-end p-1.5">
-                                <div className="w-full py-0.5 px-1 rounded-md bg-black/60 backdrop-blur-xs text-white text-[9px] font-bold flex items-center justify-center gap-1">
+                                <div className="w-full py-0.5 px-1 rounded-[3px] bg-black/60 backdrop-blur-xs text-white text-[9px] font-bold flex items-center justify-center gap-1">
                                   <Eye className="w-2.5 h-2.5" /> View
                                 </div>
                               </div>
                             </div>
                           ) : (
-                            <div className="w-full h-full min-h-[112px] rounded-xl border border-dashed border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/40 flex flex-col items-center justify-center p-2 text-center text-zinc-400">
-                              <FileText className="w-5 h-5 text-zinc-300 dark:text-zinc-600 mb-1" />
+                            <div className="w-full h-full min-h-[112px] rounded-[3px] border border-dashed border-[#DDD7CF] dark:border-[#2C2825] bg-[#FAF8F5]/80 dark:bg-[#1E1B19]/40 flex flex-col items-center justify-center p-2 text-center text-[#706A65]">
+                              <FileText className="w-5 h-5 text-[#706A65]/50 mb-1" />
                               <span className="text-[10px] italic">No receipt</span>
                             </div>
                           )}
@@ -1659,9 +1659,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               </div>
 
               {/* Desktop View: Full-featured Table (Visible only on >= md screens) */}
-              <div className="hidden md:block overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800">
+              <div className="hidden md:block overflow-x-auto rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825]">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-zinc-50 dark:bg-zinc-900/80 text-zinc-500 font-semibold uppercase tracking-wider border-b border-zinc-200 dark:border-zinc-800">
+                  <thead className="bg-[#FAF8F5] dark:bg-[#1A1816] text-[#706A65] font-semibold uppercase tracking-wider border-b border-[#E8E4DF] dark:border-[#2C2825]">
                     <tr>
                       {/* Selection Column Header - shown when Selection Mode is on or items are selected */}
                       {(isSelectionMode || selectedIds.length > 0) && (
@@ -1669,11 +1669,11 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                           <button
                             type="button"
                             onClick={handleSelectPage}
-                            className={`w-5 h-5 rounded-md flex items-center justify-center transition-all cursor-pointer border ${
+                            className={`w-5 h-5 rounded-[3px] flex items-center justify-center transition-all cursor-pointer border ${
                               paginatedSubmissions.length > 0 &&
                               paginatedSubmissions.every((s) => selectedIds.includes(s.id))
-                                ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 border-zinc-900 dark:border-white shadow-2xs'
-                                : 'border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 hover:border-zinc-400'
+                                ? 'bg-[#24211F] text-[#FAF8F5] dark:bg-[#FAF8F5] dark:text-[#24211F] border-[#24211F] dark:border-[#FAF8F5] shadow-2xs'
+                                : 'border-[#DDD7CF] dark:border-[#3D3834] bg-white dark:bg-[#1E1B19] hover:border-[#706A65]'
                             }`}
                             title="Select / Deselect all on this page"
                           >
@@ -1681,12 +1681,12 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                             paginatedSubmissions.every((s) => selectedIds.includes(s.id)) ? (
                               <Check className="w-3.5 h-3.5 stroke-[3]" />
                             ) : paginatedSubmissions.some((s) => selectedIds.includes(s.id)) ? (
-                              <div className="w-2 h-0.5 bg-zinc-900 dark:bg-zinc-100 rounded-full" />
+                              <div className="w-2 h-0.5 bg-[#24211F] dark:bg-[#FAF8F5] rounded-full" />
                             ) : null}
                           </button>
                         </th>
                       )}
-                      <th className={`py-3 px-3 w-12 text-center text-[11px] font-mono text-zinc-400 ${!(isSelectionMode || selectedIds.length > 0) ? 'pl-4' : ''}`}>#</th>
+                      <th className={`py-3 px-3 w-12 text-center text-[11px] font-mono text-[#706A65] ${!(isSelectionMode || selectedIds.length > 0) ? 'pl-4' : ''}`}>#</th>
                       <th className="py-3 px-3">Member Name & Phone</th>
                       <th className="py-3 px-3">Plan / Amount</th>
                       <th className="py-3 px-3">Receipt Image</th>
@@ -1695,7 +1695,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                       <th className="py-3 px-4 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/80">
+                  <tbody className="divide-y divide-[#E8E4DF] dark:divide-[#2C2825]">
                     {paginatedSubmissions.map((sub, pageIndex) => {
                       const absoluteIndex = startIndex + pageIndex + 1;
                       const isSelected = selectedIds.includes(sub.id);
@@ -1715,9 +1715,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                               handleToggleSelect(sub.id);
                             }
                           }}
-                          className={`hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40 transition-colors ${
+                          className={`hover:bg-[#FAF8F5]/80 dark:hover:bg-[#201D1B]/60 transition-colors ${
                             isSelected
-                              ? 'bg-zinc-100/80 dark:bg-zinc-800/70'
+                              ? 'bg-[#F3EFEA] dark:bg-[#24211F]'
                               : ''
                           } ${isSelectionMode ? 'cursor-pointer select-none' : ''}`}
                         >
@@ -1730,10 +1730,10 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                   e.stopPropagation();
                                   handleToggleSelect(sub.id);
                                 }}
-                                className={`w-5 h-5 rounded-md flex items-center justify-center transition-all cursor-pointer border ${
+                                className={`w-5 h-5 rounded-[3px] flex items-center justify-center transition-all cursor-pointer border ${
                                   isSelected
-                                    ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 border-zinc-900 dark:border-white shadow-2xs'
-                                    : 'border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800/80 hover:border-zinc-400'
+                                    ? 'bg-[#24211F] text-[#FAF8F5] dark:bg-[#FAF8F5] dark:text-[#24211F] border-[#24211F] dark:border-[#FAF8F5] shadow-2xs'
+                                    : 'border-[#DDD7CF] dark:border-[#3D3834] bg-white dark:bg-[#1E1B19] hover:border-[#706A65]'
                                 }`}
                                 title={isSelected ? 'Deselect member' : 'Select member'}
                               >
@@ -1743,26 +1743,26 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                           )}
 
                           {/* Index Number */}
-                          <td className={`py-3 px-3 w-12 text-center text-xs font-mono font-bold text-zinc-400 dark:text-zinc-500 ${!(isSelectionMode || selectedIds.length > 0) ? 'pl-4' : ''}`}>
+                          <td className={`py-3 px-3 w-12 text-center text-xs font-mono font-bold text-[#706A65] ${!(isSelectionMode || selectedIds.length > 0) ? 'pl-4' : ''}`}>
                             {absoluteIndex}
                           </td>
 
                           {/* Member Name & Phone */}
                           <td className="py-3 px-3">
                             <div className="space-y-0.5">
-                              <p className="font-bold text-zinc-900 dark:text-zinc-100">{sub.userName}</p>
-                              <p className="text-[11px] font-mono text-zinc-700 dark:text-zinc-300 font-bold flex items-center gap-1">
-                                <Smartphone className="w-3 h-3 text-zinc-400" /> {sub.userPhone}
+                              <p className="font-bold text-[#24211F] dark:text-[#FAF8F5]">{sub.userName}</p>
+                              <p className="text-[11px] font-mono text-[#4A443F] dark:text-[#D1CBC5] font-bold flex items-center gap-1">
+                                <Smartphone className="w-3 h-3 text-[#706A65]" /> {sub.userPhone}
                               </p>
                               {(sub.verificationMethod === 'verify_et' || sub.transactionId) && (
                                 <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
-                                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20">
+                                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-[3px] text-[10px] font-bold bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
                                     <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                                     <span>Verify.ET</span>
                                     {sub.bank && <span className="uppercase font-mono text-[9px]">{sub.bank}</span>}
                                   </span>
                                   {sub.transactionId && (
-                                    <span className="font-mono text-[10px] text-zinc-500 truncate max-w-[130px]" title={sub.transactionId}>
+                                    <span className="font-mono text-[10px] text-[#706A65] truncate max-w-[130px]" title={sub.transactionId}>
                                       {sub.transactionId}
                                     </span>
                                   )}
@@ -1771,19 +1771,11 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                             </div>
                           </td>
 
-                          {/* Plan / Amount (Dropdown Removed) */}
+                          {/* Plan / Amount */}
                           <td className="py-3 px-3">
                             <div className="space-y-1">
-                              <span
-                                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold tracking-tight border ${
-                                  sub.amount >= 1000 || sub.planName.toLowerCase().includes('6')
-                                    ? 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/20'
-                                    : sub.amount >= 600 || sub.planName.toLowerCase().includes('3')
-                                    ? 'bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/20'
-                                    : 'bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border-zinc-200 dark:border-zinc-700'
-                                }`}
-                              >
-                                <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70" />
+                              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[3px] text-xs font-semibold tracking-tight border border-[#E8E4DF] dark:border-[#2C2825] bg-[#F3EFEA] dark:bg-[#201D1B] text-[#24211F] dark:text-[#FAF8F5]">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#981C00] dark:bg-[#E89382]" />
                                 <span>
                                   {sub.amount >= 1000 || sub.planName.toLowerCase().includes('6')
                                     ? '6 Months'
@@ -1792,7 +1784,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                     : '1 Month'}
                                 </span>
                               </span>
-                              <p className="text-xs font-mono font-bold text-zinc-900 dark:text-zinc-100 pl-0.5">
+                              <p className="text-xs font-mono font-bold text-[#24211F] dark:text-[#FAF8F5] pl-0.5">
                                 {Number(sub.amount).toLocaleString()} ETB
                               </p>
                             </div>
@@ -1803,7 +1795,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                             {sub.screenshotUrl ? (
                               <div
                                 onClick={() => setPreviewSubmission(sub)}
-                                className="relative h-11 w-18 rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-700 bg-zinc-950 cursor-pointer group shadow-xs"
+                                className="relative h-11 w-18 rounded-[3px] overflow-hidden border border-[#E8E4DF] dark:border-[#2C2825] bg-[#141211] cursor-pointer group shadow-xs"
                                 title="Click to view full receipt image"
                               >
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -1818,12 +1810,12 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                 </div>
                               </div>
                             ) : (
-                              <span className="text-zinc-400 text-[11px] italic">No image</span>
+                              <span className="text-[#706A65] text-[11px] italic">No image</span>
                             )}
                           </td>
 
                           {/* Date */}
-                          <td className="py-3 px-3 text-zinc-500 font-mono text-[11px]">
+                          <td className="py-3 px-3 text-[#706A65] font-mono text-[11px]">
                             {new Date(sub.submittedAt).toLocaleDateString()}
                           </td>
 
@@ -1845,7 +1837,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                       approvePayment(sub.id, sub.userPhone);
                                       success('Approved!', `Activated SMS subscription for ${sub.userPhone}`);
                                     }}
-                                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-2xs transition-all cursor-pointer"
+                                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-[3px] text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 shadow-2xs transition-all cursor-pointer"
                                     title="Approve and activate"
                                   >
                                     <Check className="w-3.5 h-3.5 stroke-[2.5]" /> Approve
@@ -1856,7 +1848,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                       rejectPayment(sub.id, sub.userPhone);
                                       info('Rejected', `Marked ${sub.userPhone} as rejected`);
                                     }}
-                                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/50 transition-all cursor-pointer border border-rose-200 dark:border-rose-900"
+                                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-[3px] text-xs font-semibold text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/50 transition-all cursor-pointer border border-rose-300 dark:border-rose-900"
                                     title="Reject registration"
                                   >
                                     <X className="w-3.5 h-3.5" /> Reject
@@ -1871,9 +1863,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                     setSelectedSmsPhone(sub.userPhone);
                                     setActiveTab('send_sms');
                                   }}
-                                  className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-zinc-700 dark:text-zinc-200 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 transition-colors cursor-pointer border border-zinc-200 dark:border-zinc-700"
+                                  className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-[3px] text-xs font-semibold text-[#24211F] dark:text-[#FAF8F5] bg-[#FAF8F5] hover:bg-[#F3EFEA] dark:bg-[#1E1B19] dark:hover:bg-[#2C2825] transition-colors cursor-pointer border border-[#E8E4DF] dark:border-[#2C2825]"
                                 >
-                                  <Send className="w-3 h-3" /> Send SMS
+                                  <Send className="w-3 h-3 text-[#981C00] dark:text-[#E89382]" /> Send SMS
                                 </button>
                               )}
 
@@ -1884,7 +1876,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                     approvePayment(sub.id, sub.userPhone);
                                     success('Approved', `Status updated to active for ${sub.userPhone}`);
                                   }}
-                                  className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/50 transition-colors cursor-pointer border border-emerald-200 dark:border-emerald-800"
+                                  className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-[3px] text-xs font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/50 transition-colors cursor-pointer border border-emerald-300 dark:border-emerald-800"
                                 >
                                   <Check className="w-3 h-3" /> Re-Approve
                                 </button>
@@ -1894,7 +1886,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                 type="button"
                                 id={`delete-btn-${sub.id}`}
                                 onClick={() => setItemToDelete(sub)}
-                                className="p-1.5 text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg transition-colors cursor-pointer ml-1"
+                                className="p-1.5 text-[#706A65] hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-[3px] transition-colors cursor-pointer ml-1"
                                 title="Delete this record"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
@@ -1909,21 +1901,21 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               </div>
 
               {/* 20 Per Page Pagination Bar */}
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5 sm:gap-3 pt-2 px-1 text-xs text-zinc-500">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5 sm:gap-3 pt-2 px-1 text-xs text-[#706A65]">
                 <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                   <span className="font-mono text-[11px] sm:text-xs">
-                    Showing <strong className="text-zinc-900 dark:text-zinc-100">{startIndex + 1}</strong>–
-                    <strong className="text-zinc-900 dark:text-zinc-100">{endIndex}</strong> of{' '}
-                    <strong className="text-zinc-900 dark:text-zinc-100">{filteredSubmissions.length}</strong>
+                    Showing <strong className="text-[#24211F] dark:text-[#FAF8F5]">{startIndex + 1}</strong>–
+                    <strong className="text-[#24211F] dark:text-[#FAF8F5]">{endIndex}</strong> of{' '}
+                    <strong className="text-[#24211F] dark:text-[#FAF8F5]">{filteredSubmissions.length}</strong>
                   </span>
 
                   {/* Page Size Selector */}
                   <div className="flex items-center gap-1 text-[11px]">
-                    <span className="text-zinc-400">per page:</span>
+                    <span className="text-[#706A65]">per page:</span>
                     <select
                       value={pageSize}
                       onChange={(e) => setPageSize(Number(e.target.value))}
-                      className="py-0.5 px-1.5 rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-bold focus:outline-none cursor-pointer"
+                      className="py-0.5 px-1.5 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] font-bold focus:outline-none cursor-pointer"
                     >
                       <option value="10">10</option>
                       <option value="20">20</option>
@@ -1939,14 +1931,14 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                     type="button"
                     disabled={validCurrentPage <= 1}
                     onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                    className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer shadow-2xs text-xs"
+                    className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#1E1B19] font-semibold text-[#24211F] dark:text-[#FAF8F5] hover:bg-[#FAF8F5] dark:hover:bg-[#2C2825] disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer shadow-2xs text-xs"
                     aria-label="Previous page"
                   >
                     <ChevronLeft className="w-3.5 h-3.5" />
                     <span className="hidden sm:inline">Previous</span>
                   </button>
 
-                  <span className="px-2.5 sm:px-3 py-1.5 font-mono font-bold text-zinc-700 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800/80 rounded-lg border border-zinc-200 dark:border-zinc-700 text-[11px] sm:text-xs">
+                  <span className="px-2.5 sm:px-3 py-1.5 font-mono font-bold text-[#24211F] dark:text-[#FAF8F5] bg-[#F3EFEA] dark:bg-[#1E1B19] rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] text-[11px] sm:text-xs">
                     {validCurrentPage} / {totalPages}
                   </span>
 
@@ -1954,7 +1946,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                     type="button"
                     disabled={validCurrentPage >= totalPages}
                     onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                    className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer shadow-2xs text-xs"
+                    className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#1E1B19] font-semibold text-[#24211F] dark:text-[#FAF8F5] hover:bg-[#FAF8F5] dark:hover:bg-[#2C2825] disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer shadow-2xs text-xs"
                     aria-label="Next page"
                   >
                     <span className="hidden sm:inline">Next</span>
@@ -1984,13 +1976,13 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
       {/* PURPOSE 3: SMS DELIVERY LOGS */}
       {/* ========================================================================= */}
       {activeTab === 'logs' && (
-        <Card className="p-3.5 sm:p-6 space-y-4 border-zinc-200 dark:border-zinc-800 shadow-sm">
-          <div className="flex items-center justify-between gap-2 pb-3 border-b border-zinc-100 dark:border-zinc-800">
+        <Card className="p-3.5 sm:p-6 space-y-4 border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] rounded-[3px] shadow-sm">
+          <div className="flex items-center justify-between gap-2 pb-3 border-b border-[#E8E4DF] dark:border-[#2C2825]">
             <div>
-              <h2 className="text-sm sm:text-base font-extrabold text-zinc-900 dark:text-zinc-50 flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-serif font-bold text-[#24211F] dark:text-[#FAF8F5] flex items-center gap-2">
                 SMS Dispatch History
               </h2>
-              <p className="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+              <p className="text-[11px] sm:text-xs text-[#706A65] dark:text-[#A8A29D] mt-0.5">
                 Audit log of sent encouragement and spiritual messages.
               </p>
             </div>
@@ -2002,7 +1994,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                   if (typeof window !== 'undefined') localStorage.removeItem('nazazi_sms_logs');
                   info('Cleared SMS logs');
                 }}
-                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-zinc-600 dark:text-zinc-300 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 transition-colors cursor-pointer border border-zinc-200 dark:border-zinc-700"
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-[3px] text-xs font-semibold text-[#706A65] hover:text-[#24211F] dark:text-[#A8A29D] dark:hover:text-[#FAF8F5] bg-[#FAF8F5] hover:bg-[#F3EFEA] dark:bg-[#1E1B19] dark:hover:bg-[#2C2825] transition-colors cursor-pointer border border-[#E8E4DF] dark:border-[#2C2825]"
                 title="Clear all logs"
                 aria-label="Clear all logs"
               >
@@ -2013,9 +2005,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
           </div>
 
           {smsLogs.length === 0 ? (
-            <div className="py-12 text-center text-xs text-zinc-400 space-y-2">
-              <History className="w-8 h-8 mx-auto text-zinc-300 dark:text-zinc-700" />
-              <p className="font-bold text-zinc-600 dark:text-zinc-300">No SMS messages sent yet</p>
+            <div className="py-12 text-center text-xs text-[#706A65] dark:text-[#A8A29D] space-y-2 bg-[#FAF8F5]/60 dark:bg-[#1A1816]/40 rounded-[3px] border border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
+              <History className="w-8 h-8 mx-auto text-[#706A65]/50" />
+              <p className="font-bold text-[#24211F] dark:text-[#FAF8F5]">No SMS messages sent yet</p>
               <p>Dispatched messages from the SMS Console will appear here with delivery timestamps.</p>
             </div>
           ) : (
@@ -2025,23 +2017,23 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                 {smsLogs.map((log) => (
                   <div
                     key={`m-log-${log.id}`}
-                    className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 space-y-2 text-xs"
+                    className="p-3 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] space-y-2 text-xs"
                   >
                     <div className="flex items-center justify-between gap-2">
                       <div>
-                        <p className="font-bold text-zinc-900 dark:text-zinc-100 text-sm leading-tight">{log.recipientName}</p>
-                        <p className="text-[11px] font-mono text-zinc-600 dark:text-zinc-300 font-semibold">{log.recipientPhone}</p>
+                        <p className="font-bold text-[#24211F] dark:text-[#FAF8F5] text-sm leading-tight">{log.recipientName}</p>
+                        <p className="text-[11px] font-mono text-[#4A443F] dark:text-[#D1CBC5] font-semibold">{log.recipientPhone}</p>
                       </div>
                       <Badge variant="zinc" dot>
                         {log.status}
                       </Badge>
                     </div>
 
-                    <p className="text-xs text-zinc-700 dark:text-zinc-300 bg-zinc-50 dark:bg-zinc-800/60 p-2.5 rounded-lg border border-zinc-100 dark:border-zinc-800 leading-relaxed font-sans">
+                    <p className="text-xs text-[#24211F] dark:text-[#FAF8F5] bg-[#FAF8F5] dark:bg-[#1E1B19] p-2.5 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] leading-relaxed font-sans">
                       {log.messageText}
                     </p>
 
-                    <div className="flex items-center justify-between text-[11px] text-zinc-500 font-mono pt-1">
+                    <div className="flex items-center justify-between text-[11px] text-[#706A65] font-mono pt-1">
                       <span>{new Date(log.sentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • {new Date(log.sentAt).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span>
                       <span>{log.segmentCount} segment(s)</span>
                     </div>
@@ -2050,9 +2042,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               </div>
 
               {/* Desktop Logs Table (>= md) */}
-              <div className="hidden md:block overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800">
+              <div className="hidden md:block overflow-x-auto rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825]">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-zinc-50 dark:bg-zinc-900/80 text-zinc-500 font-semibold uppercase tracking-wider border-b border-zinc-200 dark:border-zinc-800">
+                  <thead className="bg-[#FAF8F5] dark:bg-[#1A1816] text-[#706A65] font-semibold uppercase tracking-wider border-b border-[#E8E4DF] dark:border-[#2C2825]">
                     <tr>
                       <th className="p-3.5 pl-4">Recipient</th>
                       <th className="p-3.5">Dispatched Message</th>
@@ -2061,27 +2053,27 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                       <th className="p-3.5 pr-4 text-right">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/80">
+                  <tbody className="divide-y divide-[#E8E4DF] dark:divide-[#2C2825]">
                     {smsLogs.map((log) => (
-                      <tr key={log.id} className="hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40">
+                      <tr key={log.id} className="hover:bg-[#FAF8F5]/80 dark:hover:bg-[#201D1B]/60">
                         <td className="p-3.5 pl-4">
-                          <p className="font-bold text-zinc-900 dark:text-zinc-100">{log.recipientName}</p>
-                          <p className="text-[11px] font-mono text-zinc-700 dark:text-zinc-300 font-semibold">
+                          <p className="font-bold text-[#24211F] dark:text-[#FAF8F5]">{log.recipientName}</p>
+                          <p className="text-[11px] font-mono text-[#4A443F] dark:text-[#D1CBC5] font-semibold">
                             {log.recipientPhone}
                           </p>
                         </td>
 
                         <td className="p-3.5 max-w-xs sm:max-w-md">
-                          <p className="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed truncate" title={log.messageText}>
+                          <p className="text-xs text-[#24211F] dark:text-[#FAF8F5] leading-relaxed truncate" title={log.messageText}>
                             {log.messageText}
                           </p>
                         </td>
 
-                        <td className="p-3.5 text-zinc-500">
+                        <td className="p-3.5 text-[#706A65]">
                           {new Date(log.sentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </td>
 
-                        <td className="p-3.5 font-mono text-zinc-500">
+                        <td className="p-3.5 font-mono text-[#706A65]">
                           {log.segmentCount}
                         </td>
 
@@ -2110,16 +2102,16 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
         {previewSubmission && (
           <div className="flex flex-col">
             {/* Header: Name, Plan & Close Button */}
-            <div className="px-4 py-3 flex items-center justify-between gap-2 border-b border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40">
+            <div className="px-4 py-3 flex items-center justify-between gap-2 border-b border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#1E1B19]">
               <div className="flex items-center gap-3 min-w-0">
                 <div className="min-w-0">
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 truncate">
-                    Name: <strong className="text-zinc-900 dark:text-zinc-100 font-bold text-sm">{previewSubmission.userName}</strong>
+                  <p className="text-xs text-[#706A65] dark:text-[#A8A29D] truncate">
+                    Name: <strong className="text-[#24211F] dark:text-[#FAF8F5] font-bold text-sm">{previewSubmission.userName}</strong>
                   </p>
                 </div>
-                <div className="shrink-0 flex items-center gap-1 text-xs text-zinc-500 dark:text-zinc-400">
+                <div className="shrink-0 flex items-center gap-1 text-xs text-[#706A65] dark:text-[#A8A29D]">
                   <span>Plan:</span>
-                  <span className="px-2 py-0.5 rounded-md bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 font-bold font-mono text-xs">
+                  <span className="px-2 py-0.5 rounded-[3px] bg-[#24211F] text-[#FAF8F5] dark:bg-[#FAF8F5] dark:text-[#24211F] font-bold font-mono text-xs">
                     {previewSubmission.amount || (previewSubmission.planName.toLowerCase().includes('1000') || previewSubmission.planName.toLowerCase().includes('1,000') ? 1000 : previewSubmission.planName.toLowerCase().includes('600') ? 600 : 200)} Birr
                   </span>
                 </div>
@@ -2128,7 +2120,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               <button
                 type="button"
                 onClick={() => setPreviewSubmission(null)}
-                className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 p-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer shrink-0"
+                className="text-[#706A65] hover:text-[#24211F] dark:hover:text-[#FAF8F5] p-1.5 rounded-[3px] hover:bg-[#F3EFEA] dark:hover:bg-[#2C2825] transition-colors cursor-pointer shrink-0"
                 aria-label="Close"
               >
                 <X className="w-4 h-4" />
@@ -2144,13 +2136,13 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                     Verify.ET Automated Bank Verification
                   </span>
                   {previewSubmission.bank && (
-                    <span className="uppercase text-[10px] px-2 py-0.5 rounded-md bg-emerald-600 text-white font-mono font-bold">
+                    <span className="uppercase text-[10px] px-2 py-0.5 rounded-[3px] bg-emerald-700 text-white font-mono font-bold">
                       {previewSubmission.bank}
                     </span>
                   )}
                 </div>
                 {previewSubmission.transactionId && (
-                  <div className="font-mono text-[11px] text-emerald-900 dark:text-emerald-200 bg-white/70 dark:bg-zinc-900/70 px-2 py-0.5 rounded border border-emerald-500/20">
+                  <div className="font-mono text-[11px] text-emerald-900 dark:text-emerald-200 bg-white/70 dark:bg-[#1E1B19]/70 px-2 py-0.5 rounded-[3px] border border-emerald-500/20">
                     TxID: <span className="font-bold select-all">{previewSubmission.transactionId}</span>
                   </div>
                 )}
@@ -2158,30 +2150,30 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
             )}
 
             {/* Receipt Image (Maximal view area, minimal margins) */}
-            <div className="p-2.5 sm:p-3 bg-zinc-950/95 flex items-center justify-center min-h-[200px] max-h-[58vh] sm:max-h-[64vh]">
+            <div className="p-2.5 sm:p-3 bg-[#141211] flex items-center justify-center min-h-[200px] max-h-[58vh] sm:max-h-[64vh]">
               {previewSubmission.screenshotUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={previewSubmission.screenshotUrl}
                   alt={`Receipt for ${previewSubmission.userName}`}
                   referrerPolicy="no-referrer"
-                  className="max-h-[54vh] sm:max-h-[60vh] w-auto max-w-full object-contain rounded-lg select-none"
+                  className="max-h-[54vh] sm:max-h-[60vh] w-auto max-w-full object-contain rounded-[3px] select-none"
                 />
               ) : (
-                <div className="py-12 text-center text-zinc-400 text-xs space-y-2">
-                  <AlertCircle className="w-8 h-8 mx-auto text-zinc-600" />
+                <div className="py-12 text-center text-[#706A65] text-xs space-y-2">
+                  <AlertCircle className="w-8 h-8 mx-auto text-[#706A65]/50" />
                   <p>No receipt image uploaded</p>
                 </div>
               )}
             </div>
 
             {/* Compact Action Footer */}
-            <div className="px-3.5 py-2.5 flex items-center justify-between gap-2 border-t border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+            <div className="px-3.5 py-2.5 flex items-center justify-between gap-2 border-t border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615]">
               <Button
                 variant="secondary"
                 size="sm"
                 onClick={() => setPreviewSubmission(null)}
-                className="text-xs h-8 px-3"
+                className="text-xs h-8 px-3 rounded-[3px]"
               >
                 Close
               </Button>
@@ -2195,7 +2187,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                       info('Rejected', 'Marked transaction as rejected');
                       setPreviewSubmission(null);
                     }}
-                    className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-rose-600 dark:text-rose-400 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 transition-colors cursor-pointer h-8"
+                    className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-[3px] text-xs font-semibold text-rose-700 dark:text-rose-400 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-900 transition-colors cursor-pointer h-8"
                   >
                     <X className="w-3.5 h-3.5" /> Reject
                   </button>
@@ -2209,7 +2201,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                       success('Approved', `Activated for ${previewSubmission.userName}`);
                       setPreviewSubmission(null);
                     }}
-                    className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-xs transition-all cursor-pointer h-8"
+                    className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-[3px] text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 shadow-xs transition-all cursor-pointer h-8"
                   >
                     <Check className="w-3.5 h-3.5 stroke-[2.5]" /> Approve
                   </button>
@@ -2228,9 +2220,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
         description={itemToDelete ? `${itemToDelete.userName} • ${itemToDelete.userPhone}` : ''}
       >
         <div className="space-y-4 text-xs">
-          <p className="text-zinc-600 dark:text-zinc-300 leading-relaxed">
+          <p className="text-[#4A443F] dark:text-[#D1CBC5] leading-relaxed">
             Are you sure you want to permanently delete the registration record for{' '}
-            <strong className="text-zinc-900 dark:text-zinc-100 font-bold">
+            <strong className="text-[#24211F] dark:text-[#FAF8F5] font-bold">
               {itemToDelete?.userName}
             </strong>{' '}
             ({itemToDelete?.userPhone})? This action removes the entry from the database and approval queue.
@@ -2242,6 +2234,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               size="sm"
               onClick={() => setItemToDelete(null)}
               disabled={isDeletingItem}
+              className="rounded-[3px]"
             >
               Cancel
             </Button>
@@ -2252,6 +2245,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               onClick={handleConfirmSingleDelete}
               isLoading={isDeletingItem}
               leftIcon={<Trash2 className="w-3.5 h-3.5" />}
+              className="rounded-[3px]"
             >
               Delete Record
             </Button>
@@ -2267,9 +2261,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
         description="Permanently delete multiple registration entries at once."
       >
         <div className="space-y-4 text-xs">
-          <p className="text-zinc-600 dark:text-zinc-300 leading-relaxed">
+          <p className="text-[#4A443F] dark:text-[#D1CBC5] leading-relaxed">
             Are you sure you want to permanently delete{' '}
-            <strong className="text-zinc-900 dark:text-zinc-100 font-bold">
+            <strong className="text-[#24211F] dark:text-[#FAF8F5] font-bold">
               {selectedIds.length} registration(s)
             </strong>
             ? This action cannot be undone.
@@ -2281,6 +2275,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               size="sm"
               onClick={() => setShowBatchDeleteModal(false)}
               disabled={isBatchDeleting}
+              className="rounded-[3px]"
             >
               Cancel
             </Button>
@@ -2291,6 +2286,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               onClick={handleConfirmBatchDelete}
               isLoading={isBatchDeleting}
               leftIcon={<Trash2 className="w-3.5 h-3.5" />}
+              className="rounded-[3px]"
             >
               Yes, Delete Selected
             </Button>
@@ -2306,16 +2302,16 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
         description="This will clear all registered members and SMS history."
       >
         <div className="space-y-4 text-xs">
-          <p className="text-zinc-600 dark:text-zinc-300 leading-relaxed">
+          <p className="text-[#4A443F] dark:text-[#D1CBC5] leading-relaxed">
             Are you sure you want to clear all registrations? This deletes test submissions and gives you a fresh start for real subscribers.
           </p>
 
           <div className="flex justify-end items-center gap-2.5 pt-2">
-            <Button variant="secondary" size="sm" onClick={() => setShowResetModal(false)} disabled={isResetting}>
+            <Button variant="secondary" size="sm" onClick={() => setShowResetModal(false)} disabled={isResetting} className="rounded-[3px]">
               Cancel
             </Button>
 
-            <Button variant="danger" size="sm" onClick={handleExecuteReset} isLoading={isResetting}>
+            <Button variant="danger" size="sm" onClick={handleExecuteReset} isLoading={isResetting} className="rounded-[3px]">
               Yes, Clear All Data
             </Button>
           </div>
@@ -2333,22 +2329,22 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
         <div className="space-y-4 text-xs">
           {/* Format Selector Pills */}
           <div className="space-y-1.5">
-            <label className="block font-bold text-zinc-700 dark:text-zinc-300 text-[11px] uppercase tracking-wider">
+            <label className="block font-bold text-[#706A65] dark:text-[#A8A29D] text-[11px] uppercase tracking-wider">
               Select Output Format
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               <button
                 type="button"
                 onClick={() => setCopyFormat('ordered_spaced')}
-                className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
+                className={`p-2.5 rounded-[3px] border text-left transition-all cursor-pointer ${
                   copyFormat === 'ordered_spaced'
-                    ? 'border-emerald-500 bg-emerald-50/70 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-100 ring-1 ring-emerald-500/20 shadow-xs'
-                    : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 hover:border-zinc-300 dark:hover:border-zinc-700 text-zinc-700 dark:text-zinc-300'
+                    ? 'border-[#981C00] dark:border-[#E89382] bg-[#FAF8F5] dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] ring-1 ring-[#981C00]/20 shadow-xs'
+                    : 'border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] hover:border-[#DDD7CF] text-[#706A65] dark:text-[#A8A29D]'
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-xs">1. 09... (Spaced)</span>
-                  <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 font-bold uppercase">
+                  <span className="text-[9px] px-1.5 py-0.5 rounded-[3px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200 font-bold uppercase">
                     Default
                   </span>
                 </div>
@@ -2358,10 +2354,10 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               <button
                 type="button"
                 onClick={() => setCopyFormat('ordered_extra_spaced')}
-                className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
+                className={`p-2.5 rounded-[3px] border text-left transition-all cursor-pointer ${
                   copyFormat === 'ordered_extra_spaced'
-                    ? 'border-emerald-500 bg-emerald-50/70 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-100 ring-1 ring-emerald-500/20 shadow-xs'
-                    : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 hover:border-zinc-300 dark:hover:border-zinc-700 text-zinc-700 dark:text-zinc-300'
+                    ? 'border-[#981C00] dark:border-[#E89382] bg-[#FAF8F5] dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] ring-1 ring-[#981C00]/20 shadow-xs'
+                    : 'border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] hover:border-[#DDD7CF] text-[#706A65] dark:text-[#A8A29D]'
                 }`}
               >
                 <span className="font-bold text-xs block">Extra Spaced</span>
@@ -2371,10 +2367,10 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               <button
                 type="button"
                 onClick={() => setCopyFormat('ordered_with_name')}
-                className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
+                className={`p-2.5 rounded-[3px] border text-left transition-all cursor-pointer ${
                   copyFormat === 'ordered_with_name'
-                    ? 'border-emerald-500 bg-emerald-50/70 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-100 ring-1 ring-emerald-500/20 shadow-xs'
-                    : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 hover:border-zinc-300 dark:hover:border-zinc-700 text-zinc-700 dark:text-zinc-300'
+                    ? 'border-[#981C00] dark:border-[#E89382] bg-[#FAF8F5] dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] ring-1 ring-[#981C00]/20 shadow-xs'
+                    : 'border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] hover:border-[#DDD7CF] text-[#706A65] dark:text-[#A8A29D]'
                 }`}
               >
                 <span className="font-bold text-xs block">Name + Phone</span>
@@ -2384,10 +2380,10 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               <button
                 type="button"
                 onClick={() => setCopyFormat('ordered_compact')}
-                className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
+                className={`p-2.5 rounded-[3px] border text-left transition-all cursor-pointer ${
                   copyFormat === 'ordered_compact'
-                    ? 'border-emerald-500 bg-emerald-50/70 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-100 ring-1 ring-emerald-500/20 shadow-xs'
-                    : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 hover:border-zinc-300 dark:hover:border-zinc-700 text-zinc-700 dark:text-zinc-300'
+                    ? 'border-[#981C00] dark:border-[#E89382] bg-[#FAF8F5] dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] ring-1 ring-[#981C00]/20 shadow-xs'
+                    : 'border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] hover:border-[#DDD7CF] text-[#706A65] dark:text-[#A8A29D]'
                 }`}
               >
                 <span className="font-bold text-xs block">Compact (1, 2, 3...)</span>
@@ -2397,10 +2393,10 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               <button
                 type="button"
                 onClick={() => setCopyFormat('comma')}
-                className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer col-span-2 sm:col-span-2 ${
+                className={`p-2.5 rounded-[3px] border text-left transition-all cursor-pointer col-span-2 sm:col-span-2 ${
                   copyFormat === 'comma'
-                    ? 'border-emerald-500 bg-emerald-50/70 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-100 ring-1 ring-emerald-500/20 shadow-xs'
-                    : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 hover:border-zinc-300 dark:hover:border-zinc-700 text-zinc-700 dark:text-zinc-300'
+                    ? 'border-[#981C00] dark:border-[#E89382] bg-[#FAF8F5] dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] ring-1 ring-[#981C00]/20 shadow-xs'
+                    : 'border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] hover:border-[#DDD7CF] text-[#706A65] dark:text-[#A8A29D]'
                 }`}
               >
                 <span className="font-bold text-xs block">Comma Separated</span>
@@ -2412,10 +2408,10 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
           {/* Live Preview Box */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label className="font-bold text-zinc-700 dark:text-zinc-300 text-[11px] uppercase tracking-wider">
+              <label className="font-bold text-[#706A65] dark:text-[#A8A29D] text-[11px] uppercase tracking-wider">
                 Clipboard Preview ({approvedSubmissions.length} Approved)
               </label>
-              <span className="text-[10px] font-mono text-zinc-500">
+              <span className="text-[10px] font-mono text-[#706A65]">
                 {copyFormat.includes('spaced') ? 'Plenty of space applied' : 'Standard spacing'}
               </span>
             </div>
@@ -2425,27 +2421,27 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                 readOnly
                 value={getFormattedApprovedText()}
                 rows={9}
-                className="w-full font-mono text-xs p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950/80 text-zinc-800 dark:text-zinc-200 leading-relaxed focus:outline-none select-all"
+                className="w-full font-mono text-xs p-3.5 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-[#24211F] dark:text-[#FAF8F5] leading-relaxed focus:outline-none select-all"
                 placeholder="No approved users found to copy."
               />
             </div>
           </div>
 
           {/* Helper note */}
-          <div className="p-3 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 flex items-start gap-2.5 text-zinc-600 dark:text-zinc-300 text-xs">
-            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+          <div className="p-3 rounded-[3px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] flex items-start gap-2.5 text-[#4A443F] dark:text-[#D1CBC5] text-xs">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
             <p className="leading-relaxed text-[11px]">
-              Formatted with sequential order numbers in front (<code className="font-mono text-emerald-600 dark:text-emerald-400">1.</code>, <code className="font-mono text-emerald-600 dark:text-emerald-400">2.</code>, <code className="font-mono text-emerald-600 dark:text-emerald-400">3.</code>) and an empty line between each phone number for clear readability and separation.
+              Formatted with sequential order numbers in front (<code className="font-mono text-[#981C00] dark:text-[#E89382]">1.</code>, <code className="font-mono text-[#981C00] dark:text-[#E89382]">2.</code>, <code className="font-mono text-[#981C00] dark:text-[#E89382]">3.</code>) and an empty line between each phone number for clear readability and separation.
             </p>
           </div>
 
           {/* Modal Actions */}
-          <div className="flex flex-col sm:flex-row items-center justify-end gap-2.5 pt-2 border-t border-zinc-100 dark:border-zinc-800">
+          <div className="flex flex-col sm:flex-row items-center justify-end gap-2.5 pt-2 border-t border-[#E8E4DF] dark:border-[#2C2825]">
             <Button
               variant="secondary"
               size="sm"
               onClick={() => setIsCopyApprovedModalOpen(false)}
-              className="w-full sm:w-auto"
+              className="w-full sm:w-auto rounded-[3px]"
             >
               Close
             </Button>
@@ -2462,7 +2458,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                   <Copy className="w-4 h-4" />
                 )
               }
-              className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-500 text-white font-bold"
+              className="w-full sm:w-auto rounded-[3px] bg-[#981C00] hover:bg-[#7A1D28] text-white font-bold"
             >
               {hasCopiedApproved ? 'Copied to Clipboard!' : `Copy ${approvedSubmissions.length} Numbers`}
             </Button>
