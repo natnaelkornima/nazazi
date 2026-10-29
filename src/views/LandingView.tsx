@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { NavigationTab, PaymentSubmission } from '../types';
 import { SubscribeModal } from '../components/SubscribeModal';
 import { SubscriptionStatusModal } from '../components/SubscriptionStatusModal';
+import { IntegrationBeam } from '../components/ui/IntegrationBeam';
 import { useRegistrationDeadline } from '../hooks/useRegistrationDeadline';
 import { useLanguage } from '../context/LanguageContext';
 import {
@@ -673,33 +674,28 @@ export const LandingView: React.FC<LandingViewProps> = ({
                     </div>
                   </div>
 
-                  {/* Messages App Navigation Bar */}
-                  <div className="px-4 py-2.5 bg-[#F9F9FB]/95 dark:bg-[#161618]/95 backdrop-blur-md border-b border-[#D1D1D6] dark:border-[#2C2C2E] flex items-center justify-between z-10">
-                    <div className="flex items-center gap-0.5 text-[#007AFF] dark:text-[#0A84FF] font-medium text-xs">
-                      <ChevronLeft className="w-4 h-4 -ml-1 stroke-[2.5]" />
-                      <span>{isAmharic ? 'መልእክቶች' : 'Messages'}</span>
-                      <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-[#007AFF]/10 dark:bg-[#0A84FF]/20 font-bold ml-0.5">
-                        3
-                      </span>
+                  {/* Messages App Navigation Bar - Centered Nazazi Text Profile */}
+                  <div className="relative px-4 py-2 bg-[#F9F9FB]/95 dark:bg-[#161618]/95 backdrop-blur-md border-b border-[#D1D1D6] dark:border-[#2C2C2E] flex items-center justify-center z-10">
+                    {/* Left Back Arrow */}
+                    <div className="absolute left-3.5 flex items-center text-[#007AFF] dark:text-[#0A84FF]">
+                      <ChevronLeft className="w-5 h-5 -ml-1 stroke-[2.5]" />
                     </div>
 
-                    {/* Contact Profile in Center */}
-                    <div className="flex flex-col items-center">
-                      <div className="w-8.5 h-8.5 rounded-full bg-gradient-to-b from-[#7A1D28] to-[#981C00] text-white flex items-center justify-center font-bold text-xs shadow-xs mb-0.5 ring-1 ring-black/5 dark:ring-white/10">
+                    {/* Centered Contact Profile */}
+                    <div className="flex flex-col items-center justify-center">
+                      <div className="w-8.5 h-8.5 rounded-full bg-gradient-to-b from-[#7A1D28] to-[#981C00] text-white flex items-center justify-center font-bold text-xs shadow-xs mb-1 ring-1 ring-black/5 dark:ring-white/10">
                         N
                       </div>
                       <div className="flex items-center gap-1">
-                        <span className="text-[12.5px] font-bold text-[#000000] dark:text-[#FFFFFF] leading-none">
-                          {isAmharic ? 'ናዛዚ • NAZAZI' : 'NAZAZI'}
+                        <span className="text-[13px] font-bold text-[#000000] dark:text-[#FFFFFF] leading-none tracking-tight">
+                          Nazazi Text
                         </span>
                         <CheckCircle2 className="w-3.5 h-3.5 text-[#007AFF] fill-[#007AFF] text-white inline-block shrink-0" />
                       </div>
-                      <span className="text-[9.5px] text-[#8E8E93] leading-none pt-0.5 font-medium">
-                        {isAmharic ? 'የተረጋገጠ መንፈሳዊ SMS' : 'Verified Spiritual SMS'}
-                      </span>
                     </div>
 
-                    <div className="flex items-center gap-2 text-[#007AFF] dark:text-[#0A84FF]">
+                    {/* Right Info Action */}
+                    <div className="absolute right-3.5 flex items-center text-[#007AFF] dark:text-[#0A84FF]">
                       <Info className="w-4 h-4" />
                     </div>
                   </div>
@@ -845,6 +841,11 @@ export const LandingView: React.FC<LandingViewProps> = ({
                 ? 'ምንም የተወሳሰበ ቅጽ ወይም አካውንት መክፈት አይጠበቅብዎትም። በ3 ቀላል እና ፈጣን እርምጃዎች የዕለቱን መንፈሳዊ መጽናኛ ማግኘት ይጀምሩ።'
                 : 'No complex registrations, passwords, or accounts required. Begin receiving daily comforting Scripture verses right on your phone in three simple steps.'}
             </p>
+          </div>
+
+          {/* Interactive Integration Beam Scene: Visualizing the Automated Journey */}
+          <div className="relative mx-auto max-w-3xl rounded-[32px] p-5 sm:p-8 md:p-10 bg-gradient-to-b from-[#FAF4F2]/70 via-white/90 to-[#FAF4F2]/50 dark:from-[#211A18]/70 dark:via-[#1D1A18]/90 dark:to-[#211A18]/50 border border-[#E8DCD9] dark:border-[#382622] shadow-[0_20px_50px_-20px_rgba(152,28,0,0.08)] backdrop-blur-xs">
+            <IntegrationBeam isAmharic={isAmharic} />
           </div>
 
           {/* 3 Step Editorial Cards with Ample Breathing Room */}
