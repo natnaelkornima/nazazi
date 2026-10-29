@@ -843,74 +843,77 @@ export const LandingView: React.FC<LandingViewProps> = ({
             </p>
           </div>
 
-          {/* Interactive Integration Beam Scene: Visualizing the Automated Journey */}
-          <div className="relative mx-auto max-w-3xl rounded-[32px] p-5 sm:p-8 md:p-10 bg-gradient-to-b from-[#FAF4F2]/70 via-white/90 to-[#FAF4F2]/50 dark:from-[#211A18]/70 dark:via-[#1D1A18]/90 dark:to-[#211A18]/50 border border-[#E8DCD9] dark:border-[#382622] shadow-[0_20px_50px_-20px_rgba(152,28,0,0.08)] backdrop-blur-xs">
-            <IntegrationBeam isAmharic={isAmharic} />
-          </div>
-
-          {/* 3-Step Simplified Modern Guide */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 pt-2">
-            {/* Step 1 */}
-            <div className="flex items-start gap-4 p-5 sm:p-6 rounded-2xl bg-white/70 dark:bg-[#1D1A18]/70 border border-[#E8E4DF] dark:border-[#2C2825] transition-colors hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40">
-              <span className="font-mono text-xs font-bold text-[#981C00] dark:text-[#C43214] bg-[#FAF4F2] dark:bg-[#2A1D1A] px-2.5 py-1 rounded-lg border border-[#E8DCD9] dark:border-[#3A2420] shrink-0">
-                01
-              </span>
-              <div className="space-y-1">
-                <h3 className="text-base font-bold text-[#24211F] dark:text-[#FAF8F5] tracking-tight">
-                  {isAmharic ? 'እቅድ ይምረጡ' : 'Choose a Plan'}
-                </h3>
-                <p className="text-xs sm:text-sm text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
-                  {isAmharic
-                    ? 'የ1፣ 3 ወይም የ6 ወር ተመጣጣኝ እቅድ ይምረጡ።'
-                    : 'Select a flexible 1, 3, or 6-month subscription.'}
-                </p>
-              </div>
+          {/* Side-by-side: Integration Beam (Left) & Vertical 3 Steps (Right) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+            {/* Left: Interactive Integration Beam Scene */}
+            <div className="lg:col-span-7 relative rounded-[32px] p-4 sm:p-7 md:p-8 bg-gradient-to-b from-[#FAF4F2]/70 via-white/90 to-[#FAF4F2]/50 dark:from-[#211A18]/70 dark:via-[#1D1A18]/90 dark:to-[#211A18]/50 border border-[#E8DCD9] dark:border-[#382622] shadow-[0_20px_50px_-20px_rgba(152,28,0,0.08)] backdrop-blur-xs flex items-center justify-center">
+              <IntegrationBeam isAmharic={isAmharic} />
             </div>
 
-            {/* Step 2 */}
-            <div className="flex items-start gap-4 p-5 sm:p-6 rounded-2xl bg-white/70 dark:bg-[#1D1A18]/70 border border-[#E8E4DF] dark:border-[#2C2825] transition-colors hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40">
-              <span className="font-mono text-xs font-bold text-[#981C00] dark:text-[#C43214] bg-[#FAF4F2] dark:bg-[#2A1D1A] px-2.5 py-1 rounded-lg border border-[#E8DCD9] dark:border-[#3A2420] shrink-0">
-                02
-              </span>
-              <div className="space-y-1">
-                <h3 className="text-base font-bold text-[#24211F] dark:text-[#FAF8F5] tracking-tight">
-                  {isAmharic ? 'ይመዝገቡና ይክፈሉ' : 'Register & Pay'}
-                </h3>
-                <p className="text-xs sm:text-sm text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
-                  {isAmharic
-                    ? 'በCBE ወይም በቴሌብር ይክፈሉ፤ ወዲያውኑ ይረጋገጣል።'
-                    : 'Pay via CBE or Telebirr with instant verification.'}
-                </p>
+            {/* Right: Vertical 3-Step Simple Guide */}
+            <div className="lg:col-span-5 flex flex-col justify-center gap-3.5 sm:gap-4">
+              {/* Step 1 */}
+              <div className="flex items-start gap-3.5 p-4 sm:p-5 rounded-2xl bg-white/70 dark:bg-[#1D1A18]/70 border border-[#E8E4DF] dark:border-[#2C2825] transition-colors hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40 shadow-xs">
+                <span className="font-mono text-xs font-bold text-[#981C00] dark:text-[#C43214] bg-[#FAF4F2] dark:bg-[#2A1D1A] px-2.5 py-1 rounded-lg border border-[#E8DCD9] dark:border-[#3A2420] shrink-0 mt-0.5">
+                  01
+                </span>
+                <div className="space-y-1">
+                  <h3 className="text-base font-bold text-[#24211F] dark:text-[#FAF8F5] tracking-tight">
+                    {isAmharic ? 'እቅድ ይምረጡ' : 'Choose a Plan'}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
+                    {isAmharic
+                      ? 'የ1፣ 3 ወይም የ6 ወር ተመጣጣኝ እቅድ ይምረጡ።'
+                      : 'Select a flexible 1, 3, or 6-month subscription.'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              <div className="flex items-start gap-3.5 p-4 sm:p-5 rounded-2xl bg-white/70 dark:bg-[#1D1A18]/70 border border-[#E8E4DF] dark:border-[#2C2825] transition-colors hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40 shadow-xs">
+                <span className="font-mono text-xs font-bold text-[#981C00] dark:text-[#C43214] bg-[#FAF4F2] dark:bg-[#2A1D1A] px-2.5 py-1 rounded-lg border border-[#E8DCD9] dark:border-[#3A2420] shrink-0 mt-0.5">
+                  02
+                </span>
+                <div className="space-y-1">
+                  <h3 className="text-base font-bold text-[#24211F] dark:text-[#FAF8F5] tracking-tight">
+                    {isAmharic ? 'ይመዝገቡና ይክፈሉ' : 'Register & Pay'}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
+                    {isAmharic
+                      ? 'በCBE ወይም በቴሌብር ይክፈሉ፤ ወዲያውኑ ይረጋገጣል።'
+                      : 'Pay via CBE or Telebirr with instant verification.'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="flex items-start gap-3.5 p-4 sm:p-5 rounded-2xl bg-white/70 dark:bg-[#1D1A18]/70 border border-[#E8E4DF] dark:border-[#2C2825] transition-colors hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40 shadow-xs">
+                <span className="font-mono text-xs font-bold text-[#981C00] dark:text-[#C43214] bg-[#FAF4F2] dark:bg-[#2A1D1A] px-2.5 py-1 rounded-lg border border-[#E8DCD9] dark:border-[#3A2420] shrink-0 mt-0.5">
+                  03
+                </span>
+                <div className="space-y-1">
+                  <h3 className="text-base font-bold text-[#24211F] dark:text-[#FAF8F5] tracking-tight">
+                    {isAmharic ? 'የዕለቱን ቃል ይቀበሉ' : 'Receive Daily SMS'}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
+                    {isAmharic
+                      ? 'በየማለዳው 12:30 የሚያጽናና ጥቅስ በSMS ይደርስዎታል።'
+                      : 'Receive daily comforting Scripture via SMS at 12:30 AM.'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Bottom Callout to Pricing */}
+              <div className="pt-1">
+                <a
+                  href="#pricing"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold bg-[#FAF4F2] hover:bg-[#F2EAE7] dark:bg-[#251A18] dark:hover:bg-[#2E201D] text-[#981C00] dark:text-[#C43214] border border-[#E8DCD9] dark:border-[#382622] transition-all duration-200 cursor-pointer shadow-2xs group"
+                >
+                  <span>{isAmharic ? 'የደንበኝነት እቅዶችን ይመልከቱ' : 'Explore Subscription Plans'}</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                </a>
               </div>
             </div>
-
-            {/* Step 3 */}
-            <div className="flex items-start gap-4 p-5 sm:p-6 rounded-2xl bg-white/70 dark:bg-[#1D1A18]/70 border border-[#E8E4DF] dark:border-[#2C2825] transition-colors hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40">
-              <span className="font-mono text-xs font-bold text-[#981C00] dark:text-[#C43214] bg-[#FAF4F2] dark:bg-[#2A1D1A] px-2.5 py-1 rounded-lg border border-[#E8DCD9] dark:border-[#3A2420] shrink-0">
-                03
-              </span>
-              <div className="space-y-1">
-                <h3 className="text-base font-bold text-[#24211F] dark:text-[#FAF8F5] tracking-tight">
-                  {isAmharic ? 'የዕለቱን ቃል ይቀበሉ' : 'Receive Daily SMS'}
-                </h3>
-                <p className="text-xs sm:text-sm text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
-                  {isAmharic
-                    ? 'በየማለዳው 12:30 የሚያጽናና ጥቅስ በSMS ይደርስዎታል።'
-                    : 'Receive daily comforting Scripture via SMS at 12:30 AM.'}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom Callout to Pricing */}
-          <div className="pt-2 text-center">
-            <a
-              href="#pricing"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs font-bold bg-[#FAF4F2] hover:bg-[#F2EAE7] dark:bg-[#251A18] dark:hover:bg-[#2E201D] text-[#981C00] dark:text-[#C43214] border border-[#E8DCD9] dark:border-[#382622] transition-all duration-200 cursor-pointer shadow-2xs group"
-            >
-              <span>{isAmharic ? 'የደንበኝነት እቅዶችን ይመልከቱ' : 'Explore Subscription Plans'}</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </a>
           </div>
         </div>
       </section>
