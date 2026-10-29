@@ -93,7 +93,6 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
     fetchRegistrations,
     approvePayment,
     rejectPayment,
-    updatePaymentPlan,
     deletePayment,
     resetAllData,
   } = usePayment();
@@ -788,36 +787,44 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
   return (
     <div className="space-y-6 pb-12 max-w-6xl mx-auto">
       {/* 1. Header Bar with Settings Popover */}
-      <div className="flex items-center justify-between gap-3 pb-3 sm:pb-4 border-b border-zinc-200 dark:border-zinc-800">
-        <div className="flex items-center gap-2 sm:gap-2.5">
+      {/* 1. Header Bar with Settings Popover */}
+      <div className="flex items-center justify-between gap-3 pb-3 sm:pb-4 border-b border-zinc-200/80 dark:border-zinc-800">
+        <div className="flex items-center gap-2 sm:gap-3">
           {onExitAdmin && (
             <button
               onClick={onExitAdmin}
-              className="p-2 sm:px-2.5 sm:py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 transition-colors flex items-center gap-1.5 text-xs font-bold cursor-pointer"
+              className="p-2 sm:px-3 sm:py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 transition-colors flex items-center gap-1.5 text-xs font-semibold cursor-pointer border border-zinc-200/60 dark:border-zinc-700/60"
               title="Back to Public Site"
             >
-              <ArrowLeft className="w-4 h-4" />
+              <ArrowLeft className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Public Site</span>
             </button>
           )}
-          <div className="w-8 h-8 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 font-black flex items-center justify-center shadow-xs text-sm">
-            N
-          </div>
-          <div>
-            <h1 className="text-lg sm:text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-tight">
-              Nazazi Admin
-            </h1>
-            <p className="text-[10px] sm:hidden text-zinc-400 font-medium">Control Center</p>
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 font-black flex items-center justify-center shadow-xs text-sm">
+              N
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-base sm:text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-50 leading-tight">
+                  Nazazi Admin
+                </h1>
+                <Badge variant="zinc">Portal</Badge>
+              </div>
+              <p className="text-[11px] text-zinc-500 dark:text-zinc-400 font-normal">
+                Subscriptions & SMS Broadcast Engine
+              </p>
+            </div>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
           {/* Public Registration Countdown & Status Indicator */}
           <div
-            className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold ${
+            className={`hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-medium ${
               isRegistrationClosedDeadline
                 ? 'bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400'
-                : 'bg-zinc-100 dark:bg-zinc-850 border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300'
+                : 'bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200/80 dark:border-zinc-700/60 text-zinc-700 dark:text-zinc-300'
             }`}
             title={
               isRegistrationClosedDeadline
@@ -828,7 +835,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
             {isRegistrationClosedDeadline ? (
               <>
                 <Lock className="w-3.5 h-3.5 text-amber-500" />
-                <span>Registration: Closed</span>
+                <span>Registration Closed</span>
               </>
             ) : (
               <>
@@ -845,35 +852,35 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               info('Synced', 'Registrations refreshed & synchronized across all devices.');
             }}
             disabled={isLoading}
-            className="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-all flex items-center gap-1.5 sm:gap-2 text-xs font-bold cursor-pointer group shadow-2xs disabled:opacity-50"
+            className="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-lg border border-zinc-200/80 dark:border-zinc-700/60 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-all flex items-center gap-2 text-xs font-medium cursor-pointer shadow-2xs disabled:opacity-50"
             title="Auto-sync active every 3s. Click to force instant cloud refresh."
           >
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin text-amber-500' : 'text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200'}`} />
-            <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 hidden md:inline">Live</span>
+            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin text-amber-500' : 'text-zinc-400'}`} />
+            <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hidden md:inline">Live</span>
           </button>
 
           {/* Settings Menu Popover */}
           <div className="relative" ref={settingsRef}>
-          <button
-            onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-            className={`p-2 sm:px-3 sm:py-2 rounded-xl border transition-all flex items-center gap-1.5 sm:gap-2 text-xs font-bold cursor-pointer group shadow-xs ${
-              isSettingsOpen
-                ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 border-zinc-900 dark:border-zinc-100'
-                : 'bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800'
-            }`}
-            title="Admin Settings & Actions"
-          >
-            {isSettingsOpen ? (
-              <X className="w-4 h-4" />
-            ) : (
-              <Settings className="w-4 h-4 transition-transform duration-300 group-hover:rotate-90" />
-            )}
-            <span className="hidden sm:inline">Settings</span>
-          </button>
+            <button
+              onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+              className={`p-1.5 sm:px-3 sm:py-1.5 rounded-lg border transition-all flex items-center gap-1.5 text-xs font-medium cursor-pointer shadow-2xs ${
+                isSettingsOpen
+                  ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 border-zinc-900 dark:border-zinc-100'
+                  : 'bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-zinc-200/80 dark:border-zinc-700/60 hover:bg-zinc-50 dark:hover:bg-zinc-800'
+              }`}
+              title="Admin Settings & Actions"
+            >
+              {isSettingsOpen ? (
+                <X className="w-4 h-4" />
+              ) : (
+                <Settings className="w-4 h-4 transition-transform duration-300 group-hover:rotate-90 text-zinc-500" />
+              )}
+              <span className="hidden sm:inline">Settings</span>
+            </button>
 
           <AnimatePresence>
             {isSettingsOpen && (
@@ -1026,59 +1033,67 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
     </div>
 
       {/* 2. Top Metric Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3.5">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <div
           onClick={() => {
             setActiveTab('approvals');
             setStatusFilter('pending');
           }}
-          className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all cursor-pointer ${
+          className={`p-4 rounded-xl border transition-all cursor-pointer bg-white dark:bg-zinc-900 ${
             activeTab === 'approvals' && statusFilter === 'pending'
-              ? 'border-amber-500/80 bg-amber-500/10'
-              : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/90 hover:border-zinc-300 dark:hover:border-zinc-700'
+              ? 'border-amber-500/80 shadow-xs ring-1 ring-amber-500/40'
+              : 'border-zinc-200/80 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 shadow-2xs'
           }`}
         >
-          <div className="flex items-center justify-between text-amber-600 dark:text-amber-400">
-            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">1. Pending</span>
-            <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
+            <span className="text-xs font-medium">Pending Approvals</span>
+            <div className="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+              <Clock className="w-3.5 h-3.5" />
+            </div>
           </div>
-          <p className="text-xl sm:text-2xl font-extrabold text-zinc-900 dark:text-zinc-50 mt-1">{pendingCount}</p>
-          <p className="text-[10px] sm:text-[11px] text-zinc-500 mt-0.5 truncate">Need verification</p>
+          <p className="text-2xl font-bold font-mono tracking-tight text-zinc-900 dark:text-zinc-50 mt-2">
+            {pendingCount}
+          </p>
+          <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 truncate">
+            Requires verification
+          </p>
         </div>
 
         <div
           onClick={() => {
             setActiveTab('send_sms');
           }}
-          className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
+          className={`p-4 rounded-xl border transition-all cursor-pointer bg-white dark:bg-zinc-900 ${
             activeTab === 'send_sms'
-              ? 'border-zinc-900 dark:border-zinc-100 bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 shadow-md'
-              : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/90 hover:border-zinc-300 dark:hover:border-zinc-700'
+              ? 'border-zinc-900 dark:border-zinc-100 shadow-xs ring-1 ring-zinc-900/30 dark:ring-zinc-100/30'
+              : 'border-zinc-200/80 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 shadow-2xs'
           }`}
         >
-          <div>
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider opacity-80">2. Approved</span>
-              <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-500" />
+          <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
+            <span className="text-xs font-medium">Approved Members</span>
+            <div className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+              <CheckCircle2 className="w-3.5 h-3.5" />
             </div>
-            <p className="text-xl sm:text-2xl font-extrabold mt-1">{approvedCount}</p>
           </div>
-          <div className="flex items-center justify-between mt-2 pt-2 border-t border-zinc-200/60 dark:border-zinc-800/60">
-            <span className="text-[10px] sm:text-[11px] opacity-70 truncate">Ready for SMS</span>
+          <p className="text-2xl font-bold font-mono tracking-tight text-zinc-900 dark:text-zinc-50 mt-2">
+            {approvedCount}
+          </p>
+          <div className="flex items-center justify-between mt-1 pt-1.5 border-t border-zinc-100 dark:border-zinc-800/80 text-[11px]">
+            <span className="text-zinc-500 dark:text-zinc-400 truncate">Ready for SMS</span>
             <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
               <button
                 type="button"
                 onClick={() => executeCopyApprovedToClipboard('ordered_spaced')}
-                className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold text-[10px] transition-colors cursor-pointer"
-                title="Quick copy ordered phone list (1. 09...) with plenty of space"
+                className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-semibold text-[10px] transition-colors cursor-pointer"
+                title="Quick copy ordered phone list (1. 09...)"
               >
                 <Copy className="w-3 h-3" />
-                <span>{hasCopiedApproved ? 'Copied!' : 'Copy'}</span>
+                <span>{hasCopiedApproved ? 'Copied' : 'Copy'}</span>
               </button>
               <button
                 type="button"
                 onClick={() => setIsCopyApprovedModalOpen(true)}
-                className="text-[10px] font-medium opacity-60 hover:opacity-100 hover:underline cursor-pointer"
+                className="text-[10px] font-medium text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 cursor-pointer"
                 title="View copy options & formats"
               >
                 Options
@@ -1092,52 +1107,64 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
             setActiveTab('approvals');
             setStatusFilter('approved');
           }}
-          className="p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/90 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all cursor-pointer"
+          className={`p-4 rounded-xl border transition-all cursor-pointer bg-white dark:bg-zinc-900 ${
+            activeTab === 'approvals' && statusFilter === 'approved'
+              ? 'border-emerald-500/80 shadow-xs ring-1 ring-emerald-500/40'
+              : 'border-zinc-200/80 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 shadow-2xs'
+          }`}
         >
-          <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400">
-            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">3. Revenue</span>
-            <span className="text-[9px] sm:text-[10px] font-mono font-bold px-1 sm:px-1.5 py-0.5 rounded-sm bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300">ETB</span>
+          <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
+            <span className="text-xs font-medium">Verified Revenue</span>
+            <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-200/60 dark:border-emerald-800/50">
+              ETB
+            </span>
           </div>
-          <p className="text-xl sm:text-2xl font-extrabold text-zinc-900 dark:text-zinc-50 mt-1 truncate">
+          <p className="text-2xl font-bold font-mono tracking-tight text-zinc-900 dark:text-zinc-50 mt-2 truncate">
             {totalCollectedRevenue.toLocaleString()}
           </p>
-          <p className="text-[10px] sm:text-[11px] text-zinc-500 mt-0.5 truncate">
-            Verified collections
+          <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 truncate">
+            Total collected
           </p>
         </div>
 
         <div
           onClick={() => setActiveTab('logs')}
-          className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all cursor-pointer ${
+          className={`p-4 rounded-xl border transition-all cursor-pointer bg-white dark:bg-zinc-900 ${
             activeTab === 'logs'
-              ? 'border-sky-500/80 bg-sky-500/10'
-              : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/90 hover:border-zinc-300 dark:hover:border-zinc-700'
+              ? 'border-sky-500/80 shadow-xs ring-1 ring-sky-500/40'
+              : 'border-zinc-200/80 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 shadow-2xs'
           }`}
         >
-          <div className="flex items-center justify-between text-sky-600 dark:text-sky-400">
-            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">4. Dispatches</span>
-            <History className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
+            <span className="text-xs font-medium">Dispatched SMS</span>
+            <div className="w-7 h-7 rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center">
+              <History className="w-3.5 h-3.5" />
+            </div>
           </div>
-          <p className="text-xl sm:text-2xl font-extrabold text-zinc-900 dark:text-zinc-50 mt-1">{smsLogs.length}</p>
-          <p className="text-[10px] sm:text-[11px] text-zinc-500 mt-0.5 truncate">Delivery history</p>
+          <p className="text-2xl font-bold font-mono tracking-tight text-zinc-900 dark:text-zinc-50 mt-2">
+            {smsLogs.length}
+          </p>
+          <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 truncate">
+            Audit history
+          </p>
         </div>
       </div>
 
-      {/* 3. Purpose Tab Navigation - Scrollable & Responsive */}
-      <div className="w-full overflow-x-auto pb-1 no-scrollbar">
-        <div className="flex items-center gap-1.5 p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-xl border border-zinc-200/80 dark:border-zinc-700/60 min-w-max">
+      {/* 3. Purpose Tab Navigation - Clean Segmented Pill */}
+      <div className="w-full overflow-x-auto pb-0.5 no-scrollbar">
+        <div className="inline-flex items-center gap-1 p-1 bg-zinc-100 dark:bg-zinc-800/60 rounded-xl border border-zinc-200/80 dark:border-zinc-700/60 min-w-max">
           <button
             onClick={() => setActiveTab('approvals')}
-            className={`px-3 sm:px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 sm:gap-2 cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${
               activeTab === 'approvals'
-                ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs'
+                ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-zinc-50 shadow-xs'
                 : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
             }`}
           >
             <ShieldCheck className="w-3.5 h-3.5 text-amber-500" />
-            <span>1. Approvals</span>
+            <span>Approvals</span>
             {pendingCount > 0 && (
-              <span className="px-1.5 py-0.2 bg-amber-500 text-white text-[10px] font-extrabold rounded-full animate-pulse">
+              <span className="px-1.5 py-0.2 bg-amber-500 text-white text-[10px] font-bold rounded-full animate-pulse">
                 {pendingCount}
               </span>
             )}
@@ -1145,30 +1172,30 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
 
           <button
             onClick={() => setActiveTab('send_sms')}
-            className={`px-3 sm:px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 sm:gap-2 cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${
               activeTab === 'send_sms'
-                ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs'
+                ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-zinc-50 shadow-xs'
                 : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
             }`}
           >
-            <Send className="w-3.5 h-3.5 text-zinc-900 dark:text-zinc-100" />
-            <span>2. SMS Console</span>
-            <span className="px-1.5 py-0.2 bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-[10px] font-bold rounded-full">
+            <Send className="w-3.5 h-3.5 text-zinc-700 dark:text-zinc-300" />
+            <span>SMS Console</span>
+            <span className="px-1.5 py-0.2 bg-zinc-200/80 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-[10px] font-bold rounded-full">
               {approvedCount}
             </span>
           </button>
 
           <button
             onClick={() => setActiveTab('logs')}
-            className={`px-3 sm:px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 sm:gap-2 cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${
               activeTab === 'logs'
-                ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs'
+                ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-zinc-50 shadow-xs'
                 : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
             }`}
           >
             <History className="w-3.5 h-3.5 text-sky-500" />
-            <span>3. Logs</span>
-            <span className="px-1.5 py-0.2 bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-[10px] font-bold rounded-full">
+            <span>Audit Logs</span>
+            <span className="px-1.5 py-0.2 bg-zinc-200/80 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-[10px] font-bold rounded-full">
               {smsLogs.length}
             </span>
           </button>
@@ -1179,24 +1206,24 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
       {/* PURPOSE 1: PAYMENT APPROVALS */}
       {/* ========================================================================= */}
       {activeTab === 'approvals' && (
-        <Card className="p-3.5 sm:p-6 space-y-4 sm:space-y-5 border-zinc-200 dark:border-zinc-800 shadow-sm">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-3 border-b border-zinc-100 dark:border-zinc-800">
+        <Card className="p-4 sm:p-6 space-y-4 sm:space-y-5 border-zinc-200/80 dark:border-zinc-800 rounded-xl shadow-xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-zinc-100 dark:border-zinc-800">
             <div>
-              <h2 className="text-sm sm:text-base font-extrabold text-zinc-900 dark:text-zinc-50 flex items-center gap-2">
-                Member Payment Approvals
+              <h2 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-50">
+                Payment Approvals
               </h2>
-              <p className="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-                Verify payment receipts and activate member access.
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                Verify member payments, approve subscriptions, and manage verified directories.
               </p>
             </div>
 
-            {/* Filter Pills - scrollable on mobile */}
-            <div className="flex items-center gap-1 text-xs font-semibold overflow-x-auto pb-1 sm:pb-0 no-scrollbar">
+            {/* Filter Pills */}
+            <div className="inline-flex items-center gap-1 p-1 bg-zinc-100 dark:bg-zinc-800/60 rounded-lg border border-zinc-200/60 dark:border-zinc-700/60 text-xs font-medium overflow-x-auto no-scrollbar">
               <button
                 onClick={() => setStatusFilter('all')}
-                className={`px-2.5 sm:px-3 py-1 rounded-lg transition-colors cursor-pointer whitespace-nowrap text-xs ${
+                className={`px-2.5 py-1 rounded-md transition-all cursor-pointer whitespace-nowrap text-xs font-semibold ${
                   statusFilter === 'all'
-                    ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900'
+                    ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-zinc-50 shadow-2xs'
                     : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
                 }`}
               >
@@ -1204,30 +1231,30 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               </button>
               <button
                 onClick={() => setStatusFilter('pending')}
-                className={`px-2.5 sm:px-3 py-1 rounded-lg transition-colors cursor-pointer whitespace-nowrap text-xs ${
+                className={`px-2.5 py-1 rounded-md transition-all cursor-pointer whitespace-nowrap text-xs font-semibold ${
                   statusFilter === 'pending'
-                    ? 'bg-amber-500 text-white'
-                    : 'text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/40'
+                    ? 'bg-amber-500 text-white shadow-2xs'
+                    : 'text-amber-600 dark:text-amber-400 hover:bg-amber-500/10'
                 }`}
               >
                 Pending ({pendingCount})
               </button>
               <button
                 onClick={() => setStatusFilter('approved')}
-                className={`px-2.5 sm:px-3 py-1 rounded-lg transition-colors cursor-pointer whitespace-nowrap text-xs ${
+                className={`px-2.5 py-1 rounded-md transition-all cursor-pointer whitespace-nowrap text-xs font-semibold ${
                   statusFilter === 'approved'
-                    ? 'bg-emerald-600 text-white'
-                    : 'text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40'
+                    ? 'bg-emerald-600 text-white shadow-2xs'
+                    : 'text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10'
                 }`}
               >
                 Approved ({approvedCount})
               </button>
               <button
                 onClick={() => setStatusFilter('rejected')}
-                className={`px-2.5 sm:px-3 py-1 rounded-lg transition-colors cursor-pointer whitespace-nowrap text-xs ${
+                className={`px-2.5 py-1 rounded-md transition-all cursor-pointer whitespace-nowrap text-xs font-semibold ${
                   statusFilter === 'rejected'
-                    ? 'bg-red-600 text-white'
-                    : 'text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40'
+                    ? 'bg-rose-600 text-white shadow-2xs'
+                    : 'text-rose-600 dark:text-rose-400 hover:bg-rose-500/10'
                 }`}
               >
                 Rejected ({rejectedCount})
@@ -1252,27 +1279,27 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                 type="button"
                 onClick={() => setIsCopyApprovedModalOpen(true)}
                 title="Copy approved phone numbers with ordering (#) and plenty of space"
-                className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 h-8 rounded-xl text-xs font-semibold border border-emerald-500/40 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition-all cursor-pointer shadow-2xs"
+                className="inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-lg text-xs font-semibold border border-emerald-500/30 bg-emerald-50/80 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition-all cursor-pointer shadow-2xs"
               >
                 {hasCopiedApproved ? (
                   <CheckCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                 ) : (
                   <Copy className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                 )}
-                <span className="font-bold">Copy Approved</span>
-                <span className="px-1.5 py-0.2 rounded-full bg-emerald-200 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 text-[10px] font-mono font-bold">
+                <span>Copy Approved</span>
+                <span className="px-1.5 py-0.5 rounded-full bg-emerald-200/80 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 text-[10px] font-mono font-bold">
                   {approvedCount}
                 </span>
               </button>
 
-              {/* Export to CSV Button with responsive icon/text */}
+              {/* Export to CSV Button */}
               <button
                 type="button"
                 onClick={exportToCSV}
                 disabled={isExportingCsv}
                 aria-label="Export to CSV"
                 title="Export list as CSV"
-                className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 h-8 rounded-xl text-xs font-semibold border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-700 disabled:opacity-50 transition-all cursor-pointer shadow-2xs"
+                className="inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-lg text-xs font-semibold border border-zinc-200/80 dark:border-zinc-700/60 bg-white dark:bg-zinc-850 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-50 transition-all cursor-pointer shadow-2xs"
               >
                 <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                 <span className="hidden sm:inline">CSV</span>
@@ -1286,7 +1313,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                   disabled={isExportingPdf}
                   aria-label="Export to PDF options"
                   title="Export PDF reports"
-                  className="inline-flex items-center justify-center gap-1 px-2.5 sm:px-3 py-1.5 h-8 rounded-xl text-xs font-semibold border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-700 disabled:opacity-50 transition-all cursor-pointer shadow-2xs"
+                  className="inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-lg text-xs font-semibold border border-zinc-200/80 dark:border-zinc-700/60 bg-white dark:bg-zinc-850 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-50 transition-all cursor-pointer shadow-2xs"
                 >
                   <FileText className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
                   <span className="hidden sm:inline">PDF</span>
@@ -1294,14 +1321,14 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                 </button>
 
                 {isPdfDropdownOpen && (
-                  <div className="absolute right-0 top-full mt-1.5 w-60 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 shadow-xl py-1.5 z-30 text-xs">
+                  <div className="absolute right-0 top-full mt-1.5 w-60 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 shadow-xl py-1.5 z-30 text-xs">
                     <button
                       type="button"
                       onClick={() => {
                         setIsPdfDropdownOpen(false);
                         exportToPDF();
                       }}
-                      className="w-full text-left px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-700 flex items-center gap-2.5 cursor-pointer text-zinc-800 dark:text-zinc-200"
+                      className="w-full text-left px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 flex items-center gap-2.5 cursor-pointer text-zinc-800 dark:text-zinc-200"
                     >
                       <FileText className="w-4 h-4 text-rose-500 shrink-0" />
                       <div>
@@ -1316,7 +1343,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                         setIsPdfDropdownOpen(false);
                         exportApprovedPhonesPDF();
                       }}
-                      className="w-full text-left px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-700 flex items-center gap-2.5 cursor-pointer text-zinc-800 dark:text-zinc-200"
+                      className="w-full text-left px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 flex items-center gap-2.5 cursor-pointer text-zinc-800 dark:text-zinc-200"
                     >
                       <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
                       <div>
@@ -1344,10 +1371,10 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                       setIsSelectionMode(true);
                     }
                   }}
-                  className={`inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 h-8 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
+                  className={`inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-lg text-xs font-semibold border transition-all cursor-pointer shadow-2xs ${
                     isSelectionMode || selectedIds.length > 0
                       ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 border-zinc-900 dark:border-white shadow-xs'
-                      : 'bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600'
+                      : 'bg-white dark:bg-zinc-850 text-zinc-700 dark:text-zinc-300 border-zinc-200/80 dark:border-zinc-700/60 hover:bg-zinc-50 dark:hover:bg-zinc-800'
                   }`}
                   aria-label="Select items"
                   title="Toggle multi-item select mode"
@@ -1462,7 +1489,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
 
                               <div className="shrink-0">
                                 {sub.status === 'pending' && <Badge variant="amber" dot>Pending</Badge>}
-                                {sub.status === 'approved' && <Badge variant="zinc" dot>Approved</Badge>}
+                                {sub.status === 'approved' && <Badge variant="emerald" dot>Approved</Badge>}
                                 {sub.status === 'rejected' && <Badge variant="danger">Rejected</Badge>}
                               </div>
                             </div>
@@ -1495,43 +1522,29 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                             )}
                           </div>
 
-                          {/* Plan Selector & Amount Display */}
-                          <div className="flex items-center gap-2">
-                            <div className="relative inline-flex items-center flex-1 min-w-0">
-                              <select
-                                value={sub.amount >= 1000 ? '1000' : sub.amount >= 600 ? '600' : '200'}
-                                onChange={async (e) => {
-                                  const val = Number(e.target.value);
-                                  const newPlanName =
-                                    val === 1000
-                                      ? '6 Months Access (1,000 Birr)'
-                                      : val === 600
-                                      ? '3 Months Access (600 Birr)'
-                                      : '1 Month Access (200 Birr)';
-                                  await updatePaymentPlan(sub.id, newPlanName, val, sub.userPhone);
-                                  success('Plan Updated', `Set to ${val} ETB for ${sub.userName}`);
-                                }}
-                                className={`w-full text-[10px] font-extrabold uppercase py-1 pl-2 pr-5 rounded-md border appearance-none cursor-pointer ${
-                                  sub.amount >= 1000 || sub.planName.toLowerCase().includes('6')
-                                    ? 'bg-amber-100 text-amber-900 dark:bg-amber-950/80 dark:text-amber-300 border-amber-300 dark:border-amber-800'
-                                    : sub.amount >= 600 || sub.planName.toLowerCase().includes('3')
-                                    ? 'bg-purple-100 text-purple-900 dark:bg-purple-950/80 dark:text-purple-300 border-purple-300 dark:border-purple-800'
-                                    : 'bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border-zinc-200 dark:border-zinc-700'
-                                }`}
-                                title="Change plan tier"
-                              >
-                                <option value="200" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 font-sans">
-                                  1 Mo • 200 ETB
-                                </option>
-                                <option value="600" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 font-sans">
-                                  3 Mo • 600 ETB
-                                </option>
-                                <option value="1000" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 font-sans">
-                                  6 Mo • 1k ETB
-                                </option>
-                              </select>
-                              <ChevronDown className="w-2.5 h-2.5 absolute right-1 pointer-events-none opacity-60" />
-                            </div>
+                          {/* Plan Badge & Amount Display (Dropdown Removed) */}
+                          <div className="flex items-center justify-between gap-2 pt-0.5">
+                            <span
+                              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold tracking-tight border ${
+                                sub.amount >= 1000 || sub.planName.toLowerCase().includes('6')
+                                  ? 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/20'
+                                  : sub.amount >= 600 || sub.planName.toLowerCase().includes('3')
+                                  ? 'bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/20'
+                                  : 'bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border-zinc-200 dark:border-zinc-700'
+                              }`}
+                            >
+                              <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70" />
+                              <span>
+                                {sub.amount >= 1000 || sub.planName.toLowerCase().includes('6')
+                                  ? '6 Months'
+                                  : sub.amount >= 600 || sub.planName.toLowerCase().includes('3')
+                                  ? '3 Months'
+                                  : '1 Month'}
+                              </span>
+                            </span>
+                            <span className="text-xs font-mono font-bold text-zinc-900 dark:text-zinc-100">
+                              {Number(sub.amount).toLocaleString()} ETB
+                            </span>
                           </div>
 
                           {/* Quick Action Buttons on Left */}
@@ -1758,45 +1771,28 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                             </div>
                           </td>
 
-                          {/* Plan / Amount */}
+                          {/* Plan / Amount (Dropdown Removed) */}
                           <td className="py-3 px-3">
-                            <div className="space-y-1.5">
-                              <div className="relative inline-flex items-center">
-                                <select
-                                  value={sub.amount >= 1000 ? '1000' : sub.amount >= 600 ? '600' : '200'}
-                                  onChange={async (e) => {
-                                    const val = Number(e.target.value);
-                                    const newPlanName =
-                                      val === 1000
-                                        ? '6 Months Access (1,000 Birr)'
-                                        : val === 600
-                                        ? '3 Months Access (600 Birr)'
-                                        : '1 Month Access (200 Birr)';
-                                    await updatePaymentPlan(sub.id, newPlanName, val, sub.userPhone);
-                                    success('Plan Updated', `Set to ${val} ETB (${val === 1000 ? '6 Months' : val === 600 ? '3 Months' : '1 Month'}) for ${sub.userName}`);
-                                  }}
-                                  className={`text-[10px] font-extrabold uppercase py-1 pl-2 pr-6 rounded-md border appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-amber-500 transition-colors ${
-                                    sub.amount >= 1000 || sub.planName.toLowerCase().includes('6')
-                                      ? 'bg-amber-100 text-amber-900 dark:bg-amber-950/80 dark:text-amber-300 border-amber-300 dark:border-amber-800'
-                                      : sub.amount >= 600 || sub.planName.toLowerCase().includes('3')
-                                      ? 'bg-purple-100 text-purple-900 dark:bg-purple-950/80 dark:text-purple-300 border-purple-300 dark:border-purple-800'
-                                      : 'bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border-zinc-200 dark:border-zinc-700'
-                                  }`}
-                                  title="Click to adjust plan tier & amount"
-                                >
-                                  <option value="200" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 font-sans">
-                                    1 Mo • 200 ETB
-                                  </option>
-                                  <option value="600" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 font-sans">
-                                    3 Mo • 600 ETB
-                                  </option>
-                                  <option value="1000" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 font-sans">
-                                    6 Mo • 1,000 ETB
-                                  </option>
-                                </select>
-                                <ChevronDown className="w-3 h-3 absolute right-1.5 pointer-events-none opacity-60" />
-                              </div>
-                              <p className="text-xs font-mono font-bold text-zinc-900 dark:text-zinc-100">
+                            <div className="space-y-1">
+                              <span
+                                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold tracking-tight border ${
+                                  sub.amount >= 1000 || sub.planName.toLowerCase().includes('6')
+                                    ? 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/20'
+                                    : sub.amount >= 600 || sub.planName.toLowerCase().includes('3')
+                                    ? 'bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/20'
+                                    : 'bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border-zinc-200 dark:border-zinc-700'
+                                }`}
+                              >
+                                <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70" />
+                                <span>
+                                  {sub.amount >= 1000 || sub.planName.toLowerCase().includes('6')
+                                    ? '6 Months'
+                                    : sub.amount >= 600 || sub.planName.toLowerCase().includes('3')
+                                    ? '3 Months'
+                                    : '1 Month'}
+                                </span>
+                              </span>
+                              <p className="text-xs font-mono font-bold text-zinc-900 dark:text-zinc-100 pl-0.5">
                                 {Number(sub.amount).toLocaleString()} ETB
                               </p>
                             </div>
@@ -1834,7 +1830,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                           {/* Status */}
                           <td className="py-3 px-3">
                             {sub.status === 'pending' && <Badge variant="amber" dot>Pending</Badge>}
-                            {sub.status === 'approved' && <Badge variant="zinc" dot>Approved</Badge>}
+                            {sub.status === 'approved' && <Badge variant="emerald" dot>Approved</Badge>}
                             {sub.status === 'rejected' && <Badge variant="danger">Rejected</Badge>}
                           </td>
 
