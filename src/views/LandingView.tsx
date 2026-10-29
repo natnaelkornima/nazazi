@@ -570,7 +570,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
               <button
                 onClick={isClosed ? () => setIsSubscribeModalOpen(true) : scrollToPricing}
-                className="px-6 py-3.5 rounded-xl bg-[#981C00] hover:bg-[#7A1D28] text-white text-sm font-bold tracking-tight transition-all duration-150 cursor-pointer flex items-center justify-center gap-2 shadow-xs"
+                className="h-11 px-6 rounded-[3px] bg-[#981C00] hover:bg-[#7A1D28] text-white text-sm font-bold tracking-tight transition-all duration-150 cursor-pointer flex items-center justify-center gap-2 shadow-xs"
               >
                 {isClosed ? (
                   <span className="inline-flex items-center gap-2">
@@ -587,7 +587,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
               <button
                 onClick={() => handleTriggerVerifyModal(null)}
-                className="px-5 py-3.5 rounded-xl bg-[#FFFFFF] dark:bg-[#1D1A18] hover:bg-[#F3EFEA] dark:hover:bg-[#25221F] border border-[#E8E4DF] dark:border-[#2C2825] text-sm font-semibold text-[#24211F] dark:text-[#FAF8F5] transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
+                className="h-11 px-5 rounded-[3px] bg-[#FFFFFF] dark:bg-[#1D1A18] hover:bg-[#F3EFEA] dark:hover:bg-[#25221F] border border-[#E8E4DF] dark:border-[#2C2825] text-sm font-semibold text-[#24211F] dark:text-[#FAF8F5] transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
               >
                 <Smartphone className="w-4 h-4 text-[#706A65] dark:text-[#A8A19A]" />
                 <span>{isAmharic ? 'የአባልነት ማረጋገጫ በስልክ' : 'Check Approval Status'}</span>
@@ -825,8 +825,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
           2. HOW IT WORKS SECTION (#how-it-works)
           Clear 3-step journey with generous breathing room and rich descriptions.
           ======================================================== */}
-      <section id="how-it-works" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-28 scroll-mt-24">
-        <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] pt-16 sm:pt-20 space-y-12 sm:space-y-16">
+      <section id="how-it-works" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20">
+        <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] py-20 sm:py-24 space-y-12 sm:space-y-16">
           {/* Section Header with Generous White Space */}
           <div className="text-center max-w-2xl mx-auto space-y-3 sm:space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[3px] text-xs font-bold uppercase tracking-wider bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#C43214] border border-[#E8DCD9] dark:border-[#3A2420]">
@@ -922,8 +922,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
           3. SUBSCRIPTION PRICING SECTION (#pricing)
           Real plans: 1m (200), 3m (600), 6m (1000 - discount from 1200)
           ======================================================== */}
-      <section id="pricing" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
-        <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] pt-16 sm:pt-20 space-y-12">
+      <section id="pricing" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20">
+        <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] py-20 sm:py-24 space-y-12">
           {/* Section Header */}
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#981C00] dark:text-[#C43214]">
@@ -1064,7 +1064,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   <button
                     onClick={() => handleOpenSubscribe(plan.name, plan.price)}
                     disabled={isClosed}
-                    className={`w-full py-3.5 px-5 rounded-xl text-xs sm:text-sm font-bold tracking-tight transition-all duration-150 cursor-pointer flex items-center justify-center gap-2 ${
+                    className={`w-full h-11 px-5 rounded-[3px] text-xs sm:text-sm font-bold tracking-tight transition-all duration-150 cursor-pointer flex items-center justify-center gap-2 ${
                       isClosed
                         ? 'bg-[#EAE5DF] text-[#706A65] cursor-not-allowed'
                         : plan.recommended
@@ -1111,8 +1111,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
           4. TRUST & PRIVACY SECTION (#trust)
           Real, verifiable facts without fake marketing hype.
           ======================================================== */}
-      <section id="trust" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
-        <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] pt-14 space-y-10">
+      <section id="trust" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20">
+        <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] py-20 sm:py-24 space-y-12">
           <div className="max-w-xl space-y-2">
             <p className="text-xs font-bold uppercase tracking-wider text-[#981C00] dark:text-[#C43214]">
               {isAmharic ? 'ደህንነት እና ግልጽነት' : 'Trust & Reliability'}
@@ -1129,7 +1129,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Pillar 1 */}
-            <div className="p-5 rounded-xl bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-2.5">
+            <div className="p-6 rounded-[3px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
               <UserCheck className="w-5 h-5 text-[#981C00] dark:text-[#C43214]" />
               <h3 className="text-sm font-bold text-[#24211F] dark:text-[#FAF8F5]">
                 {isAmharic ? 'ምንም መለያ አያስፈልግም' : 'No Account Needed'}
@@ -1142,7 +1142,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             </div>
 
             {/* Pillar 2 */}
-            <div className="p-5 rounded-xl bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-2.5">
+            <div className="p-6 rounded-[3px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
               <ShieldCheck className="w-5 h-5 text-[#981C00] dark:text-[#C43214]" />
               <h3 className="text-sm font-bold text-[#24211F] dark:text-[#FAF8F5]">
                 {isAmharic ? 'የስልክ ቁጥር ምስጢራዊነት' : 'Phone Number Privacy'}
@@ -1155,7 +1155,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             </div>
 
             {/* Pillar 3 */}
-            <div className="p-5 rounded-xl bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-2.5">
+            <div className="p-6 rounded-[3px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
               <CheckCircle2 className="w-5 h-5 text-[#981C00] dark:text-[#C43214]" />
               <h3 className="text-sm font-bold text-[#24211F] dark:text-[#FAF8F5]">
                 {isAmharic ? 'ቀጥታ ማረጋገጫ' : 'Direct Status Verification'}
@@ -1168,7 +1168,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             </div>
 
             {/* Pillar 4 */}
-            <div className="p-5 rounded-xl bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-2.5">
+            <div className="p-6 rounded-[3px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
               <MessageSquare className="w-5 h-5 text-[#981C00] dark:text-[#C43214]" />
               <h3 className="text-sm font-bold text-[#24211F] dark:text-[#FAF8F5]">
                 {isAmharic ? 'ቀጥተኛ ድጋፍ' : 'Direct Support'}
@@ -1187,8 +1187,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
           TESTIMONIALS SECTION (#testimonials)
           Clean, minimal moving carousel that pauses on hover
           ======================================================== */}
-      <section id="testimonials" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
-        <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] pt-14 space-y-7">
+      <section id="testimonials" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20">
+        <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] py-20 sm:py-24 space-y-8">
           {/* Minimal Header */}
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div className="space-y-1.5">
@@ -1293,8 +1293,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
           5. FAQ SECTION (#faq)
           Clean, accessible accordion with keyboard navigation.
           ======================================================== */}
-      <section id="faq" className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
-        <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] pt-14 space-y-8">
+      <section id="faq" className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20">
+        <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] py-20 sm:py-24 space-y-8">
           <div className="text-center space-y-2">
             <p className="text-xs font-bold uppercase tracking-wider text-[#981C00] dark:text-[#C43214]">
               FAQ
@@ -1310,7 +1310,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               return (
                 <div
                   key={idx}
-                  className="rounded-xl border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FFFFFF] dark:bg-[#1D1A18] overflow-hidden"
+                  className="rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FFFFFF] dark:bg-[#1D1A18] overflow-hidden"
                 >
                   <button
                     onClick={() => setOpenFaq(isOpen ? null : idx)}
@@ -1340,8 +1340,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
           6. FINAL CALL TO ACTION
           Restrained, editorial, conversion-focused banner.
           ======================================================== */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="p-8 sm:p-12 rounded-2xl bg-[#981C00] text-white text-center space-y-6 shadow-md">
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-24">
+        <div className="p-8 sm:p-12 rounded-[3px] bg-[#981C00] text-white text-center space-y-6 shadow-md">
           <div className="space-y-2 max-w-xl mx-auto">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
               {isAmharic ? 'ተስፋን እና መንፈሳዊ ማጽናኛን ይቀበሉ' : 'Receive Daily Hope & Encouragement'}
@@ -1356,7 +1356,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               onClick={isClosed ? () => setIsSubscribeModalOpen(true) : scrollToPricing}
-              className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white text-[#981C00] hover:bg-zinc-100 text-xs sm:text-sm font-bold tracking-tight transition-colors cursor-pointer shadow-xs"
+              className="w-full sm:w-auto h-11 px-6 rounded-[3px] bg-white text-[#981C00] hover:bg-zinc-100 text-xs sm:text-sm font-bold tracking-tight transition-colors cursor-pointer shadow-xs flex items-center justify-center"
             >
               {isClosed ? (
                 <span className="inline-flex items-center gap-1.5">
@@ -1369,7 +1369,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             </button>
             <button
               onClick={() => handleTriggerVerifyModal(null)}
-              className="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-transparent hover:bg-black/10 border border-white/40 text-white text-xs sm:text-sm font-semibold transition-colors cursor-pointer"
+              className="w-full sm:w-auto h-11 px-5 rounded-[3px] bg-transparent hover:bg-black/10 border border-white/40 text-white text-xs sm:text-sm font-semibold transition-colors cursor-pointer flex items-center justify-center"
             >
               {isAmharic ? 'የአባልነት ማረጋገጫ በስልክ ቁጥር' : 'Check Approval Status'}
             </button>

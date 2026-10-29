@@ -26,19 +26,19 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      'inline-flex items-center justify-center font-medium tracking-tight transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#981C00] dark:focus-visible:ring-zinc-300 disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98] select-none rounded-xl cursor-pointer';
+      'inline-flex items-center justify-center font-medium tracking-tight transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#981C00] dark:focus-visible:ring-[#C43214] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAF8F5] dark:focus-visible:ring-offset-[#141211] disabled:opacity-50 disabled:pointer-events-none active:scale-[0.99] select-none rounded-[3px] cursor-pointer';
 
     const variants = {
       brand:
         'bg-[#981C00] hover:bg-[#7A1D28] text-white shadow-xs hover:shadow-sm',
       primary:
-        'bg-zinc-900 text-zinc-50 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-zinc-200 shadow-xs hover:shadow-sm',
+        'bg-[#141413] text-[#FAF8F5] hover:bg-[#252320] dark:bg-[#FAF8F5] dark:text-[#141413] dark:hover:bg-[#EFE9DE] shadow-xs',
       secondary:
-        'bg-zinc-100 text-zinc-900 border border-zinc-200/80 hover:bg-zinc-200/70 dark:bg-zinc-800 dark:text-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-750 shadow-2xs',
+        'bg-[#FAF8F5] text-[#141413] border border-[#E8E4DF] hover:bg-[#F3EFEA] dark:bg-[#1D1A18] dark:text-[#FAF8F5] dark:border-[#2C2825] dark:hover:bg-[#25221F] shadow-2xs',
       outline:
-        'bg-transparent border border-zinc-300 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100/80 dark:hover:bg-zinc-800/80',
+        'bg-transparent border border-[#E8E4DF] dark:border-[#2C2825] text-[#141413] dark:text-[#FAF8F5] hover:bg-[#FAF8F5] dark:hover:bg-[#1D1A18]',
       ghost:
-        'bg-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800/60',
+        'bg-transparent text-[#706A65] dark:text-[#A8A19A] hover:text-[#141413] dark:hover:text-[#FAF8F5] hover:bg-[#F3EFEA] dark:hover:bg-[#25221F]',
       danger:
         'bg-rose-600 text-white hover:bg-rose-700 shadow-xs dark:bg-rose-600 dark:hover:bg-rose-500',
       success:
@@ -46,9 +46,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const sizes = {
-      sm: 'h-9 px-3.5 text-xs gap-1.5',
+      sm: 'h-8 px-3 text-xs gap-1.5',
       md: 'h-10 px-4 text-sm gap-2',
-      lg: 'h-12 px-6 text-base gap-2.5 rounded-xl',
+      lg: 'h-11 px-5 text-sm gap-2',
     };
 
     return (

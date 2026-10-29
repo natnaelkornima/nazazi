@@ -67,24 +67,24 @@ export const Modal: React.FC<ModalProps> = ({
             exit={{ opacity: 0, scale: 0.96, y: 8 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className={cn(
-              'relative w-full bg-white dark:bg-zinc-900 border border-zinc-200/90 dark:border-zinc-800 rounded-2xl sm:rounded-3xl shadow-2xl z-10 overflow-hidden text-zinc-900 dark:text-zinc-100',
+              'relative w-full bg-white dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[3px] shadow-2xl z-10 overflow-hidden text-[#141413] dark:text-[#FAF8F5]',
               maxWidths[maxWidth],
               className
             )}
           >
             {(title || description) && (
-              <div className="p-5 sm:p-6 pb-4 flex items-start justify-between border-b border-zinc-100 dark:border-zinc-800/80">
+              <div className="p-5 sm:p-6 pb-4 flex items-start justify-between border-b border-[#E8E4DF]/80 dark:border-[#2C2825]/80">
                 <div>
-                  {title && <h3 className="text-lg sm:text-xl font-bold tracking-tight">{title}</h3>}
+                  {title && <h3 className="text-lg sm:text-xl font-bold tracking-tight text-[#141413] dark:text-[#FAF8F5]">{title}</h3>}
                   {description && (
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">
+                    <p className="text-xs text-[#706A65] dark:text-[#A8A19A] mt-1 leading-relaxed">
                       {description}
                     </p>
                   )}
                 </div>
                 <button
                   onClick={onClose}
-                  className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors p-1.5 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
+                  className="text-[#706A65] hover:text-[#141413] dark:hover:text-[#FAF8F5] transition-colors p-1.5 rounded-[3px] hover:bg-[#F3EFEA] dark:hover:bg-[#25221F] cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -93,7 +93,7 @@ export const Modal: React.FC<ModalProps> = ({
             {!title && (
               <button
                 onClick={onClose}
-                className="absolute top-3 right-3 z-30 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors p-1.5 rounded-full bg-zinc-100/90 dark:bg-zinc-800/90 hover:bg-zinc-200 dark:hover:bg-zinc-700 cursor-pointer backdrop-blur-md shadow-2xs"
+                className="absolute top-3 right-3 z-30 text-[#706A65] hover:text-[#141413] dark:hover:text-[#FAF8F5] transition-colors p-1.5 rounded-[3px] bg-[#FAF8F5]/90 dark:bg-[#25221F]/90 hover:bg-[#F3EFEA] dark:hover:bg-[#332E2A] cursor-pointer backdrop-blur-md shadow-2xs border border-[#E8E4DF] dark:border-[#2C2825]"
                 aria-label="Close modal"
               >
                 <X className="w-4 h-4" />

@@ -73,9 +73,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             }}
             placeholder={placeholder}
             className={cn(
-              'w-full h-11 px-3.5 text-sm rounded-xl bg-white dark:bg-zinc-900/90 text-zinc-900 dark:text-zinc-100 border border-zinc-200/90 dark:border-zinc-800 transition-all duration-150 shadow-2xs',
-              'placeholder:text-zinc-400 dark:placeholder:text-zinc-600',
-              'focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 focus:ring-2 focus:ring-zinc-900/10 dark:focus:ring-white/10',
+              'w-full h-10 px-3.5 text-sm rounded-[3px] bg-white dark:bg-[#1D1A18] text-[#141413] dark:text-[#FAF8F5] border border-[#E8E4DF] dark:border-[#2C2825] transition-all duration-150 shadow-2xs',
+              'placeholder:text-[#706A65]/60 dark:placeholder:text-[#A8A19A]/60',
+              'focus:outline-none focus:border-[#981C00] dark:focus:border-[#C43214] focus:ring-2 focus:ring-[#981C00]/15 dark:focus:ring-[#C43214]/20',
               leftIcon && 'pl-10',
               (isPassword || rightElement || error || success) && 'pr-10',
               error && 'border-red-500/80 focus:border-red-500 focus:ring-red-500/20',
