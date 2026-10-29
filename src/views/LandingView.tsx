@@ -23,6 +23,7 @@ import {
   Plus,
   Mic,
   Info,
+  Star,
 } from 'lucide-react';
 
 interface LandingViewProps {
@@ -39,6 +40,18 @@ interface SampleVerse {
   reflection: string;
   signoff: string;
   time: string;
+}
+
+interface TestimonialItem {
+  id: string;
+  name: string;
+  role: string;
+  city: string;
+  plan: string;
+  quote: string;
+  favoriteVerse: string;
+  avatarBg: string;
+  avatarInitials: string;
 }
 
 export const LandingView: React.FC<LandingViewProps> = ({
@@ -372,6 +385,144 @@ export const LandingView: React.FC<LandingViewProps> = ({
         {
           q: 'What time of day are the SMS messages delivered?',
           a: 'Messages are broadcast every morning directly to your phone, helping you begin each day rooted in peace, hope, and God\'s Word.',
+        },
+      ];
+
+  const testimonials: TestimonialItem[] = isAmharic
+    ? [
+        {
+          id: 'tesfaye',
+          name: 'አባ ተስፋዬ ገ/ማሪያም',
+          role: 'አባትና ጡረተኛ መምህር',
+          city: 'አዲስ አበባ',
+          plan: 'የ1 ዓመት አባል',
+          quote: '«በየማለዳው 12:30 በትንሿ ባትሪ ስልኬ ላይ የሚመጣው የእግዚአብሔር ቃል ቀኔን በሰላም እንድጀምር ብርታት ይሆነኛል።»',
+          favoriteVerse: 'መዝሙር 46:1',
+          avatarBg: 'from-[#981C00] to-[#7A1D28]',
+          avatarInitials: 'ተገ',
+        },
+        {
+          id: 'yonas',
+          name: 'ዮናስ ታደሰ',
+          role: 'ዲያስፖራ (ለእናቱ ያስመዘገበ)',
+          city: 'ባህር ዳር',
+          plan: 'የ1 ዓመት አባል',
+          quote: '«ለእናቴ በTelebirr የዓመት ምዝገባ አደረግኩላት። በየሳምንቱ ስንደዋወል ቃሉ እንዴት እንዳበረታት በደስታ ታካፍለኛለች።»',
+          favoriteVerse: 'ኢሳይያስ 40:31',
+          avatarBg: 'from-[#B45309] to-[#92400E]',
+          avatarInitials: 'ዮታ',
+        },
+        {
+          id: 'selamawit',
+          name: 'ዶ/ር ሰላማዊት አበበ',
+          role: 'የሕክምና ባለሙያ',
+          city: 'ሐዋሳ',
+          plan: 'የ6 ወር አባል',
+          quote: '«ከሆስፒታል የሌሊት ፈረቃዬ በኋላ የሚደርሰኝ ቃል ልክ እንደ ነፍስ እረፍት ነው። አጭር እና ልብን የሚያጽናና።»',
+          favoriteVerse: 'ፊልጵስዩስ 4:6-7',
+          avatarBg: 'from-[#0F766E] to-[#115E59]',
+          avatarInitials: 'ሰአ',
+        },
+        {
+          id: 'martha',
+          name: 'ማርታ ኃይሌ',
+          role: 'የዩኒቨርሲቲ ተማሪ',
+          city: 'አዲስ አበባ',
+          plan: 'የ3 ወር አባል',
+          quote: '«በፈተና ወቅት ማለዳን በእግዚአብሔር ቃል መጀመሬ ውስጣዊ መረጋጋትን ሰጥቶኛል። ያለ ዳታ በSMS መድረሱ ለተማሪዎች ፍቱን ነው።»',
+          favoriteVerse: 'ማቴዎስ 11:28',
+          avatarBg: 'from-[#7C3AED] to-[#5B21B6]',
+          avatarInitials: 'ማኃ',
+        },
+        {
+          id: 'dawit',
+          name: 'ቀሲስ ዳዊት ወ/ሚካኤል',
+          role: 'የመንፈሳዊ ትምህርት አገልጋይ',
+          city: 'አዳማ',
+          plan: 'የ1 ዓመት አባል',
+          quote: '«የሚመረጡት ጥቅሶች ጥልቅ መንፈሳዊ ጥንቃቄ ያለባቸው እና የዕለት ኑሮን በጸሎት ለመምራት የሚያነሳሱ ናቸው።»',
+          favoriteVerse: 'መዝሙር 23:1',
+          avatarBg: 'from-[#981C00] to-[#5A1200]',
+          avatarInitials: 'ዳወ',
+        },
+        {
+          id: 'birhanu',
+          name: 'ብርሃኑ አሰፋ',
+          role: 'የንግድ ሥራ ባለቤት',
+          city: 'መርካቶ',
+          plan: 'የ6 ወር አባል',
+          quote: '«ጠዋት ወደ ንግድ ሥራዬ ስወጣ ቀኔን በፈጣሪ ቃል መክፈት ልማዴ ሆኗል። 12:30 ላይ በሰዓቱ መድረሱ የሚያስመሰግን ነው።»',
+          favoriteVerse: 'ምሳሌ 3:5-6',
+          avatarBg: 'from-[#C2410C] to-[#9A3412]',
+          avatarInitials: 'ብአ',
+        },
+      ]
+    : [
+        {
+          id: 'tesfaye',
+          name: 'Aba Tesfaye G/Mariam',
+          role: 'Retired Teacher',
+          city: 'Addis Ababa',
+          plan: '1-Year Member',
+          quote: '"The 6:30 AM Scripture on my simple phone helps me start each day anchored in God’s peace."',
+          favoriteVerse: 'Psalm 46:1',
+          avatarBg: 'from-[#981C00] to-[#7A1D28]',
+          avatarInitials: 'TG',
+        },
+        {
+          id: 'yonas',
+          name: 'Yonas Tadesse',
+          role: 'Diaspora (Gift for Mother)',
+          city: 'Bahir Dar',
+          plan: '1-Year Member',
+          quote: '"I subscribed for my mother via Telebirr. Every week, she happily shares how the verses encourage her."',
+          favoriteVerse: 'Isaiah 40:31',
+          avatarBg: 'from-[#B45309] to-[#92400E]',
+          avatarInitials: 'YT',
+        },
+        {
+          id: 'selamawit',
+          name: 'Dr. Selamawit Abebe',
+          role: 'Physician',
+          city: 'Hawassa',
+          plan: '6-Month Member',
+          quote: '"Coming off overnight hospital shifts, the morning verse brings true rest to my weary spirit."',
+          favoriteVerse: 'Philippians 4:6-7',
+          avatarBg: 'from-[#0F766E] to-[#115E59]',
+          avatarInitials: 'SA',
+        },
+        {
+          id: 'martha',
+          name: 'Martha Haile',
+          role: 'University Student',
+          city: 'Addis Ababa',
+          plan: '3-Month Member',
+          quote: '"Starting mornings with Scripture during exams gives me calm focus. Reaching me via SMS without data is perfect."',
+          favoriteVerse: 'Matthew 11:28',
+          avatarBg: 'from-[#7C3AED] to-[#5B21B6]',
+          avatarInitials: 'MH',
+        },
+        {
+          id: 'dawit',
+          name: 'Kesis Dawit W/Michael',
+          role: 'Ministry Worker',
+          city: 'Adama',
+          plan: '1-Year Member',
+          quote: '"Carefully chosen with spiritual reverence, these verses anchor everyday life in quiet prayer."',
+          favoriteVerse: 'Psalm 23:1',
+          avatarBg: 'from-[#981C00] to-[#5A1200]',
+          avatarInitials: 'DW',
+        },
+        {
+          id: 'birhanu',
+          name: 'Birhanu Assefa',
+          role: 'Merchant',
+          city: 'Merkato',
+          plan: '6-Month Member',
+          quote: '"Opening my day in the market with God’s Word has become my anchor. Its punctual delivery is admirable."',
+          favoriteVerse: 'Proverbs 3:5-6',
+          avatarBg: 'from-[#C2410C] to-[#9A3412]',
+          avatarInitials: 'BA',
         },
       ];
 
@@ -1102,6 +1253,112 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   : 'Reach out through our official Telegram channel for prompt and friendly assistance.'}
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================
+          TESTIMONIALS SECTION (#testimonials)
+          Clean, minimal moving carousel that pauses on hover
+          ======================================================== */}
+      <section id="testimonials" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
+        <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] pt-14 space-y-7">
+          {/* Minimal Header */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div className="space-y-1.5">
+              <p className="text-xs font-bold uppercase tracking-wider text-[#981C00] dark:text-[#C43214]">
+                {isAmharic ? 'ምስክርነቶች' : 'Testimonials'}
+              </p>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#24211F] dark:text-[#FAF8F5]">
+                {isAmharic ? 'የተጠቃሚዎቻችን ድምፅ' : 'Loved by Daily Readers'}
+              </h2>
+              <p className="text-xs sm:text-sm text-[#706A65] dark:text-[#A8A19A]">
+                {isAmharic
+                  ? 'በየማለዳው በSMS ከሚደርሳቸው ቃል ያገኙት ብርታትና ሰላም'
+                  : 'Heartfelt words from subscribers who start each day with morning Scripture.'}
+              </p>
+            </div>
+
+            {/* Compact Star Rating */}
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] shadow-2xs self-start sm:self-auto shrink-0">
+              <div className="flex items-center text-amber-500">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                ))}
+              </div>
+              <span className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">4.9 / 5</span>
+            </div>
+          </div>
+
+          {/* Moving Carousel (Marquee) with Gradient Side Masks */}
+          <div className="relative overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-2">
+            {/* Left Edge Gradient Fade */}
+            <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-[#FAF8F5] dark:from-[#141211] to-transparent z-10" />
+
+            {/* Moving Track - Duplicated for infinite continuous loop */}
+            <div className="animate-marquee flex items-stretch gap-4 sm:gap-5 py-2 cursor-grab active:cursor-grabbing">
+              {[...testimonials, ...testimonials].map((item, index) => (
+                <div
+                  key={`${item.id}-${index}`}
+                  className="w-[280px] sm:w-[320px] shrink-0 rounded-2xl bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] p-5 flex flex-col justify-between space-y-3 shadow-2xs hover:border-[#981C00]/40 dark:hover:border-[#C43214]/40 hover:shadow-sm transition-all duration-200"
+                >
+                  <div className="space-y-2.5">
+                    {/* Stars & Plan */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center text-amber-500">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="w-3 h-3 fill-amber-400 text-amber-400" />
+                        ))}
+                      </div>
+                      <span className="text-[10.5px] font-medium text-[#706A65] dark:text-[#A8A19A] px-2 py-0.5 rounded-full bg-[#FAF8F5] dark:bg-[#25221F] border border-[#E8E4DF]/60 dark:border-[#2C2825]">
+                        {item.plan}
+                      </span>
+                    </div>
+
+                    {/* Short Quote */}
+                    <p className="text-xs text-[#24211F] dark:text-[#FAF8F5] leading-relaxed line-clamp-3">
+                      {item.quote}
+                    </p>
+
+                    {/* Favorite Verse Tag */}
+                    <div className="inline-flex items-center gap-1 text-[10.5px] font-medium text-[#981C00] dark:text-[#E89382]">
+                      <Sparkles className="w-3 h-3 shrink-0" />
+                      <span>{item.favoriteVerse}</span>
+                    </div>
+                  </div>
+
+                  {/* Author Meta */}
+                  <div className="pt-3 border-t border-[#E8E4DF]/60 dark:border-[#2C2825]/60 flex items-center gap-2.5">
+                    <div
+                      className={`w-7 h-7 rounded-full bg-gradient-to-br ${item.avatarBg} text-white flex items-center justify-center font-bold text-[10px] shrink-0 shadow-2xs`}
+                    >
+                      {item.avatarInitials}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1">
+                        <p className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5] truncate">
+                          {item.name}
+                        </p>
+                        <CheckCircle2 className="w-3 h-3 text-[#981C00] dark:text-[#C43214] shrink-0" />
+                      </div>
+                      <p className="text-[10px] text-[#706A65] dark:text-[#A8A19A] truncate">
+                        {item.role} • {item.city}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Right Edge Gradient Fade */}
+            <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-[#FAF8F5] dark:from-[#141211] to-transparent z-10" />
+          </div>
+
+          {/* Micro pause indicator */}
+          <div className="text-center pt-1">
+            <span className="text-[10.5px] text-[#706A65]/70 dark:text-[#A8A19A]/70">
+              {isAmharic ? '• ካርዶቹን ለማቆም ማውዝዎን (cursor) በላያቸው ላይ ያሳርፉ' : '• Hover over any card to pause'}
+            </span>
           </div>
         </div>
       </section>

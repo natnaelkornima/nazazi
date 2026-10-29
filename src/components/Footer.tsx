@@ -88,6 +88,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenVerifyModal })
               </li>
               <li>
                 <button
+                  onClick={() => handleNavClick('#testimonials')}
+                  className="hover:text-[#981C00] dark:hover:text-[#C43214] transition-colors cursor-pointer text-left"
+                >
+                  {isAmharic ? 'የተጠቃሚዎች ምስክርነት' : 'Testimonials'}
+                </button>
+              </li>
+              <li>
+                <button
                   onClick={() => handleNavClick('#faq')}
                   className="hover:text-[#981C00] dark:hover:text-[#C43214] transition-colors cursor-pointer text-left"
                 >

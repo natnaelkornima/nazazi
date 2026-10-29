@@ -136,6 +136,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             {isAmharic ? 'እምነት እና ደህንነት' : 'Trust & Privacy'}
           </button>
           <button
+            onClick={() => handleNavClick('#testimonials')}
+            className="hover:text-[#24211F] dark:hover:text-[#FAF8F5] transition-colors cursor-pointer py-1"
+          >
+            {isAmharic ? 'ምስክርነቶች' : 'Testimonials'}
+          </button>
+          <button
             onClick={() => handleNavClick('#faq')}
             className="hover:text-[#24211F] dark:hover:text-[#FAF8F5] transition-colors cursor-pointer py-1"
           >
@@ -225,6 +231,12 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="text-left py-1.5 hover:text-[#981C00] dark:hover:text-[#C43214] transition-colors"
             >
               {isAmharic ? 'እምነት እና ደህንነት' : 'Trust & Privacy'}
+            </button>
+            <button
+              onClick={() => handleNavClick('#testimonials')}
+              className="text-left py-1.5 hover:text-[#981C00] dark:hover:text-[#C43214] transition-colors"
+            >
+              {isAmharic ? 'የተጠቃሚዎች ምስክርነት' : 'Testimonials'}
             </button>
             <button
               onClick={() => handleNavClick('#faq')}
