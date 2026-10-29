@@ -312,10 +312,10 @@ const css = /* css */ `
   --ui-fm-focus: #981C00;
   --ui-fm-shadow: 0 1px 3px rgba(36, 33, 31, 0.06), 0 1px 2px rgba(36, 33, 31, 0.04);
   --ui-fm-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --ui-fm-radius-tray: 8px;
-  --ui-fm-radius-card: 5px;
-  --ui-fm-radius-chip: 5px;
-  --ui-fm-radius-box: 4px;
+  --ui-fm-radius-tray: 15px;
+  --ui-fm-radius-card: 15px;
+  --ui-fm-radius-chip: 15px;
+  --ui-fm-radius-box: 6px;
 
   width: 100%;
   max-width: 420px;

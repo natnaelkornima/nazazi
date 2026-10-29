@@ -136,11 +136,11 @@ export const AdminLoginGate: React.FC<AdminLoginGateProps> = ({ onSuccess, onCan
         </div>
 
         {/* Minimalist Card */}
-        <div className="bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[5px] p-7 sm:p-8 shadow-xs space-y-6">
+        <div className="bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[15px] p-7 sm:p-8 shadow-xs space-y-6">
           {/* Header */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <div className="w-9 h-9 rounded-[5px] bg-[#981C00] text-white flex items-center justify-center font-bold text-sm shadow-xs">
+              <div className="w-9 h-9 rounded-[15px] bg-[#981C00] text-white flex items-center justify-center font-bold text-sm shadow-xs">
                 N
               </div>
               <div className="w-2 h-2 rounded-full bg-[#981C00] animate-pulse" title="Admin Auth Protected" />
@@ -161,7 +161,7 @@ export const AdminLoginGate: React.FC<AdminLoginGateProps> = ({ onSuccess, onCan
             <motion.div
               initial={{ opacity: 0, y: -6 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`p-3 rounded-[5px] border text-xs flex items-start gap-2.5 ${
+              className={`p-3 rounded-[15px] border text-xs flex items-start gap-2.5 ${
                 isLocked
                   ? 'bg-rose-50 dark:bg-rose-950/30 border-rose-200 dark:border-rose-900/50 text-rose-800 dark:text-rose-300'
                   : 'bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-900/50 text-amber-800 dark:text-amber-300'
@@ -209,7 +209,7 @@ export const AdminLoginGate: React.FC<AdminLoginGateProps> = ({ onSuccess, onCan
                   placeholder="••••••••••••"
                   disabled={isLocked || isLoading}
                   autoFocus
-                  className="w-full px-3.5 py-2.5 bg-white dark:bg-[#1F1C1A] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[5px] text-sm font-mono tracking-wider text-[#24211F] dark:text-[#FAF8F5] placeholder:text-[#A8A19A] focus:outline-none focus:ring-1 focus:ring-[#981C00] dark:focus:ring-[#C43214] focus:border-[#981C00] dark:focus:border-[#C43214] transition-all disabled:opacity-50"
+                  className="w-full px-3.5 py-2.5 bg-white dark:bg-[#1F1C1A] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[15px] text-sm font-mono tracking-wider text-[#24211F] dark:text-[#FAF8F5] placeholder:text-[#A8A19A] focus:outline-none focus:ring-1 focus:ring-[#981C00] dark:focus:ring-[#C43214] focus:border-[#981C00] dark:focus:border-[#C43214] transition-all disabled:opacity-50"
                 />
                 <button
                   type="button"
@@ -226,7 +226,7 @@ export const AdminLoginGate: React.FC<AdminLoginGateProps> = ({ onSuccess, onCan
             <button
               type="submit"
               disabled={!password.trim() || isLocked || isLoading}
-              className="w-full py-2.5 px-4 bg-[#981C00] hover:bg-[#7A1D28] text-white font-semibold text-xs rounded-[5px] shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed group"
+              className="w-full py-2.5 px-4 bg-[#981C00] hover:bg-[#7A1D28] text-white font-semibold text-xs rounded-[15px] shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed group"
             >
               {isLoading ? (
                 <>

@@ -105,15 +105,15 @@
   --color-text-secondary: #706A65;
   --color-border-warm: #E8E4DF;
   --color-border-warm-dark: #2C2825;
-  --radius-xs: 5px;
-  --radius-sm: 5px;
-  --radius-md: 5px;
-  --radius-lg: 5px;
-  --radius-xl: 5px;
-  --radius-2xl: 5px;
-  --radius-3xl: 5px;
-  --radius-4xl: 5px;
-  --radius: 5px;
+  --radius-xs: 8px;
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 15px;
+  --radius-xl: 15px;
+  --radius-2xl: 15px;
+  --radius-3xl: 15px;
+  --radius-4xl: 15px;
+  --radius: 15px;
 }
 
 :root {

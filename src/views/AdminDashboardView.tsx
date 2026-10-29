@@ -921,203 +921,146 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
   return (
     <div className="space-y-6 pb-16 max-w-7xl mx-auto">
       {/* 1. Header Bar with Settings Popover */}
-      <div className="flex items-center justify-between gap-3 pb-4 border-b border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
-        <div>
-          <h1 className="text-base sm:text-lg font-bold tracking-tight text-[#24211F] dark:text-[#FAF8F5] leading-tight">
-            Nazazi Admin
-          </h1>
+      <div className="flex items-center justify-between gap-3 pb-4 border-b border-[#E8E4DF] dark:border-[#2C2825]">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-[15px] bg-[#981C00] text-white flex items-center justify-center font-bold text-sm shadow-xs">
+            <span>N</span>
+          </div>
+          <div>
+            <h1 className="text-base font-semibold tracking-tight text-[#24211F] dark:text-[#FAF8F5] leading-none">
+              Nazazi Admin
+            </h1>
+            <p className="text-[11px] text-[#706A65] dark:text-[#A8A19A] mt-0.5">
+              Console & Operations
+            </p>
+          </div>
         </div>
 
         <div className="flex items-center gap-2">
-
           {/* Settings Menu Popover */}
           <div className="relative" ref={settingsRef}>
             <button
               onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-              className={`p-1.5 sm:px-3 sm:py-1.5 rounded-[5px] border transition-all flex items-center gap-1.5 text-xs font-medium cursor-pointer shadow-2xs ${
+              className={`h-9 px-3 rounded-[15px] border transition-all flex items-center gap-2 text-xs font-medium cursor-pointer shadow-2xs ${
                 isSettingsOpen
-                  ? 'bg-[#981C00] text-white border-[#981C00]'
-                  : 'bg-white dark:bg-[#181615] text-[#24211F] dark:text-[#FAF8F5] border-[#E8E4DF] dark:border-[#2C2825] hover:bg-[#FAF8F5] dark:hover:bg-[#201D1B]'
+                  ? 'bg-[#24211F] text-[#FAF8F5] dark:bg-[#FAF8F5] dark:text-[#24211F] border-[#24211F] dark:border-[#FAF8F5]'
+                  : 'bg-white dark:bg-[#1D1A18] text-[#24211F] dark:text-[#FAF8F5] border-[#E8E4DF] dark:border-[#2C2825] hover:bg-[#FAF8F5] dark:hover:bg-[#25221F]'
               }`}
               title="Admin Settings & Actions"
             >
               {isSettingsOpen ? (
-                <X className="w-4 h-4" />
+                <X className="w-3.5 h-3.5" />
               ) : (
-                <Settings className="w-4 h-4 transition-transform duration-300 group-hover:rotate-90 text-[#706A65]" />
+                <Settings className="w-3.5 h-3.5 text-[#706A65] dark:text-[#A8A19A]" />
               )}
-              <span className="hidden sm:inline">Settings</span>
+              <span>Settings</span>
             </button>
 
             <AnimatePresence>
               {isSettingsOpen && (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                  initial={{ opacity: 0, scale: 0.96, y: 6 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                  transition={{ duration: 0.18, ease: 'easeOut' }}
-                  className="absolute right-0 mt-2 w-72 sm:w-80 rounded-[5px] bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] shadow-2xl p-2.5 z-50 space-y-1 divide-y divide-[#E8E4DF]/60 dark:divide-[#2C2825]/60"
+                  exit={{ opacity: 0, scale: 0.96, y: 6 }}
+                  transition={{ duration: 0.15, ease: 'easeOut' }}
+                  className="absolute right-0 mt-2 w-64 rounded-[15px] bg-white dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] shadow-xl p-1.5 z-50 text-xs"
                 >
-                  {/* Popover Header */}
-                  <div className="pb-2 px-2.5 flex items-center justify-between text-[11px] font-bold text-[#706A65] dark:text-[#A8A19A] uppercase tracking-wider">
-                    <span>Admin Settings</span>
-                    <Settings className="w-3.5 h-3.5" />
-                  </div>
-
-                  <div className="pt-2 space-y-1">
-                    {/* Public Site Return Option */}
-                    {onExitAdmin && (
-                      <button
-                        onClick={() => {
-                          setIsSettingsOpen(false);
-                          onExitAdmin();
-                        }}
-                        className="w-full flex items-center justify-between p-2.5 rounded-[5px] hover:bg-[#FAF8F5] dark:hover:bg-[#201D1B] transition-colors cursor-pointer text-left group"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-[5px] bg-[#FAF8F5] dark:bg-[#221F1D] text-[#24211F] dark:text-[#FAF8F5] flex items-center justify-center font-bold text-sm border border-[#E8E4DF] dark:border-[#2C2825]">
-                            <ArrowLeft className="w-4 h-4 text-[#706A65] dark:text-[#A8A19A]" />
-                          </div>
-                          <div>
-                            <p className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">
-                              Public Site
-                            </p>
-                            <p className="text-[11px] text-[#706A65] dark:text-[#A8A19A]">
-                              Return to public website
-                            </p>
-                          </div>
-                        </div>
-                        <ChevronRight className="w-4 h-4 text-[#706A65] group-hover:translate-x-0.5 transition-transform" />
-                      </button>
-                    )}
-
-                    {/* 1. Language Switcher */}
-                    <button
-                      onClick={() => {
-                        toggleLanguage();
-                      }}
-                      className="w-full flex items-center justify-between p-2.5 rounded-[5px] hover:bg-[#FAF8F5] dark:hover:bg-[#201D1B] transition-colors cursor-pointer text-left group"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-[5px] bg-[#FAF8F5] dark:bg-[#221F1D] text-[#24211F] dark:text-[#FAF8F5] flex items-center justify-center font-bold text-sm border border-[#E8E4DF] dark:border-[#2C2825]">
-                          <Globe className="w-4 h-4 text-[#706A65] dark:text-[#A8A19A]" />
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">
-                            {language === 'en' ? 'Language Switcher' : 'ቋንቋ ቀይር'}
-                          </p>
-                          <p className="text-[11px] text-[#706A65] dark:text-[#A8A19A]">
-                            {language === 'en' ? '🇺🇸 English (Switch to አማርኛ)' : '🇪🇹 አማርኛ (Switch to English)'}
-                          </p>
-                        </div>
-                      </div>
-                      <span className="text-[11px] font-bold text-[#706A65] uppercase px-2 py-0.5 rounded-[5px] bg-[#FAF8F5] dark:bg-[#221F1D] border border-[#E8E4DF] dark:border-[#2C2825]">
-                        {language.toUpperCase()}
-                      </span>
-                    </button>
-
-                    {/* 2. Theme Changer */}
-                    <button
-                      onClick={() => {
-                        toggleTheme();
-                      }}
-                      className="w-full flex items-center justify-between p-2.5 rounded-[5px] hover:bg-[#FAF8F5] dark:hover:bg-[#201D1B] transition-colors cursor-pointer text-left group"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-[5px] bg-[#FAF8F5] dark:bg-[#221F1D] text-[#24211F] dark:text-[#FAF8F5] flex items-center justify-center font-bold text-sm border border-[#E8E4DF] dark:border-[#2C2825]">
-                          {theme === 'dark' ? (
-                            <Moon className="w-4 h-4 text-[#E89382]" />
-                          ) : (
-                            <Sun className="w-4 h-4 text-[#981C00]" />
-                          )}
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">
-                            {language === 'en' ? 'Theme Changer' : 'ገጽታ ቀይር'}
-                          </p>
-                          <p className="text-[11px] text-[#706A65] dark:text-[#A8A19A]">
-                            {theme === 'dark' ? 'Dark Mode (Switch to Light)' : 'Light Mode (Switch to Dark)'}
-                          </p>
-                        </div>
-                      </div>
-                      <span className="text-[11px] font-bold text-[#706A65] capitalize px-2 py-0.5 rounded-[5px] bg-[#FAF8F5] dark:bg-[#221F1D] border border-[#E8E4DF] dark:border-[#2C2825]">
-                        {theme}
-                      </span>
-                    </button>
-
-                    {/* 3. Sync Database */}
-                    <button
-                      onClick={() => {
-                        fetchRegistrations();
-                        info('Refreshed', 'Synced latest registrations from Supabase.');
-                        setIsSettingsOpen(false);
-                      }}
-                      className="w-full flex items-center justify-between p-2.5 rounded-[5px] hover:bg-[#FAF8F5] dark:hover:bg-[#201D1B] transition-colors cursor-pointer text-left group"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-[5px] bg-[#FAF8F5] dark:bg-[#221F1D] text-[#24211F] dark:text-[#FAF8F5] flex items-center justify-center font-bold text-sm border border-[#E8E4DF] dark:border-[#2C2825]">
-                          <RefreshCw className={`w-4 h-4 text-[#706A65] dark:text-[#A8A19A] ${isLoading ? 'animate-spin' : ''}`} />
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">
-                            Sync Database
-                          </p>
-                          <p className="text-[11px] text-[#706A65] dark:text-[#A8A19A]">
-                            Refresh registrations from database
-                          </p>
-                        </div>
-                      </div>
-                      <ChevronRight className="w-4 h-4 text-[#706A65] group-hover:translate-x-0.5 transition-transform" />
-                    </button>
-
-                    {/* 4. Clear Data */}
+                  {/* Public Site Return Option */}
+                  {onExitAdmin && (
                     <button
                       onClick={() => {
                         setIsSettingsOpen(false);
-                        setShowResetModal(true);
+                        onExitAdmin();
                       }}
-                      className="w-full flex items-center justify-between p-2.5 rounded-[5px] hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-600 dark:text-rose-400 transition-colors cursor-pointer text-left group"
+                      className="w-full flex items-center justify-between px-3 py-2 rounded-[12px] hover:bg-[#FAF8F5] dark:hover:bg-[#25221F] text-[#24211F] dark:text-[#FAF8F5] transition-colors cursor-pointer"
                     >
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-[5px] bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold text-sm border border-rose-200 dark:border-rose-900/50">
-                          <Trash2 className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold">
-                            Clear Data
-                          </p>
-                          <p className="text-[11px] text-rose-500/80 dark:text-rose-400/80">
-                            Reset all registrations & logs
-                          </p>
-                        </div>
+                      <div className="flex items-center gap-2.5">
+                        <ArrowLeft className="w-4 h-4 text-[#706A65] dark:text-[#A8A19A]" />
+                        <span className="font-medium">Public Site</span>
                       </div>
-                      <ChevronRight className="w-4 h-4 text-rose-400 group-hover:translate-x-0.5 transition-transform" />
+                      <ChevronRight className="w-3.5 h-3.5 text-[#706A65]" />
                     </button>
+                  )}
 
-                    {/* 5. Lock Console */}
-                    <button
-                      onClick={() => {
-                        setIsSettingsOpen(false);
-                        handleLogout();
-                      }}
-                      className="w-full flex items-center justify-between p-2.5 rounded-[5px] hover:bg-[#FAF8F5] dark:hover:bg-[#201D1B] transition-colors cursor-pointer text-left group"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-[5px] bg-[#981C00] text-white flex items-center justify-center font-bold text-sm shadow-xs">
-                          <Lock className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">
-                            Lock Console
-                          </p>
-                          <p className="text-[11px] text-[#706A65] dark:text-[#A8A19A]">
-                            Securely lock admin session
-                          </p>
-                        </div>
-                      </div>
-                      <LogOut className="w-4 h-4 text-rose-500" />
-                    </button>
-                  </div>
+                  {/* Language Switcher */}
+                  <button
+                    onClick={toggleLanguage}
+                    className="w-full flex items-center justify-between px-3 py-2 rounded-[12px] hover:bg-[#FAF8F5] dark:hover:bg-[#25221F] text-[#24211F] dark:text-[#FAF8F5] transition-colors cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <Globe className="w-4 h-4 text-[#706A65] dark:text-[#A8A19A]" />
+                      <span className="font-medium">Language</span>
+                    </div>
+                    <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-[8px] bg-[#FAF8F5] dark:bg-[#25221F] border border-[#E8E4DF] dark:border-[#2C2825]">
+                      {language.toUpperCase()}
+                    </span>
+                  </button>
+
+                  {/* Theme Changer */}
+                  <button
+                    onClick={toggleTheme}
+                    className="w-full flex items-center justify-between px-3 py-2 rounded-[12px] hover:bg-[#FAF8F5] dark:hover:bg-[#25221F] text-[#24211F] dark:text-[#FAF8F5] transition-colors cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      {theme === 'dark' ? (
+                        <Moon className="w-4 h-4 text-[#E89382]" />
+                      ) : (
+                        <Sun className="w-4 h-4 text-[#981C00]" />
+                      )}
+                      <span className="font-medium">Theme</span>
+                    </div>
+                    <span className="text-[10px] font-bold capitalize px-1.5 py-0.5 rounded-[8px] bg-[#FAF8F5] dark:bg-[#25221F] border border-[#E8E4DF] dark:border-[#2C2825]">
+                      {theme}
+                    </span>
+                  </button>
+
+                  {/* Sync Database */}
+                  <button
+                    onClick={() => {
+                      fetchRegistrations();
+                      info('Refreshed', 'Database synchronized.');
+                      setIsSettingsOpen(false);
+                    }}
+                    className="w-full flex items-center justify-between px-3 py-2 rounded-[12px] hover:bg-[#FAF8F5] dark:hover:bg-[#25221F] text-[#24211F] dark:text-[#FAF8F5] transition-colors cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <RefreshCw className={`w-4 h-4 text-[#706A65] dark:text-[#A8A19A] ${isLoading ? 'animate-spin' : ''}`} />
+                      <span className="font-medium">Sync Data</span>
+                    </div>
+                    <ChevronRight className="w-3.5 h-3.5 text-[#706A65]" />
+                  </button>
+
+                  <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] my-1" />
+
+                  {/* Clear Data */}
+                  <button
+                    onClick={() => {
+                      setIsSettingsOpen(false);
+                      setShowResetModal(true);
+                    }}
+                    className="w-full flex items-center justify-between px-3 py-2 rounded-[12px] hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-600 dark:text-rose-400 transition-colors cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <Trash2 className="w-4 h-4" />
+                      <span className="font-medium">Clear Data</span>
+                    </div>
+                    <ChevronRight className="w-3.5 h-3.5 opacity-60" />
+                  </button>
+
+                  {/* Lock Console */}
+                  <button
+                    onClick={() => {
+                      setIsSettingsOpen(false);
+                      handleLogout();
+                    }}
+                    className="w-full flex items-center justify-between px-3 py-2 rounded-[12px] hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-600 dark:text-rose-400 transition-colors cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <Lock className="w-4 h-4" />
+                      <span className="font-medium">Lock Console</span>
+                    </div>
+                    <LogOut className="w-3.5 h-3.5 opacity-60" />
+                  </button>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -1125,7 +1068,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
         </div>
       </div>
 
-      {/* 2. Top Metric Cards - Clean, Type-First App-Screen Layout */}
+      {/* 2. Top Metric Cards - Minimal Shadcn Layout */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <div
           onClick={() => {
@@ -1133,27 +1076,23 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
             setStatusFilter('pending');
             setFilterValue({ status: ['pending'] });
           }}
-          className={`p-4 sm:p-5 rounded-[5px] border transition-all cursor-pointer bg-white dark:bg-[#181615] ${
+          className={`p-4 sm:p-5 rounded-[15px] border transition-all cursor-pointer bg-white dark:bg-[#1D1A18] ${
             activeTab === 'approvals' && (statusFilter === 'pending' || (filterValue.status?.includes('pending') && filterValue.status.length === 1))
               ? 'border-[#981C00] dark:border-[#C43214] ring-1 ring-[#981C00]/30 shadow-xs'
-              : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00]/40 dark:hover:border-[#C43214]/40 shadow-2xs'
+              : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00]/40 dark:hover:border-[#C43214]/40 shadow-xs'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#706A65] dark:text-[#A8A19A]">
-              Pending Approvals
+            <span className="text-xs font-medium text-[#706A65] dark:text-[#A8A19A]">
+              Pending
             </span>
-            {pendingCount > 0 && (
-              <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-[5px] bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-                Action
-              </span>
-            )}
+            <Clock className="w-4 h-4 text-[#706A65] dark:text-[#A8A19A]" />
           </div>
-          <p className="text-2xl sm:text-3xl font-bold font-mono tracking-tight text-[#24211F] dark:text-[#FAF8F5] mt-2.5">
+          <p className="text-2xl sm:text-3xl font-bold font-mono tracking-tight text-[#24211F] dark:text-[#FAF8F5] mt-2">
             {pendingCount}
           </p>
           <p className="text-[11px] text-[#706A65] dark:text-[#A8A19A] mt-1 truncate">
-            Requires verification
+            {pendingCount > 0 ? `${pendingCount} require review` : 'All caught up'}
           </p>
         </div>
 
@@ -1161,36 +1100,35 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
           onClick={() => {
             setActiveTab('send_sms');
           }}
-          className={`p-4 sm:p-5 rounded-[5px] border transition-all cursor-pointer bg-white dark:bg-[#181615] ${
+          className={`p-4 sm:p-5 rounded-[15px] border transition-all cursor-pointer bg-white dark:bg-[#1D1A18] ${
             activeTab === 'send_sms'
               ? 'border-[#981C00] dark:border-[#C43214] ring-1 ring-[#981C00]/30 shadow-xs'
-              : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00]/40 dark:hover:border-[#C43214]/40 shadow-2xs'
+              : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00]/40 dark:hover:border-[#C43214]/40 shadow-xs'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#706A65] dark:text-[#A8A19A]">
-              Approved Members
+            <span className="text-xs font-medium text-[#706A65] dark:text-[#A8A19A]">
+              Approved
             </span>
-            <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-[5px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-              Active
-            </span>
+            <Users className="w-4 h-4 text-[#706A65] dark:text-[#A8A19A]" />
           </div>
-          <p className="text-2xl sm:text-3xl font-bold font-mono tracking-tight text-[#24211F] dark:text-[#FAF8F5] mt-2.5">
+          <p className="text-2xl sm:text-3xl font-bold font-mono tracking-tight text-[#24211F] dark:text-[#FAF8F5] mt-2">
             {approvedCount}
           </p>
-          <div className="flex items-center justify-between mt-1 pt-1.5 border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825] text-[11px]">
-            <span className="text-[#706A65] dark:text-[#A8A19A] truncate">Ready for SMS</span>
-            <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
-              <button
-                type="button"
-                onClick={() => executeCopyApprovedToClipboard('ordered_spaced')}
-                className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-[5px] bg-[#FAF4F2] hover:bg-[#F3E6E2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#E89382] font-semibold text-[10px] transition-colors cursor-pointer border border-[#E8DCD9] dark:border-[#3A2420]"
-                title="Quick copy ordered phone list (1. 09...)"
-              >
-                <Copy className="w-3 h-3" />
-                <span>{hasCopiedApproved ? 'Copied' : 'Copy'}</span>
-              </button>
-            </div>
+          <div className="flex items-center justify-between mt-1 text-[11px]">
+            <span className="text-[#706A65] dark:text-[#A8A19A] truncate">Active members</span>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                executeCopyApprovedToClipboard('ordered_spaced');
+              }}
+              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-[8px] bg-[#FAF4F2] hover:bg-[#F3E6E2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#E89382] font-semibold text-[10px] transition-colors cursor-pointer border border-[#E8DCD9] dark:border-[#3A2420]"
+              title="Copy phone list"
+            >
+              <Copy className="w-2.5 h-2.5" />
+              <span>{hasCopiedApproved ? 'Copied' : 'Copy'}</span>
+            </button>
           </div>
         </div>
 
@@ -1200,59 +1138,55 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
             setStatusFilter('approved');
             setFilterValue({ status: ['approved'] });
           }}
-          className={`p-4 sm:p-5 rounded-[5px] border transition-all cursor-pointer bg-white dark:bg-[#181615] ${
+          className={`p-4 sm:p-5 rounded-[15px] border transition-all cursor-pointer bg-white dark:bg-[#1D1A18] ${
             activeTab === 'approvals' && (statusFilter === 'approved' || (filterValue.status?.includes('approved') && filterValue.status.length === 1))
               ? 'border-[#981C00] dark:border-[#C43214] ring-1 ring-[#981C00]/30 shadow-xs'
-              : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00]/40 dark:hover:border-[#C43214]/40 shadow-2xs'
+              : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00]/40 dark:hover:border-[#C43214]/40 shadow-xs'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#706A65] dark:text-[#A8A19A]">
-              Verified Revenue
+            <span className="text-xs font-medium text-[#706A65] dark:text-[#A8A19A]">
+              Revenue
             </span>
-            <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-[5px] bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#E89382] border border-[#E8DCD9] dark:border-[#3A2420]">
-              ETB
-            </span>
+            <CircleDollarSign className="w-4 h-4 text-[#706A65] dark:text-[#A8A19A]" />
           </div>
-          <p className="text-2xl sm:text-3xl font-bold font-mono tracking-tight text-[#24211F] dark:text-[#FAF8F5] mt-2.5 truncate">
-            {totalCollectedRevenue.toLocaleString()}
+          <p className="text-2xl sm:text-3xl font-bold font-mono tracking-tight text-[#24211F] dark:text-[#FAF8F5] mt-2 truncate">
+            {totalCollectedRevenue.toLocaleString()} <span className="text-xs font-normal text-[#706A65]">ETB</span>
           </p>
           <p className="text-[11px] text-[#706A65] dark:text-[#A8A19A] mt-1 truncate">
-            Total collected
+            Total verified
           </p>
         </div>
 
         <div
           onClick={() => setActiveTab('logs')}
-          className={`p-4 sm:p-5 rounded-[5px] border transition-all cursor-pointer bg-white dark:bg-[#181615] ${
+          className={`p-4 sm:p-5 rounded-[15px] border transition-all cursor-pointer bg-white dark:bg-[#1D1A18] ${
             activeTab === 'logs'
               ? 'border-[#981C00] dark:border-[#C43214] ring-1 ring-[#981C00]/30 shadow-xs'
-              : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00]/40 dark:hover:border-[#C43214]/40 shadow-2xs'
+              : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00]/40 dark:hover:border-[#C43214]/40 shadow-xs'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#706A65] dark:text-[#A8A19A]">
-              Dispatched SMS
+            <span className="text-xs font-medium text-[#706A65] dark:text-[#A8A19A]">
+              SMS Dispatched
             </span>
-            <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-[5px] bg-[#FAF8F5] dark:bg-[#221F1D] text-[#706A65] dark:text-[#A8A19A] border border-[#E8E4DF] dark:border-[#2C2825]">
-              Logs
-            </span>
+            <Send className="w-4 h-4 text-[#706A65] dark:text-[#A8A19A]" />
           </div>
-          <p className="text-2xl sm:text-3xl font-bold font-mono tracking-tight text-[#24211F] dark:text-[#FAF8F5] mt-2.5">
+          <p className="text-2xl sm:text-3xl font-bold font-mono tracking-tight text-[#24211F] dark:text-[#FAF8F5] mt-2">
             {smsLogs.length}
           </p>
           <p className="text-[11px] text-[#706A65] dark:text-[#A8A19A] mt-1 truncate">
-            Audit history
+            Delivery audit
           </p>
         </div>
       </div>
 
-      {/* 3. Purpose Tab Navigation - Clean Segmented Pill */}
+      {/* 3. Purpose Tab Navigation - Clean Segmented Control */}
       <div className="w-full overflow-x-auto pb-0.5 no-scrollbar">
-        <div className="inline-flex items-center gap-1 p-1 bg-[#F3EFEA] dark:bg-[#1E1B19] rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] min-w-max">
+        <div className="inline-flex h-10 items-center justify-center rounded-[15px] bg-[#F3EFEA] dark:bg-[#1E1B19] p-1 text-[#706A65] dark:text-[#A8A19A] border border-[#E8E4DF] dark:border-[#2C2825] min-w-max">
           <button
             onClick={() => setActiveTab('approvals')}
-            className={`px-3.5 py-1.5 rounded-[5px] text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${
+            className={`inline-flex items-center justify-center whitespace-nowrap rounded-[12px] px-3.5 py-1.5 text-xs font-medium transition-all cursor-pointer gap-2 ${
               activeTab === 'approvals'
                 ? 'bg-white dark:bg-[#141211] text-[#24211F] dark:text-[#FAF8F5] shadow-xs'
                 : 'text-[#706A65] hover:text-[#24211F] dark:text-[#A8A19A] dark:hover:text-[#FAF8F5]'
@@ -1261,7 +1195,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
             <ShieldCheck className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
             <span>Approvals</span>
             {pendingCount > 0 && (
-              <span className="px-1.5 py-0.2 bg-[#981C00] text-white text-[10px] font-bold rounded-[5px]">
+              <span className="px-1.5 py-0.2 bg-[#981C00] text-white text-[10px] font-bold font-mono rounded-full">
                 {pendingCount}
               </span>
             )}
@@ -1269,7 +1203,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
 
           <button
             onClick={() => setActiveTab('send_sms')}
-            className={`px-3.5 py-1.5 rounded-[5px] text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${
+            className={`inline-flex items-center justify-center whitespace-nowrap rounded-[12px] px-3.5 py-1.5 text-xs font-medium transition-all cursor-pointer gap-2 ${
               activeTab === 'send_sms'
                 ? 'bg-white dark:bg-[#141211] text-[#24211F] dark:text-[#FAF8F5] shadow-xs'
                 : 'text-[#706A65] hover:text-[#24211F] dark:text-[#A8A19A] dark:hover:text-[#FAF8F5]'
@@ -1277,14 +1211,14 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
           >
             <Send className="w-3.5 h-3.5 text-[#706A65] dark:text-[#A8A19A]" />
             <span>SMS Console</span>
-            <span className="px-1.5 py-0.2 bg-[#E8E4DF] dark:bg-[#2C2825] text-[#24211F] dark:text-[#FAF8F5] text-[10px] font-bold rounded-[5px]">
+            <span className="px-1.5 py-0.2 bg-[#E8E4DF] dark:bg-[#2C2825] text-[#24211F] dark:text-[#FAF8F5] text-[10px] font-bold font-mono rounded-full">
               {approvedCount}
             </span>
           </button>
 
           <button
             onClick={() => setActiveTab('logs')}
-            className={`px-3.5 py-1.5 rounded-[5px] text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${
+            className={`inline-flex items-center justify-center whitespace-nowrap rounded-[12px] px-3.5 py-1.5 text-xs font-medium transition-all cursor-pointer gap-2 ${
               activeTab === 'logs'
                 ? 'bg-white dark:bg-[#141211] text-[#24211F] dark:text-[#FAF8F5] shadow-xs'
                 : 'text-[#706A65] hover:text-[#24211F] dark:text-[#A8A19A] dark:hover:text-[#FAF8F5]'
@@ -1292,7 +1226,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
           >
             <History className="w-3.5 h-3.5 text-[#706A65] dark:text-[#A8A19A]" />
             <span>Audit Logs</span>
-            <span className="px-1.5 py-0.2 bg-[#E8E4DF] dark:bg-[#2C2825] text-[#24211F] dark:text-[#FAF8F5] text-[10px] font-bold rounded-[5px]">
+            <span className="px-1.5 py-0.2 bg-[#E8E4DF] dark:bg-[#2C2825] text-[#24211F] dark:text-[#FAF8F5] text-[10px] font-bold font-mono rounded-full">
               {smsLogs.length}
             </span>
           </button>
@@ -1303,19 +1237,19 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
       {/* PURPOSE 1: PAYMENT APPROVALS */}
       {/* ========================================================================= */}
       {activeTab === 'approvals' && (
-        <Card className="p-4 sm:p-6 space-y-4 sm:space-y-5 border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] rounded-[5px] shadow-xs">
+        <Card className="p-4 sm:p-6 space-y-4 sm:space-y-5 border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] rounded-[15px] shadow-xs">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E8E4DF] dark:border-[#2C2825]">
             <div>
               <h2 className="text-base sm:text-lg font-serif font-bold text-[#24211F] dark:text-[#FAF8F5] tracking-tight">
                 Payment Approvals
               </h2>
               <p className="text-xs text-[#706A65] dark:text-[#A8A29D] mt-0.5">
-                Verify member payments, approve subscriptions, and manage verified directories.
+                Verify member subscriptions & directory.
               </p>
             </div>
 
             {/* Filter Pills */}
-            <div className="inline-flex items-center gap-1 p-1 bg-[#F3EFEA] dark:bg-[#1E1B19] rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] text-xs font-medium overflow-x-auto no-scrollbar">
+            <div className="inline-flex items-center gap-1 p-1 bg-[#F3EFEA] dark:bg-[#1E1B19] rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] text-xs font-medium overflow-x-auto no-scrollbar">
               <button
                 onClick={() => {
                   setStatusFilter('all');
@@ -1325,9 +1259,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                     return next;
                   });
                 }}
-                className={`px-2.5 py-1 rounded-[5px] transition-all cursor-pointer whitespace-nowrap text-xs font-semibold ${
+                className={`px-2.5 py-1 rounded-[12px] transition-all cursor-pointer whitespace-nowrap text-xs font-semibold ${
                   statusFilter === 'all' && (!filterValue.status || filterValue.status.length === 0)
-                    ? 'bg-white dark:bg-[#2A2624] text-[#24211F] dark:text-[#FAF8F5] shadow-2xs'
+                    ? 'bg-white dark:bg-[#2A2624] text-[#24211F] dark:text-[#FAF8F5] shadow-xs'
                     : 'text-[#706A65] dark:text-[#A8A29D] hover:text-[#24211F] dark:hover:text-[#FAF8F5]'
                 }`}
               >
@@ -1338,9 +1272,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                   setStatusFilter('pending');
                   setFilterValue((prev) => ({ ...prev, status: ['pending'] }));
                 }}
-                className={`px-2.5 py-1 rounded-[5px] transition-all cursor-pointer whitespace-nowrap text-xs font-semibold flex items-center gap-1.5 ${
+                className={`px-2.5 py-1 rounded-[12px] transition-all cursor-pointer whitespace-nowrap text-xs font-semibold flex items-center gap-1.5 ${
                   statusFilter === 'pending' || (filterValue.status?.includes('pending') && filterValue.status.length === 1)
-                    ? 'bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800/80 shadow-2xs'
+                    ? 'bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800/80 shadow-xs'
                     : 'text-amber-700 dark:text-amber-400 hover:bg-amber-500/10'
                 }`}
               >
@@ -1352,9 +1286,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                   setStatusFilter('approved');
                   setFilterValue((prev) => ({ ...prev, status: ['approved'] }));
                 }}
-                className={`px-2.5 py-1 rounded-[5px] transition-all cursor-pointer whitespace-nowrap text-xs font-semibold flex items-center gap-1.5 ${
+                className={`px-2.5 py-1 rounded-[12px] transition-all cursor-pointer whitespace-nowrap text-xs font-semibold flex items-center gap-1.5 ${
                   statusFilter === 'approved' || (filterValue.status?.includes('approved') && filterValue.status.length === 1)
-                    ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800/80 shadow-2xs'
+                    ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800/80 shadow-xs'
                     : 'text-emerald-700 dark:text-emerald-400 hover:bg-emerald-500/10'
                 }`}
               >
@@ -1366,9 +1300,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                   setStatusFilter('rejected');
                   setFilterValue((prev) => ({ ...prev, status: ['rejected'] }));
                 }}
-                className={`px-2.5 py-1 rounded-[5px] transition-all cursor-pointer whitespace-nowrap text-xs font-semibold flex items-center gap-1.5 ${
+                className={`px-2.5 py-1 rounded-[12px] transition-all cursor-pointer whitespace-nowrap text-xs font-semibold flex items-center gap-1.5 ${
                   statusFilter === 'rejected' || (filterValue.status?.includes('rejected') && filterValue.status.length === 1)
-                    ? 'bg-rose-100 dark:bg-rose-950/60 text-rose-900 dark:text-rose-200 border border-rose-300 dark:border-rose-800/80 shadow-2xs'
+                    ? 'bg-rose-100 dark:bg-rose-950/60 text-rose-900 dark:text-rose-200 border border-rose-300 dark:border-rose-800/80 shadow-xs'
                     : 'text-rose-700 dark:text-rose-400 hover:bg-rose-500/10'
                 }`}
               >
@@ -1388,7 +1322,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                     value={paymentSearch}
                     onChange={(e) => setPaymentSearch(e.target.value)}
                     leftIcon={<Search className="w-3.5 h-3.5 text-[#706A65]" />}
-                    className="rounded-[5px] border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#181615] focus:border-[#981C00] focus:ring-[#981C00]/20 text-xs"
+                    className="rounded-[15px] border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#181615] focus:border-[#981C00] focus:ring-[#981C00]/20 text-xs"
                   />
                 </div>
 
@@ -1397,13 +1331,13 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                   <button
                     type="button"
                     onClick={() => setIsFilterMenuOpen((prev) => !prev)}
-                    className={`inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-[5px] text-xs font-semibold border transition-all cursor-pointer shadow-2xs ${
+                    className={`inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-[15px] text-xs font-semibold border transition-all cursor-pointer shadow-xs ${
                       isFilterMenuOpen || activeFilterCount > 0
                         ? 'bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#E89382] border-[#981C00]/40 dark:border-[#C43214]/40 ring-1 ring-[#981C00]/20'
                         : 'bg-white dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] border-[#E8E4DF] dark:border-[#2C2825] hover:bg-[#FAF8F5] dark:hover:bg-[#2A2624]'
                     }`}
                     aria-expanded={isFilterMenuOpen}
-                    title="Open Grouped Filters (FilterMenu)"
+                    title="Filters"
                   >
                     <ListFilter className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
                     <span>Filters</span>
@@ -1446,8 +1380,8 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               <button
                 type="button"
                 onClick={() => setIsCopyApprovedModalOpen(true)}
-                title="Copy approved phone numbers with ordering (#) and plenty of space"
-                className="inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-[5px] text-xs font-semibold border border-emerald-300 dark:border-emerald-800/80 bg-emerald-50/70 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100/80 dark:hover:bg-emerald-900/50 transition-all cursor-pointer shadow-2xs"
+                title="Copy verified numbers"
+                className="inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-[15px] text-xs font-semibold border border-emerald-300 dark:border-emerald-800/80 bg-emerald-50/70 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100/80 dark:hover:bg-emerald-900/50 transition-all cursor-pointer shadow-xs"
               >
                 {hasCopiedApproved ? (
                   <CheckCheck className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" />
@@ -1455,7 +1389,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                   <Copy className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" />
                 )}
                 <span>Copy Approved</span>
-                <span className="px-1.5 py-0.5 rounded-[5px] bg-emerald-200/80 dark:bg-emerald-900 text-emerald-900 dark:text-emerald-200 text-[10px] font-mono font-bold">
+                <span className="px-1.5 py-0.5 rounded-[8px] bg-emerald-200/80 dark:bg-emerald-900 text-emerald-900 dark:text-emerald-200 text-[10px] font-mono font-bold">
                   {approvedCount}
                 </span>
               </button>
@@ -1466,8 +1400,8 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                 onClick={exportToCSV}
                 disabled={isExportingCsv}
                 aria-label="Export to CSV"
-                title="Export list as CSV"
-                className="inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-[5px] text-xs font-semibold border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] hover:bg-[#FAF8F5] dark:hover:bg-[#2A2624] disabled:opacity-50 transition-all cursor-pointer shadow-2xs"
+                title="Export CSV"
+                className="inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-[15px] text-xs font-semibold border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] hover:bg-[#FAF8F5] dark:hover:bg-[#2A2624] disabled:opacity-50 transition-all cursor-pointer shadow-xs"
               >
                 <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                 <span className="hidden sm:inline">CSV</span>
@@ -1479,9 +1413,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                   type="button"
                   onClick={() => setIsPdfDropdownOpen((prev) => !prev)}
                   disabled={isExportingPdf}
-                  aria-label="Export to PDF options"
-                  title="Export PDF reports"
-                  className="inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-[5px] text-xs font-semibold border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] hover:bg-[#FAF8F5] dark:hover:bg-[#2A2624] disabled:opacity-50 transition-all cursor-pointer shadow-2xs"
+                  aria-label="Export to PDF"
+                  title="Export PDF"
+                  className="inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-[15px] text-xs font-semibold border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] hover:bg-[#FAF8F5] dark:hover:bg-[#2A2624] disabled:opacity-50 transition-all cursor-pointer shadow-xs"
                 >
                   <FileText className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
                   <span className="hidden sm:inline">PDF</span>
@@ -1489,7 +1423,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                 </button>
 
                 {isPdfDropdownOpen && (
-                  <div className="absolute right-0 top-full mt-1.5 w-60 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] shadow-xl py-1.5 z-30 text-xs animate-in fade-in zoom-in-95 duration-150">
+                  <div className="absolute right-0 top-full mt-1.5 w-60 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] shadow-xl py-1.5 z-30 text-xs animate-in fade-in zoom-in-95 duration-150">
                     <button
                       type="button"
                       onClick={() => {
@@ -1515,7 +1449,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                     >
                       <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                       <div>
-                        <p className="font-semibold text-xs leading-tight">Approved Phones Only PDF</p>
+                        <p className="font-semibold text-xs leading-tight">Approved Phones PDF</p>
                         <p className="text-[10px] text-[#706A65] dark:text-[#A8A29D] mt-0.5">
                           Verified directory ({approvedCount} phones)
                         </p>
@@ -1539,7 +1473,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                       setIsSelectionMode(true);
                     }
                   }}
-                  className={`inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-[5px] text-xs font-semibold border transition-all cursor-pointer shadow-2xs ${
+                  className={`inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-[15px] text-xs font-semibold border transition-all cursor-pointer shadow-xs ${
                     isSelectionMode || selectedIds.length > 0
                       ? 'bg-[#24211F] text-[#FAF8F5] dark:bg-[#FAF8F5] dark:text-[#24211F] border-[#24211F] dark:border-[#FAF8F5] shadow-xs'
                       : 'bg-white dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] border-[#E8E4DF] dark:border-[#2C2825] hover:bg-[#FAF8F5] dark:hover:bg-[#24211F]'
@@ -1554,7 +1488,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
 
               {/* Active Selection Floating Pill */}
               {selectedIds.length > 0 && (
-                <div className="flex items-center gap-1.5 sm:gap-2 bg-[#F3EFEA] dark:bg-[#1E1B19] p-1 px-2.5 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] text-xs">
+                <div className="flex items-center gap-1.5 sm:gap-2 bg-[#F3EFEA] dark:bg-[#1E1B19] p-1 px-2.5 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] text-xs">
                   <span className="font-bold text-[#24211F] dark:text-[#FAF8F5] font-mono text-[11px]">
                     {selectedIds.length}
                   </span>
@@ -1563,7 +1497,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                     variant="danger"
                     onClick={() => setShowBatchDeleteModal(true)}
                     leftIcon={<Trash2 className="w-3 h-3" />}
-                    className="text-xs py-0.5 h-6.5 px-2 rounded-[5px]"
+                    className="text-xs py-0.5 h-6.5 px-2 rounded-[15px]"
                   >
                     <span className="hidden sm:inline">Delete Selected</span>
                     <span className="sm:hidden">Delete</span>
@@ -1586,7 +1520,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
             {/* Active Filter Chips Bar (Quick remove & summary) */}
             {activeFilterCount > 0 && (
               <div className="flex items-center gap-1.5 flex-wrap pt-1 border-t border-dashed border-[#E8E4DF] dark:border-[#2C2825]">
-                <span className="text-[11px] font-semibold text-[#706A65] dark:text-[#A8A19A] mr-1">
+                <span className="text-[11px] font-semibold text-[#706A65] dark:text-[#A8A29A] mr-1">
                   Active filters:
                 </span>
                 {filterGroups.flatMap((g) =>
@@ -1596,7 +1530,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                     return (
                       <span
                         key={`${g.id}-${valId}`}
-                        className="inline-flex items-center gap-1.5 pl-2 pr-1 py-0.5 rounded-[5px] bg-[#FAF4F2] dark:bg-[#2A1D1A] border border-[#E8DCD9] dark:border-[#3A2420] text-[#981C00] dark:text-[#E89382] text-[11px] font-medium animate-in fade-in duration-150"
+                        className="inline-flex items-center gap-1.5 pl-2 pr-1 py-0.5 rounded-[15px] bg-[#FAF4F2] dark:bg-[#2A1D1A] border border-[#E8DCD9] dark:border-[#3A2420] text-[#981C00] dark:text-[#E89382] text-[11px] font-medium animate-in fade-in duration-150"
                       >
                         <span>{label}</span>
                         <button
@@ -1633,16 +1567,14 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                 </button>
               </div>
             )}
-          </div>
-
-          {/* Registrations List - Mobile Cards View + Desktop Table View */}
+          </div>          {/* Registrations List - Mobile Cards View + Desktop Table View */}
           {filteredSubmissions.length === 0 ? (
-            <div className="py-14 text-center text-xs text-[#706A65] dark:text-[#A8A29D] space-y-3 bg-[#FAF8F5]/60 dark:bg-[#1A1816]/40 rounded-[5px] border border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
-              <AlertCircle className="w-9 h-9 mx-auto text-[#706A65]/50" />
+            <div className="py-12 text-center text-xs text-[#706A65] dark:text-[#A8A29D] space-y-3 bg-[#FAF8F5]/60 dark:bg-[#1A1816]/40 rounded-[15px] border border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
+              <AlertCircle className="w-8 h-8 mx-auto text-[#706A65]/50" />
               <div>
-                <p className="font-bold text-[#24211F] dark:text-[#FAF8F5] text-sm">No registrations found</p>
+                <p className="font-semibold text-[#24211F] dark:text-[#FAF8F5] text-sm">No registrations found</p>
                 <p className="text-[#706A65] dark:text-[#A8A29D] text-xs mt-0.5">
-                  Submissions from the registration form will appear here in real-time.
+                  Submissions will appear here in real-time.
                 </p>
               </div>
               <Button
@@ -1650,7 +1582,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                 variant="secondary"
                 onClick={() => fetchRegistrations()}
                 leftIcon={<RefreshCw className="w-3.5 h-3.5" />}
-                className="rounded-[5px]"
+                className="rounded-[15px]"
               >
                 Refresh
               </Button>
@@ -1669,10 +1601,10 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                       onClick={() => {
                         if (isSelectionMode) handleToggleSelect(sub.id);
                       }}
-                      className={`p-3 rounded-[5px] border transition-all ${
+                      className={`p-3.5 rounded-[15px] border transition-all ${
                         isSelected
-                          ? 'bg-[#F3EFEA] dark:bg-[#24211F] border-[#24211F] dark:border-[#FAF8F5] shadow-2xs'
-                          : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825]'
+                          ? 'bg-[#F3EFEA] dark:bg-[#24211F] border-[#24211F] dark:border-[#FAF8F5] shadow-xs'
+                          : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF] dark:hover:border-[#3D3834]'
                       }`}
                     >
                       {/* Main Card Layout: Left Info & Actions, Right Receipt Thumbnail */}
@@ -1690,9 +1622,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                       e.stopPropagation();
                                       handleToggleSelect(sub.id);
                                     }}
-                                    className={`w-5 h-5 rounded-[5px] flex items-center justify-center transition-all cursor-pointer border shrink-0 ${
+                                    className={`w-5 h-5 rounded-[6px] flex items-center justify-center transition-all cursor-pointer border shrink-0 ${
                                       isSelected
-                                        ? 'bg-[#24211F] text-[#FAF8F5] dark:bg-[#FAF8F5] dark:text-[#24211F] border-[#24211F] dark:border-[#FAF8F5] shadow-2xs'
+                                        ? 'bg-[#24211F] text-[#FAF8F5] dark:bg-[#FAF8F5] dark:text-[#24211F] border-[#24211F] dark:border-[#FAF8F5] shadow-xs'
                                         : 'border-[#DDD7CF] dark:border-[#3D3834] bg-white dark:bg-[#1E1B19]'
                                     }`}
                                     aria-label={isSelected ? 'Deselect member' : 'Select member'}
@@ -1700,10 +1632,10 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                     {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                                   </button>
                                 )}
-                                <span className="text-[11px] font-mono font-bold text-[#706A65] shrink-0">
+                                <span className="text-[11px] font-mono font-medium text-[#706A65] shrink-0">
                                   #{absoluteIndex}
                                 </span>
-                                <h3 className="font-bold text-[#24211F] dark:text-[#FAF8F5] text-sm leading-tight truncate" title={sub.userName}>
+                                <h3 className="font-semibold text-[#24211F] dark:text-[#FAF8F5] text-sm leading-tight truncate" title={sub.userName}>
                                   {sub.userName}
                                 </h3>
                               </div>
@@ -1716,7 +1648,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                             </div>
 
                             {/* Phone & Date */}
-                            <div className="flex items-center justify-between text-[11px] font-mono text-[#4A443F] dark:text-[#D1CBC5] font-semibold gap-1">
+                            <div className="flex items-center justify-between text-[11px] font-mono text-[#4A443F] dark:text-[#D1CBC5] font-medium gap-1">
                               <span className="flex items-center gap-1 truncate">
                                 <Smartphone className="w-3 h-3 text-[#706A65] shrink-0" />
                                 {sub.userPhone}
@@ -1729,7 +1661,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                             {/* Verify.ET Auto-Verified Badge / TxID */}
                             {(sub.verificationMethod === 'verify_et' || sub.transactionId) && (
                               <div className="flex items-center gap-1.5 flex-wrap mt-1">
-                                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-[5px] text-[10px] font-bold bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
+                                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-[6px] text-[10px] font-semibold bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
                                   <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                                   <span>Verify.ET</span>
                                   {sub.bank && <span className="uppercase font-mono text-[9px]">{sub.bank}</span>}
@@ -1745,7 +1677,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
 
                           {/* Plan Badge & Amount Display */}
                           <div className="flex items-center justify-between gap-2 pt-0.5">
-                            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[5px] text-xs font-semibold tracking-tight border border-[#E8E4DF] dark:border-[#2C2825] bg-[#F3EFEA] dark:bg-[#201D1B] text-[#24211F] dark:text-[#FAF8F5]">
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[8px] text-xs font-medium tracking-tight border border-[#E8E4DF] dark:border-[#2C2825] bg-[#F3EFEA] dark:bg-[#201D1B] text-[#24211F] dark:text-[#FAF8F5]">
                               <span className="w-1.5 h-1.5 rounded-full bg-[#981C00] dark:bg-[#E89382]" />
                               <span>
                                 {sub.amount >= 1000 || sub.planName.toLowerCase().includes('6')
@@ -1755,7 +1687,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                   : '1 Month'}
                               </span>
                             </span>
-                            <span className="text-xs font-mono font-bold text-[#24211F] dark:text-[#FAF8F5]">
+                            <span className="text-xs font-mono font-semibold text-[#24211F] dark:text-[#FAF8F5]">
                               {Number(sub.amount).toLocaleString()} ETB
                             </span>
                           </div>
@@ -1769,9 +1701,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     approvePayment(sub.id, sub.userPhone);
-                                    success('Approved!', `Activated for ${sub.userPhone}`);
+                                    success('Approved', `Activated ${sub.userPhone}`);
                                   }}
-                                  className="flex-1 inline-flex items-center justify-center gap-1 py-1.5 px-2 rounded-[5px] text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 transition-all cursor-pointer shadow-2xs"
+                                  className="flex-1 inline-flex items-center justify-center gap-1 py-1.5 px-2.5 rounded-[15px] text-xs font-semibold text-white bg-emerald-700 hover:bg-emerald-800 transition-all cursor-pointer shadow-xs"
                                   title="Approve registration"
                                 >
                                   <Check className="w-3.5 h-3.5 stroke-[2.5]" /> Approve
@@ -1783,7 +1715,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                     rejectPayment(sub.id, sub.userPhone);
                                     info('Rejected', `Marked ${sub.userPhone} as rejected`);
                                   }}
-                                  className="inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-[5px] text-xs font-semibold text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 transition-all cursor-pointer border border-rose-300 dark:border-rose-900"
+                                  className="inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-[15px] text-xs font-medium text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 transition-all cursor-pointer border border-rose-300 dark:border-rose-900"
                                   title="Reject registration"
                                 >
                                   <X className="w-3.5 h-3.5" />
@@ -1799,7 +1731,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                   setSelectedSmsPhone(sub.userPhone);
                                   setActiveTab('send_sms');
                                 }}
-                                className="flex-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-[5px] text-xs font-bold text-[#24211F] dark:text-[#FAF8F5] bg-[#FAF8F5] hover:bg-[#F3EFEA] dark:bg-[#1E1B19] dark:hover:bg-[#2C2825] transition-colors cursor-pointer border border-[#E8E4DF] dark:border-[#2C2825]"
+                                className="flex-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-[15px] text-xs font-medium text-[#24211F] dark:text-[#FAF8F5] bg-[#FAF8F5] hover:bg-[#F3EFEA] dark:bg-[#1E1B19] dark:hover:bg-[#2C2825] transition-colors cursor-pointer border border-[#E8E4DF] dark:border-[#2C2825]"
                               >
                                 <Send className="w-3 h-3 text-[#981C00] dark:text-[#E89382]" /> Send SMS
                               </button>
@@ -1811,9 +1743,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   approvePayment(sub.id, sub.userPhone);
-                                  success('Approved', `Status updated to active for ${sub.userPhone}`);
+                                  success('Approved', `Activated ${sub.userPhone}`);
                                 }}
-                                className="flex-1 inline-flex items-center justify-center gap-1 py-1.5 px-2 rounded-[5px] text-xs font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/50 transition-colors cursor-pointer border border-emerald-300 dark:border-emerald-800"
+                                className="flex-1 inline-flex items-center justify-center gap-1 py-1.5 px-2.5 rounded-[15px] text-xs font-medium text-emerald-800 dark:text-emerald-300 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/50 transition-colors cursor-pointer border border-emerald-300 dark:border-emerald-800"
                               >
                                 <Check className="w-3 h-3" /> Re-Approve
                               </button>
@@ -1825,8 +1757,8 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                 e.stopPropagation();
                                 setItemToDelete(sub);
                               }}
-                              className="p-1.5 text-[#706A65] hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-[5px] transition-colors cursor-pointer shrink-0"
-                              title="Delete this record"
+                              className="p-1.5 text-[#706A65] hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-[15px] transition-colors cursor-pointer shrink-0"
+                              title="Delete record"
                               aria-label="Delete registration"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -1842,7 +1774,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                 e.stopPropagation();
                                 setPreviewSubmission(sub);
                               }}
-                              className="relative w-full h-full min-h-[112px] rounded-[5px] overflow-hidden border border-[#E8E4DF] dark:border-[#2C2825] bg-[#141211] cursor-pointer group shadow-xs flex items-center justify-center"
+                              className="relative w-full h-full min-h-[112px] rounded-[15px] overflow-hidden border border-[#E8E4DF] dark:border-[#2C2825] bg-[#141211] cursor-pointer group shadow-xs flex items-center justify-center"
                               title="Tap to enlarge receipt"
                             >
                               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -1853,15 +1785,15 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                               />
                               <div className="absolute inset-0 bg-black/30 flex flex-col items-center justify-end p-1.5">
-                                <div className="w-full py-0.5 px-1 rounded-[5px] bg-black/60 backdrop-blur-xs text-white text-[9px] font-bold flex items-center justify-center gap-1">
+                                <div className="w-full py-0.5 px-1 rounded-[10px] bg-black/60 backdrop-blur-xs text-white text-[9px] font-medium flex items-center justify-center gap-1">
                                   <Eye className="w-2.5 h-2.5" /> View
                                 </div>
                               </div>
                             </div>
                           ) : (
-                            <div className="w-full h-full min-h-[112px] rounded-[5px] border border-dashed border-[#DDD7CF] dark:border-[#2C2825] bg-[#FAF8F5]/80 dark:bg-[#1E1B19]/40 flex flex-col items-center justify-center p-2 text-center text-[#706A65]">
+                            <div className="w-full h-full min-h-[112px] rounded-[15px] border border-dashed border-[#DDD7CF] dark:border-[#2C2825] bg-[#FAF8F5]/80 dark:bg-[#1E1B19]/40 flex flex-col items-center justify-center p-2 text-center text-[#706A65]">
                               <FileText className="w-5 h-5 text-[#706A65]/50 mb-1" />
-                              <span className="text-[10px] italic">No receipt</span>
+                              <span className="text-[10px] text-[#706A65]">No receipt</span>
                             </div>
                           )}
                         </div>
@@ -1872,23 +1804,23 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               </div>
 
               {/* Desktop View: Full-featured Table (Visible only on >= md screens) */}
-              <div className="hidden md:block overflow-x-auto rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825]">
+              <div className="hidden md:block overflow-x-auto rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615]">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-[#FAF8F5] dark:bg-[#1A1816] text-[#706A65] font-semibold uppercase tracking-wider border-b border-[#E8E4DF] dark:border-[#2C2825]">
+                  <thead className="bg-[#FAF8F5] dark:bg-[#1A1816] text-[#706A65] dark:text-[#A8A29D] font-medium border-b border-[#E8E4DF] dark:border-[#2C2825]">
                     <tr>
-                      {/* Selection Column Header - shown when Selection Mode is on or items are selected */}
+                      {/* Selection Column Header */}
                       {(isSelectionMode || selectedIds.length > 0) && (
-                        <th className="py-3 px-3 pl-4 w-10 text-center transition-all animate-fadeIn">
+                        <th className="py-3 px-3 pl-4 w-10 text-center transition-all">
                           <button
                             type="button"
                             onClick={handleSelectPage}
-                            className={`w-5 h-5 rounded-[5px] flex items-center justify-center transition-all cursor-pointer border ${
+                            className={`w-5 h-5 rounded-[6px] flex items-center justify-center transition-all cursor-pointer border ${
                               paginatedSubmissions.length > 0 &&
                               paginatedSubmissions.every((s) => selectedIds.includes(s.id))
-                                ? 'bg-[#24211F] text-[#FAF8F5] dark:bg-[#FAF8F5] dark:text-[#24211F] border-[#24211F] dark:border-[#FAF8F5] shadow-2xs'
+                                ? 'bg-[#24211F] text-[#FAF8F5] dark:bg-[#FAF8F5] dark:text-[#24211F] border-[#24211F] dark:border-[#FAF8F5] shadow-xs'
                                 : 'border-[#DDD7CF] dark:border-[#3D3834] bg-white dark:bg-[#1E1B19] hover:border-[#706A65]'
                             }`}
-                            title="Select / Deselect all on this page"
+                            title="Select / Deselect page"
                           >
                             {paginatedSubmissions.length > 0 &&
                             paginatedSubmissions.every((s) => selectedIds.includes(s.id)) ? (
@@ -1900,9 +1832,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                         </th>
                       )}
                       <th className={`py-3 px-3 w-12 text-center text-[11px] font-mono text-[#706A65] ${!(isSelectionMode || selectedIds.length > 0) ? 'pl-4' : ''}`}>#</th>
-                      <th className="py-3 px-3">Member Name & Phone</th>
+                      <th className="py-3 px-3">Member</th>
                       <th className="py-3 px-3">Plan / Amount</th>
-                      <th className="py-3 px-3">Receipt Image</th>
+                      <th className="py-3 px-3">Receipt</th>
                       <th className="py-3 px-3">Date</th>
                       <th className="py-3 px-3">Status</th>
                       <th className="py-3 px-4 text-right">Actions</th>
@@ -1943,9 +1875,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                   e.stopPropagation();
                                   handleToggleSelect(sub.id);
                                 }}
-                                className={`w-5 h-5 rounded-[5px] flex items-center justify-center transition-all cursor-pointer border ${
+                                className={`w-5 h-5 rounded-[6px] flex items-center justify-center transition-all cursor-pointer border ${
                                   isSelected
-                                    ? 'bg-[#24211F] text-[#FAF8F5] dark:bg-[#FAF8F5] dark:text-[#24211F] border-[#24211F] dark:border-[#FAF8F5] shadow-2xs'
+                                    ? 'bg-[#24211F] text-[#FAF8F5] dark:bg-[#FAF8F5] dark:text-[#24211F] border-[#24211F] dark:border-[#FAF8F5] shadow-xs'
                                     : 'border-[#DDD7CF] dark:border-[#3D3834] bg-white dark:bg-[#1E1B19] hover:border-[#706A65]'
                                 }`}
                                 title={isSelected ? 'Deselect member' : 'Select member'}
@@ -1956,20 +1888,20 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                           )}
 
                           {/* Index Number */}
-                          <td className={`py-3 px-3 w-12 text-center text-xs font-mono font-bold text-[#706A65] ${!(isSelectionMode || selectedIds.length > 0) ? 'pl-4' : ''}`}>
+                          <td className={`py-3 px-3 w-12 text-center text-xs font-mono font-medium text-[#706A65] ${!(isSelectionMode || selectedIds.length > 0) ? 'pl-4' : ''}`}>
                             {absoluteIndex}
                           </td>
 
                           {/* Member Name & Phone */}
                           <td className="py-3 px-3">
                             <div className="space-y-0.5">
-                              <p className="font-bold text-[#24211F] dark:text-[#FAF8F5]">{sub.userName}</p>
-                              <p className="text-[11px] font-mono text-[#4A443F] dark:text-[#D1CBC5] font-bold flex items-center gap-1">
+                              <p className="font-semibold text-[#24211F] dark:text-[#FAF8F5]">{sub.userName}</p>
+                              <p className="text-[11px] font-mono text-[#4A443F] dark:text-[#D1CBC5] font-medium flex items-center gap-1">
                                 <Smartphone className="w-3 h-3 text-[#706A65]" /> {sub.userPhone}
                               </p>
                               {(sub.verificationMethod === 'verify_et' || sub.transactionId) && (
                                 <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
-                                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-[5px] text-[10px] font-bold bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
+                                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-[6px] text-[10px] font-semibold bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
                                     <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                                     <span>Verify.ET</span>
                                     {sub.bank && <span className="uppercase font-mono text-[9px]">{sub.bank}</span>}
@@ -1987,7 +1919,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                           {/* Plan / Amount */}
                           <td className="py-3 px-3">
                             <div className="space-y-1">
-                              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[5px] text-xs font-semibold tracking-tight border border-[#E8E4DF] dark:border-[#2C2825] bg-[#F3EFEA] dark:bg-[#201D1B] text-[#24211F] dark:text-[#FAF8F5]">
+                              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-[8px] text-xs font-medium tracking-tight border border-[#E8E4DF] dark:border-[#2C2825] bg-[#F3EFEA] dark:bg-[#201D1B] text-[#24211F] dark:text-[#FAF8F5]">
                                 <span className="w-1.5 h-1.5 rounded-full bg-[#981C00] dark:bg-[#E89382]" />
                                 <span>
                                   {sub.amount >= 1000 || sub.planName.toLowerCase().includes('6')
@@ -1997,7 +1929,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                     : '1 Month'}
                                 </span>
                               </span>
-                              <p className="text-xs font-mono font-bold text-[#24211F] dark:text-[#FAF8F5] pl-0.5">
+                              <p className="text-xs font-mono font-semibold text-[#24211F] dark:text-[#FAF8F5] pl-0.5">
                                 {Number(sub.amount).toLocaleString()} ETB
                               </p>
                             </div>
@@ -2008,8 +1940,8 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                             {sub.screenshotUrl ? (
                               <div
                                 onClick={() => setPreviewSubmission(sub)}
-                                className="relative h-11 w-18 rounded-[5px] overflow-hidden border border-[#E8E4DF] dark:border-[#2C2825] bg-[#141211] cursor-pointer group shadow-xs"
-                                title="Click to view full receipt image"
+                                className="relative h-11 w-18 rounded-[10px] overflow-hidden border border-[#E8E4DF] dark:border-[#2C2825] bg-[#141211] cursor-pointer group shadow-xs"
+                                title="Click to view full receipt"
                               >
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
@@ -2023,7 +1955,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                 </div>
                               </div>
                             ) : (
-                              <span className="text-[#706A65] text-[11px] italic">No image</span>
+                              <span className="text-[#706A65] text-[11px]">No image</span>
                             )}
                           </td>
 
@@ -2048,9 +1980,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                     type="button"
                                     onClick={() => {
                                       approvePayment(sub.id, sub.userPhone);
-                                      success('Approved!', `Activated SMS subscription for ${sub.userPhone}`);
+                                      success('Approved', `Activated ${sub.userPhone}`);
                                     }}
-                                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-[5px] text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 shadow-2xs transition-all cursor-pointer"
+                                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-[15px] text-xs font-semibold text-white bg-emerald-700 hover:bg-emerald-800 shadow-xs transition-all cursor-pointer"
                                     title="Approve and activate"
                                   >
                                     <Check className="w-3.5 h-3.5 stroke-[2.5]" /> Approve
@@ -2061,7 +1993,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                       rejectPayment(sub.id, sub.userPhone);
                                       info('Rejected', `Marked ${sub.userPhone} as rejected`);
                                     }}
-                                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-[5px] text-xs font-semibold text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/50 transition-all cursor-pointer border border-rose-300 dark:border-rose-900"
+                                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-[15px] text-xs font-medium text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/50 transition-all cursor-pointer border border-rose-300 dark:border-rose-900"
                                     title="Reject registration"
                                   >
                                     <X className="w-3.5 h-3.5" /> Reject
@@ -2076,7 +2008,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                     setSelectedSmsPhone(sub.userPhone);
                                     setActiveTab('send_sms');
                                   }}
-                                  className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-[5px] text-xs font-semibold text-[#24211F] dark:text-[#FAF8F5] bg-[#FAF8F5] hover:bg-[#F3EFEA] dark:bg-[#1E1B19] dark:hover:bg-[#2C2825] transition-colors cursor-pointer border border-[#E8E4DF] dark:border-[#2C2825]"
+                                  className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-[15px] text-xs font-medium text-[#24211F] dark:text-[#FAF8F5] bg-[#FAF8F5] hover:bg-[#F3EFEA] dark:bg-[#1E1B19] dark:hover:bg-[#2C2825] transition-colors cursor-pointer border border-[#E8E4DF] dark:border-[#2C2825]"
                                 >
                                   <Send className="w-3 h-3 text-[#981C00] dark:text-[#E89382]" /> Send SMS
                                 </button>
@@ -2087,9 +2019,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                   type="button"
                                   onClick={() => {
                                     approvePayment(sub.id, sub.userPhone);
-                                    success('Approved', `Status updated to active for ${sub.userPhone}`);
+                                    success('Approved', `Activated ${sub.userPhone}`);
                                   }}
-                                  className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-[5px] text-xs font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/50 transition-colors cursor-pointer border border-emerald-300 dark:border-emerald-800"
+                                  className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-[15px] text-xs font-medium text-emerald-800 dark:text-emerald-300 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/50 transition-colors cursor-pointer border border-emerald-300 dark:border-emerald-800"
                                 >
                                   <Check className="w-3 h-3" /> Re-Approve
                                 </button>
@@ -2099,8 +2031,8 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                 type="button"
                                 id={`delete-btn-${sub.id}`}
                                 onClick={() => setItemToDelete(sub)}
-                                className="p-1.5 text-[#706A65] hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-[5px] transition-colors cursor-pointer ml-1"
-                                title="Delete this record"
+                                className="p-1.5 text-[#706A65] hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-[15px] transition-colors cursor-pointer ml-1"
+                                title="Delete record"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
                               </button>
@@ -2113,22 +2045,22 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                 </table>
               </div>
 
-              {/* 20 Per Page Pagination Bar */}
+              {/* Shadcn-styled Pagination Bar */}
               <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5 sm:gap-3 pt-2 px-1 text-xs text-[#706A65]">
                 <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                   <span className="font-mono text-[11px] sm:text-xs">
-                    Showing <strong className="text-[#24211F] dark:text-[#FAF8F5]">{startIndex + 1}</strong>–
+                    <strong className="text-[#24211F] dark:text-[#FAF8F5]">{startIndex + 1}</strong>–
                     <strong className="text-[#24211F] dark:text-[#FAF8F5]">{endIndex}</strong> of{' '}
                     <strong className="text-[#24211F] dark:text-[#FAF8F5]">{filteredSubmissions.length}</strong>
                   </span>
 
                   {/* Page Size Selector */}
                   <div className="flex items-center gap-1 text-[11px]">
-                    <span className="text-[#706A65]">per page:</span>
+                    <span className="text-[#706A65]">Rows:</span>
                     <select
                       value={pageSize}
                       onChange={(e) => setPageSize(Number(e.target.value))}
-                      className="py-0.5 px-1.5 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] font-bold focus:outline-none cursor-pointer"
+                      className="py-1 px-2 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] font-medium focus:outline-none cursor-pointer"
                     >
                       <option value="10">10</option>
                       <option value="20">20</option>
@@ -2144,14 +2076,14 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                     type="button"
                     disabled={validCurrentPage <= 1}
                     onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                    className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#1E1B19] font-semibold text-[#24211F] dark:text-[#FAF8F5] hover:bg-[#FAF8F5] dark:hover:bg-[#2C2825] disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer shadow-2xs text-xs"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#1E1B19] font-medium text-[#24211F] dark:text-[#FAF8F5] hover:bg-[#FAF8F5] dark:hover:bg-[#2C2825] disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer shadow-xs text-xs"
                     aria-label="Previous page"
                   >
                     <ChevronLeft className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">Previous</span>
+                    <span className="hidden sm:inline">Prev</span>
                   </button>
 
-                  <span className="px-2.5 sm:px-3 py-1.5 font-mono font-bold text-[#24211F] dark:text-[#FAF8F5] bg-[#F3EFEA] dark:bg-[#1E1B19] rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] text-[11px] sm:text-xs">
+                  <span className="px-3 py-1.5 font-mono font-medium text-[#24211F] dark:text-[#FAF8F5] bg-[#F3EFEA] dark:bg-[#1E1B19] rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] text-[11px] sm:text-xs">
                     {validCurrentPage} / {totalPages}
                   </span>
 
@@ -2159,7 +2091,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                     type="button"
                     disabled={validCurrentPage >= totalPages}
                     onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                    className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#1E1B19] font-semibold text-[#24211F] dark:text-[#FAF8F5] hover:bg-[#FAF8F5] dark:hover:bg-[#2C2825] disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer shadow-2xs text-xs"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#1E1B19] font-medium text-[#24211F] dark:text-[#FAF8F5] hover:bg-[#FAF8F5] dark:hover:bg-[#2C2825] disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer shadow-xs text-xs"
                     aria-label="Next page"
                   >
                     <span className="hidden sm:inline">Next</span>
@@ -2189,14 +2121,14 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
       {/* PURPOSE 3: SMS DELIVERY LOGS */}
       {/* ========================================================================= */}
       {activeTab === 'logs' && (
-        <Card className="p-3.5 sm:p-6 space-y-4 border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] rounded-[5px] shadow-sm">
+        <Card className="p-4 sm:p-6 space-y-4 border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] rounded-[15px] shadow-xs">
           <div className="flex items-center justify-between gap-2 pb-3 border-b border-[#E8E4DF] dark:border-[#2C2825]">
             <div>
-              <h2 className="text-base sm:text-lg font-serif font-bold text-[#24211F] dark:text-[#FAF8F5] flex items-center gap-2">
-                SMS Dispatch History
+              <h2 className="text-base sm:text-lg font-serif font-bold text-[#24211F] dark:text-[#FAF8F5]">
+                SMS Dispatch Logs
               </h2>
               <p className="text-[11px] sm:text-xs text-[#706A65] dark:text-[#A8A29D] mt-0.5">
-                Audit log of sent encouragement and spiritual messages.
+                Audit record of sent messages.
               </p>
             </div>
             {smsLogs.length > 0 && (
@@ -2207,21 +2139,21 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                   if (typeof window !== 'undefined') localStorage.removeItem('nazazi_sms_logs');
                   info('Cleared SMS logs');
                 }}
-                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-[5px] text-xs font-semibold text-[#706A65] hover:text-[#24211F] dark:text-[#A8A29D] dark:hover:text-[#FAF8F5] bg-[#FAF8F5] hover:bg-[#F3EFEA] dark:bg-[#1E1B19] dark:hover:bg-[#2C2825] transition-colors cursor-pointer border border-[#E8E4DF] dark:border-[#2C2825]"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[15px] text-xs font-medium text-[#706A65] hover:text-[#24211F] dark:text-[#A8A29D] dark:hover:text-[#FAF8F5] bg-[#FAF8F5] hover:bg-[#F3EFEA] dark:bg-[#1E1B19] dark:hover:bg-[#2C2825] transition-colors cursor-pointer border border-[#E8E4DF] dark:border-[#2C2825]"
                 title="Clear all logs"
                 aria-label="Clear all logs"
               >
                 <Trash2 className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Clear History</span>
+                <span className="hidden sm:inline">Clear</span>
               </button>
             )}
           </div>
 
           {smsLogs.length === 0 ? (
-            <div className="py-12 text-center text-xs text-[#706A65] dark:text-[#A8A29D] space-y-2 bg-[#FAF8F5]/60 dark:bg-[#1A1816]/40 rounded-[5px] border border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
+            <div className="py-12 text-center text-xs text-[#706A65] dark:text-[#A8A29D] space-y-2 bg-[#FAF8F5]/60 dark:bg-[#1A1816]/40 rounded-[15px] border border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
               <History className="w-8 h-8 mx-auto text-[#706A65]/50" />
-              <p className="font-bold text-[#24211F] dark:text-[#FAF8F5]">No SMS messages sent yet</p>
-              <p>Dispatched messages from the SMS Console will appear here with delivery timestamps.</p>
+              <p className="font-semibold text-[#24211F] dark:text-[#FAF8F5]">No messages sent</p>
+              <p>Dispatched messages will appear here.</p>
             </div>
           ) : (
             <div className="space-y-2.5">
@@ -2230,19 +2162,19 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                 {smsLogs.map((log) => (
                   <div
                     key={`m-log-${log.id}`}
-                    className="p-3 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] space-y-2 text-xs"
+                    className="p-3.5 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] space-y-2 text-xs"
                   >
                     <div className="flex items-center justify-between gap-2">
                       <div>
-                        <p className="font-bold text-[#24211F] dark:text-[#FAF8F5] text-sm leading-tight">{log.recipientName}</p>
-                        <p className="text-[11px] font-mono text-[#4A443F] dark:text-[#D1CBC5] font-semibold">{log.recipientPhone}</p>
+                        <p className="font-semibold text-[#24211F] dark:text-[#FAF8F5] text-sm leading-tight">{log.recipientName}</p>
+                        <p className="text-[11px] font-mono text-[#4A443F] dark:text-[#D1CBC5]">{log.recipientPhone}</p>
                       </div>
                       <Badge variant="zinc" dot>
                         {log.status}
                       </Badge>
                     </div>
 
-                    <p className="text-xs text-[#24211F] dark:text-[#FAF8F5] bg-[#FAF8F5] dark:bg-[#1E1B19] p-2.5 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] leading-relaxed font-sans">
+                    <p className="text-xs text-[#24211F] dark:text-[#FAF8F5] bg-[#FAF8F5] dark:bg-[#1E1B19] p-2.5 rounded-[10px] border border-[#E8E4DF] dark:border-[#2C2825] leading-relaxed">
                       {log.messageText}
                     </p>
 
@@ -2255,12 +2187,12 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               </div>
 
               {/* Desktop Logs Table (>= md) */}
-              <div className="hidden md:block overflow-x-auto rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825]">
+              <div className="hidden md:block overflow-x-auto rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615]">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-[#FAF8F5] dark:bg-[#1A1816] text-[#706A65] font-semibold uppercase tracking-wider border-b border-[#E8E4DF] dark:border-[#2C2825]">
+                  <thead className="bg-[#FAF8F5] dark:bg-[#1A1816] text-[#706A65] font-medium border-b border-[#E8E4DF] dark:border-[#2C2825]">
                     <tr>
                       <th className="p-3.5 pl-4">Recipient</th>
-                      <th className="p-3.5">Dispatched Message</th>
+                      <th className="p-3.5">Message</th>
                       <th className="p-3.5">Time</th>
                       <th className="p-3.5">Segments</th>
                       <th className="p-3.5 pr-4 text-right">Status</th>
@@ -2270,8 +2202,8 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                     {smsLogs.map((log) => (
                       <tr key={log.id} className="hover:bg-[#FAF8F5]/80 dark:hover:bg-[#201D1B]/60">
                         <td className="p-3.5 pl-4">
-                          <p className="font-bold text-[#24211F] dark:text-[#FAF8F5]">{log.recipientName}</p>
-                          <p className="text-[11px] font-mono text-[#4A443F] dark:text-[#D1CBC5] font-semibold">
+                          <p className="font-semibold text-[#24211F] dark:text-[#FAF8F5]">{log.recipientName}</p>
+                          <p className="text-[11px] font-mono text-[#4A443F] dark:text-[#D1CBC5]">
                             {log.recipientPhone}
                           </p>
                         </td>
@@ -2305,7 +2237,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
         </Card>
       )}
 
-      {/* Receipt Inspection Modal - Compact, Modern & Zero Wasted Whitespace */}
+      {/* Receipt Inspection Modal */}
       <Modal
         isOpen={!!previewSubmission}
         onClose={() => setPreviewSubmission(null)}
@@ -2319,13 +2251,12 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               <div className="flex items-center gap-3 min-w-0">
                 <div className="min-w-0">
                   <p className="text-xs text-[#706A65] dark:text-[#A8A29D] truncate">
-                    Name: <strong className="text-[#24211F] dark:text-[#FAF8F5] font-bold text-sm">{previewSubmission.userName}</strong>
+                    <strong className="text-[#24211F] dark:text-[#FAF8F5] font-semibold text-sm">{previewSubmission.userName}</strong>
                   </p>
                 </div>
                 <div className="shrink-0 flex items-center gap-1 text-xs text-[#706A65] dark:text-[#A8A29D]">
-                  <span>Plan:</span>
-                  <span className="px-2 py-0.5 rounded-[5px] bg-[#24211F] text-[#FAF8F5] dark:bg-[#FAF8F5] dark:text-[#24211F] font-bold font-mono text-xs">
-                    {previewSubmission.amount || (previewSubmission.planName.toLowerCase().includes('1000') || previewSubmission.planName.toLowerCase().includes('1,000') ? 1000 : previewSubmission.planName.toLowerCase().includes('600') ? 600 : 200)} Birr
+                  <span className="px-2 py-0.5 rounded-[8px] bg-[#24211F] text-[#FAF8F5] dark:bg-[#FAF8F5] dark:text-[#24211F] font-semibold font-mono text-xs">
+                    {previewSubmission.amount || (previewSubmission.planName.toLowerCase().includes('1000') || previewSubmission.planName.toLowerCase().includes('1,000') ? 1000 : previewSubmission.planName.toLowerCase().includes('600') ? 600 : 200)} ETB
                   </span>
                 </div>
               </div>
@@ -2333,7 +2264,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               <button
                 type="button"
                 onClick={() => setPreviewSubmission(null)}
-                className="text-[#706A65] hover:text-[#24211F] dark:hover:text-[#FAF8F5] p-1.5 rounded-[5px] hover:bg-[#F3EFEA] dark:hover:bg-[#2C2825] transition-colors cursor-pointer shrink-0"
+                className="text-[#706A65] hover:text-[#24211F] dark:hover:text-[#FAF8F5] p-1.5 rounded-[15px] hover:bg-[#F3EFEA] dark:hover:bg-[#2C2825] transition-colors cursor-pointer shrink-0"
                 aria-label="Close"
               >
                 <X className="w-4 h-4" />
@@ -2345,24 +2276,24 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               <div className="px-4 py-2.5 bg-emerald-500/10 dark:bg-emerald-950/40 border-b border-emerald-500/20 flex flex-wrap items-center justify-between gap-2 text-xs">
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  <span className="font-bold text-emerald-800 dark:text-emerald-300">
-                    Verify.ET Automated Bank Verification
+                  <span className="font-semibold text-emerald-800 dark:text-emerald-300">
+                    Verify.ET Automated Verification
                   </span>
                   {previewSubmission.bank && (
-                    <span className="uppercase text-[10px] px-2 py-0.5 rounded-[5px] bg-emerald-700 text-white font-mono font-bold">
+                    <span className="uppercase text-[10px] px-2 py-0.5 rounded-[6px] bg-emerald-700 text-white font-mono font-bold">
                       {previewSubmission.bank}
                     </span>
                   )}
                 </div>
                 {previewSubmission.transactionId && (
-                  <div className="font-mono text-[11px] text-emerald-900 dark:text-emerald-200 bg-white/70 dark:bg-[#1E1B19]/70 px-2 py-0.5 rounded-[5px] border border-emerald-500/20">
-                    TxID: <span className="font-bold select-all">{previewSubmission.transactionId}</span>
+                  <div className="font-mono text-[11px] text-emerald-900 dark:text-emerald-200 bg-white/70 dark:bg-[#1E1B19]/70 px-2 py-0.5 rounded-[6px] border border-emerald-500/20">
+                    TxID: <span className="font-semibold select-all">{previewSubmission.transactionId}</span>
                   </div>
                 )}
               </div>
             )}
 
-            {/* Receipt Image (Maximal view area, minimal margins) */}
+            {/* Receipt Image */}
             <div className="p-2.5 sm:p-3 bg-[#141211] flex items-center justify-center min-h-[200px] max-h-[58vh] sm:max-h-[64vh]">
               {previewSubmission.screenshotUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -2370,7 +2301,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                   src={previewSubmission.screenshotUrl}
                   alt={`Receipt for ${previewSubmission.userName}`}
                   referrerPolicy="no-referrer"
-                  className="max-h-[54vh] sm:max-h-[60vh] w-auto max-w-full object-contain rounded-[5px] select-none"
+                  className="max-h-[54vh] sm:max-h-[60vh] w-auto max-w-full object-contain rounded-[10px] select-none"
                 />
               ) : (
                 <div className="py-12 text-center text-[#706A65] text-xs space-y-2">
@@ -2386,7 +2317,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                 variant="secondary"
                 size="sm"
                 onClick={() => setPreviewSubmission(null)}
-                className="text-xs h-8 px-3 rounded-[5px]"
+                className="text-xs h-8 px-3 rounded-[15px]"
               >
                 Close
               </Button>
@@ -2400,7 +2331,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                       info('Rejected', 'Marked transaction as rejected');
                       setPreviewSubmission(null);
                     }}
-                    className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-[5px] text-xs font-semibold text-rose-700 dark:text-rose-400 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-900 transition-colors cursor-pointer h-8"
+                    className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-[15px] text-xs font-medium text-rose-700 dark:text-rose-400 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-900 transition-colors cursor-pointer h-8"
                   >
                     <X className="w-3.5 h-3.5" /> Reject
                   </button>
@@ -2414,7 +2345,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                       success('Approved', `Activated for ${previewSubmission.userName}`);
                       setPreviewSubmission(null);
                     }}
-                    className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-[5px] text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 shadow-xs transition-all cursor-pointer h-8"
+                    className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-[15px] text-xs font-semibold text-white bg-emerald-700 hover:bg-emerald-800 shadow-xs transition-all cursor-pointer h-8"
                   >
                     <Check className="w-3.5 h-3.5 stroke-[2.5]" /> Approve
                   </button>
@@ -2425,29 +2356,25 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
         )}
       </Modal>
 
-      {/* Single Item Delete Confirmation Modal */}
+      {/* Single Item Delete Modal */}
       <Modal
         isOpen={!!itemToDelete}
         onClose={() => !isDeletingItem && setItemToDelete(null)}
-        title="Delete Member Registration?"
+        title="Delete Member Registration"
         description={itemToDelete ? `${itemToDelete.userName} • ${itemToDelete.userPhone}` : ''}
       >
         <div className="space-y-4 text-xs">
           <p className="text-[#4A443F] dark:text-[#D1CBC5] leading-relaxed">
-            Are you sure you want to permanently delete the registration record for{' '}
-            <strong className="text-[#24211F] dark:text-[#FAF8F5] font-bold">
-              {itemToDelete?.userName}
-            </strong>{' '}
-            ({itemToDelete?.userPhone})? This action removes the entry from the database and approval queue.
+            Permanently delete registration for <strong className="text-[#24211F] dark:text-[#FAF8F5]">{itemToDelete?.userName}</strong> ({itemToDelete?.userPhone})?
           </p>
 
-          <div className="flex justify-end items-center gap-2.5 pt-2">
+          <div className="flex justify-end items-center gap-2 pt-2">
             <Button
               variant="secondary"
               size="sm"
               onClick={() => setItemToDelete(null)}
               disabled={isDeletingItem}
-              className="rounded-[5px]"
+              className="rounded-[15px]"
             >
               Cancel
             </Button>
@@ -2458,37 +2385,33 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               onClick={handleConfirmSingleDelete}
               isLoading={isDeletingItem}
               leftIcon={<Trash2 className="w-3.5 h-3.5" />}
-              className="rounded-[5px]"
+              className="rounded-[15px]"
             >
-              Delete Record
+              Delete
             </Button>
           </div>
         </div>
       </Modal>
 
-      {/* Batch Delete Confirmation Modal */}
+      {/* Batch Delete Modal */}
       <Modal
         isOpen={showBatchDeleteModal}
         onClose={() => !isBatchDeleting && setShowBatchDeleteModal(false)}
-        title={`Delete ${selectedIds.length} Selected Registrations?`}
-        description="Permanently delete multiple registration entries at once."
+        title="Delete Selected Registrations"
+        description={`Permanently remove ${selectedIds.length} records.`}
       >
         <div className="space-y-4 text-xs">
           <p className="text-[#4A443F] dark:text-[#D1CBC5] leading-relaxed">
-            Are you sure you want to permanently delete{' '}
-            <strong className="text-[#24211F] dark:text-[#FAF8F5] font-bold">
-              {selectedIds.length} registration(s)
-            </strong>
-            ? This action cannot be undone.
+            Are you sure you want to permanently delete <strong className="text-[#24211F] dark:text-[#FAF8F5]">{selectedIds.length}</strong> selected registration(s)? This action cannot be undone.
           </p>
 
-          <div className="flex justify-end items-center gap-2.5 pt-2">
+          <div className="flex justify-end items-center gap-2 pt-2">
             <Button
               variant="secondary"
               size="sm"
               onClick={() => setShowBatchDeleteModal(false)}
               disabled={isBatchDeleting}
-              className="rounded-[5px]"
+              className="rounded-[15px]"
             >
               Cancel
             </Button>
@@ -2499,9 +2422,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
               onClick={handleConfirmBatchDelete}
               isLoading={isBatchDeleting}
               leftIcon={<Trash2 className="w-3.5 h-3.5" />}
-              className="rounded-[5px]"
+              className="rounded-[15px]"
             >
-              Yes, Delete Selected
+              Delete Selected
             </Button>
           </div>
         </div>
@@ -2511,109 +2434,109 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
       <Modal
         isOpen={showResetModal}
         onClose={() => setShowResetModal(false)}
-        title="Clear All Registrations & Logs?"
-        description="This will clear all registered members and SMS history."
+        title="Reset All Data"
+        description="Permanently remove all submissions and SMS logs."
       >
         <div className="space-y-4 text-xs">
           <p className="text-[#4A443F] dark:text-[#D1CBC5] leading-relaxed">
-            Are you sure you want to clear all registrations? This deletes test submissions and gives you a fresh start for real subscribers.
+            This will permanently delete all member registrations and SMS logs. This action cannot be undone.
           </p>
 
-          <div className="flex justify-end items-center gap-2.5 pt-2">
-            <Button variant="secondary" size="sm" onClick={() => setShowResetModal(false)} disabled={isResetting} className="rounded-[5px]">
+          <div className="flex justify-end items-center gap-2 pt-2">
+            <Button variant="secondary" size="sm" onClick={() => setShowResetModal(false)} disabled={isResetting} className="rounded-[15px]">
               Cancel
             </Button>
 
-            <Button variant="danger" size="sm" onClick={handleExecuteReset} isLoading={isResetting} className="rounded-[5px]">
-              Yes, Clear All Data
+            <Button variant="danger" size="sm" onClick={handleExecuteReset} isLoading={isResetting} className="rounded-[15px]">
+              Reset Everything
             </Button>
           </div>
         </div>
       </Modal>
 
-      {/* Copy Approved Phone Numbers Modal with Ordering and Plenty of Space */}
+      {/* Copy Approved Phone Numbers Modal */}
       <Modal
         isOpen={isCopyApprovedModalOpen}
         onClose={() => setIsCopyApprovedModalOpen(false)}
-        title="Copy Approved Phone Numbers"
-        description="Extract and copy verified subscriber phone numbers with ordering (# in front) and plenty of space."
+        title="Copy Approved Numbers"
+        description="Export verified subscriber numbers."
         maxWidth="lg"
       >
         <div className="space-y-4 text-xs">
           {/* Format Selector Pills */}
           <div className="space-y-1.5">
-            <label className="block font-bold text-[#706A65] dark:text-[#A8A29D] text-[11px] uppercase tracking-wider">
-              Select Output Format
+            <label className="block font-medium text-[#706A65] dark:text-[#A8A29D] text-[11px] uppercase tracking-wider">
+              Output Format
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               <button
                 type="button"
                 onClick={() => setCopyFormat('ordered_spaced')}
-                className={`p-2.5 rounded-[5px] border text-left transition-all cursor-pointer ${
+                className={`p-2.5 rounded-[15px] border text-left transition-all cursor-pointer ${
                   copyFormat === 'ordered_spaced'
                     ? 'border-[#981C00] dark:border-[#E89382] bg-[#FAF8F5] dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] ring-1 ring-[#981C00]/20 shadow-xs'
                     : 'border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] hover:border-[#DDD7CF] text-[#706A65] dark:text-[#A8A29D]'
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-xs">1. 09... (Spaced)</span>
-                  <span className="text-[9px] px-1.5 py-0.5 rounded-[5px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200 font-bold uppercase">
+                  <span className="font-semibold text-xs">1. 09... (Spaced)</span>
+                  <span className="text-[9px] px-1.5 py-0.5 rounded-[6px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200 font-medium uppercase">
                     Default
                   </span>
                 </div>
-                <p className="text-[10px] opacity-75 mt-1">Number in front with empty line between each</p>
+                <p className="text-[10px] opacity-75 mt-1">Number in front with empty line between</p>
               </button>
 
               <button
                 type="button"
                 onClick={() => setCopyFormat('ordered_extra_spaced')}
-                className={`p-2.5 rounded-[5px] border text-left transition-all cursor-pointer ${
+                className={`p-2.5 rounded-[15px] border text-left transition-all cursor-pointer ${
                   copyFormat === 'ordered_extra_spaced'
                     ? 'border-[#981C00] dark:border-[#E89382] bg-[#FAF8F5] dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] ring-1 ring-[#981C00]/20 shadow-xs'
                     : 'border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] hover:border-[#DDD7CF] text-[#706A65] dark:text-[#A8A29D]'
                 }`}
               >
-                <span className="font-bold text-xs block">Extra Spaced</span>
-                <p className="text-[10px] opacity-75 mt-1">Double blank lines between each phone</p>
+                <span className="font-semibold text-xs block">Extra Spaced</span>
+                <p className="text-[10px] opacity-75 mt-1">Double blank lines between phones</p>
               </button>
 
               <button
                 type="button"
                 onClick={() => setCopyFormat('ordered_with_name')}
-                className={`p-2.5 rounded-[5px] border text-left transition-all cursor-pointer ${
+                className={`p-2.5 rounded-[15px] border text-left transition-all cursor-pointer ${
                   copyFormat === 'ordered_with_name'
                     ? 'border-[#981C00] dark:border-[#E89382] bg-[#FAF8F5] dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] ring-1 ring-[#981C00]/20 shadow-xs'
                     : 'border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] hover:border-[#DDD7CF] text-[#706A65] dark:text-[#A8A29D]'
                 }`}
               >
-                <span className="font-bold text-xs block">Name + Phone</span>
-                <p className="text-[10px] opacity-75 mt-1">1. Name — 09... with blank lines</p>
+                <span className="font-semibold text-xs block">Name + Phone</span>
+                <p className="text-[10px] opacity-75 mt-1">1. Name — 09...</p>
               </button>
 
               <button
                 type="button"
                 onClick={() => setCopyFormat('ordered_compact')}
-                className={`p-2.5 rounded-[5px] border text-left transition-all cursor-pointer ${
+                className={`p-2.5 rounded-[15px] border text-left transition-all cursor-pointer ${
                   copyFormat === 'ordered_compact'
                     ? 'border-[#981C00] dark:border-[#E89382] bg-[#FAF8F5] dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] ring-1 ring-[#981C00]/20 shadow-xs'
                     : 'border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] hover:border-[#DDD7CF] text-[#706A65] dark:text-[#A8A29D]'
                 }`}
               >
-                <span className="font-bold text-xs block">Compact (1, 2, 3...)</span>
-                <p className="text-[10px] opacity-75 mt-1">Single line per phone number</p>
+                <span className="font-semibold text-xs block">Compact</span>
+                <p className="text-[10px] opacity-75 mt-1">Single line per phone</p>
               </button>
 
               <button
                 type="button"
                 onClick={() => setCopyFormat('comma')}
-                className={`p-2.5 rounded-[5px] border text-left transition-all cursor-pointer col-span-2 sm:col-span-2 ${
+                className={`p-2.5 rounded-[15px] border text-left transition-all cursor-pointer col-span-2 sm:col-span-2 ${
                   copyFormat === 'comma'
                     ? 'border-[#981C00] dark:border-[#E89382] bg-[#FAF8F5] dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] ring-1 ring-[#981C00]/20 shadow-xs'
                     : 'border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] hover:border-[#DDD7CF] text-[#706A65] dark:text-[#A8A29D]'
                 }`}
               >
-                <span className="font-bold text-xs block">Comma Separated</span>
-                <p className="text-[10px] opacity-75 mt-1">0911..., 0922... (For SMS Gateways)</p>
+                <span className="font-semibold text-xs block">Comma Separated</span>
+                <p className="text-[10px] opacity-75 mt-1">0911..., 0922... (For gateways)</p>
               </button>
             </div>
           </div>
@@ -2621,40 +2544,37 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
           {/* Live Preview Box */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label className="font-bold text-[#706A65] dark:text-[#A8A29D] text-[11px] uppercase tracking-wider">
-                Clipboard Preview ({approvedSubmissions.length} Approved)
+              <label className="font-medium text-[#706A65] dark:text-[#A8A29D] text-[11px] uppercase tracking-wider">
+                Preview ({approvedSubmissions.length} Approved)
               </label>
-              <span className="text-[10px] font-mono text-[#706A65]">
-                {copyFormat.includes('spaced') ? 'Plenty of space applied' : 'Standard spacing'}
-              </span>
             </div>
 
             <div className="relative">
               <textarea
                 readOnly
                 value={getFormattedApprovedText()}
-                rows={9}
-                className="w-full font-mono text-xs p-3.5 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-[#24211F] dark:text-[#FAF8F5] leading-relaxed focus:outline-none select-all"
+                rows={7}
+                className="w-full font-mono text-xs p-3.5 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-[#24211F] dark:text-[#FAF8F5] leading-relaxed focus:outline-none select-all"
                 placeholder="No approved users found to copy."
               />
             </div>
           </div>
 
           {/* Helper note */}
-          <div className="p-3 rounded-[5px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] flex items-start gap-2.5 text-[#4A443F] dark:text-[#D1CBC5] text-xs">
+          <div className="p-3 rounded-[15px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] flex items-start gap-2.5 text-[#4A443F] dark:text-[#D1CBC5] text-xs">
             <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
             <p className="leading-relaxed text-[11px]">
-              Formatted with sequential order numbers in front (<code className="font-mono text-[#981C00] dark:text-[#E89382]">1.</code>, <code className="font-mono text-[#981C00] dark:text-[#E89382]">2.</code>, <code className="font-mono text-[#981C00] dark:text-[#E89382]">3.</code>) and an empty line between each phone number for clear readability and separation.
+              Sequential numbering (<code className="font-mono text-[#981C00] dark:text-[#E89382]">1.</code>, <code className="font-mono text-[#981C00] dark:text-[#E89382]">2.</code>) with space separation for easy readability.
             </p>
           </div>
 
           {/* Modal Actions */}
-          <div className="flex flex-col sm:flex-row items-center justify-end gap-2.5 pt-2 border-t border-[#E8E4DF] dark:border-[#2C2825]">
+          <div className="flex flex-col sm:flex-row items-center justify-end gap-2 pt-2 border-t border-[#E8E4DF] dark:border-[#2C2825]">
             <Button
               variant="secondary"
               size="sm"
               onClick={() => setIsCopyApprovedModalOpen(false)}
-              className="w-full sm:w-auto rounded-[5px]"
+              className="w-full sm:w-auto rounded-[15px]"
             >
               Close
             </Button>
@@ -2671,9 +2591,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                   <Copy className="w-4 h-4" />
                 )
               }
-              className="w-full sm:w-auto rounded-[5px] bg-[#981C00] hover:bg-[#7A1D28] text-white font-bold"
+              className="w-full sm:w-auto rounded-[15px] bg-[#981C00] hover:bg-[#7A1D28] text-white font-medium"
             >
-              {hasCopiedApproved ? 'Copied to Clipboard!' : `Copy ${approvedSubmissions.length} Numbers`}
+              {hasCopiedApproved ? 'Copied!' : `Copy ${approvedSubmissions.length} Numbers`}
             </Button>
           </div>
         </div>
@@ -2681,3 +2601,5 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
     </div>
   );
 };
+
+

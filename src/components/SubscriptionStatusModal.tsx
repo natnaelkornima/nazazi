@@ -520,15 +520,15 @@ export const SubscriptionStatusModal: React.FC<SubscriptionStatusModalProps> = (
 
                   {/* STATUS TITLE & SUBHEADING */}
                   <div className="space-y-1.5">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[5px] text-xs font-bold tracking-wide">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[15px] text-xs font-bold tracking-wide">
                       {isApproved && (
-                        <span className="text-emerald-700 dark:text-emerald-300 font-extrabold text-sm sm:text-base flex items-center gap-2 bg-emerald-500/10 dark:bg-emerald-400/10 px-3.5 py-1 rounded-[5px] border border-emerald-500/20 shadow-xs">
+                        <span className="text-emerald-700 dark:text-emerald-300 font-extrabold text-sm sm:text-base flex items-center gap-2 bg-emerald-500/10 dark:bg-emerald-400/10 px-3.5 py-1 rounded-[15px] border border-emerald-500/20 shadow-xs">
                           <Sparkles className="w-4 h-4 text-emerald-500 animate-pulse" />
                           {isAmharic ? 'ተረጋግጧል (የነቃ)' : 'Approved & Active'}
                         </span>
                       )}
                       {isPending && (
-                        <span className="text-amber-700 dark:text-amber-300 font-extrabold text-sm sm:text-base flex items-center gap-2 bg-amber-500/10 dark:bg-amber-400/10 px-3.5 py-1 rounded-[5px] border border-amber-500/20 shadow-xs">
+                        <span className="text-amber-700 dark:text-amber-300 font-extrabold text-sm sm:text-base flex items-center gap-2 bg-amber-500/10 dark:bg-amber-400/10 px-3.5 py-1 rounded-[15px] border border-amber-500/20 shadow-xs">
                           <span className="relative flex h-2 w-2">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
@@ -537,7 +537,7 @@ export const SubscriptionStatusModal: React.FC<SubscriptionStatusModalProps> = (
                         </span>
                       )}
                       {isRejected && (
-                        <span className="text-rose-700 dark:text-rose-300 font-extrabold text-sm sm:text-base flex items-center gap-2 bg-rose-500/10 dark:bg-rose-400/10 px-3.5 py-1 rounded-[5px] border border-rose-500/20 shadow-xs">
+                        <span className="text-rose-700 dark:text-rose-300 font-extrabold text-sm sm:text-base flex items-center gap-2 bg-rose-500/10 dark:bg-rose-400/10 px-3.5 py-1 rounded-[15px] border border-rose-500/20 shadow-xs">
                           <AlertCircle className="w-4 h-4 text-rose-500" />
                           {isAmharic ? 'ውድቅ ተደርጓል (Declined)' : 'Verification Declined'}
                         </span>

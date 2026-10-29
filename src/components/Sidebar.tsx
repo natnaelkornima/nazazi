@@ -115,7 +115,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       {item.badge && (
                         <span
                           className={cn(
-                            'px-1.5 py-0.2 text-[10px] font-bold rounded-[5px]',
+                            'px-1.5 py-0.2 text-[10px] font-bold rounded-[15px]',
                             isActive
                               ? 'bg-zinc-700 text-zinc-100 dark:bg-zinc-300 dark:text-zinc-900'
                               : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'

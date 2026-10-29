@@ -48,21 +48,21 @@ const sizeConfig: Record<
     gap: 'gap-2.5',
   },
   md: {
-    box: 'w-[18px] h-[18px] rounded-[5px]',
+    box: 'w-[18px] h-[18px] rounded-[6px]',
     icon: 'w-3.5 h-3.5',
     label: 'text-xs sm:text-sm leading-tight',
     desc: 'text-[11px] sm:text-xs leading-snug',
     gap: 'gap-3',
   },
   lg: {
-    box: 'w-5 h-5 rounded-[5px]',
+    box: 'w-5 h-5 rounded-[6px]',
     icon: 'w-4 h-4',
     label: 'text-sm sm:text-base leading-snug',
     desc: 'text-xs sm:text-sm leading-relaxed',
     gap: 'gap-3.5',
   },
   xl: {
-    box: 'w-6 h-6 rounded-[5px]',
+    box: 'w-6 h-6 rounded-[6px]',
     icon: 'w-4.5 h-4.5',
     label: 'text-base sm:text-lg leading-snug',
     desc: 'text-sm leading-relaxed',
@@ -163,7 +163,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         aria-disabled={disabled}
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
-        className={`w-full p-3 sm:p-3.5 rounded-[5px] border transition-all duration-200 cursor-pointer select-none outline-none focus-visible:ring-2 focus-visible:ring-[#981C00]/40 ${
+        className={`w-full p-3 sm:p-3.5 rounded-[15px] border transition-all duration-200 cursor-pointer select-none outline-none focus-visible:ring-2 focus-visible:ring-[#981C00]/40 ${
           disabled ? 'opacity-50 cursor-not-allowed' : ''
         } ${
           isCheckedOrIndeterminate
@@ -216,7 +216,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       aria-disabled={disabled}
       onClick={handleToggle}
       onKeyDown={handleKeyDown}
-      className={`group flex items-start justify-between ${currentSize.gap} py-2 px-1.5 rounded-[5px] transition-all duration-150 cursor-pointer select-none outline-none focus-visible:ring-2 focus-visible:ring-[#981C00]/40 hover:bg-[#FAF8F5]/60 dark:hover:bg-[#1C1A18]/60 ${
+      className={`group flex items-start justify-between ${currentSize.gap} py-2 px-1.5 rounded-[15px] transition-all duration-150 cursor-pointer select-none outline-none focus-visible:ring-2 focus-visible:ring-[#981C00]/40 hover:bg-[#FAF8F5]/60 dark:hover:bg-[#1C1A18]/60 ${
         disabled ? 'opacity-50 cursor-not-allowed' : ''
       } ${className}`}
     >

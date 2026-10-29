@@ -325,7 +325,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
             </div>
 
             <div className="space-y-2 max-w-md mx-auto">
-              <span className="inline-block px-3 py-1 rounded-[5px] text-[11px] font-bold uppercase tracking-wider bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400">
+              <span className="inline-block px-3 py-1 rounded-[15px] text-[11px] font-bold uppercase tracking-wider bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400">
                 {isAmharic ? 'ምዝገባው ተጠናቋል' : 'Registration Closed'}
               </span>
               <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-white">
@@ -428,7 +428,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
             </div>
 
             {/* Selected Amount Pill */}
-            <span className="text-xs font-bold font-mono px-3 py-1 rounded-[5px] bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shrink-0 border border-zinc-200/80 dark:border-zinc-700 shadow-2xs">
+            <span className="text-xs font-bold font-mono px-3 py-1 rounded-[15px] bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shrink-0 border border-zinc-200/80 dark:border-zinc-700 shadow-2xs">
               {planAmount} {isAmharic ? 'ብር' : 'ETB'}
             </span>
           </div>
@@ -475,7 +475,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                     >
                       {p.tag && (
                         <span
-                          className={`absolute -top-2 right-2 text-[9px] font-bold px-1.5 py-0.2 rounded-[5px] uppercase tracking-wider ${
+                          className={`absolute -top-2 right-2 text-[9px] font-bold px-1.5 py-0.2 rounded-[15px] uppercase tracking-wider ${
                             isSelected
                               ? 'bg-white text-[#981C00]'
                               : 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950'

@@ -1032,12 +1032,12 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
   return (
     <div className="space-y-6">
       {/* Clean Sub-Tab Navigation */}
-      <div className="flex flex-wrap items-center justify-between gap-2 p-1.5 rounded-[5px] bg-[#F3EFEA] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825]">
+      <div className="flex flex-wrap items-center justify-between gap-2 p-1.5 rounded-[15px] bg-[#F3EFEA] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825]">
         <div className="flex flex-wrap items-center gap-1">
           <button
             type="button"
             onClick={() => setActiveSubTab('dispatcher')}
-            className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-[5px] text-xs font-bold transition-all cursor-pointer ${
+            className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-[15px] text-xs font-bold transition-all cursor-pointer ${
               activeSubTab === 'dispatcher'
                 ? 'bg-white dark:bg-[#2A2624] text-[#24211F] dark:text-[#FAF8F5] shadow-xs'
                 : 'text-[#706A65] dark:text-[#A8A29D] hover:text-[#24211F] dark:hover:text-[#FAF8F5] hover:bg-white/50 dark:hover:bg-[#24211F]'
@@ -1045,7 +1045,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
           >
             <Send className="w-3.5 h-3.5" />
             <span>Compose SMS</span>
-            <span className="px-1.5 py-0.5 rounded-[5px] bg-[#FAF8F5] dark:bg-[#1E1B19] font-mono text-[10px]">
+            <span className="px-1.5 py-0.5 rounded-[15px] bg-[#FAF8F5] dark:bg-[#1E1B19] font-mono text-[10px]">
               {approvedCount}
             </span>
           </button>
@@ -1053,7 +1053,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
           <button
             type="button"
             onClick={() => setActiveSubTab('schedules')}
-            className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-[5px] text-xs font-bold transition-all cursor-pointer ${
+            className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-[15px] text-xs font-bold transition-all cursor-pointer ${
               activeSubTab === 'schedules'
                 ? 'bg-white dark:bg-[#2A2624] text-[#24211F] dark:text-[#FAF8F5] shadow-xs'
                 : 'text-[#706A65] dark:text-[#A8A29D] hover:text-[#24211F] dark:hover:text-[#FAF8F5] hover:bg-white/50 dark:hover:bg-[#24211F]'
@@ -1062,7 +1062,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
             <Calendar className="w-3.5 h-3.5" />
             <span>Scheduled Campaigns</span>
             {campaigns.length > 0 && (
-              <span className="px-1.5 py-0.5 rounded-[5px] bg-emerald-100 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-300 font-bold text-[10px]">
+              <span className="px-1.5 py-0.5 rounded-[15px] bg-emerald-100 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-300 font-bold text-[10px]">
                 {campaigns.filter((c) => c.status === 'active').length}
               </span>
             )}
@@ -1071,7 +1071,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
           <button
             type="button"
             onClick={() => setActiveSubTab('gateway')}
-            className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-[5px] text-xs font-bold transition-all cursor-pointer ${
+            className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-[15px] text-xs font-bold transition-all cursor-pointer ${
               activeSubTab === 'gateway'
                 ? 'bg-white dark:bg-[#2A2624] text-[#24211F] dark:text-[#FAF8F5] shadow-xs'
                 : 'text-[#706A65] dark:text-[#A8A29D] hover:text-[#24211F] dark:hover:text-[#FAF8F5] hover:bg-white/50 dark:hover:bg-[#24211F]'
@@ -1084,7 +1084,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
           <button
             type="button"
             onClick={() => setActiveSubTab('logs')}
-            className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-[5px] text-xs font-bold transition-all cursor-pointer ${
+            className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-[15px] text-xs font-bold transition-all cursor-pointer ${
               activeSubTab === 'logs'
                 ? 'bg-white dark:bg-[#2A2624] text-[#24211F] dark:text-[#FAF8F5] shadow-xs'
                 : 'text-[#706A65] dark:text-[#A8A29D] hover:text-[#24211F] dark:hover:text-[#FAF8F5] hover:bg-white/50 dark:hover:bg-[#24211F]'
@@ -1092,7 +1092,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
           >
             <History className="w-3.5 h-3.5" />
             <span>Logs</span>
-            <span className="px-1.5 py-0.5 rounded-[5px] bg-[#FAF8F5] dark:bg-[#1E1B19] font-mono text-[10px]">
+            <span className="px-1.5 py-0.5 rounded-[15px] bg-[#FAF8F5] dark:bg-[#1E1B19] font-mono text-[10px]">
               {smsLogs.length}
             </span>
           </button>
@@ -1111,7 +1111,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
         <div className="space-y-6">
           {/* Real-Time Live Dispatch Progress Card (When Active) */}
           {progress.isDispatching && (
-            <Card className="p-6 bg-[#141211] text-[#FAF8F5] border-[#2C2825] rounded-[5px] shadow-xl space-y-4 animate-in fade-in duration-300">
+            <Card className="p-6 bg-[#141211] text-[#FAF8F5] border-[#2C2825] rounded-[15px] shadow-xl space-y-4 animate-in fade-in duration-300">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
@@ -1122,7 +1122,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                     <h3 className="font-extrabold text-sm sm:text-base tracking-tight text-white flex items-center gap-2">
                       Live Chunked SMS Transmission
                     </h3>
-                    <Badge variant="emerald" className="text-[10px] rounded-[5px]">
+                    <Badge variant="emerald" className="text-[10px] rounded-[15px]">
                       Batch {progress.currentBatch} of {progress.totalBatches}
                     </Badge>
                   </div>
@@ -1135,7 +1135,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                     size="sm"
                     variant="outline"
                     onClick={handleTogglePause}
-                    className="border-[#2C2825] text-[#FAF8F5] hover:bg-[#1E1B19] text-xs rounded-[5px]"
+                    className="border-[#2C2825] text-[#FAF8F5] hover:bg-[#1E1B19] text-xs rounded-[15px]"
                     leftIcon={progress.isPaused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
                   >
                     {progress.isPaused ? 'Resume' : 'Pause'}
@@ -1145,7 +1145,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                     size="sm"
                     variant="danger"
                     onClick={handleCancelDispatch}
-                    className="text-xs rounded-[5px]"
+                    className="text-xs rounded-[15px]"
                     leftIcon={<XCircle className="w-3.5 h-3.5" />}
                   >
                     Cancel
@@ -1161,7 +1161,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                   </span>
                   <span>{dispatchPercentage}%</span>
                 </div>
-                <div className="w-full h-2 rounded-[5px] bg-[#2C2825] overflow-hidden">
+                <div className="w-full h-2 rounded-[15px] bg-[#2C2825] overflow-hidden">
                   <div
                     className="h-full bg-emerald-500 transition-all duration-300 ease-out"
                     style={{ width: `${Math.max(3, dispatchPercentage)}%` }}
@@ -1170,21 +1170,21 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-[#2C2825] text-center">
-                <div className="p-2 rounded-[5px] bg-[#1E1B19] border border-[#2C2825]">
+                <div className="p-2 rounded-[15px] bg-[#1E1B19] border border-[#2C2825]">
                   <p className="text-[10px] text-[#A8A29D] uppercase font-semibold">Current Batch</p>
                   <p className="text-sm font-bold text-[#FAF8F5]">
                     {progress.currentBatch} / {progress.totalBatches}
                   </p>
                 </div>
-                <div className="p-2 rounded-[5px] bg-[#1E1B19] border border-[#2C2825]">
+                <div className="p-2 rounded-[15px] bg-[#1E1B19] border border-[#2C2825]">
                   <p className="text-[10px] text-emerald-400 uppercase font-semibold">Sent Successfully</p>
                   <p className="text-sm font-bold text-emerald-400">{progress.sentCount}</p>
                 </div>
-                <div className="p-2 rounded-[5px] bg-[#1E1B19] border border-[#2C2825]">
+                <div className="p-2 rounded-[15px] bg-[#1E1B19] border border-[#2C2825]">
                   <p className="text-[10px] text-rose-400 uppercase font-semibold">Failed / Dropped</p>
                   <p className="text-sm font-bold text-rose-400">{progress.failedCount}</p>
                 </div>
-                <div className="p-2 rounded-[5px] bg-[#1E1B19] border border-[#2C2825]">
+                <div className="p-2 rounded-[15px] bg-[#1E1B19] border border-[#2C2825]">
                   <p className="text-[10px] text-[#A8A29D] uppercase font-semibold">Batch Chunk Size</p>
                   <p className="text-sm font-bold text-[#FAF8F5]">{batchSize} / req</p>
                 </div>
@@ -1201,11 +1201,11 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
               {/* ----------------------------------------------------------------------- */}
               {/* UNIFIED MENU: DROPDOWN ACCORDIONS (Audience, Mode, Gateway & Dispatch) */}
               {/* ----------------------------------------------------------------------- */}
-              <Card className="bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[5px] shadow-xs overflow-hidden">
+              <Card className="bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[15px] shadow-xs overflow-hidden">
                 {/* Menu Header */}
                 <div className="p-4 sm:p-5 border-b border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5]/80 dark:bg-[#1C1A18]/80 flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-7 h-7 rounded-[5px] bg-[#981C00]/10 dark:bg-[#981C00]/25 text-[#981C00] dark:text-[#E89382] flex items-center justify-center font-bold text-xs">
+                    <div className="w-7 h-7 rounded-[15px] bg-[#981C00]/10 dark:bg-[#981C00]/25 text-[#981C00] dark:text-[#E89382] flex items-center justify-center font-bold text-xs">
                       <Sliders className="w-3.5 h-3.5" />
                     </div>
                     <div>
@@ -1218,7 +1218,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                     </div>
                   </div>
 
-                  <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-[5px] text-[11px] font-bold border ${
+                  <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-[15px] text-[11px] font-bold border ${
                     activeRecipients.length > 0
                       ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800'
                       : 'bg-[#F3EFEA] dark:bg-[#1E1B19] text-[#706A65] dark:text-[#A8A29D] border-[#E8E4DF] dark:border-[#2C2825]'
@@ -1240,7 +1240,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                       className="w-full p-4 flex items-center justify-between text-left hover:bg-[#FAF8F5] dark:hover:bg-[#1C1A18] transition-colors cursor-pointer"
                     >
                       <div className="flex items-center gap-2.5">
-                        <div className="w-6 h-6 rounded-[5px] bg-[#F3EFEA] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] text-[#981C00] dark:text-[#E89382] flex items-center justify-center font-bold text-xs">
+                        <div className="w-6 h-6 rounded-[15px] bg-[#F3EFEA] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] text-[#981C00] dark:text-[#E89382] flex items-center justify-center font-bold text-xs">
                           1
                         </div>
                         <div>
@@ -1257,7 +1257,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-[11px] font-mono font-bold text-[#981C00] dark:text-[#E89382] px-2 py-0.5 rounded-[5px] bg-[#F3EFEA] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825]">
+                        <span className="text-[11px] font-mono font-bold text-[#981C00] dark:text-[#E89382] px-2 py-0.5 rounded-[15px] bg-[#F3EFEA] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825]">
                           {activeRecipients.length}
                         </span>
                         <ChevronDown className={`w-4 h-4 text-[#706A65] dark:text-[#A8A29D] transition-transform duration-200 ${openMenuSections.audience ? 'rotate-180' : ''}`} />
@@ -1353,7 +1353,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                                   setSinglePhone(e.target.value);
                                   setCustomPhone('');
                                 }}
-                                className="w-full p-2 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs text-[#24211F] dark:text-[#FAF8F5] focus:ring-1 focus:ring-[#981C00]"
+                                className="w-full p-2 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs text-[#24211F] dark:text-[#FAF8F5] focus:ring-1 focus:ring-[#981C00]"
                               >
                                 <option value="">-- Choose Member ({approvedAll.length}) --</option>
                                 {approvedAll.map((sub) => (
@@ -1375,7 +1375,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                                   setCustomPhone(e.target.value);
                                   setSinglePhone('');
                                 }}
-                                className="w-full p-2 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs text-[#24211F] dark:text-[#FAF8F5] font-mono focus:ring-1 focus:ring-[#981C00]"
+                                className="w-full p-2 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs text-[#24211F] dark:text-[#FAF8F5] font-mono focus:ring-1 focus:ring-[#981C00]"
                               />
                             </div>
                           </div>
@@ -1390,7 +1390,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                                 setSelectedPlans(['all', '200', '600', '1000']);
                                 setTargetPlan('all');
                               }}
-                              className="px-2 py-1 rounded-[5px] text-[11px] font-semibold bg-[#F3EFEA] dark:bg-[#1E1B19] hover:bg-[#E8E4DF] dark:hover:bg-[#2C2825] text-[#24211F] dark:text-[#FAF8F5] transition-colors cursor-pointer"
+                              className="px-2 py-1 rounded-[15px] text-[11px] font-semibold bg-[#F3EFEA] dark:bg-[#1E1B19] hover:bg-[#E8E4DF] dark:hover:bg-[#2C2825] text-[#24211F] dark:text-[#FAF8F5] transition-colors cursor-pointer"
                             >
                               Select All
                             </button>
@@ -1400,7 +1400,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                                 setSelectedPlans([]);
                                 setTargetPlan('200');
                               }}
-                              className="px-2 py-1 rounded-[5px] text-[11px] font-semibold text-[#706A65] dark:text-[#A8A29D] hover:text-rose-600 transition-colors cursor-pointer"
+                              className="px-2 py-1 rounded-[15px] text-[11px] font-semibold text-[#706A65] dark:text-[#A8A29D] hover:text-rose-600 transition-colors cursor-pointer"
                             >
                               Clear
                             </button>
@@ -1424,9 +1424,9 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                               placeholder="Filter selected recipients..."
                               value={recipientSearch}
                               onChange={(e) => setRecipientSearch(e.target.value)}
-                              className="w-full p-1.5 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-xs text-[#24211F] dark:text-[#FAF8F5]"
+                              className="w-full p-1.5 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-xs text-[#24211F] dark:text-[#FAF8F5]"
                             />
-                            <div className="max-h-40 overflow-y-auto divide-y divide-[#E8E4DF] dark:divide-[#2C2825] rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615]">
+                            <div className="max-h-40 overflow-y-auto divide-y divide-[#E8E4DF] dark:divide-[#2C2825] rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615]">
                               {activeRecipients
                                 .filter((r) =>
                                   !recipientSearch
@@ -1464,7 +1464,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                       className="w-full p-4 flex items-center justify-between text-left hover:bg-[#FAF8F5] dark:hover:bg-[#1C1A18] transition-colors cursor-pointer"
                     >
                       <div className="flex items-center gap-2.5">
-                        <div className="w-6 h-6 rounded-[5px] bg-[#F3EFEA] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] text-[#981C00] dark:text-[#E89382] flex items-center justify-center font-bold text-xs">
+                        <div className="w-6 h-6 rounded-[15px] bg-[#F3EFEA] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] text-[#981C00] dark:text-[#E89382] flex items-center justify-center font-bold text-xs">
                           2
                         </div>
                         <div>
@@ -1479,7 +1479,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-[11px] font-semibold text-[#706A65] dark:text-[#A8A29D] px-2 py-0.5 rounded-[5px] bg-[#F3EFEA] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] capitalize">
+                        <span className="text-[11px] font-semibold text-[#706A65] dark:text-[#A8A29D] px-2 py-0.5 rounded-[15px] bg-[#F3EFEA] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] capitalize">
                           {dispatchMode}
                         </span>
                         <ChevronDown className={`w-4 h-4 text-[#706A65] dark:text-[#A8A29D] transition-transform duration-200 ${openMenuSections.mode ? 'rotate-180' : ''}`} />
@@ -1493,7 +1493,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                           <button
                             type="button"
                             onClick={() => setDispatchMode('instant')}
-                            className={`p-2.5 rounded-[5px] border text-left transition-all cursor-pointer flex flex-col justify-between space-y-1 ${
+                            className={`p-2.5 rounded-[15px] border text-left transition-all cursor-pointer flex flex-col justify-between space-y-1 ${
                               dispatchMode === 'instant'
                                 ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-2 border-[#981C00] dark:border-[#E89382] shadow-2xs'
                                 : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF]'
@@ -1510,7 +1510,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                           <button
                             type="button"
                             onClick={() => setDispatchMode('schedule')}
-                            className={`p-2.5 rounded-[5px] border text-left transition-all cursor-pointer flex flex-col justify-between space-y-1 ${
+                            className={`p-2.5 rounded-[15px] border text-left transition-all cursor-pointer flex flex-col justify-between space-y-1 ${
                               dispatchMode === 'schedule'
                                 ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-2 border-[#981C00] dark:border-[#E89382] shadow-2xs'
                                 : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF]'
@@ -1535,7 +1535,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                               <select
                                 value={scheduleDuration}
                                 onChange={(e) => setScheduleDuration(e.target.value as any)}
-                                className="w-full p-2 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs font-semibold text-[#24211F] dark:text-[#FAF8F5]"
+                                className="w-full p-2 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs font-semibold text-[#24211F] dark:text-[#FAF8F5]"
                               >
                                 <option value="1_week">1 Week (7 Days)</option>
                                 <option value="3_weeks">3 Weeks (21 Days)</option>
@@ -1552,7 +1552,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                                   type="time"
                                   value={scheduleDailyTime}
                                   onChange={(e) => setScheduleDailyTime(e.target.value)}
-                                  className="w-full p-2 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs text-[#24211F] dark:text-[#FAF8F5] font-mono"
+                                  className="w-full p-2 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs text-[#24211F] dark:text-[#FAF8F5] font-mono"
                                 />
                               </div>
                               <div>
@@ -1563,7 +1563,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                                   type="date"
                                   value={scheduleStartDate}
                                   onChange={(e) => setScheduleStartDate(e.target.value)}
-                                  className="w-full p-2 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs text-[#24211F] dark:text-[#FAF8F5] font-mono"
+                                  className="w-full p-2 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs text-[#24211F] dark:text-[#FAF8F5] font-mono"
                                 />
                               </div>
                             </div>
@@ -1577,7 +1577,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                                 placeholder="e.g. 30-Day Morning Scripture"
                                 value={campaignTitle}
                                 onChange={(e) => setCampaignTitle(e.target.value)}
-                                className="w-full p-2 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs text-[#24211F] dark:text-[#FAF8F5]"
+                                className="w-full p-2 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs text-[#24211F] dark:text-[#FAF8F5]"
                               />
                             </div>
                           </div>
@@ -1596,7 +1596,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                       className="w-full p-4 flex items-center justify-between text-left hover:bg-[#FAF8F5] dark:hover:bg-[#1C1A18] transition-colors cursor-pointer"
                     >
                       <div className="flex items-center gap-2.5">
-                        <div className="w-6 h-6 rounded-[5px] bg-[#F3EFEA] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] text-[#981C00] dark:text-[#E89382] flex items-center justify-center font-bold text-xs">
+                        <div className="w-6 h-6 rounded-[15px] bg-[#F3EFEA] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] text-[#981C00] dark:text-[#E89382] flex items-center justify-center font-bold text-xs">
                           3
                         </div>
                         <div>
@@ -1611,7 +1611,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-[11px] font-mono font-bold text-[#706A65] dark:text-[#A8A29D] px-2 py-0.5 rounded-[5px] bg-[#F3EFEA] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825]">
+                        <span className="text-[11px] font-mono font-bold text-[#706A65] dark:text-[#A8A29D] px-2 py-0.5 rounded-[15px] bg-[#F3EFEA] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825]">
                           {batchSize}/req
                         </span>
                         <ChevronDown className={`w-4 h-4 text-[#706A65] dark:text-[#A8A29D] transition-transform duration-200 ${openMenuSections.gateway ? 'rotate-180' : ''}`} />
@@ -1636,7 +1636,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                                 key={size}
                                 type="button"
                                 onClick={() => setBatchSize(size)}
-                                className={`p-2 rounded-[5px] border text-center transition-all cursor-pointer ${
+                                className={`p-2 rounded-[15px] border text-center transition-all cursor-pointer ${
                                   batchSize === size
                                     ? 'bg-[#981C00] text-white border-[#981C00] shadow-2xs font-bold'
                                     : 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-[#E8E4DF] dark:border-[#2C2825] text-[#24211F] dark:text-[#FAF8F5] hover:border-[#981C00]/50'
@@ -1663,7 +1663,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                               placeholder="0911223344"
                               value={quickTestPhone}
                               onChange={(e) => setQuickTestPhone(e.target.value)}
-                              className="flex-1 p-2 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs font-mono text-[#24211F] dark:text-[#FAF8F5]"
+                              className="flex-1 p-2 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs font-mono text-[#24211F] dark:text-[#FAF8F5]"
                             />
                             <Button
                               type="button"
@@ -1671,7 +1671,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                               variant="secondary"
                               isLoading={isSendingQuickTest}
                               onClick={handleSendQuickTest}
-                              className="text-xs font-bold rounded-[5px] cursor-pointer"
+                              className="text-xs font-bold rounded-[15px] cursor-pointer"
                             >
                               Test
                             </Button>
@@ -1691,7 +1691,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                       isLoading={progress.isDispatching}
                       onClick={handleStartBatchDispatch}
                       disabled={activeRecipients.length === 0}
-                      className="w-full font-bold bg-[#981C00] text-white hover:bg-[#7A1D28] rounded-[5px] py-3 text-xs sm:text-sm shadow-xs cursor-pointer disabled:opacity-50"
+                      className="w-full font-bold bg-[#981C00] text-white hover:bg-[#7A1D28] rounded-[15px] py-3 text-xs sm:text-sm shadow-xs cursor-pointer disabled:opacity-50"
                       leftIcon={<Send className="w-4 h-4" />}
                     >
                       Send Message ({activeRecipients.length})
@@ -1703,7 +1703,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                       isLoading={isCreatingSchedule}
                       onClick={handleCreateSchedule}
                       disabled={activeRecipients.length === 0}
-                      className="w-full font-bold bg-[#981C00] text-white hover:bg-[#7A1D28] rounded-[5px] py-3 text-xs sm:text-sm shadow-xs cursor-pointer disabled:opacity-50"
+                      className="w-full font-bold bg-[#981C00] text-white hover:bg-[#7A1D28] rounded-[15px] py-3 text-xs sm:text-sm shadow-xs cursor-pointer disabled:opacity-50"
                       leftIcon={<Calendar className="w-4 h-4" />}
                     >
                       Schedule Campaign ({activeRecipients.length})
@@ -1717,11 +1717,11 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
             {/* RIGHT COLUMN: STEP 3 (MESSAGE CONTENT, VARIABLES & LIVE PHONE PREVIEW) */}
             {/* ========================================================================= */}
             <div className="lg:col-span-7 xl:col-span-8 space-y-4">
-              <Card className="p-5 sm:p-6 bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[5px] shadow-xs space-y-5">
+              <Card className="p-5 sm:p-6 bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[15px] shadow-xs space-y-5">
                 {/* Step Header */}
                 <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#E8E4DF] dark:border-[#2C2825]">
                   <div className="flex items-center gap-3">
-                    <div className="w-7 h-7 rounded-[5px] bg-[#981C00]/10 dark:bg-[#981C00]/25 text-[#981C00] dark:text-[#E89382] flex items-center justify-center font-bold text-xs">
+                    <div className="w-7 h-7 rounded-[15px] bg-[#981C00]/10 dark:bg-[#981C00]/25 text-[#981C00] dark:text-[#E89382] flex items-center justify-center font-bold text-xs">
                       3
                     </div>
                     <div>
@@ -1757,7 +1757,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                             <button
                               type="button"
                               onClick={() => handleOpenNewTemplateModal(messageText)}
-                              className="px-2.5 py-1 rounded-[5px] text-xs font-semibold bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] text-[#24211F] dark:text-[#F3EFEA] transition-colors cursor-pointer flex items-center gap-1"
+                              className="px-2.5 py-1 rounded-[15px] text-xs font-semibold bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] text-[#24211F] dark:text-[#F3EFEA] transition-colors cursor-pointer flex items-center gap-1"
                               title="Save current message as a reusable sample"
                             >
                               <BookmarkPlus className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
@@ -1767,7 +1767,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                           <button
                             type="button"
                             onClick={() => handleOpenNewTemplateModal()}
-                            className="px-3 py-1 rounded-[5px] text-xs font-bold bg-[#981C00] hover:bg-[#7A1D28] text-white shadow-xs transition-all cursor-pointer flex items-center gap-1"
+                            className="px-3 py-1 rounded-[15px] text-xs font-bold bg-[#981C00] hover:bg-[#7A1D28] text-white shadow-xs transition-all cursor-pointer flex items-center gap-1"
                           >
                             <Plus className="w-3.5 h-3.5" />
                             <span>Add Sample</span>
@@ -1776,8 +1776,8 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                       </div>
 
                       {customTemplates.length === 0 ? (
-                        <div className="p-4 rounded-[5px] border border-dashed border-[#DDD7CF] dark:border-[#2C2825] bg-[#FAF8F5]/60 dark:bg-[#1E1B19]/30 text-center space-y-2">
-                          <div className="w-8 h-8 mx-auto rounded-[5px] bg-[#F3EFEA] dark:bg-[#2C2825] flex items-center justify-center text-[#706A65] dark:text-[#A8A29D]">
+                        <div className="p-4 rounded-[15px] border border-dashed border-[#DDD7CF] dark:border-[#2C2825] bg-[#FAF8F5]/60 dark:bg-[#1E1B19]/30 text-center space-y-2">
+                          <div className="w-8 h-8 mx-auto rounded-[15px] bg-[#F3EFEA] dark:bg-[#2C2825] flex items-center justify-center text-[#706A65] dark:text-[#A8A29D]">
                             <MessageSquare className="w-4 h-4" />
                           </div>
                           <div>
@@ -1791,7 +1791,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                           <button
                             type="button"
                             onClick={() => handleOpenNewTemplateModal()}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[5px] text-xs font-bold bg-[#981C00] hover:bg-[#7A1D28] text-white cursor-pointer shadow-xs transition-all"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[15px] text-xs font-bold bg-[#981C00] hover:bg-[#7A1D28] text-white cursor-pointer shadow-xs transition-all"
                           >
                             <Plus className="w-3.5 h-3.5" />
                             <span>+ Add Sample Text</span>
@@ -1804,7 +1804,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                             return (
                               <div
                                 key={tmpl.id}
-                                className={`p-3 rounded-[5px] border transition-all flex flex-col justify-between ${
+                                className={`p-3 rounded-[15px] border transition-all flex flex-col justify-between ${
                                   isSelected
                                     ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-[#981C00] dark:border-[#E89382] shadow-xs'
                                     : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF] bg-white dark:bg-[#181615]'
@@ -1818,7 +1818,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                                     <span className="font-bold text-xs text-[#24211F] dark:text-[#F3EFEA] group-hover:text-[#981C00] dark:group-hover:text-[#E89382] transition-colors line-clamp-1">
                                       {tmpl.title}
                                     </span>
-                                    <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-[5px] bg-[#F3EFEA] dark:bg-[#2C2825] text-[#706A65] dark:text-[#A8A29D] shrink-0">
+                                    <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-[15px] bg-[#F3EFEA] dark:bg-[#2C2825] text-[#706A65] dark:text-[#A8A29D] shrink-0">
                                       {tmpl.tag}
                                     </span>
                                   </div>
@@ -1831,7 +1831,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                                   <button
                                     type="button"
                                     onClick={() => setMessageText(tmpl.text)}
-                                    className={`text-[11px] font-bold px-2 py-0.5 rounded-[5px] transition-all cursor-pointer ${
+                                    className={`text-[11px] font-bold px-2 py-0.5 rounded-[15px] transition-all cursor-pointer ${
                                       isSelected
                                         ? 'bg-[#981C00] text-white'
                                         : 'text-[#981C00] dark:text-[#E89382] hover:bg-[#981C00]/10'
@@ -1845,7 +1845,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                                       type="button"
                                       onClick={() => handleUseTemplateInSchedule(tmpl)}
                                       title="Use this sample for a scheduled campaign"
-                                      className="p-1 rounded-[5px] text-[#706A65] hover:text-[#981C00] hover:bg-[#FAF8F5] dark:hover:bg-[#1E1B19] cursor-pointer transition-colors"
+                                      className="p-1 rounded-[15px] text-[#706A65] hover:text-[#981C00] hover:bg-[#FAF8F5] dark:hover:bg-[#1E1B19] cursor-pointer transition-colors"
                                     >
                                       <Calendar className="w-3.5 h-3.5" />
                                     </button>
@@ -1853,7 +1853,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                                       type="button"
                                       onClick={() => handleOpenEditTemplateModal(tmpl)}
                                       title="Edit sample text"
-                                      className="p-1 rounded-[5px] text-[#706A65] hover:text-[#24211F] dark:hover:text-[#F3EFEA] hover:bg-[#FAF8F5] dark:hover:bg-[#1E1B19] cursor-pointer transition-colors"
+                                      className="p-1 rounded-[15px] text-[#706A65] hover:text-[#24211F] dark:hover:text-[#F3EFEA] hover:bg-[#FAF8F5] dark:hover:bg-[#1E1B19] cursor-pointer transition-colors"
                                     >
                                       <Pencil className="w-3.5 h-3.5" />
                                     </button>
@@ -1861,7 +1861,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                                       type="button"
                                       onClick={() => handleDeleteTemplate(tmpl.id, tmpl.title)}
                                       title="Delete sample text"
-                                      className="p-1 rounded-[5px] text-[#706A65] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 cursor-pointer transition-colors"
+                                      className="p-1 rounded-[15px] text-[#706A65] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 cursor-pointer transition-colors"
                                     >
                                       <Trash2 className="w-3.5 h-3.5" />
                                     </button>
@@ -1883,14 +1883,14 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                         <button
                           type="button"
                           onClick={() => insertPlaceholder('{name}')}
-                          className="px-2.5 py-1 rounded-[5px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] text-[#24211F] dark:text-[#F3EFEA] font-bold text-xs cursor-pointer transition-all flex items-center gap-1.5"
+                          className="px-2.5 py-1 rounded-[15px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] text-[#24211F] dark:text-[#F3EFEA] font-bold text-xs cursor-pointer transition-all flex items-center gap-1.5"
                         >
                           + Name
                         </button>
                         <button
                           type="button"
                           onClick={() => insertPlaceholder('{date}')}
-                          className="px-2.5 py-1 rounded-[5px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] text-[#24211F] dark:text-[#F3EFEA] font-bold text-xs cursor-pointer transition-all flex items-center gap-1.5"
+                          className="px-2.5 py-1 rounded-[15px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] text-[#24211F] dark:text-[#F3EFEA] font-bold text-xs cursor-pointer transition-all flex items-center gap-1.5"
                         >
                           + Date
                         </button>
@@ -1901,7 +1901,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                           <button
                             type="button"
                             onClick={() => setMessageText(customTemplates[0].text)}
-                            className="px-2 py-1 rounded-[5px] text-[11px] font-semibold text-[#706A65] hover:text-[#24211F] dark:hover:text-[#F3EFEA] hover:bg-[#FAF8F5] dark:hover:bg-[#1E1B19] cursor-pointer flex items-center gap-1"
+                            className="px-2 py-1 rounded-[15px] text-[11px] font-semibold text-[#706A65] hover:text-[#24211F] dark:hover:text-[#F3EFEA] hover:bg-[#FAF8F5] dark:hover:bg-[#1E1B19] cursor-pointer flex items-center gap-1"
                             title="Reset to first saved sample text"
                           >
                             <RotateCcw className="w-3 h-3" />
@@ -1911,7 +1911,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                         <button
                           type="button"
                           onClick={() => setMessageText('')}
-                          className="px-2 py-1 rounded-[5px] text-[11px] font-semibold text-[#706A65] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 cursor-pointer"
+                          className="px-2 py-1 rounded-[15px] text-[11px] font-semibold text-[#706A65] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 cursor-pointer"
                           title="Clear message"
                         >
                           Clear
@@ -1927,7 +1927,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                         value={messageText}
                         onChange={(e) => setMessageText(e.target.value)}
                         placeholder="Type your message, morning scripture, or encouragement here (or choose/create a sample text above)..."
-                        className="w-full p-3.5 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-sm text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden resize-none leading-relaxed"
+                        className="w-full p-3.5 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-sm text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden resize-none leading-relaxed"
                       />
 
                       {/* Character & SMS Part Status Bar */}
@@ -1935,7 +1935,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                         <div className="flex items-center gap-2">
                           <span>Include greetings & encouragement</span>
                           {isUnicodeMessage && (
-                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-[5px] bg-[#981C00]/10 dark:bg-[#981C00]/25 text-[#981C00] dark:text-[#E89382]">
+                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-[15px] bg-[#981C00]/10 dark:bg-[#981C00]/25 text-[#981C00] dark:text-[#E89382]">
                               Amharic / Unicode (70 chars/part)
                             </span>
                           )}
@@ -1952,7 +1952,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
 
                   {/* Right Column: Authentic Mobile SMS Preview (5 cols on XL) */}
                   <div className="xl:col-span-5 flex flex-col justify-between space-y-4">
-                    <div className="rounded-[5px] border border-[#2C2825] bg-[#141211] p-3.5 shadow-sm space-y-3">
+                    <div className="rounded-[15px] border border-[#2C2825] bg-[#141211] p-3.5 shadow-sm space-y-3">
                       {/* Phone Status Bar */}
                       <div className="flex items-center justify-between px-3 pt-1 text-[11px] font-mono text-[#706A65]">
                         <span>06:30 AM</span>
@@ -1963,7 +1963,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                       {/* Phone App Header */}
                       <div className="flex items-center justify-between px-3 py-1.5 border-b border-[#2C2825]">
                         <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 rounded-[5px] bg-[#981C00] text-white font-bold text-xs flex items-center justify-center">
+                          <div className="w-6 h-6 rounded-[15px] bg-[#981C00] text-white font-bold text-xs flex items-center justify-center">
                             N
                           </div>
                           <div>
@@ -1971,18 +1971,18 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                             <p className="text-[10px] text-[#706A65]">Official Sender ID</p>
                           </div>
                         </div>
-                        <span className="text-[10px] px-1.5 py-0.5 rounded-[5px] bg-[#1E1B19] text-[#E89382] font-mono">
+                        <span className="text-[10px] px-1.5 py-0.5 rounded-[15px] bg-[#1E1B19] text-[#E89382] font-mono">
                           Verified
                         </span>
                       </div>
 
                       {/* Live SMS Bubble */}
-                      <div className="min-h-[160px] p-3 rounded-[5px] bg-[#181615] flex flex-col justify-end space-y-2">
+                      <div className="min-h-[160px] p-3 rounded-[15px] bg-[#181615] flex flex-col justify-end space-y-2">
                         <div className="text-center text-[10px] text-[#706A65] font-mono">
                           Today • Ethio Telecom / Safaricom
                         </div>
 
-                        <div className="self-start max-w-[92%] p-3.5 rounded-[5px] bg-[#981C00] text-white text-xs leading-relaxed shadow-xs space-y-1.5">
+                        <div className="self-start max-w-[92%] p-3.5 rounded-[15px] bg-[#981C00] text-white text-xs leading-relaxed shadow-xs space-y-1.5">
                           <p className="font-sans whitespace-pre-wrap">{previewMessage}</p>
                           <div className="text-[9px] text-[#E89382] text-right font-mono flex items-center justify-end gap-1">
                             <span>06:30 AM</span>
@@ -2000,7 +2000,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                     </div>
 
                     {/* Summary Box under Preview */}
-                    <div className="p-3.5 rounded-[5px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] text-xs space-y-1.5">
+                    <div className="p-3.5 rounded-[15px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] text-xs space-y-1.5">
                       <div className="flex items-center justify-between text-[#706A65] dark:text-[#A8A29D]">
                         <span>Target Audience:</span>
                         <strong className="text-[#24211F] dark:text-[#F3EFEA]">
@@ -2030,7 +2030,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
       {/* SUB-TAB 2: SCHEDULED CAMPAIGNS MANAGEMENT */}
       {/* ========================================================================= */}
       {activeSubTab === 'schedules' && (
-        <Card className="p-6 space-y-6 bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[5px] shadow-xs">
+        <Card className="p-6 space-y-6 bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[15px] shadow-xs">
           <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
             <div>
               <h2 className="text-base font-bold text-[#24211F] dark:text-[#F3EFEA] flex items-center gap-2">
@@ -2048,7 +2048,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                 size="sm"
                 variant="outline"
                 onClick={() => handleOpenNewTemplateModal()}
-                className="rounded-[5px] border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#1E1B19] text-[#24211F] dark:text-[#F3EFEA]"
+                className="rounded-[15px] border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#1E1B19] text-[#24211F] dark:text-[#F3EFEA]"
                 leftIcon={<Plus className="w-3.5 h-3.5" />}
               >
                 Add Sample Text
@@ -2060,7 +2060,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                   setActiveSubTab('dispatcher');
                   setDispatchMode('schedule');
                 }}
-                className="rounded-[5px] bg-[#981C00] hover:bg-[#7A1D28] text-white"
+                className="rounded-[15px] bg-[#981C00] hover:bg-[#7A1D28] text-white"
                 leftIcon={<Clock className="w-3.5 h-3.5" />}
               >
                 New Scheduled Campaign
@@ -2075,7 +2075,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
             </div>
           ) : campaigns.length === 0 ? (
             <div className="py-14 text-center text-xs text-[#706A65] dark:text-[#A8A29D] space-y-3">
-              <div className="w-10 h-10 mx-auto rounded-[5px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] flex items-center justify-center text-[#706A65]">
+              <div className="w-10 h-10 mx-auto rounded-[15px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] flex items-center justify-center text-[#706A65]">
                 <Calendar className="w-5 h-5" />
               </div>
               <div className="space-y-1">
@@ -2089,7 +2089,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
               <Button
                 type="button"
                 size="sm"
-                className="rounded-[5px] bg-[#981C00] hover:bg-[#7A1D28] text-white font-bold"
+                className="rounded-[15px] bg-[#981C00] hover:bg-[#7A1D28] text-white font-bold"
                 onClick={() => {
                   setActiveSubTab('dispatcher');
                   setDispatchMode('schedule');
@@ -2103,7 +2103,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
               {campaigns.map((camp) => (
                 <div
                   key={camp.id}
-                  className="p-4 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5]/60 dark:bg-[#1E1B19]/40 space-y-3 hover:border-[#DDD7CF] dark:hover:border-[#38332E] transition-all"
+                  className="p-4 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5]/60 dark:bg-[#1E1B19]/40 space-y-3 hover:border-[#DDD7CF] dark:hover:border-[#38332E] transition-all"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="space-y-1">
@@ -2111,7 +2111,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                         <h3 className="font-bold text-sm text-[#24211F] dark:text-[#F3EFEA]">{camp.title}</h3>
                         <Badge
                           variant={camp.status === 'active' ? 'emerald' : camp.status === 'paused' ? 'amber' : 'zinc'}
-                          className="rounded-[5px] text-[10px]"
+                          className="rounded-[15px] text-[10px]"
                         >
                           {camp.status.toUpperCase()}
                         </Badge>
@@ -2127,7 +2127,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                       <button
                         type="button"
                         onClick={() => handleToggleCampaignStatus(camp.id, camp.status)}
-                        className="p-1.5 rounded-[5px] text-[#706A65] hover:text-[#24211F] dark:hover:text-[#F3EFEA] hover:bg-[#F3EFEA] dark:hover:bg-[#2C2825] cursor-pointer"
+                        className="p-1.5 rounded-[15px] text-[#706A65] hover:text-[#24211F] dark:hover:text-[#F3EFEA] hover:bg-[#F3EFEA] dark:hover:bg-[#2C2825] cursor-pointer"
                         title={camp.status === 'active' ? 'Pause Campaign' : 'Resume Campaign'}
                       >
                         {camp.status === 'active' ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
@@ -2135,7 +2135,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                       <button
                         type="button"
                         onClick={() => handleDeleteCampaign(camp.id)}
-                        className="p-1.5 rounded-[5px] text-[#706A65] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/40 cursor-pointer"
+                        className="p-1.5 rounded-[15px] text-[#706A65] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/40 cursor-pointer"
                         title="Delete Campaign"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -2144,23 +2144,23 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                   </div>
 
                   {/* Message Snippet */}
-                  <div className="p-3 rounded-[5px] bg-white dark:bg-[#141211] border border-[#E8E4DF] dark:border-[#2C2825] text-xs text-[#24211F] dark:text-[#F3EFEA] leading-relaxed font-sans line-clamp-2">
+                  <div className="p-3 rounded-[15px] bg-white dark:bg-[#141211] border border-[#E8E4DF] dark:border-[#2C2825] text-xs text-[#24211F] dark:text-[#F3EFEA] leading-relaxed font-sans line-clamp-2">
                     &ldquo;{camp.messageTemplate}&rdquo;
                   </div>
 
                   {/* Campaign Stats */}
                   <div className="grid grid-cols-3 gap-2 text-center text-[11px] pt-1">
-                    <div className="p-2 rounded-[5px] bg-white dark:bg-[#141211] border border-[#E8E4DF] dark:border-[#2C2825]">
+                    <div className="p-2 rounded-[15px] bg-white dark:bg-[#141211] border border-[#E8E4DF] dark:border-[#2C2825]">
                       <p className="text-[#706A65] dark:text-[#A8A29D]">Duration</p>
                       <p className="font-bold text-[#24211F] dark:text-[#F3EFEA] mt-0.5">
                         {camp.duration === '1_week' ? '7 Days' : camp.duration === '3_weeks' ? '21 Days' : '30 Days'}
                       </p>
                     </div>
-                    <div className="p-2 rounded-[5px] bg-white dark:bg-[#141211] border border-[#E8E4DF] dark:border-[#2C2825]">
+                    <div className="p-2 rounded-[15px] bg-white dark:bg-[#141211] border border-[#E8E4DF] dark:border-[#2C2825]">
                       <p className="text-[#706A65] dark:text-[#A8A29D]">Time</p>
                       <p className="font-bold text-[#24211F] dark:text-[#F3EFEA] mt-0.5">{camp.dailyTime} AM</p>
                     </div>
-                    <div className="p-2 rounded-[5px] bg-white dark:bg-[#141211] border border-[#E8E4DF] dark:border-[#2C2825]">
+                    <div className="p-2 rounded-[15px] bg-white dark:bg-[#141211] border border-[#E8E4DF] dark:border-[#2C2825]">
                       <p className="text-[#706A65] dark:text-[#A8A29D]">Progress</p>
                       <p className="font-bold text-[#981C00] dark:text-[#E89382] mt-0.5">
                         Day {camp.runsCompleted} / {camp.totalRuns}
@@ -2180,7 +2180,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                       size="sm"
                       variant="outline"
                       onClick={() => handleRunCampaignNow(camp)}
-                      className="text-xs rounded-[5px] border-[#E8E4DF] dark:border-[#2C2825]"
+                      className="text-xs rounded-[15px] border-[#E8E4DF] dark:border-[#2C2825]"
                       leftIcon={<Play className="w-3 h-3" />}
                     >
                       Trigger Run Now
@@ -2198,10 +2198,10 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
       {/* ========================================================================= */}
       {activeSubTab === 'gateway' && (
         <div className="space-y-6">
-          <Card className="p-6 sm:p-8 space-y-6 bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[5px] shadow-xs">
+          <Card className="p-6 sm:p-8 space-y-6 bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[15px] shadow-xs">
             <div className="space-y-1 pb-4 border-b border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
               <div className="flex items-center gap-2.5">
-                <span className="p-2 rounded-[5px] bg-[#981C00]/10 text-[#981C00] dark:bg-[#981C00]/25 dark:text-[#E89382]">
+                <span className="p-2 rounded-[15px] bg-[#981C00]/10 text-[#981C00] dark:bg-[#981C00]/25 dark:text-[#E89382]">
                   <Settings className="w-4 h-4" />
                 </span>
                 <div>
@@ -2224,7 +2224,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                   <div
                     onClick={() => setGatewayConfig((p) => ({ ...p, provider: 'generic_http' }))}
-                    className={`p-3.5 rounded-[5px] border transition-all cursor-pointer ${
+                    className={`p-3.5 rounded-[15px] border transition-all cursor-pointer ${
                       gatewayConfig.provider === 'generic_http'
                         ? 'border-[#981C00] bg-[#FAF8F5] dark:bg-[#1E1B19] shadow-xs'
                         : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF] bg-white dark:bg-[#181615]'
@@ -2236,7 +2236,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
 
                   <div
                     onClick={() => setGatewayConfig((p) => ({ ...p, provider: 'africas_talking' }))}
-                    className={`p-3.5 rounded-[5px] border transition-all cursor-pointer ${
+                    className={`p-3.5 rounded-[15px] border transition-all cursor-pointer ${
                       gatewayConfig.provider === 'africas_talking'
                         ? 'border-[#981C00] bg-[#FAF8F5] dark:bg-[#1E1B19] shadow-xs'
                         : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF] bg-white dark:bg-[#181615]'
@@ -2248,7 +2248,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
 
                   <div
                     onClick={() => setGatewayConfig((p) => ({ ...p, provider: 'twilio' }))}
-                    className={`p-3.5 rounded-[5px] border transition-all cursor-pointer ${
+                    className={`p-3.5 rounded-[15px] border transition-all cursor-pointer ${
                       gatewayConfig.provider === 'twilio'
                         ? 'border-[#981C00] bg-[#FAF8F5] dark:bg-[#1E1B19] shadow-xs'
                         : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF] bg-white dark:bg-[#181615]'
@@ -2271,7 +2271,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                     placeholder="https://api.sms-gateway.com/v1/send"
                     value={gatewayConfig.apiUrl}
                     onChange={(e) => setGatewayConfig((p) => ({ ...p, apiUrl: e.target.value }))}
-                    className="w-full p-3 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-xs text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden font-mono"
+                    className="w-full p-3 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-xs text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden font-mono"
                   />
                   <p className="text-[10px] text-[#706A65] dark:text-[#A8A29D]">HTTP POST endpoint provided by your telecom/SMS partner</p>
                 </div>
@@ -2285,7 +2285,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                     placeholder="NAZAZI"
                     value={gatewayConfig.senderId}
                     onChange={(e) => setGatewayConfig((p) => ({ ...p, senderId: e.target.value }))}
-                    className="w-full p-3 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-xs text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden font-bold"
+                    className="w-full p-3 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-xs text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden font-bold"
                   />
                   <p className="text-[10px] text-[#706A65] dark:text-[#A8A29D]">Name shown as the SMS sender on subscriber phones</p>
                 </div>
@@ -2303,7 +2303,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                       placeholder="sk_live_..."
                       value={gatewayConfig.apiKey}
                       onChange={(e) => setGatewayConfig((p) => ({ ...p, apiKey: e.target.value }))}
-                      className="w-full p-3 pr-10 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-xs text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden font-mono"
+                      className="w-full p-3 pr-10 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-xs text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden font-mono"
                     />
                     <button
                       type="button"
@@ -2323,7 +2323,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                   <select
                     value={gatewayConfig.authHeader}
                     onChange={(e) => setGatewayConfig((p) => ({ ...p, authHeader: e.target.value }))}
-                    className="w-full p-3 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-xs text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden"
+                    className="w-full p-3 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-xs text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden"
                   >
                     <option value="Bearer">Bearer Token (Authorization: Bearer {'<key>'})</option>
                     <option value="Basic">Basic Auth (Authorization: Basic {'<key>'})</option>
@@ -2339,7 +2339,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                   type="submit"
                   size="md"
                   isLoading={isSavingGateway}
-                  className="rounded-[5px] bg-[#981C00] hover:bg-[#7A1D28] text-white font-bold"
+                  className="rounded-[15px] bg-[#981C00] hover:bg-[#7A1D28] text-white font-bold"
                   leftIcon={<CheckCircle2 className="w-4 h-4" />}
                 >
                   Save Gateway Credentials
@@ -2348,7 +2348,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
             </form>
 
             {/* Test Connection Card */}
-            <div className="p-4 sm:p-5 rounded-[5px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
+            <div className="p-4 sm:p-5 rounded-[15px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
               <h3 className="text-xs font-bold text-[#24211F] dark:text-[#F3EFEA] flex items-center gap-1.5">
                 <Radio className="w-4 h-4 text-[#981C00] dark:text-[#E89382]" />
                 Test Gateway Connection with Real Phone Number
@@ -2363,7 +2363,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                   placeholder="Enter your phone (e.g. 0911223344)"
                   value={testPhone}
                   onChange={(e) => setTestPhone(e.target.value)}
-                  className="w-full sm:w-80 p-2.5 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#141211] text-xs text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden font-mono"
+                  className="w-full sm:w-80 p-2.5 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#141211] text-xs text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden font-mono"
                 />
                 <Button
                   type="button"
@@ -2371,7 +2371,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                   variant="outline"
                   isLoading={isTestingGateway}
                   onClick={handleTestGateway}
-                  className="rounded-[5px] border-[#E8E4DF] dark:border-[#2C2825]"
+                  className="rounded-[15px] border-[#E8E4DF] dark:border-[#2C2825]"
                   leftIcon={<Send className="w-3.5 h-3.5" />}
                 >
                   Dispatch Test SMS
@@ -2380,7 +2380,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
 
               {testResult && (
                 <div
-                  className={`p-3 rounded-[5px] text-xs font-mono flex items-center gap-2 ${
+                  className={`p-3 rounded-[15px] text-xs font-mono flex items-center gap-2 ${
                     testResult.success
                       ? 'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
                       : 'bg-red-50 text-red-800 dark:bg-red-950/60 dark:text-red-300 border border-red-200 dark:border-red-800'
@@ -2399,7 +2399,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
       {/* SUB-TAB 4: DELIVERY HISTORY & AUDIT LOGS */}
       {/* ========================================================================= */}
       {activeSubTab === 'logs' && (
-        <Card className="p-4 sm:p-6 space-y-4 bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[5px] shadow-xs">
+        <Card className="p-4 sm:p-6 space-y-4 bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[15px] shadow-xs">
           <div className="flex items-center justify-between gap-2 pb-3 border-b border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
             <div>
               <h2 className="text-sm sm:text-base font-bold text-[#24211F] dark:text-[#F3EFEA] flex items-center gap-2">
@@ -2418,7 +2418,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                   if (typeof window !== 'undefined') localStorage.removeItem('nazazi_sms_logs');
                   info('Cleared SMS logs');
                 }}
-                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-[5px] text-xs font-semibold text-[#706A65] dark:text-[#A8A29D] bg-[#FAF8F5] hover:bg-[#F3EFEA] dark:bg-[#1E1B19] dark:hover:bg-[#2C2825] transition-colors cursor-pointer border border-[#E8E4DF] dark:border-[#2C2825]"
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-[15px] text-xs font-semibold text-[#706A65] dark:text-[#A8A29D] bg-[#FAF8F5] hover:bg-[#F3EFEA] dark:bg-[#1E1B19] dark:hover:bg-[#2C2825] transition-colors cursor-pointer border border-[#E8E4DF] dark:border-[#2C2825]"
                 title="Clear all logs"
               >
                 <Trash2 className="w-3.5 h-3.5" />
@@ -2429,7 +2429,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
 
           {smsLogs.length === 0 ? (
             <div className="py-12 text-center text-xs text-[#706A65] dark:text-[#A8A29D] space-y-2">
-              <div className="w-9 h-9 mx-auto rounded-[5px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] flex items-center justify-center text-[#706A65]">
+              <div className="w-9 h-9 mx-auto rounded-[15px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] flex items-center justify-center text-[#706A65]">
                 <History className="w-4 h-4" />
               </div>
               <p className="font-bold text-[#24211F] dark:text-[#F3EFEA]">No SMS messages sent yet</p>
@@ -2442,14 +2442,14 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                 {smsLogs.slice(0, 100).map((log) => (
                   <div
                     key={`m-log-${log.id}`}
-                    className="p-3 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5]/60 dark:bg-[#1E1B19]/40 space-y-2 text-xs"
+                    className="p-3 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5]/60 dark:bg-[#1E1B19]/40 space-y-2 text-xs"
                   >
                     <div className="flex items-center justify-between gap-2">
                       <div>
                         <p className="font-bold text-[#24211F] dark:text-[#F3EFEA]">{log.recipientName}</p>
                         <p className="text-[11px] font-mono text-[#706A65] dark:text-[#A8A29D]">{log.recipientPhone}</p>
                       </div>
-                      <Badge variant={log.status === 'Delivered' ? 'emerald' : 'zinc'} className="rounded-[5px] text-[10px]">
+                      <Badge variant={log.status === 'Delivered' ? 'emerald' : 'zinc'} className="rounded-[15px] text-[10px]">
                         {log.status}
                       </Badge>
                     </div>
@@ -2465,7 +2465,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
               </div>
 
               {/* Desktop Table (>= md) */}
-              <div className="hidden md:block overflow-x-auto rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825]">
+              <div className="hidden md:block overflow-x-auto rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825]">
                 <table className="w-full text-left text-xs">
                   <thead className="bg-[#FAF8F5] dark:bg-[#1E1B19] text-[#706A65] dark:text-[#A8A29D] font-bold border-b border-[#E8E4DF] dark:border-[#2C2825]">
                     <tr>
@@ -2499,7 +2499,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                         </td>
                         <td className="p-3.5 font-mono text-[#706A65] dark:text-[#A8A29D]">{log.segmentCount}</td>
                         <td className="p-3.5 pr-4 text-right">
-                          <Badge variant={log.status === 'Delivered' ? 'emerald' : 'zinc'} className="rounded-[5px] text-[10px]">
+                          <Badge variant={log.status === 'Delivered' ? 'emerald' : 'zinc'} className="rounded-[15px] text-[10px]">
                             {log.status}
                           </Badge>
                         </td>
@@ -2519,14 +2519,14 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
       {isTemplateModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div
-            className="bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[5px] w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150"
+            className="bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[15px] w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150"
             role="dialog"
             aria-modal="true"
           >
             {/* Modal Header */}
             <div className="p-5 border-b border-[#E8E4DF] dark:border-[#2C2825] flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-[5px] bg-[#981C00]/10 dark:bg-[#981C00]/25 text-[#981C00] dark:text-[#E89382] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-[15px] bg-[#981C00]/10 dark:bg-[#981C00]/25 text-[#981C00] dark:text-[#E89382] flex items-center justify-center">
                   <BookmarkPlus className="w-4 h-4" />
                 </div>
                 <div>
@@ -2541,7 +2541,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
               <button
                 type="button"
                 onClick={() => setIsTemplateModalOpen(false)}
-                className="p-1.5 rounded-[5px] text-[#706A65] hover:text-[#24211F] dark:hover:text-[#F3EFEA] hover:bg-[#FAF8F5] dark:hover:bg-[#1E1B19] transition-colors cursor-pointer"
+                className="p-1.5 rounded-[15px] text-[#706A65] hover:text-[#24211F] dark:hover:text-[#F3EFEA] hover:bg-[#FAF8F5] dark:hover:bg-[#1E1B19] transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -2559,7 +2559,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                     value={modalTitle}
                     onChange={(e) => setModalTitle(e.target.value)}
                     placeholder="e.g. Morning Grace, Psalm 23"
-                    className="w-full p-2.5 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-xs text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden"
+                    className="w-full p-2.5 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-xs text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden"
                   />
                 </div>
 
@@ -2572,7 +2572,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                     value={modalTag}
                     onChange={(e) => setModalTag(e.target.value)}
                     placeholder="e.g. Scripture, Devotional"
-                    className="w-full p-2.5 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-xs text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden"
+                    className="w-full p-2.5 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-xs text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden"
                   />
                 </div>
               </div>
@@ -2586,14 +2586,14 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                   <button
                     type="button"
                     onClick={() => insertModalPlaceholder('{name}')}
-                    className="px-2.5 py-1 rounded-[5px] text-xs font-bold bg-[#FAF8F5] dark:bg-[#1E1B19] text-[#24211F] dark:text-[#F3EFEA] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] cursor-pointer transition-colors"
+                    className="px-2.5 py-1 rounded-[15px] text-xs font-bold bg-[#FAF8F5] dark:bg-[#1E1B19] text-[#24211F] dark:text-[#F3EFEA] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] cursor-pointer transition-colors"
                   >
                     + &#123;name&#125;
                   </button>
                   <button
                     type="button"
                     onClick={() => insertModalPlaceholder('{date}')}
-                    className="px-2.5 py-1 rounded-[5px] text-xs font-bold bg-[#FAF8F5] dark:bg-[#1E1B19] text-[#24211F] dark:text-[#F3EFEA] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] cursor-pointer transition-colors"
+                    className="px-2.5 py-1 rounded-[15px] text-xs font-bold bg-[#FAF8F5] dark:bg-[#1E1B19] text-[#24211F] dark:text-[#F3EFEA] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] cursor-pointer transition-colors"
                   >
                     + &#123;date&#125;
                   </button>
@@ -2611,7 +2611,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                   value={modalText}
                   onChange={(e) => setModalText(e.target.value)}
                   placeholder="Write your custom sample text here. E.g. Good morning {name}! May God bless your work today..."
-                  className="w-full p-3 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-xs text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden leading-relaxed resize-none"
+                  className="w-full p-3 rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-xs text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden leading-relaxed resize-none"
                 />
                 <div className="flex items-center justify-between text-[11px] text-[#706A65] dark:text-[#A8A29D]">
                   <span>Dynamic tokens are auto-replaced during send.</span>
@@ -2627,7 +2627,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsTemplateModalOpen(false)}
-                className="rounded-[5px]"
+                className="rounded-[15px]"
               >
                 Cancel
               </Button>
@@ -2636,7 +2636,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                 variant="outline"
                 size="sm"
                 onClick={() => handleSaveTemplate(false)}
-                className="rounded-[5px] border-[#E8E4DF] dark:border-[#2C2825]"
+                className="rounded-[15px] border-[#E8E4DF] dark:border-[#2C2825]"
               >
                 Save Sample
               </Button>
@@ -2644,7 +2644,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                 type="button"
                 size="sm"
                 onClick={() => handleSaveTemplate(true)}
-                className="bg-[#981C00] hover:bg-[#7A1D28] text-white font-bold rounded-[5px]"
+                className="bg-[#981C00] hover:bg-[#7A1D28] text-white font-bold rounded-[15px]"
               >
                 Save & Use Now
               </Button>

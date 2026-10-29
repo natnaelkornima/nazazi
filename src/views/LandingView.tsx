@@ -570,7 +570,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
               <button
                 onClick={isClosed ? () => setIsSubscribeModalOpen(true) : scrollToPricing}
-                className="h-11 px-6 rounded-[5px] bg-[#981C00] hover:bg-[#7A1D28] text-white text-sm font-bold tracking-tight transition-all duration-150 cursor-pointer flex items-center justify-center gap-2 shadow-xs"
+                className="h-11 px-6 rounded-[15px] bg-[#981C00] hover:bg-[#7A1D28] text-white text-sm font-bold tracking-tight transition-all duration-150 cursor-pointer flex items-center justify-center gap-2 shadow-xs"
               >
                 {isClosed ? (
                   <span className="inline-flex items-center gap-2">
@@ -587,7 +587,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
               <button
                 onClick={() => handleTriggerVerifyModal(null)}
-                className="h-11 px-5 rounded-[5px] bg-[#FFFFFF] dark:bg-[#1D1A18] hover:bg-[#F3EFEA] dark:hover:bg-[#25221F] border border-[#E8E4DF] dark:border-[#2C2825] text-sm font-semibold text-[#24211F] dark:text-[#FAF8F5] transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
+                className="h-11 px-5 rounded-[15px] bg-[#FFFFFF] dark:bg-[#1D1A18] hover:bg-[#F3EFEA] dark:hover:bg-[#25221F] border border-[#E8E4DF] dark:border-[#2C2825] text-sm font-semibold text-[#24211F] dark:text-[#FAF8F5] transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
               >
                 <Smartphone className="w-4 h-4 text-[#706A65] dark:text-[#A8A19A]" />
                 <span>{isAmharic ? 'የአባልነት ማረጋገጫ በስልክ' : 'Check Approval Status'}</span>
@@ -667,7 +667,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                       </div>
 
                       {/* Battery Pill */}
-                      <div className="w-5 h-2.5 rounded-[5px] border border-current p-[1px] flex items-center relative ml-0.5">
+                      <div className="w-5 h-2.5 rounded-[15px] border border-current p-[1px] flex items-center relative ml-0.5">
                         <div className="w-[85%] h-full bg-current rounded-[1px]" />
                         <div className="w-0.5 h-1 bg-current rounded-r-[0.5px] absolute -right-1 top-1/2 -translate-y-1/2" />
                       </div>
@@ -829,7 +829,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
         <div className="border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825] py-20 sm:py-24 space-y-12 sm:space-y-16">
           {/* Section Header with Generous White Space */}
           <div className="text-center max-w-2xl mx-auto space-y-3 sm:space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[5px] text-xs font-bold uppercase tracking-wider bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#C43214] border border-[#E8DCD9] dark:border-[#3A2420]">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[15px] text-xs font-bold uppercase tracking-wider bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#C43214] border border-[#E8DCD9] dark:border-[#3A2420]">
               <span className="w-1.5 h-1.5 rounded-full bg-[#981C00] dark:bg-[#C43214]" />
               <span>{isAmharic ? 'ቀላል የ3-ደረጃ ሂደት' : 'Simple 3-Step Process'}</span>
             </div>
@@ -846,15 +846,15 @@ export const LandingView: React.FC<LandingViewProps> = ({
           {/* Side-by-side: Integration Beam (Left) & Vertical 3 Steps (Right) */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
             {/* Left: Interactive Integration Beam Scene */}
-            <div className="lg:col-span-7 relative rounded-[5px] p-4 sm:p-7 md:p-8 bg-gradient-to-b from-[#FAF4F2]/70 via-white/90 to-[#FAF4F2]/50 dark:from-[#211A18]/70 dark:via-[#1D1A18]/90 dark:to-[#211A18]/50 border border-[#E8DCD9] dark:border-[#382622] shadow-[0_20px_50px_-20px_rgba(152,28,0,0.08)] backdrop-blur-xs flex items-center justify-center">
+            <div className="lg:col-span-7 relative rounded-[15px] p-4 sm:p-7 md:p-8 bg-gradient-to-b from-[#FAF4F2]/70 via-white/90 to-[#FAF4F2]/50 dark:from-[#211A18]/70 dark:via-[#1D1A18]/90 dark:to-[#211A18]/50 border border-[#E8DCD9] dark:border-[#382622] shadow-[0_20px_50px_-20px_rgba(152,28,0,0.08)] backdrop-blur-xs flex items-center justify-center">
               <IntegrationBeam isAmharic={isAmharic} />
             </div>
 
             {/* Right: Vertical 3-Step Simple Guide */}
             <div className="lg:col-span-5 flex flex-col justify-center gap-3.5 sm:gap-4">
               {/* Step 1 */}
-              <div className="flex items-start gap-3.5 p-4 sm:p-5 rounded-[5px] bg-white/70 dark:bg-[#1D1A18]/70 border border-[#E8E4DF] dark:border-[#2C2825] transition-colors hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40 shadow-xs">
-                <span className="font-mono text-xs font-bold text-[#981C00] dark:text-[#C43214] bg-[#FAF4F2] dark:bg-[#2A1D1A] px-2.5 py-1 rounded-[5px] border border-[#E8DCD9] dark:border-[#3A2420] shrink-0 mt-0.5">
+              <div className="flex items-start gap-3.5 p-4 sm:p-5 rounded-[15px] bg-white/70 dark:bg-[#1D1A18]/70 border border-[#E8E4DF] dark:border-[#2C2825] transition-colors hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40 shadow-xs">
+                <span className="font-mono text-xs font-bold text-[#981C00] dark:text-[#C43214] bg-[#FAF4F2] dark:bg-[#2A1D1A] px-2.5 py-1 rounded-[15px] border border-[#E8DCD9] dark:border-[#3A2420] shrink-0 mt-0.5">
                   01
                 </span>
                 <div className="space-y-1">
@@ -870,8 +870,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
               </div>
 
               {/* Step 2 */}
-              <div className="flex items-start gap-3.5 p-4 sm:p-5 rounded-[5px] bg-white/70 dark:bg-[#1D1A18]/70 border border-[#E8E4DF] dark:border-[#2C2825] transition-colors hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40 shadow-xs">
-                <span className="font-mono text-xs font-bold text-[#981C00] dark:text-[#C43214] bg-[#FAF4F2] dark:bg-[#2A1D1A] px-2.5 py-1 rounded-[5px] border border-[#E8DCD9] dark:border-[#3A2420] shrink-0 mt-0.5">
+              <div className="flex items-start gap-3.5 p-4 sm:p-5 rounded-[15px] bg-white/70 dark:bg-[#1D1A18]/70 border border-[#E8E4DF] dark:border-[#2C2825] transition-colors hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40 shadow-xs">
+                <span className="font-mono text-xs font-bold text-[#981C00] dark:text-[#C43214] bg-[#FAF4F2] dark:bg-[#2A1D1A] px-2.5 py-1 rounded-[15px] border border-[#E8DCD9] dark:border-[#3A2420] shrink-0 mt-0.5">
                   02
                 </span>
                 <div className="space-y-1">
@@ -887,8 +887,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
               </div>
 
               {/* Step 3 */}
-              <div className="flex items-start gap-3.5 p-4 sm:p-5 rounded-[5px] bg-white/70 dark:bg-[#1D1A18]/70 border border-[#E8E4DF] dark:border-[#2C2825] transition-colors hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40 shadow-xs">
-                <span className="font-mono text-xs font-bold text-[#981C00] dark:text-[#C43214] bg-[#FAF4F2] dark:bg-[#2A1D1A] px-2.5 py-1 rounded-[5px] border border-[#E8DCD9] dark:border-[#3A2420] shrink-0 mt-0.5">
+              <div className="flex items-start gap-3.5 p-4 sm:p-5 rounded-[15px] bg-white/70 dark:bg-[#1D1A18]/70 border border-[#E8E4DF] dark:border-[#2C2825] transition-colors hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40 shadow-xs">
+                <span className="font-mono text-xs font-bold text-[#981C00] dark:text-[#C43214] bg-[#FAF4F2] dark:bg-[#2A1D1A] px-2.5 py-1 rounded-[15px] border border-[#E8DCD9] dark:border-[#3A2420] shrink-0 mt-0.5">
                   03
                 </span>
                 <div className="space-y-1">
@@ -907,7 +907,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               <div className="pt-1">
                 <a
                   href="#pricing"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[5px] text-xs font-bold bg-[#FAF4F2] hover:bg-[#F2EAE7] dark:bg-[#251A18] dark:hover:bg-[#2E201D] text-[#981C00] dark:text-[#C43214] border border-[#E8DCD9] dark:border-[#382622] transition-all duration-200 cursor-pointer shadow-2xs group"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[15px] text-xs font-bold bg-[#FAF4F2] hover:bg-[#F2EAE7] dark:bg-[#251A18] dark:hover:bg-[#2E201D] text-[#981C00] dark:text-[#C43214] border border-[#E8DCD9] dark:border-[#382622] transition-all duration-200 cursor-pointer shadow-2xs group"
                 >
                   <span>{isAmharic ? 'የደንበኝነት እቅዶችን ይመልከቱ' : 'Explore Subscription Plans'}</span>
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
@@ -968,7 +968,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             {pricingPlans.map((plan) => (
               <div
                 key={plan.id}
-                className={`relative flex flex-col justify-between p-7 sm:p-8 rounded-[5px] transition-all duration-200 ${
+                className={`relative flex flex-col justify-between p-7 sm:p-8 rounded-[15px] transition-all duration-200 ${
                   plan.recommended
                     ? 'bg-gradient-to-b from-[#FFFFFF] via-[#FAF6F2] to-[#F5EFE9] dark:from-[#201A18] dark:via-[#191513] dark:to-[#141110] border-2 border-[#981C00] dark:border-[#C43214] shadow-[0_20px_50px_-15px_rgba(152,28,0,0.18),0_1px_3px_rgba(0,0,0,0.06)] md:-translate-y-2'
                     : 'bg-[#FFFFFF] dark:bg-[#1A1715] border border-[#E2DDD5] dark:border-[#2C2723] hover:border-[#D1C9BE] dark:hover:border-[#3D3732] shadow-[0_4px_24px_-6px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.03)]'
@@ -977,7 +977,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                 {/* Floating Recommended Luxury Badge */}
                 {plan.recommended && (
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                    <span className="px-4 py-1 rounded-[5px] text-[11px] font-black uppercase tracking-wider bg-[#981C00] text-white shadow-md inline-flex items-center gap-1.5 whitespace-nowrap">
+                    <span className="px-4 py-1 rounded-[15px] text-[11px] font-black uppercase tracking-wider bg-[#981C00] text-white shadow-md inline-flex items-center gap-1.5 whitespace-nowrap">
                       <Sparkles className="w-3 h-3 text-[#FFD6A5]" />
                       <span>{plan.badge}</span>
                     </span>
@@ -992,7 +992,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                         {plan.name}
                       </h3>
                       {!plan.recommended && (
-                        <span className="inline-block mt-1 text-[11px] font-semibold text-[#706A65] dark:text-[#A8A19A] px-2.5 py-0.5 rounded-[5px] bg-[#FAF8F5] dark:bg-[#141211] border border-[#E8E4DF] dark:border-[#2C2825]">
+                        <span className="inline-block mt-1 text-[11px] font-semibold text-[#706A65] dark:text-[#A8A19A] px-2.5 py-0.5 rounded-[15px] bg-[#FAF8F5] dark:bg-[#141211] border border-[#E8E4DF] dark:border-[#2C2825]">
                           {plan.badge}
                         </span>
                       )}
@@ -1012,7 +1012,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                           {plan.originalPrice} {isAmharic ? 'ብር' : 'ETB'}
                         </span>
                         {plan.savingsBadge && (
-                          <span className="text-[10.5px] font-bold text-[#981C00] dark:text-[#E89382] bg-[#FAF0ED] dark:bg-[#321C18] px-2 py-0.5 rounded-[5px] border border-[#F3D5CD] dark:border-[#4A2620]">
+                          <span className="text-[10.5px] font-bold text-[#981C00] dark:text-[#E89382] bg-[#FAF0ED] dark:bg-[#321C18] px-2 py-0.5 rounded-[15px] border border-[#F3D5CD] dark:border-[#4A2620]">
                             {plan.savingsBadge}
                           </span>
                         )}
@@ -1064,7 +1064,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   <button
                     onClick={() => handleOpenSubscribe(plan.name, plan.price)}
                     disabled={isClosed}
-                    className={`w-full h-11 px-5 rounded-[5px] text-xs sm:text-sm font-bold tracking-tight transition-all duration-150 cursor-pointer flex items-center justify-center gap-2 ${
+                    className={`w-full h-11 px-5 rounded-[15px] text-xs sm:text-sm font-bold tracking-tight transition-all duration-150 cursor-pointer flex items-center justify-center gap-2 ${
                       isClosed
                         ? 'bg-[#EAE5DF] text-[#706A65] cursor-not-allowed'
                         : plan.recommended
@@ -1129,7 +1129,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Pillar 1 */}
-            <div className="p-6 rounded-[5px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
+            <div className="p-6 rounded-[15px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
               <UserCheck className="w-5 h-5 text-[#981C00] dark:text-[#C43214]" />
               <h3 className="text-sm font-bold text-[#24211F] dark:text-[#FAF8F5]">
                 {isAmharic ? 'ምንም መለያ አያስፈልግም' : 'No Account Needed'}
@@ -1142,7 +1142,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             </div>
 
             {/* Pillar 2 */}
-            <div className="p-6 rounded-[5px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
+            <div className="p-6 rounded-[15px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
               <ShieldCheck className="w-5 h-5 text-[#981C00] dark:text-[#C43214]" />
               <h3 className="text-sm font-bold text-[#24211F] dark:text-[#FAF8F5]">
                 {isAmharic ? 'የስልክ ቁጥር ምስጢራዊነት' : 'Phone Number Privacy'}
@@ -1155,7 +1155,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             </div>
 
             {/* Pillar 3 */}
-            <div className="p-6 rounded-[5px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
+            <div className="p-6 rounded-[15px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
               <CheckCircle2 className="w-5 h-5 text-[#981C00] dark:text-[#C43214]" />
               <h3 className="text-sm font-bold text-[#24211F] dark:text-[#FAF8F5]">
                 {isAmharic ? 'ቀጥታ ማረጋገጫ' : 'Direct Status Verification'}
@@ -1168,7 +1168,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             </div>
 
             {/* Pillar 4 */}
-            <div className="p-6 rounded-[5px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
+            <div className="p-6 rounded-[15px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
               <MessageSquare className="w-5 h-5 text-[#981C00] dark:text-[#C43214]" />
               <h3 className="text-sm font-bold text-[#24211F] dark:text-[#FAF8F5]">
                 {isAmharic ? 'ቀጥተኛ ድጋፍ' : 'Direct Support'}
@@ -1206,7 +1206,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             </div>
 
             {/* Compact Star Rating */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-[5px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] shadow-2xs self-start sm:self-auto shrink-0">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-[15px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] shadow-2xs self-start sm:self-auto shrink-0">
               <div className="flex items-center text-amber-500">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
@@ -1226,7 +1226,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               {[...testimonials, ...testimonials].map((item, index) => (
                 <div
                   key={`${item.id}-${index}`}
-                  className="w-[320px] sm:w-[380px] shrink-0 rounded-[5px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] p-6 sm:p-7 flex flex-col justify-between gap-5 shadow-2xs hover:border-[#981C00]/40 dark:hover:border-[#C43214]/40 hover:shadow-sm transition-all duration-200"
+                  className="w-[320px] sm:w-[380px] shrink-0 rounded-[15px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] p-6 sm:p-7 flex flex-col justify-between gap-5 shadow-2xs hover:border-[#981C00]/40 dark:hover:border-[#C43214]/40 hover:shadow-sm transition-all duration-200"
                 >
                   {/* Quote & Verse with Uncluttered Editorial Typography */}
                   <div className="space-y-3.5">
@@ -1241,7 +1241,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
                   {/* Clean, Grounded Author Attribution */}
                   <div className="pt-4 border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825] flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-[5px] bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#E89382] border border-[#E8DCD9] dark:border-[#3A2420] flex items-center justify-center font-bold text-xs shrink-0">
+                    <div className="w-8 h-8 rounded-[15px] bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#E89382] border border-[#E8DCD9] dark:border-[#3A2420] flex items-center justify-center font-bold text-xs shrink-0">
                       {item.avatarInitials}
                     </div>
                     <div className="min-w-0 flex-1">
@@ -1291,7 +1291,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               return (
                 <div
                   key={idx}
-                  className="rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FFFFFF] dark:bg-[#1D1A18] overflow-hidden"
+                  className="rounded-[15px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FFFFFF] dark:bg-[#1D1A18] overflow-hidden"
                 >
                   <button
                     onClick={() => setOpenFaq(isOpen ? null : idx)}
@@ -1322,7 +1322,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
           Restrained, editorial, conversion-focused banner.
           ======================================================== */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-24">
-        <div className="p-8 sm:p-12 rounded-[5px] bg-[#981C00] text-white text-center space-y-6 shadow-md">
+        <div className="p-8 sm:p-12 rounded-[15px] bg-[#981C00] text-white text-center space-y-6 shadow-md">
           <div className="space-y-2 max-w-xl mx-auto">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
               {isAmharic ? 'ተስፋን እና መንፈሳዊ ማጽናኛን ይቀበሉ' : 'Receive Daily Hope & Encouragement'}
@@ -1337,7 +1337,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               onClick={isClosed ? () => setIsSubscribeModalOpen(true) : scrollToPricing}
-              className="w-full sm:w-auto h-11 px-6 rounded-[5px] bg-white text-[#981C00] hover:bg-zinc-100 text-xs sm:text-sm font-bold tracking-tight transition-colors cursor-pointer shadow-xs flex items-center justify-center"
+              className="w-full sm:w-auto h-11 px-6 rounded-[15px] bg-white text-[#981C00] hover:bg-zinc-100 text-xs sm:text-sm font-bold tracking-tight transition-colors cursor-pointer shadow-xs flex items-center justify-center"
             >
               {isClosed ? (
                 <span className="inline-flex items-center gap-1.5">
@@ -1350,7 +1350,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             </button>
             <button
               onClick={() => handleTriggerVerifyModal(null)}
-              className="w-full sm:w-auto h-11 px-5 rounded-[5px] bg-transparent hover:bg-black/10 border border-white/40 text-white text-xs sm:text-sm font-semibold transition-colors cursor-pointer flex items-center justify-center"
+              className="w-full sm:w-auto h-11 px-5 rounded-[15px] bg-transparent hover:bg-black/10 border border-white/40 text-white text-xs sm:text-sm font-semibold transition-colors cursor-pointer flex items-center justify-center"
             >
               {isAmharic ? 'የአባልነት ማረጋገጫ በስልክ ቁጥር' : 'Check Approval Status'}
             </button>

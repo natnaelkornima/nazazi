@@ -73,7 +73,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             }}
             placeholder={placeholder}
             className={cn(
-              'w-full h-10 px-3.5 text-sm rounded-[5px] bg-white dark:bg-[#1D1A18] text-[#141413] dark:text-[#FAF8F5] border border-[#E8E4DF] dark:border-[#2C2825] transition-all duration-150 shadow-2xs',
+              'w-full h-10 px-3.5 text-sm rounded-[15px] bg-white dark:bg-[#1D1A18] text-[#141413] dark:text-[#FAF8F5] border border-[#E8E4DF] dark:border-[#2C2825] transition-all duration-150 shadow-2xs',
               'placeholder:text-[#706A65]/60 dark:placeholder:text-[#A8A19A]/60',
               'focus:outline-none focus:border-[#981C00] dark:focus:border-[#C43214] focus:ring-2 focus:ring-[#981C00]/15 dark:focus:ring-[#C43214]/20',
               leftIcon && 'pl-10',

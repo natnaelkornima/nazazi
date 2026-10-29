@@ -67,7 +67,7 @@ export const Modal: React.FC<ModalProps> = ({
             exit={{ opacity: 0, scale: 0.96, y: 8 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className={cn(
-              'relative w-full bg-white dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[5px] shadow-2xl z-10 overflow-hidden text-[#141413] dark:text-[#FAF8F5]',
+              'relative w-full bg-white dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[15px] shadow-2xl z-10 overflow-hidden text-[#141413] dark:text-[#FAF8F5]',
               maxWidths[maxWidth],
               className
             )}
@@ -84,7 +84,7 @@ export const Modal: React.FC<ModalProps> = ({
                 </div>
                 <button
                   onClick={onClose}
-                  className="text-[#706A65] hover:text-[#141413] dark:hover:text-[#FAF8F5] transition-colors p-1.5 rounded-[5px] hover:bg-[#F3EFEA] dark:hover:bg-[#25221F] cursor-pointer"
+                  className="text-[#706A65] hover:text-[#141413] dark:hover:text-[#FAF8F5] transition-colors p-1.5 rounded-[15px] hover:bg-[#F3EFEA] dark:hover:bg-[#25221F] cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -93,7 +93,7 @@ export const Modal: React.FC<ModalProps> = ({
             {!title && (
               <button
                 onClick={onClose}
-                className="absolute top-3 right-3 z-30 text-[#706A65] hover:text-[#141413] dark:hover:text-[#FAF8F5] transition-colors p-1.5 rounded-[5px] bg-[#FAF8F5]/90 dark:bg-[#25221F]/90 hover:bg-[#F3EFEA] dark:hover:bg-[#332E2A] cursor-pointer backdrop-blur-md shadow-2xs border border-[#E8E4DF] dark:border-[#2C2825]"
+                className="absolute top-3 right-3 z-30 text-[#706A65] hover:text-[#141413] dark:hover:text-[#FAF8F5] transition-colors p-1.5 rounded-[15px] bg-[#FAF8F5]/90 dark:bg-[#25221F]/90 hover:bg-[#F3EFEA] dark:hover:bg-[#332E2A] cursor-pointer backdrop-blur-md shadow-2xs border border-[#E8E4DF] dark:border-[#2C2825]"
                 aria-label="Close modal"
               >
                 <X className="w-4 h-4" />

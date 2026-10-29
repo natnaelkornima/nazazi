@@ -84,11 +84,11 @@ export const Navbar: React.FC<NavbarProps> = ({
               onNavigate('landing');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="flex items-center gap-2.5 text-left cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#981C00] rounded-[5px]"
+            className="flex items-center gap-2.5 text-left cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#981C00] rounded-[15px]"
             aria-label="ናዛዚ መነሻ ገጽ"
           >
             {/* Minimal Spiritual Cross & Lettermark Emblem */}
-            <div className="w-8 h-8 rounded-[5px] bg-[#981C00] text-white flex items-center justify-center font-bold text-sm tracking-tight shadow-xs group-hover:bg-[#7A1D28] transition-colors shrink-0">
+            <div className="w-8 h-8 rounded-[15px] bg-[#981C00] text-white flex items-center justify-center font-bold text-sm tracking-tight shadow-xs group-hover:bg-[#7A1D28] transition-colors shrink-0">
               <span>N</span>
             </div>
             <span className="font-bela-bereka text-2xl font-bold tracking-tight text-[#24211F] dark:text-[#FAF8F5] leading-none pt-0.5">
@@ -139,7 +139,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Language Toggle */}
           <button
             onClick={toggleLanguage}
-            className="h-9 px-3 rounded-[5px] text-xs font-semibold text-[#706A65] dark:text-[#A8A19A] hover:text-[#24211F] dark:hover:text-[#FAF8F5] hover:bg-[#EAE5DF] dark:hover:bg-[#25221F] transition-colors cursor-pointer"
+            className="h-9 px-3 rounded-[15px] text-xs font-semibold text-[#706A65] dark:text-[#A8A19A] hover:text-[#24211F] dark:hover:text-[#FAF8F5] hover:bg-[#EAE5DF] dark:hover:bg-[#25221F] transition-colors cursor-pointer"
             aria-label={isAmharic ? 'ወደ እንግሊዝኛ ቀይር' : 'Switch to Amharic'}
           >
             {isAmharic ? 'EN' : 'አማርኛ'}
@@ -148,7 +148,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="h-9 w-9 flex items-center justify-center rounded-[5px] text-[#706A65] dark:text-[#A8A19A] hover:text-[#24211F] dark:hover:text-[#FAF8F5] hover:bg-[#EAE5DF] dark:hover:bg-[#25221F] transition-colors cursor-pointer"
+            className="h-9 w-9 flex items-center justify-center rounded-[15px] text-[#706A65] dark:text-[#A8A19A] hover:text-[#24211F] dark:hover:text-[#FAF8F5] hover:bg-[#EAE5DF] dark:hover:bg-[#25221F] transition-colors cursor-pointer"
             aria-label={theme === 'light' ? 'ወደ ጨለማ ገጽታ ቀይር' : 'ወደ ብርሃን ገጽታ ቀይር'}
           >
             {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
@@ -157,7 +157,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Primary CTA Button */}
           <button
             onClick={handleSubscribeClick}
-            className="ml-1 h-9 px-4 rounded-[5px] bg-[#981C00] hover:bg-[#7A1D28] text-white text-xs font-bold tracking-tight transition-all cursor-pointer flex items-center gap-1.5 shadow-xs"
+            className="ml-1 h-9 px-4 rounded-[15px] bg-[#981C00] hover:bg-[#7A1D28] text-white text-xs font-bold tracking-tight transition-all cursor-pointer flex items-center gap-1.5 shadow-xs"
           >
             <span>{isAmharic ? 'ይመዝገቡ' : 'Subscribe'}</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -169,14 +169,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Quick Language Toggle on Mobile */}
           <button
             onClick={toggleLanguage}
-            className="h-8 px-2.5 rounded-[5px] text-xs font-bold text-[#706A65] dark:text-[#A8A19A] hover:bg-[#EAE5DF] dark:hover:bg-[#25221F]"
+            className="h-8 px-2.5 rounded-[15px] text-xs font-bold text-[#706A65] dark:text-[#A8A19A] hover:bg-[#EAE5DF] dark:hover:bg-[#25221F]"
           >
             {isAmharic ? 'EN' : 'አማርኛ'}
           </button>
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="h-8 w-8 flex items-center justify-center rounded-[5px] text-[#24211F] dark:text-[#FAF8F5] hover:bg-[#EAE5DF] dark:hover:bg-[#25221F] transition-colors cursor-pointer"
+            className="h-8 w-8 flex items-center justify-center rounded-[15px] text-[#24211F] dark:text-[#FAF8F5] hover:bg-[#EAE5DF] dark:hover:bg-[#25221F] transition-colors cursor-pointer"
             aria-expanded={mobileMenuOpen}
             aria-label="ዋና ማውጫ"
           >
