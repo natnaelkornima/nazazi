@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { Input } from '../components/ui/Input';
 import { Modal } from '../components/ui/Modal';
+import { FilterMenu, FilterGroup, FilterValue } from '../components/ui/FilterMenu';
 import { useToast } from '../context/ToastContext';
 import { usePayment } from '../context/PaymentContext';
 import { useTheme } from '../context/ThemeContext';
@@ -113,7 +114,24 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
   // Search & Filter for Approvals
   const [paymentSearch, setPaymentSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
+  const [filterValue, setFilterValue] = useState<FilterValue>({});
+  const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
+  const filterMenuRef = useRef<HTMLDivElement>(null);
   const [previewSubmission, setPreviewSubmission] = useState<PaymentSubmission | null>(null);
+
+  useEffect(() => {
+    const handleClickOutsideFilter = (event: MouseEvent) => {
+      if (filterMenuRef.current && !filterMenuRef.current.contains(event.target as Node)) {
+        setIsFilterMenuOpen(false);
+      }
+    };
+    if (isFilterMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutsideFilter);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutsideFilter);
+    };
+  }, [isFilterMenuOpen]);
 
   // Pagination for Registrations
   const [currentPage, setCurrentPage] = useState(1);
@@ -228,22 +246,140 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
   const totalCollectedRevenue = approvedSubmissions.reduce((sum, s) => sum + (Number(s.amount) || 0), 0);
   const totalPotentialRevenue = submissions.reduce((sum, s) => sum + (Number(s.amount) || 0), 0);
 
-  // Filtered Payments for table
-  const filteredSubmissions = submissions.filter((sub) => {
-    const query = paymentSearch.toLowerCase().trim();
-    const matchesSearch =
-      !query ||
-      sub.userName.toLowerCase().includes(query) ||
-      sub.userPhone.toLowerCase().includes(query) ||
-      sub.planName.toLowerCase().includes(query);
-    const matchesStatus = statusFilter === 'all' || sub.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
+  // Grouped Filters definition for FilterMenu
+  const filterGroups: FilterGroup[] = useMemo(() => {
+    // Dynamic plan extraction
+    const planCounts = new Map<string, number>();
+    submissions.forEach((s) => {
+      const p = s.planName || 'Standard';
+      planCounts.set(p, (planCounts.get(p) || 0) + 1);
+    });
+
+    const planOptions = Array.from(planCounts.entries())
+      .sort((a, b) => b[1] - a[1])
+      .map(([plan, count]) => ({
+        id: plan,
+        label: `${plan} (${count})`,
+      }));
+
+    // Method counts
+    const telebirrCount = submissions.filter((s) => (s.bank || '').toLowerCase().includes('telebirr')).length;
+    const cbeCount = submissions.filter((s) => (s.bank || '').toLowerCase().includes('cbe')).length;
+    const otherBankCount = submissions.length - telebirrCount - cbeCount;
+
+    // Verification counts
+    const verifyEtCount = submissions.filter((s) => s.verificationMethod === 'verify_et').length;
+    const manualCount = submissions.filter((s) => s.verificationMethod === 'manual' || (!s.verificationMethod && !s.verifiedAt)).length;
+    const withScreenshotCount = submissions.filter((s) => !!s.screenshotUrl).length;
+
+    return [
+      {
+        id: 'status',
+        label: 'Status',
+        chipPrefix: 'Status: ',
+        options: [
+          { id: 'pending', label: `Pending Review (${pendingCount})` },
+          { id: 'approved', label: `Approved (${approvedCount})` },
+          { id: 'rejected', label: `Rejected (${rejectedCount})` },
+        ],
+      },
+      {
+        id: 'bank',
+        label: 'Payment Method',
+        chipPrefix: 'Method: ',
+        options: [
+          { id: 'telebirr', label: `Telebirr (${telebirrCount})` },
+          { id: 'cbe', label: `Commercial Bank (${cbeCount})` },
+          ...(otherBankCount > 0 ? [{ id: 'other', label: `Other / Direct (${otherBankCount})` }] : []),
+        ],
+      },
+      ...(planOptions.length > 0
+        ? [
+            {
+              id: 'plan',
+              label: 'Subscription Plan',
+              chipPrefix: 'Plan: ',
+              options: planOptions,
+            },
+          ]
+        : []),
+      {
+        id: 'verification',
+        label: 'Verification Type',
+        chipPrefix: 'Verify: ',
+        options: [
+          { id: 'verify_et', label: `Verify.et Auto (${verifyEtCount})` },
+          { id: 'manual', label: `Manual Review (${manualCount})` },
+          { id: 'screenshot', label: `With Receipt (${withScreenshotCount})` },
+        ],
+      },
+    ];
+  }, [submissions, pendingCount, approvedCount, rejectedCount]);
+
+  const activeFilterCount = useMemo(() => {
+    return Object.values(filterValue).reduce((acc, curr) => acc + (Array.isArray(curr) ? curr.length : 0), 0);
+  }, [filterValue]);
+
+  // Filtered Payments for table with multi-faceted grouping
+  const filteredSubmissions = useMemo(() => {
+    return submissions.filter((sub) => {
+      const query = paymentSearch.toLowerCase().trim();
+      const matchesSearch =
+        !query ||
+        sub.userName.toLowerCase().includes(query) ||
+        sub.userPhone.toLowerCase().includes(query) ||
+        sub.planName.toLowerCase().includes(query) ||
+        (sub.transactionId && sub.transactionId.toLowerCase().includes(query));
+
+      if (!matchesSearch) return false;
+
+      // Group 1: Status (FilterMenu takes precedence; falls back to statusFilter pill)
+      const pickedStatus = filterValue.status || [];
+      if (pickedStatus.length > 0) {
+        if (!pickedStatus.includes(sub.status)) return false;
+      } else if (statusFilter !== 'all') {
+        if (sub.status !== statusFilter) return false;
+      }
+
+      // Group 2: Bank / Method
+      const pickedBanks = filterValue.bank || [];
+      if (pickedBanks.length > 0) {
+        const bankStr = (sub.bank || '').toLowerCase();
+        const matchesBank = pickedBanks.some((b) => {
+          if (b === 'telebirr') return bankStr.includes('telebirr');
+          if (b === 'cbe') return bankStr.includes('cbe');
+          if (b === 'other') return !bankStr.includes('telebirr') && !bankStr.includes('cbe');
+          return false;
+        });
+        if (!matchesBank) return false;
+      }
+
+      // Group 3: Plan
+      const pickedPlans = filterValue.plan || [];
+      if (pickedPlans.length > 0 && !pickedPlans.includes(sub.planName)) {
+        return false;
+      }
+
+      // Group 4: Verification
+      const pickedVerification = filterValue.verification || [];
+      if (pickedVerification.length > 0) {
+        const matchesVerif = pickedVerification.some((v) => {
+          if (v === 'verify_et') return sub.verificationMethod === 'verify_et';
+          if (v === 'manual') return sub.verificationMethod === 'manual' || !sub.verificationMethod;
+          if (v === 'screenshot') return Boolean(sub.screenshotUrl);
+          return false;
+        });
+        if (!matchesVerif) return false;
+      }
+
+      return true;
+    });
+  }, [submissions, paymentSearch, filterValue, statusFilter]);
 
   // Reset to page 1 if query or filter changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [paymentSearch, statusFilter, pageSize]);
+  }, [paymentSearch, statusFilter, filterValue, pageSize]);
 
   const totalPages = Math.max(1, Math.ceil(filteredSubmissions.length / pageSize));
   const validCurrentPage = Math.min(currentPage, totalPages);
@@ -995,9 +1131,10 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
           onClick={() => {
             setActiveTab('approvals');
             setStatusFilter('pending');
+            setFilterValue({ status: ['pending'] });
           }}
           className={`p-4 sm:p-5 rounded-[5px] border transition-all cursor-pointer bg-white dark:bg-[#181615] ${
-            activeTab === 'approvals' && statusFilter === 'pending'
+            activeTab === 'approvals' && (statusFilter === 'pending' || (filterValue.status?.includes('pending') && filterValue.status.length === 1))
               ? 'border-[#981C00] dark:border-[#C43214] ring-1 ring-[#981C00]/30 shadow-xs'
               : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00]/40 dark:hover:border-[#C43214]/40 shadow-2xs'
           }`}
@@ -1061,9 +1198,10 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
           onClick={() => {
             setActiveTab('approvals');
             setStatusFilter('approved');
+            setFilterValue({ status: ['approved'] });
           }}
           className={`p-4 sm:p-5 rounded-[5px] border transition-all cursor-pointer bg-white dark:bg-[#181615] ${
-            activeTab === 'approvals' && statusFilter === 'approved'
+            activeTab === 'approvals' && (statusFilter === 'approved' || (filterValue.status?.includes('approved') && filterValue.status.length === 1))
               ? 'border-[#981C00] dark:border-[#C43214] ring-1 ring-[#981C00]/30 shadow-xs'
               : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00]/40 dark:hover:border-[#C43214]/40 shadow-2xs'
           }`}
@@ -1179,9 +1317,16 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
             {/* Filter Pills */}
             <div className="inline-flex items-center gap-1 p-1 bg-[#F3EFEA] dark:bg-[#1E1B19] rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] text-xs font-medium overflow-x-auto no-scrollbar">
               <button
-                onClick={() => setStatusFilter('all')}
+                onClick={() => {
+                  setStatusFilter('all');
+                  setFilterValue((prev) => {
+                    const next = { ...prev };
+                    delete next.status;
+                    return next;
+                  });
+                }}
                 className={`px-2.5 py-1 rounded-[5px] transition-all cursor-pointer whitespace-nowrap text-xs font-semibold ${
-                  statusFilter === 'all'
+                  statusFilter === 'all' && (!filterValue.status || filterValue.status.length === 0)
                     ? 'bg-white dark:bg-[#2A2624] text-[#24211F] dark:text-[#FAF8F5] shadow-2xs'
                     : 'text-[#706A65] dark:text-[#A8A29D] hover:text-[#24211F] dark:hover:text-[#FAF8F5]'
                 }`}
@@ -1189,9 +1334,12 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                 All ({submissions.length})
               </button>
               <button
-                onClick={() => setStatusFilter('pending')}
+                onClick={() => {
+                  setStatusFilter('pending');
+                  setFilterValue((prev) => ({ ...prev, status: ['pending'] }));
+                }}
                 className={`px-2.5 py-1 rounded-[5px] transition-all cursor-pointer whitespace-nowrap text-xs font-semibold flex items-center gap-1.5 ${
-                  statusFilter === 'pending'
+                  statusFilter === 'pending' || (filterValue.status?.includes('pending') && filterValue.status.length === 1)
                     ? 'bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800/80 shadow-2xs'
                     : 'text-amber-700 dark:text-amber-400 hover:bg-amber-500/10'
                 }`}
@@ -1200,9 +1348,12 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                 <span>Pending ({pendingCount})</span>
               </button>
               <button
-                onClick={() => setStatusFilter('approved')}
+                onClick={() => {
+                  setStatusFilter('approved');
+                  setFilterValue((prev) => ({ ...prev, status: ['approved'] }));
+                }}
                 className={`px-2.5 py-1 rounded-[5px] transition-all cursor-pointer whitespace-nowrap text-xs font-semibold flex items-center gap-1.5 ${
-                  statusFilter === 'approved'
+                  statusFilter === 'approved' || (filterValue.status?.includes('approved') && filterValue.status.length === 1)
                     ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800/80 shadow-2xs'
                     : 'text-emerald-700 dark:text-emerald-400 hover:bg-emerald-500/10'
                 }`}
@@ -1211,9 +1362,12 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                 <span>Approved ({approvedCount})</span>
               </button>
               <button
-                onClick={() => setStatusFilter('rejected')}
+                onClick={() => {
+                  setStatusFilter('rejected');
+                  setFilterValue((prev) => ({ ...prev, status: ['rejected'] }));
+                }}
                 className={`px-2.5 py-1 rounded-[5px] transition-all cursor-pointer whitespace-nowrap text-xs font-semibold flex items-center gap-1.5 ${
-                  statusFilter === 'rejected'
+                  statusFilter === 'rejected' || (filterValue.status?.includes('rejected') && filterValue.status.length === 1)
                     ? 'bg-rose-100 dark:bg-rose-950/60 text-rose-900 dark:text-rose-200 border border-rose-300 dark:border-rose-800/80 shadow-2xs'
                     : 'text-rose-700 dark:text-rose-400 hover:bg-rose-500/10'
                 }`}
@@ -1224,17 +1378,68 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
             </div>
           </div>
 
-          {/* Search Input, Batch Selection & Pagination Controls Bar */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-3">
-            <div className="w-full sm:max-w-xs md:max-w-sm">
-              <Input
-                placeholder="Search member, phone, plan..."
-                value={paymentSearch}
-                onChange={(e) => setPaymentSearch(e.target.value)}
-                leftIcon={<Search className="w-3.5 h-3.5 text-[#706A65]" />}
-                className="rounded-[5px] border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#181615] focus:border-[#981C00] focus:ring-[#981C00]/20 text-xs"
-              />
-            </div>
+          {/* Search Input, Grouped Filter Menu & Batch Selection Controls Bar */}
+          <div className="space-y-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-3">
+              <div className="flex items-center gap-2 w-full sm:max-w-md">
+                <div className="flex-1">
+                  <Input
+                    placeholder="Search member, phone, plan..."
+                    value={paymentSearch}
+                    onChange={(e) => setPaymentSearch(e.target.value)}
+                    leftIcon={<Search className="w-3.5 h-3.5 text-[#706A65]" />}
+                    className="rounded-[5px] border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#181615] focus:border-[#981C00] focus:ring-[#981C00]/20 text-xs"
+                  />
+                </div>
+
+                {/* Filter Menu Popover Button */}
+                <div className="relative shrink-0" ref={filterMenuRef}>
+                  <button
+                    type="button"
+                    onClick={() => setIsFilterMenuOpen((prev) => !prev)}
+                    className={`inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-[5px] text-xs font-semibold border transition-all cursor-pointer shadow-2xs ${
+                      isFilterMenuOpen || activeFilterCount > 0
+                        ? 'bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#E89382] border-[#981C00]/40 dark:border-[#C43214]/40 ring-1 ring-[#981C00]/20'
+                        : 'bg-white dark:bg-[#1E1B19] text-[#24211F] dark:text-[#FAF8F5] border-[#E8E4DF] dark:border-[#2C2825] hover:bg-[#FAF8F5] dark:hover:bg-[#2A2624]'
+                    }`}
+                    aria-expanded={isFilterMenuOpen}
+                    title="Open Grouped Filters (FilterMenu)"
+                  >
+                    <ListFilter className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
+                    <span>Filters</span>
+                    {activeFilterCount > 0 && (
+                      <span className="px-1.5 py-0.2 rounded-full bg-[#981C00] text-white text-[10px] font-bold font-mono">
+                        {activeFilterCount}
+                      </span>
+                    )}
+                    <ChevronDown
+                      className={`w-3 h-3 text-[#706A65] dark:text-[#A8A19A] transition-transform duration-200 ${
+                        isFilterMenuOpen ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+
+                  {/* Filter Menu Popover Dropdown */}
+                  {isFilterMenuOpen && (
+                    <div className="absolute left-0 sm:left-auto sm:right-0 top-full mt-2 z-40 w-[330px] sm:w-[380px] max-w-[90vw] shadow-2xl animate-in fade-in zoom-in-95 duration-150">
+                      <FilterMenu
+                        groups={filterGroups}
+                        value={filterValue}
+                        onChange={(next) => {
+                          setFilterValue(next);
+                          if (next.status && next.status.length === 1) {
+                            setStatusFilter(next.status[0] as any);
+                          } else if (!next.status || next.status.length === 0) {
+                            setStatusFilter('all');
+                          }
+                        }}
+                        title="Filter Registrations"
+                        hints={true}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
 
             <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap sm:flex-nowrap justify-end">
               {/* Copy Approved Phone Numbers Button */}
@@ -1376,6 +1581,58 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                 </div>
               )}
             </div>
+          </div>
+
+            {/* Active Filter Chips Bar (Quick remove & summary) */}
+            {activeFilterCount > 0 && (
+              <div className="flex items-center gap-1.5 flex-wrap pt-1 border-t border-dashed border-[#E8E4DF] dark:border-[#2C2825]">
+                <span className="text-[11px] font-semibold text-[#706A65] dark:text-[#A8A19A] mr-1">
+                  Active filters:
+                </span>
+                {filterGroups.flatMap((g) =>
+                  (filterValue[g.id] || []).map((valId) => {
+                    const opt = g.options.find((o) => o.id === valId);
+                    const label = `${g.chipPrefix || ''}${opt ? opt.label.replace(/\s*\(\d+\)/, '') : valId}`;
+                    return (
+                      <span
+                        key={`${g.id}-${valId}`}
+                        className="inline-flex items-center gap-1.5 pl-2 pr-1 py-0.5 rounded-[5px] bg-[#FAF4F2] dark:bg-[#2A1D1A] border border-[#E8DCD9] dark:border-[#3A2420] text-[#981C00] dark:text-[#E89382] text-[11px] font-medium animate-in fade-in duration-150"
+                      >
+                        <span>{label}</span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const cur = filterValue[g.id] || [];
+                            const next = cur.filter((x) => x !== valId);
+                            const updated = { ...filterValue, [g.id]: next };
+                            if (next.length === 0) delete updated[g.id];
+                            setFilterValue(updated);
+                            if (g.id === 'status') {
+                              if (next.length === 1) setStatusFilter(next[0] as any);
+                              else setStatusFilter('all');
+                            }
+                          }}
+                          className="hover:bg-[#F3E6E2] dark:hover:bg-[#3A2420] rounded-[3px] p-0.5 transition-colors cursor-pointer"
+                          aria-label={`Remove filter ${label}`}
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </span>
+                    );
+                  })
+                )}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFilterValue({});
+                    setStatusFilter('all');
+                  }}
+                  className="text-[11px] font-semibold text-[#706A65] hover:text-[#981C00] dark:text-[#A8A19A] dark:hover:text-[#E89382] underline ml-1 cursor-pointer"
+                >
+                  Clear all
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Registrations List - Mobile Cards View + Desktop Table View */}
