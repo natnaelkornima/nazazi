@@ -610,32 +610,32 @@ export const LandingView: React.FC<LandingViewProps> = ({
             </div>
           </div>
 
-          {/* Hero Right Column: Authentic Physical Smartphone & SMS Messages App Preview (1320 × 2868 Native Flagship Dimensions) */}
+          {/* Hero Right Column: Authentic Physical Smartphone & SMS Messages App Preview */}
           <div className="lg:col-span-5 flex flex-col items-center">
-            {/* Physical Smartphone Chassis with 1320 × 2868 Eye-Catching Proportions */}
-            <div className="relative w-full max-w-[340px] sm:max-w-[380px] lg:max-w-[400px]">
+            {/* Physical Smartphone Chassis with Slim Bezel & Spacious Width */}
+            <div className="relative w-full max-w-[365px] sm:max-w-[415px] lg:max-w-[440px]">
               {/* Soft Ambient Ground Shadow */}
-              <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-[88%] h-10 bg-black/40 blur-2xl rounded-full pointer-events-none" />
+              <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-[90%] h-10 bg-black/40 blur-2xl rounded-full pointer-events-none" />
 
-              {/* Outer Phone Aluminum/Titanium Frame */}
-              <div className="relative rounded-[56px] p-[10px] sm:p-[12px] bg-gradient-to-b from-[#3C3944] via-[#222127] to-[#121116] shadow-[0_36px_85px_-15px_rgba(0,0,0,0.7),0_0_0_1px_rgba(255,255,255,0.18),inset_0_1.5px_2px_rgba(255,255,255,0.4)]">
+              {/* Outer Phone Aluminum/Titanium Frame - Sleek Ultra-Thin Bezel */}
+              <div className="relative rounded-[50px] p-[3.5px] sm:p-[4.5px] bg-gradient-to-b from-[#44414C] via-[#24232A] to-[#131217] shadow-[0_36px_85px_-15px_rgba(0,0,0,0.65),0_0_0_1px_rgba(255,255,255,0.22),inset_0_1px_1.5px_rgba(255,255,255,0.45)]">
                 {/* Physical Hardware Buttons */}
                 {/* Left Silent / Action Switch */}
-                <div className="absolute -left-[3.5px] top-24 w-[3.5px] h-7 bg-[#323038] rounded-l-xs shadow-xs border-y border-l border-white/20" />
+                <div className="absolute -left-[2.5px] top-24 w-[2.5px] h-7 bg-[#323038] rounded-l-xs shadow-xs border-y border-l border-white/20" />
                 {/* Left Volume Up */}
-                <div className="absolute -left-[3.5px] top-37 w-[3.5px] h-12 bg-[#323038] rounded-l-xs shadow-xs border-y border-l border-white/20" />
+                <div className="absolute -left-[2.5px] top-36 w-[2.5px] h-12 bg-[#323038] rounded-l-xs shadow-xs border-y border-l border-white/20" />
                 {/* Left Volume Down */}
-                <div className="absolute -left-[3.5px] top-53 w-[3.5px] h-12 bg-[#323038] rounded-l-xs shadow-xs border-y border-l border-white/20" />
+                <div className="absolute -left-[2.5px] top-51 w-[2.5px] h-12 bg-[#323038] rounded-l-xs shadow-xs border-y border-l border-white/20" />
                 {/* Right Power Button */}
-                <div className="absolute -right-[3.5px] top-34 w-[3.5px] h-16 bg-[#323038] rounded-r-xs shadow-xs border-y border-r border-white/20" />
+                <div className="absolute -right-[2.5px] top-34 w-[2.5px] h-16 bg-[#323038] rounded-r-xs shadow-xs border-y border-r border-white/20" />
 
-                {/* Top Speaker Ear-piece Micro Slit */}
-                <div className="w-14 h-1 bg-[#0F0E13] rounded-full mx-auto mb-1.5 opacity-90" />
+                {/* Top Speaker Ear-piece Micro Slit embedded in bezel */}
+                <div className="absolute top-[1.5px] left-1/2 -translate-x-1/2 w-12 h-[2px] bg-[#0F0E13] rounded-full z-30 opacity-80" />
 
-                {/* Inner Screen Display (Exact 1320 × 2868 Aspect Ratio) */}
-                <div className="w-full aspect-[1320/2868] rounded-[44px] overflow-hidden bg-[#FFFFFF] dark:bg-[#000000] border border-black/40 relative flex flex-col justify-between select-none shadow-inner">
+                {/* Inner Screen Display (Spacious Proportions & Ultra-Thin Bezel) */}
+                <div className="w-full aspect-[9/18.2] rounded-[46px] overflow-hidden bg-[#FFFFFF] dark:bg-[#000000] border border-black/30 relative flex flex-col justify-between select-none shadow-inner">
                   {/* Glass Sheen / Specular Light Reflection */}
-                  <div className="absolute inset-0 pointer-events-none rounded-[44px] bg-gradient-to-tr from-transparent via-white/[0.02] to-white/[0.08] z-30" />
+                  <div className="absolute inset-0 pointer-events-none rounded-[46px] bg-gradient-to-tr from-transparent via-white/[0.02] to-white/[0.08] z-30" />
 
                   {/* Top iOS Status Bar */}
                   <div className="pt-2.5 px-5 pb-1 flex items-center justify-between text-[#000000] dark:text-[#FFFFFF] text-[11px] font-semibold tracking-tight z-20">
