@@ -676,71 +676,167 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
       {/* ========================================================
           2. HOW IT WORKS SECTION (#how-it-works)
-          Clear 3-step numbered journey reflecting real product facts.
+          Clear 3-step journey with generous breathing room and rich descriptions.
           ======================================================== */}
-      <section id="how-it-works" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
-        <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] pt-14 space-y-12">
-          {/* Section Header */}
-          <div className="max-w-xl space-y-2">
-            <p className="text-xs font-bold uppercase tracking-wider text-[#981C00] dark:text-[#C43214]">
-              {isAmharic ? 'ቀላል አሰራር' : 'Simple 3-Step Process'}
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#24211F] dark:text-[#FAF8F5]">
-              {isAmharic ? 'እንዴት እንደሚሰራ' : 'How Nazazi Works'}
+      <section id="how-it-works" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-28 scroll-mt-24">
+        <div className="border-t border-[#E8E4DF] dark:border-[#2C2825] pt-16 sm:pt-20 space-y-12 sm:space-y-16">
+          {/* Section Header with Generous White Space */}
+          <div className="text-center max-w-2xl mx-auto space-y-3 sm:space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#C43214] border border-[#E8DCD9] dark:border-[#3A2420]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#981C00] dark:bg-[#C43214]" />
+              <span>{isAmharic ? 'ቀላል የ3-ደረጃ ሂደት' : 'Simple 3-Step Process'}</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#24211F] dark:text-[#FAF8F5]">
+              {isAmharic ? 'ናዛዚ እንዴት እንደሚሰራ' : 'How Nazazi Works'}
             </h2>
-            <p className="text-sm text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
+            <p className="text-sm sm:text-base text-[#706A65] dark:text-[#A8A19A] leading-relaxed max-w-xl mx-auto">
               {isAmharic
-                ? 'ምንም የተወሳሰበ ቅጽ ወይም አካውንት መክፈት አይጠበቅብዎትም። በ3 ቀላል እርምጃዎች አገልግሎቱን ይጀምሩ።'
-                : 'No complex registrations or accounts. Begin receiving daily encouragement in 3 simple steps.'}
+                ? 'ምንም የተወሳሰበ ቅጽ ወይም አካውንት መክፈት አይጠበቅብዎትም። በ3 ቀላል እና ፈጣን እርምጃዎች የዕለቱን መንፈሳዊ መጽናኛ ማግኘት ይጀምሩ።'
+                : 'No complex registrations, passwords, or accounts required. Begin receiving daily comforting Scripture verses right on your phone in three simple steps.'}
             </p>
           </div>
 
-          {/* 3 Step Editorial Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
+          {/* 3 Step Editorial Cards with Ample Breathing Room */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-8 items-stretch">
             {/* Step 1 */}
-            <div className="space-y-3.5 p-6 rounded-xl bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825]">
-              <div className="w-8 h-8 rounded-md bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#C43214] flex items-center justify-center font-black text-sm border border-[#E8DCD9] dark:border-[#3A2420]">
-                1
+            <div className="group relative flex flex-col justify-between p-7 sm:p-8 lg:p-9 rounded-[28px] bg-white dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] shadow-xs hover:shadow-lg hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40 transition-all duration-300">
+              <div className="space-y-5">
+                {/* Header: Step Number & Icon */}
+                <div className="flex items-center justify-between">
+                  <span className="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#C43214] border border-[#E8DCD9] dark:border-[#3A2420]">
+                    {isAmharic ? 'ደረጃ 01' : 'Step 01'}
+                  </span>
+                  <div className="w-10 h-10 rounded-xl bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#C43214] flex items-center justify-center border border-[#E8DCD9] dark:border-[#3A2420] group-hover:scale-105 transition-transform">
+                    <Sparkles className="w-4 h-4" />
+                  </div>
+                </div>
+
+                {/* Title & Description */}
+                <div className="space-y-2.5">
+                  <h3 className="text-xl font-bold text-[#24211F] dark:text-[#FAF8F5] tracking-tight">
+                    {isAmharic ? 'የደንበኝነት እቅድ ይምረጡ' : 'Choose a Plan'}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
+                    {isAmharic
+                      ? 'ለእርሶ የሚስማማውን የአገልግሎት ጊዜ ይምረጡ። የ1 ወር (200 ብር)፣ ተወዳጁ የ3 ወር (600 ብር) ወይም የ200 ብር ቅናሽ ያለው የ6 ወር (1,000 ብር) ግልጽ አማራጮች አሉ።'
+                      : 'Select the subscription length that best fits your spiritual journey. Pick from flexible 1-month (200 ETB), popular 3-month (600 ETB), or best-value 6-month (1,000 ETB) options.'}
+                  </p>
+                </div>
               </div>
-              <h3 className="text-base font-bold text-[#24211F] dark:text-[#FAF8F5] tracking-tight">
-                {isAmharic ? 'የደንበኝነት እቅድ ይምረጡ' : 'Choose a Plan'}
-              </h3>
-              <p className="text-xs text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
-                {isAmharic
-                  ? 'የ1 ወር (200 ብር)፣ የ3 ወር (600 ብር) ወይም የ6 ወር (1,000 ብር) አገልግሎት በመምረጥ ሂደቱን ይጀምሩ።'
-                  : 'Select a 1-month (200 ETB), 3-month (600 ETB), or 6-month (1,000 ETB) subscription option.'}
-              </p>
+
+              {/* Descriptive Highlights */}
+              <ul className="space-y-2.5 pt-6 mt-6 border-t border-[#F0ECE6] dark:border-[#2A2522]">
+                <li className="flex items-center gap-2 text-xs font-medium text-[#4D4742] dark:text-[#C9C2BA]">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#981C00] dark:text-[#C43214] shrink-0" />
+                  <span>{isAmharic ? 'የ1፣ 3 ወይም የ6 ወር ተለዋዋጭ አማራጮች' : 'Flexible 1, 3, or 6 month options'}</span>
+                </li>
+                <li className="flex items-center gap-2 text-xs font-medium text-[#4D4742] dark:text-[#C9C2BA]">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#981C00] dark:text-[#C43214] shrink-0" />
+                  <span>{isAmharic ? 'በ200 ብር ብቻ የሚጀምር ተመጣጣኝ ዋጋ' : 'Affordable pricing starting at 200 ETB'}</span>
+                </li>
+                <li className="flex items-center gap-2 text-xs font-medium text-[#4D4742] dark:text-[#C9C2BA]">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#981C00] dark:text-[#C43214] shrink-0" />
+                  <span>{isAmharic ? 'ምንም የተደበቀ ክፍያ ወይም ውል የሌለው' : 'No hidden fees or unexpected charges'}</span>
+                </li>
+              </ul>
             </div>
 
             {/* Step 2 */}
-            <div className="space-y-3.5 p-6 rounded-xl bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825]">
-              <div className="w-8 h-8 rounded-md bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#C43214] flex items-center justify-center font-black text-sm border border-[#E8DCD9] dark:border-[#3A2420]">
-                2
+            <div className="group relative flex flex-col justify-between p-7 sm:p-8 lg:p-9 rounded-[28px] bg-white dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] shadow-xs hover:shadow-lg hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40 transition-all duration-300">
+              <div className="space-y-5">
+                {/* Header: Step Number & Icon */}
+                <div className="flex items-center justify-between">
+                  <span className="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#C43214] border border-[#E8DCD9] dark:border-[#3A2420]">
+                    {isAmharic ? 'ደረጃ 02' : 'Step 02'}
+                  </span>
+                  <div className="w-10 h-10 rounded-xl bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#C43214] flex items-center justify-center border border-[#E8DCD9] dark:border-[#3A2420] group-hover:scale-105 transition-transform">
+                    <ShieldCheck className="w-4 h-4" />
+                  </div>
+                </div>
+
+                {/* Title & Description */}
+                <div className="space-y-2.5">
+                  <h3 className="text-xl font-bold text-[#24211F] dark:text-[#FAF8F5] tracking-tight">
+                    {isAmharic ? 'ይመዝገቡና ክፍያዎን ያረጋግጡ' : 'Register & Verify Payment'}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
+                    {isAmharic
+                      ? 'ስምዎንና ስልክ ቁጥርዎን ያስገቡ፤ በCBE ወይም በቴሌብር የከፈሉበትን የትራንዛክሽን ኮድ (Reference) በማስገባት በVerify.ET ወዲያውኑ ያረጋግጡ ወይም ደረሰኝ ያያይዙ።'
+                      : 'Enter your name and mobile number. Send via CBE or Telebirr, then paste your transaction reference for instant automated Verify.ET confirmation or attach your receipt.'}
+                  </p>
+                </div>
               </div>
-              <h3 className="text-base font-bold text-[#24211F] dark:text-[#FAF8F5] tracking-tight">
-                {isAmharic ? 'ይመዝገቡና ክፍያዎን ያረጋግጡ' : 'Register & Upload Receipt'}
-              </h3>
-              <p className="text-xs text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
-                {isAmharic
-                  ? 'ስምዎንና ስልክ ቁጥርዎን ያስገቡ፤ በCBE ወይም በTelebirr የከፈሉበትን ደረሰኝ ፎቶ በቀላሉ ያያይዙ።'
-                  : 'Enter your name and mobile number, then attach a screenshot of your CBE or Telebirr transfer.'}
-              </p>
+
+              {/* Descriptive Highlights */}
+              <ul className="space-y-2.5 pt-6 mt-6 border-t border-[#F0ECE6] dark:border-[#2A2522]">
+                <li className="flex items-center gap-2 text-xs font-medium text-[#4D4742] dark:text-[#C9C2BA]">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#981C00] dark:text-[#C43214] shrink-0" />
+                  <span>{isAmharic ? 'በCBE እና በቴሌብር ክፍያ የሚፈጸም' : 'CBE & Telebirr transfers supported'}</span>
+                </li>
+                <li className="flex items-center gap-2 text-xs font-medium text-[#4D4742] dark:text-[#C9C2BA]">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#981C00] dark:text-[#C43214] shrink-0" />
+                  <span>{isAmharic ? 'በVerify.ET ራስ-ሰር ፈጣን ማረጋገጫ' : 'Instant Verify.ET automated check'}</span>
+                </li>
+                <li className="flex items-center gap-2 text-xs font-medium text-[#4D4742] dark:text-[#C9C2BA]">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#981C00] dark:text-[#C43214] shrink-0" />
+                  <span>{isAmharic ? 'የአድሚን ፍተሻ መጠበቅ አያስፈልግም' : 'No long waiting or complex forms'}</span>
+                </li>
+              </ul>
             </div>
 
             {/* Step 3 */}
-            <div className="space-y-3.5 p-6 rounded-xl bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825]">
-              <div className="w-8 h-8 rounded-md bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#C43214] flex items-center justify-center font-black text-sm border border-[#E8DCD9] dark:border-[#3A2420]">
-                3
+            <div className="group relative flex flex-col justify-between p-7 sm:p-8 lg:p-9 rounded-[28px] bg-white dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] shadow-xs hover:shadow-lg hover:border-[#981C00]/30 dark:hover:border-[#C43214]/40 transition-all duration-300">
+              <div className="space-y-5">
+                {/* Header: Step Number & Icon */}
+                <div className="flex items-center justify-between">
+                  <span className="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#C43214] border border-[#E8DCD9] dark:border-[#3A2420]">
+                    {isAmharic ? 'ደረጃ 03' : 'Step 03'}
+                  </span>
+                  <div className="w-10 h-10 rounded-xl bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#C43214] flex items-center justify-center border border-[#E8DCD9] dark:border-[#3A2420] group-hover:scale-105 transition-transform">
+                    <Smartphone className="w-4 h-4" />
+                  </div>
+                </div>
+
+                {/* Title & Description */}
+                <div className="space-y-2.5">
+                  <h3 className="text-xl font-bold text-[#24211F] dark:text-[#FAF8F5] tracking-tight">
+                    {isAmharic ? 'የየዕለቱን የSMS በረከቶች ይቀበሉ' : 'Receive Daily SMS'}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
+                    {isAmharic
+                      ? 'ምዝገባዎ እንደተጠናቀቀ፣ በየዕለቱ ጠዋት የሚያንፁ እና ልብን የሚያጽናኑ የመጽሐፍ ቅዱስ ቃላቶች በቀጥታ ወደ ስልክዎ በSMS መድረስ ይጀምራሉ። ምንም ኢንተርኔት አያስፈልግም።'
+                      : 'Once verified, daily comforting Scripture verses and spiritual encouragement arrive right on your phone via standard SMS. No internet data or mobile apps needed.'}
+                  </p>
+                </div>
               </div>
-              <h3 className="text-base font-bold text-[#24211F] dark:text-[#FAF8F5] tracking-tight">
-                {isAmharic ? 'በስልክዎ መልእክቶችን ይቀበሉ' : 'Receive Daily SMS'}
-              </h3>
-              <p className="text-xs text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
-                {isAmharic
-                  ? 'ክፍያዎ እንደተረጋገጠ፣ በየዕለቱ የሚያንፁ እና የሚያጽናኑ የመጽሐፍ ቅዱስ ቃላቶች በSMS መድረስ ይጀምራሉ።'
-                  : 'Once payment is approved, daily comforting verses and messages arrive right on your phone.'}
-              </p>
+
+              {/* Descriptive Highlights */}
+              <ul className="space-y-2.5 pt-6 mt-6 border-t border-[#F0ECE6] dark:border-[#2A2522]">
+                <li className="flex items-center gap-2 text-xs font-medium text-[#4D4742] dark:text-[#C9C2BA]">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#981C00] dark:text-[#C43214] shrink-0" />
+                  <span>{isAmharic ? 'ቀጥታ ወደ ማንኛውም ስልክ በSMS የሚላክ' : 'Standard SMS directly to your phone'}</span>
+                </li>
+                <li className="flex items-center gap-2 text-xs font-medium text-[#4D4742] dark:text-[#C9C2BA]">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#981C00] dark:text-[#C43214] shrink-0" />
+                  <span>{isAmharic ? '100% ያለ ኢንተርኔትና ያለ አፕ የሚሰራ' : '100% offline — works without mobile internet'}</span>
+                </li>
+                <li className="flex items-center gap-2 text-xs font-medium text-[#4D4742] dark:text-[#C9C2BA]">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#981C00] dark:text-[#C43214] shrink-0" />
+                  <span>{isAmharic ? 'የየዕለቱ የሚያጽናና መንፈሳዊ ስንቅ' : 'Daily comforting morning verse'}</span>
+                </li>
+              </ul>
             </div>
+          </div>
+
+          {/* Bottom Callout to Pricing */}
+          <div className="pt-2 text-center">
+            <a
+              href="#pricing"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs font-bold bg-[#FAF4F2] hover:bg-[#F2EAE7] dark:bg-[#251A18] dark:hover:bg-[#2E201D] text-[#981C00] dark:text-[#C43214] border border-[#E8DCD9] dark:border-[#382622] transition-all duration-200 cursor-pointer shadow-2xs group"
+            >
+              <span>{isAmharic ? 'የደንበኝነት እቅዶችን ይመልከቱ' : 'Explore Subscription Plans'}</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </a>
           </div>
         </div>
       </section>
