@@ -5,13 +5,11 @@ import { AnimatePresence, motion } from 'motion/react';
 import { Modal } from './ui/Modal';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
-import { GlassFolderUploader } from './ui/GlassFolderUploader';
 import { usePayment } from '../context/PaymentContext';
 import { useToast } from '../context/ToastContext';
 import { useLanguage } from '../context/LanguageContext';
 import { PaymentSubmission } from '../types';
-import { compressImage } from '../lib/imageCompressor';
-import { validateFullName, validateEthiopianPhone } from '../lib/validation';
+import { validateFullName, validateStrict09Phone } from '../lib/validation';
 import {
   User,
   Smartphone,
@@ -23,7 +21,6 @@ import {
   Lock,
   Zap,
   ShieldCheck,
-  Upload,
   Loader2,
   Sparkles,
   Building2,
@@ -91,23 +88,36 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
   const [transactionId, setTransactionId] = useState('');
   const [transactionIdTouched, setTransactionIdTouched] = useState(false);
   const [selectedBank, setSelectedBank] = useState<'cbe' | 'telebirr' | 'auto'>('auto');
-  const [screenshotDataUrl, setScreenshotDataUrl] = useState<string | null>(null);
-  const [screenshotFile, setScreenshotFile] = useState<File | null>(null);
-  const [screenshotTouched, setScreenshotTouched] = useState(false);
-  const [showImageUpload, setShowImageUpload] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isVerifyingWithBank, setIsVerifyingWithBank] = useState(false);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
+  // Phone input handler enforcing strict 09 format
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let digits = e.target.value.replace(/\D/g, '');
+    // If user starts by typing '9', auto-prepend '0' -> '09'
+    if (digits === '9') digits = '09';
+    // If user pastes a number starting with 2519...
+    if (digits.startsWith('2519') && digits.length > 4) {
+      digits = '09' + digits.slice(4);
+    }
+    // Limit to exactly 10 digits
+    if (digits.length > 10) {
+      digits = digits.slice(0, 10);
+    }
+    setPhone(digits);
+    if (!phoneTouched) setPhoneTouched(true);
+  };
+
   // Real-time validation
   const nameValidation = validateFullName(name, isAmharic);
-  const phoneValidation = validateEthiopianPhone(phone, isAmharic);
+  const phoneValidation = validateStrict09Phone(phone, isAmharic);
 
   const nameError = nameTouched && !nameValidation.isValid ? nameValidation.error : undefined;
   const nameSuccess = nameTouched && nameValidation.isValid ? (isAmharic ? 'ትክክለኛ ስም' : 'Looks good') : undefined;
 
   const phoneError = phoneTouched && !phoneValidation.isValid ? phoneValidation.error : undefined;
-  const phoneSuccess = phoneTouched && phoneValidation.isValid ? (isAmharic ? 'ትክክለኛ ስልክ ቁጥር' : 'Valid phone number') : undefined;
+  const phoneSuccess = phoneTouched && phoneValidation.isValid ? (isAmharic ? 'ትክክለኛ ስልክ ቁጥር' : 'Valid 09 number') : undefined;
 
   useEffect(() => {
     if (isOpen) {
@@ -115,7 +125,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
       setDirection(1);
       setNameTouched(false);
       setPhoneTouched(false);
-      setScreenshotTouched(false);
+      setTransactionIdTouched(false);
       if (initialPlan) {
         setSelectedPlanId(getPlanIdFromStr(initialPlan));
       }
@@ -233,181 +243,67 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
 
     const cleanRef = transactionId.trim();
 
-    if (!cleanRef && !screenshotDataUrl) {
+    if (!cleanRef) {
       error(
-        isAmharic ? 'የትራንዛክሽን ቁጥር ወይም ደረሰኝ ያስፈልጋል' : 'Transaction ID or receipt required',
+        isAmharic ? 'የትራንዛክሽን ቁጥር ያስፈልጋል' : 'Transaction ID required',
         isAmharic
-          ? 'እባክዎ ከባንክ ወይም ከቴሌብር የደረሰዎትን የትራንዛክሽን ቁጥር (Transaction ID) ወይም የደረሰኝ ፎቶ ያስገቡ'
-          : 'Please enter your bank/Telebirr transaction reference number or upload a screenshot.'
+          ? 'እባክዎ ከባንክ ወይም ከቴሌብር የደረሰዎትን የትራንዛክሽን ቁጥር (Transaction ID) ያስገቡ'
+          : 'Please enter your bank or Telebirr transaction reference number.'
       );
       return;
     }
 
     setIsSubmitting(true);
-    if (cleanRef) {
-      setIsVerifyingWithBank(true);
-    }
+    setIsVerifyingWithBank(true);
 
     try {
-      // 1. If transaction ID is provided, verify directly with Verify.et!
-      if (cleanRef) {
-        const verifyRes = await verifyPaymentOnline({
-          reference: cleanRef,
-          bank: selectedBank !== 'auto' ? selectedBank : undefined,
-          name: name.trim(),
-          phone: phone.trim(),
-          planName: selectedPlan,
-          amount: planAmount,
-          screenshotUrl: screenshotDataUrl || undefined,
-        });
+      // Direct online verification with Verify.ET API
+      const cleanPhone = phoneValidation.cleanPhone || phone.trim();
+      const verifyRes = await verifyPaymentOnline({
+        reference: cleanRef,
+        bank: selectedBank !== 'auto' ? selectedBank : undefined,
+        name: name.trim(),
+        phone: cleanPhone,
+        planName: selectedPlan,
+        amount: planAmount,
+      });
 
-        if (verifyRes.success && verifyRes.verified && verifyRes.submission) {
+      if (verifyRes.success && verifyRes.submission) {
+        if (verifyRes.verified) {
           success(
             isAmharic ? '✅ ክፍያዎ በ Verify.ET ተረጋግጧል!' : '✅ Payment Verified via Verify.ET!',
             isAmharic
               ? 'የደንበኝነት ምዝገባዎ ወዲያውኑ ገቢር ሆኗል (ራስ-ሰር ማረጋገጫ ተጠናቋል)'
               : 'Your subscription is now active! Auto-approval complete.'
           );
-
-          setName('');
-          setPhone('');
-          setTransactionId('');
-          setScreenshotDataUrl(null);
-          setScreenshotFile(null);
-          setCurrentStep(1);
-
-          onClose();
-          onSuccess(verifyRes.submission);
-          return;
-        } else if (verifyRes.success && verifyRes.submission) {
-          // Queued in background
+        } else {
           info(
             isAmharic ? 'የክፍያ ማረጋገጫ በሂደት ላይ ነው' : 'Verification In Progress',
             verifyRes.message || (isAmharic ? 'ከባንክ ጋር በማረጋገጥ ላይ ነው። ጥቂት ሰከንዶች ውስጥ ይፀድቃል።' : 'Checking with bank.')
           );
-
-          setName('');
-          setPhone('');
-          setTransactionId('');
-          setScreenshotDataUrl(null);
-          setScreenshotFile(null);
-          setCurrentStep(1);
-
-          onClose();
-          onSuccess(verifyRes.submission);
-          return;
-        } else if (!screenshotDataUrl) {
-          error(
-            isAmharic ? 'የክፍያ ማረጋገጫ አልተሳካም' : 'Verification Failed',
-            verifyRes.error ||
-              (isAmharic
-                ? 'የተጠቀሰው የትራንዛክሽን ቁጥር በባንክ አልተገኘም። እባክዎ በትክክል ያረጋግጡ።'
-                : 'Transaction reference not found in bank records.')
-          );
-          setIsSubmitting(false);
-          setIsVerifyingWithBank(false);
-          return;
         }
+
+        setName('');
+        setNameTouched(false);
+        setPhone('');
+        setPhoneTouched(false);
+        setTransactionId('');
+        setTransactionIdTouched(false);
+        setCurrentStep(1);
+
+        onClose();
+        onSuccess(verifyRes.submission);
+        return;
       }
 
-      // 2. Fallback: upload screenshot to /api/register
-      let imageToUpload: File | string = screenshotFile || screenshotDataUrl || '';
-      if (screenshotDataUrl) {
-        try {
-          const compressed = await compressImage(screenshotFile || screenshotDataUrl, 1400, 0.82);
-          imageToUpload = compressed.file;
-        } catch (compErr) {
-          console.warn('Compression skipped:', compErr);
-        }
-      }
-
-      const formData = new FormData();
-      formData.append('name', name.trim());
-      formData.append('phone_number', phone.trim());
-      formData.append('plan_name', selectedPlan);
-      formData.append('amount', String(planAmount));
-      if (cleanRef) formData.append('transaction_id', cleanRef);
-      if (selectedBank !== 'auto') formData.append('bank', selectedBank);
-
-      if (imageToUpload instanceof File) {
-        formData.append('payment_image', imageToUpload);
-      } else if (typeof imageToUpload === 'string' && imageToUpload) {
-        formData.append('payment_image', String(imageToUpload));
-      }
-
-      const registerUrl = new URL('/api/register', typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
-      registerUrl.searchParams.set('plan_name', selectedPlan);
-      registerUrl.searchParams.set('amount', String(planAmount));
-      registerUrl.searchParams.set('plan_id', selectedPlanId);
-
-      const response = await fetch(registerUrl.toString(), {
-        method: 'POST',
-        headers: {
-          'X-Plan-Name': encodeURIComponent(selectedPlan),
-          'X-Plan-Amount': String(planAmount),
-          'X-Plan-Id': selectedPlanId,
-        },
-        body: formData,
-      });
-
-      let result: Record<string, any> | null = null;
-      try {
-        const text = await response.text();
-        if (text) {
-          result = JSON.parse(text);
-        }
-      } catch (parseErr) {
-        console.warn('Could not parse server response text as JSON:', parseErr);
-      }
-
-      if (!response.ok || (result && result.success === false)) {
-        const errorMsg =
-          result?.error ||
-          (response.status === 413
-            ? 'The image file is too large for upload. Please try a smaller receipt screenshot.'
-            : `Server returned error (${response.status})`);
-        throw new Error(errorMsg);
-      }
-
-      const reg = result?.registration;
-      const isAutoApproved = Boolean(result?.verified);
-
-      const newSub = await submitPayment({
-        id: reg?.id,
-        userName: reg?.name || name.trim(),
-        userPhone: reg?.phone_number || phone.trim(),
-        planName: selectedPlan,
-        amount: planAmount,
-        payerName: reg?.name || name.trim(),
-        transactionId: cleanRef || reg?.transaction_id || `TXN-${Date.now().toString().slice(-6)}`,
-        screenshotUrl: reg?.payment_image_url || screenshotDataUrl || '',
-        status: isAutoApproved ? 'approved' : 'pending',
-        verificationMethod: isAutoApproved ? 'verify_et' : 'manual',
-        bank: selectedBank !== 'auto' ? selectedBank : undefined,
-      });
-
-      success(
-        isAutoApproved
-          ? (isAmharic ? '✅ ክፍያዎ በ Verify.ET ተረጋግጧል!' : '✅ Payment Verified via Verify.ET!')
-          : (isAmharic ? 'ምዝገባዎ በተሳካ ሁኔታ ተጠናቋል!' : 'Registration Submitted!'),
-        isAutoApproved
-          ? (isAmharic ? 'የደንበኝነት አገልግሎትዎ ወዲያውኑ ገቢር ሆኗል' : 'Your subscription is now active.')
-          : (isAmharic ? 'ስም፣ ስልክ ቁጥር እና ደረሰኝ ተመዝግቧል' : 'Your name, phone and payment receipt have been saved.')
+      // If verification failed explicitly with an error message
+      error(
+        isAmharic ? 'የክፍያ ማረጋገጫ አልተሳካም' : 'Verification Failed',
+        verifyRes.error ||
+          (isAmharic
+            ? 'የተጠቀሰው የትራንዛክሽን ቁጥር በባንክ አልተገኘም። እባክዎ በትክክል ያረጋግጡ።'
+            : 'Transaction reference could not be verified. Please check the code and try again.')
       );
-
-      setName('');
-      setNameTouched(false);
-      setPhone('');
-      setPhoneTouched(false);
-      setTransactionId('');
-      setTransactionIdTouched(false);
-      setScreenshotDataUrl(null);
-      setScreenshotFile(null);
-      setScreenshotTouched(false);
-      setCurrentStep(1);
-
-      onClose();
-      onSuccess(newSub);
     } catch (err: unknown) {
       console.error('Submission error:', err);
       const errMsg = err instanceof Error ? err.message : 'An error occurred during submission';
@@ -709,16 +605,16 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                   />
 
                   <Input
-                    label={isAmharic ? 'የስልክ ቁጥር' : 'Phone Number'}
-                    placeholder="09... / 07..."
+                    label={isAmharic ? 'የስልክ ቁጥር (09...)' : 'Phone Number (09...)'}
+                    placeholder="0911223344"
                     value={phone}
-                    onChange={(e) => {
-                      setPhone(e.target.value);
-                      if (!phoneTouched) setPhoneTouched(true);
-                    }}
+                    onChange={handlePhoneChange}
                     onBlur={() => setPhoneTouched(true)}
                     error={phoneError}
                     leftIcon={<Smartphone className="w-3.5 h-3.5 text-zinc-400" />}
+                    maxLength={10}
+                    type="tel"
+                    inputMode="numeric"
                     required
                   />
                 </div>
@@ -796,39 +692,6 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                       )}
                     </div>
                   </div>
-                </div>
-
-                {/* 3. Optional Screenshot Attachment */}
-                <div className="pt-1">
-                  <button
-                    type="button"
-                    onClick={() => setShowImageUpload(!showImageUpload)}
-                    className="text-xs text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <Upload className="w-3.5 h-3.5" />
-                    <span>
-                      {showImageUpload
-                        ? (isAmharic ? 'የደረሰኝ ፎቶ መጫኛን ደብቅ' : 'Hide receipt upload')
-                        : (isAmharic ? '+ የደረሰኝ ፎቶ ያያይዙ (አማራጭ)' : '+ Attach receipt screenshot (Optional)')}
-                    </span>
-                  </button>
-
-                  {showImageUpload && (
-                    <div className="mt-3">
-                      <GlassFolderUploader
-                        label={isAmharic ? 'የክፍያ ደረሰኝ ምስል' : 'Receipt Screenshot'}
-                        selectedImageUrl={screenshotDataUrl}
-                        onFileSelect={(dataUrl, file) => {
-                          setScreenshotDataUrl(dataUrl);
-                          setScreenshotFile(file);
-                        }}
-                        onClear={() => {
-                          setScreenshotDataUrl(null);
-                          setScreenshotFile(null);
-                        }}
-                      />
-                    </div>
-                  )}
                 </div>
 
                 {/* Bottom Actions with Breathing Room */}

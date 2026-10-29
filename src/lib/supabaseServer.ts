@@ -768,6 +768,27 @@ export async function saveRegistrationToSupabase(data: {
       smartPayload.status = record.status;
     }
 
+    // Transaction ID mapping
+    if (record.transaction_id) {
+      if (knownCols.size === 0 || knownCols.has('transaction_id')) {
+        smartPayload.transaction_id = record.transaction_id;
+      } else if (knownCols.has('reference')) {
+        smartPayload.reference = record.transaction_id;
+      } else if (knownCols.has('txn_id')) {
+        smartPayload.txn_id = record.transaction_id;
+      }
+    }
+
+    // Bank mapping
+    if (record.bank && (knownCols.size === 0 || knownCols.has('bank'))) {
+      smartPayload.bank = record.bank;
+    }
+
+    // Verification method mapping
+    if (record.verification_method && (knownCols.size === 0 || knownCols.has('verification_method'))) {
+      smartPayload.verification_method = record.verification_method;
+    }
+
     // Embed plan note tag into notes / description / remark / comment if present
     const planNoteTag = `[PLAN: ${record.plan_name} | AMOUNT: ${record.amount}]`;
     if (knownCols.has('notes')) {

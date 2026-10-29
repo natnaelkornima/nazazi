@@ -63,6 +63,43 @@ export function validateFullName(name: string, isAmharic = false): ValidationRes
  * - OR start with 2519 (12 digits total: e.g. 251911234567)
  * - Also supports 07 / +2517 / 2517 series (10 / 13 / 12 digits)
  */
+/**
+ * Validates strict 09 format Ethiopian phone number:
+ * - Must start with 09
+ * - Must be exactly 10 digits (09XXXXXXXX)
+ */
+export function validateStrict09Phone(phone: string, isAmharic = false): PhoneValidationResult {
+  const raw = (phone || '').trim();
+  const cleaned = raw.replace(/\D/g, '');
+
+  if (!cleaned) {
+    return {
+      isValid: false,
+      error: isAmharic ? 'እባክዎ የስልክ ቁጥር ያስገቡ።' : 'Phone number is required.',
+      cleanPhone: '',
+      normalizedPhone: '',
+    };
+  }
+
+  if (!/^09\d{8}$/.test(cleaned)) {
+    return {
+      isValid: false,
+      error: isAmharic
+        ? 'የስልክ ቁጥር በ 09 መጀመር አለበት (10 አሃዝ ምሳሌ፡ 0911234567)።'
+        : 'Phone number must be in 09 format (10 digits, e.g. 0911234567).',
+      cleanPhone: cleaned,
+      normalizedPhone: '',
+    };
+  }
+
+  return {
+    isValid: true,
+    error: null,
+    cleanPhone: cleaned,
+    normalizedPhone: cleaned,
+  };
+}
+
 export function validateEthiopianPhone(phone: string, isAmharic = false): PhoneValidationResult {
   const raw = (phone || '').trim();
   const cleaned = raw.replace(/[\s\-\(\)\.]/g, '');

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { uploadPaymentImageToCloudinary } from '@/lib/cloudinaryServer';
 import { saveRegistrationToSupabase } from '@/lib/supabaseServer';
-import { validateFullName, validateEthiopianPhone } from '@/lib/validation';
+import { validateFullName, validateStrict09Phone } from '@/lib/validation';
 import { normalizePlanAndAmount } from '@/lib/planUtils';
 import { isRegistrationClosed } from '@/lib/deadlineConfig';
 import { verifyTransactionWithVerifyEt } from '@/lib/verifyEt';
@@ -100,13 +100,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 2. Validate Phone Number (Must start with 09 or +2519)
-    const phoneValidation = validateEthiopianPhone(phoneNumber || '');
+    // 2. Validate Phone Number (Strict 09 format: 09XXXXXXXX)
+    const phoneValidation = validateStrict09Phone(phoneNumber || '');
     if (!phoneValidation.isValid) {
       return NextResponse.json(
         {
           success: false,
-          error: phoneValidation.error || 'Phone number must start with 09 or +2519 (e.g. 0911234567 or +251911234567).',
+          error: phoneValidation.error || 'Phone number must be in 09 format (10 digits, e.g. 0911234567).',
         },
         { status: 400 }
       );
@@ -114,89 +114,73 @@ export async function POST(req: NextRequest) {
 
     const cleanPhone = phoneValidation.cleanPhone;
 
-    // 3. Process & Validate Payment Image (Optional if valid transaction reference is provided)
-    let finalCloudinaryUrl = '';
-    let uploadedToCloudinary = false;
-    let uploadError: string | null = null;
-    let cloudNameResult: string | null = null;
-
-    if (!paymentImage && !transactionId) {
+    // 3. Validate Transaction ID (Strictly required for Verify.et automated verification)
+    if (!transactionId || !transactionId.trim()) {
       return NextResponse.json(
         {
           success: false,
-          error: 'Please enter your Transaction Reference Number (e.g. from Telebirr/CBE) or upload a payment receipt.',
+          error: 'Please enter your Transaction Reference Number (Transaction ID from Telebirr or CBE).',
         },
         { status: 400 }
       );
     }
 
-    // Check if the image is already a remote hosted URL
-    if (
-      typeof paymentImage === 'string' &&
-      (paymentImage.startsWith('https://') || paymentImage.startsWith('http://'))
-    ) {
-      finalCloudinaryUrl = paymentImage.trim();
-      uploadedToCloudinary = true;
-    } else {
-      let buffer: Buffer | null = null;
-      let mimeType = 'image/jpeg';
+    let finalCloudinaryUrl = '';
+    let uploadedToCloudinary = false;
+    let uploadError: string | null = null;
+    let cloudNameResult: string | null = null;
 
-      if (typeof paymentImage === 'string') {
-        if (paymentImage.startsWith('data:')) {
-          const matches = paymentImage.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-          if (matches && matches.length === 3) {
-            mimeType = matches[1];
-            buffer = Buffer.from(matches[2], 'base64');
-          } else {
-            const parts = paymentImage.split(',');
-            buffer = Buffer.from(parts[1] || parts[0], 'base64');
-          }
-        } else {
-          try {
-            buffer = Buffer.from(paymentImage, 'base64');
-          } catch {
-            buffer = null;
-          }
-        }
-      } else if (paymentImage instanceof Blob) {
-        if (paymentImage.size > MAX_FILE_SIZE) {
-          return NextResponse.json(
-            {
-              success: false,
-              error: 'Payment image exceeds the maximum limit of 10 MB.',
-            },
-            { status: 400 }
-          );
-        }
-        mimeType = paymentImage.type || 'image/jpeg';
-        const arrayBuffer = await paymentImage.arrayBuffer();
-        buffer = Buffer.from(arrayBuffer);
-      }
-
-      if (!buffer || buffer.length === 0) {
-        return NextResponse.json(
-          {
-            success: false,
-            error: 'Payment image is empty. Please select a valid screenshot.',
-          },
-          { status: 400 }
-        );
-      }
-
-      // 4. Upload Payment Image to Cloudinary (Server-Side)
-      const uploadRes = await uploadPaymentImageToCloudinary(buffer, mimeType);
-      uploadedToCloudinary = uploadRes.uploadedToCloudinary;
-      uploadError = uploadRes.error || null;
-      cloudNameResult = uploadRes.cloudName || null;
-
+    // Optional: Only process payment image if one was explicitly passed
+    if (paymentImage) {
       if (
-        uploadedToCloudinary &&
-        uploadRes.secure_url &&
-        (uploadRes.secure_url.startsWith('https://') || uploadRes.secure_url.startsWith('http://'))
+        typeof paymentImage === 'string' &&
+        (paymentImage.startsWith('https://') || paymentImage.startsWith('http://'))
       ) {
-        finalCloudinaryUrl = uploadRes.secure_url.trim();
+        finalCloudinaryUrl = paymentImage.trim();
+        uploadedToCloudinary = true;
       } else {
-        finalCloudinaryUrl = '';
+        let buffer: Buffer | null = null;
+        let mimeType = 'image/jpeg';
+
+        if (typeof paymentImage === 'string') {
+          if (paymentImage.startsWith('data:')) {
+            const matches = paymentImage.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+            if (matches && matches.length === 3) {
+              mimeType = matches[1];
+              buffer = Buffer.from(matches[2], 'base64');
+            } else {
+              const parts = paymentImage.split(',');
+              buffer = Buffer.from(parts[1] || parts[0], 'base64');
+            }
+          } else {
+            try {
+              buffer = Buffer.from(paymentImage, 'base64');
+            } catch {
+              buffer = null;
+            }
+          }
+        } else if (paymentImage instanceof Blob) {
+          if (paymentImage.size <= MAX_FILE_SIZE) {
+            mimeType = paymentImage.type || 'image/jpeg';
+            const arrayBuffer = await paymentImage.arrayBuffer();
+            buffer = Buffer.from(arrayBuffer);
+          }
+        }
+
+        if (buffer && buffer.length > 0) {
+          const uploadRes = await uploadPaymentImageToCloudinary(buffer, mimeType);
+          uploadedToCloudinary = uploadRes.uploadedToCloudinary;
+          uploadError = uploadRes.error || null;
+          cloudNameResult = uploadRes.cloudName || null;
+
+          if (
+            uploadedToCloudinary &&
+            uploadRes.secure_url &&
+            (uploadRes.secure_url.startsWith('https://') || uploadRes.secure_url.startsWith('http://'))
+          ) {
+            finalCloudinaryUrl = uploadRes.secure_url.trim();
+          }
+        }
       }
     }
 

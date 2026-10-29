@@ -7,19 +7,30 @@ CREATE TABLE IF NOT EXISTS public.registrations (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,
     phone_number TEXT NOT NULL,
-    payment_image_url TEXT NOT NULL,
+    transaction_id TEXT,
+    bank TEXT,
     plan_name TEXT DEFAULT 'Standard Plan (200 Birr)',
     amount NUMERIC DEFAULT 200,
     status TEXT DEFAULT 'pending',
+    verification_method TEXT DEFAULT 'verify_et',
+    payment_image_url TEXT DEFAULT '',
     created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
     reviewed_at TIMESTAMPTZ
 );
 
 -- 2. Non-destructive migration if table already exists without certain columns
+ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS transaction_id TEXT;
+ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS bank TEXT;
+ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS verification_method TEXT DEFAULT 'verify_et';
 ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'pending';
 ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS plan_name TEXT DEFAULT 'Standard Plan (200 Birr)';
 ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS amount NUMERIC DEFAULT 200;
+ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS payment_image_url TEXT DEFAULT '';
 ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS reviewed_at TIMESTAMPTZ;
+
+-- Drop NOT NULL constraint on payment_image_url if previously set
+ALTER TABLE public.registrations ALTER COLUMN payment_image_url DROP NOT NULL;
+ALTER TABLE public.registrations ALTER COLUMN payment_image_url SET DEFAULT '';
 
 -- 3. Enable Row Level Security (RLS)
 ALTER TABLE public.registrations ENABLE ROW LEVEL SECURITY;

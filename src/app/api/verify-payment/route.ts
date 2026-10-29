@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyTransactionWithVerifyEt, isVerifyEtConfigured } from '@/lib/verifyEt';
 import { saveRegistrationToSupabase } from '@/lib/supabaseServer';
-import { validateFullName, validateEthiopianPhone } from '@/lib/validation';
+import { validateFullName, validateStrict09Phone } from '@/lib/validation';
 import { normalizePlanAndAmount } from '@/lib/planUtils';
 import { isRegistrationClosed } from '@/lib/deadlineConfig';
 
@@ -53,12 +53,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const phoneValidation = validateEthiopianPhone(rawPhone);
+    const phoneValidation = validateStrict09Phone(rawPhone);
     if (!phoneValidation.isValid) {
       return NextResponse.json(
         {
           success: false,
-          error: phoneValidation.error || 'Phone number must start with 09 or +2519 (e.g. 0911234567).',
+          error: phoneValidation.error || 'Phone number must be in 09 format (10 digits, e.g. 0911234567).',
         },
         { status: 400 }
       );

@@ -96,12 +96,21 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
 
   // Targeting: 'all' | '200' | '600' | '1000' | 'single'
   const [targetPlan, setTargetPlan] = useState<SmsTargetPlan>(initialSelectedPhone ? 'single' : 'all');
+  const [selectedPlans, setSelectedPlans] = useState<string[]>(() => {
+    if (initialSelectedPhone) return ['single'];
+    return ['all', '200', '600', '1000'];
+  });
   const [singlePhone, setSinglePhone] = useState<string>(initialSelectedPhone || '');
   const [customPhone, setCustomPhone] = useState<string>('');
+  const [showRecipientList, setShowRecipientList] = useState(false);
+  const [recipientSearch, setRecipientSearch] = useState('');
+  const [quickTestPhone, setQuickTestPhone] = useState('');
+  const [isSendingQuickTest, setIsSendingQuickTest] = useState(false);
 
   useEffect(() => {
     if (initialSelectedPhone) {
       setTargetPlan('single');
+      setSelectedPlans(['single']);
       setSinglePhone(initialSelectedPhone);
     }
   }, [initialSelectedPhone]);
@@ -242,12 +251,47 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
     };
   }, [submissions]);
 
-  // 2. Compute Active Recipient List based on Plan Target
+  // Handle Plan Checkbox Toggling
+  const handleTogglePlan = (planKey: 'all' | '200' | '600' | '1000' | 'single') => {
+    if (planKey === 'single') {
+      setTargetPlan('single');
+      setSelectedPlans(['single']);
+      return;
+    }
+
+    if (planKey === 'all') {
+      if (selectedPlans.includes('all')) {
+        setSelectedPlans([]);
+        setTargetPlan('200');
+      } else {
+        setSelectedPlans(['all', '200', '600', '1000']);
+        setTargetPlan('all');
+      }
+      return;
+    }
+
+    let next = selectedPlans.filter((p) => p !== 'all' && p !== 'single');
+    if (next.includes(planKey)) {
+      next = next.filter((p) => p !== planKey);
+    } else {
+      next.push(planKey);
+    }
+
+    if (next.length === 3) {
+      setSelectedPlans(['all', '200', '600', '1000']);
+      setTargetPlan('all');
+    } else if (next.length === 0) {
+      setSelectedPlans([]);
+      setTargetPlan('all');
+    } else {
+      setSelectedPlans(next);
+      setTargetPlan(next[0] as SmsTargetPlan);
+    }
+  };
+
+  // 2. Compute Active Recipient List based on Plan Target & Multi-Checkboxes
   const activeRecipients = useMemo(() => {
-    if (targetPlan === '200') return plan200Members;
-    if (targetPlan === '600') return plan600Members;
-    if (targetPlan === '1000') return plan1000Members;
-    if (targetPlan === 'single') {
+    if (selectedPlans.includes('single') || targetPlan === 'single') {
       const targetP = singlePhone || customPhone;
       if (!targetP) return [];
       const found = approvedAll.find((s) => s.userPhone === targetP || s.userPhone.includes(targetP));
@@ -268,8 +312,85 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
         submittedAt: new Date().toISOString(),
       } as PaymentSubmission];
     }
-    return approvedAll;
-  }, [targetPlan, approvedAll, plan200Members, plan600Members, plan1000Members, singlePhone, customPhone]);
+
+    if (selectedPlans.includes('all')) {
+      return approvedAll;
+    }
+
+    const list: PaymentSubmission[] = [];
+    const seenIds = new Set<string>();
+
+    if (selectedPlans.includes('200')) {
+      for (const m of plan200Members) {
+        if (!seenIds.has(m.id)) {
+          seenIds.add(m.id);
+          list.push(m);
+        }
+      }
+    }
+    if (selectedPlans.includes('600')) {
+      for (const m of plan600Members) {
+        if (!seenIds.has(m.id)) {
+          seenIds.add(m.id);
+          list.push(m);
+        }
+      }
+    }
+    if (selectedPlans.includes('1000')) {
+      for (const m of plan1000Members) {
+        if (!seenIds.has(m.id)) {
+          seenIds.add(m.id);
+          list.push(m);
+        }
+      }
+    }
+
+    return list;
+  }, [selectedPlans, targetPlan, approvedAll, plan200Members, plan600Members, plan1000Members, singlePhone, customPhone]);
+
+  // Quick Test SMS Handler
+  const handleSendQuickTest = async () => {
+    const phone = quickTestPhone.trim();
+    if (!phone) {
+      error('Phone Required', 'Please enter a test phone number (e.g. 0911223344).');
+      return;
+    }
+    if (!messageText.trim()) {
+      error('Empty Message', 'Please enter your message in Step 3 before sending a test.');
+      return;
+    }
+    setIsSendingQuickTest(true);
+    try {
+      const token = getAdminToken();
+      const res = await fetch('/api/admin/sms/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          recipients: [{ name: 'Admin Test', phone, planName: 'Test SMS' }],
+          message: messageText,
+          gatewayConfig: {
+            ...gatewayConfig,
+            batchSize: 1,
+            batchDelayMs: 0,
+          },
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        success('Test SMS Delivered!', `Preview message dispatched to ${phone}.`);
+      } else {
+        error('Test Failed', data.error || 'Gateway returned an error.');
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Network error.';
+      error('Test Failed', msg);
+    } finally {
+      setIsSendingQuickTest(false);
+    }
+  };
 
   // 3. Load Gateway Config & Schedules on Mount
   useEffect(() => {
@@ -1053,234 +1174,192 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
             </Card>
           )}
 
-          {/* Main Visibly Clear & Recognizable SMS Composer */}
-          <div className="space-y-6">
+          {/* Main 2-Column Command Grid: Left Menu (Steps 1, 2, 4) & Right Message Studio (Step 3) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             {/* ========================================================================= */}
-            {/* STEP 1: CHOOSE PLAN & TARGET AUDIENCE */}
+            {/* LEFT COLUMN: COMMAND MENU & WORKFLOW (Steps 1, 2, 4) */}
             {/* ========================================================================= */}
-            <Card className="p-5 sm:p-6 bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] rounded-[3px] shadow-xs space-y-4">
-              <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#E8E4DF] dark:border-[#2C2825]">
-                <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-[3px] bg-[#F3EFEA] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] text-[#981C00] dark:text-[#E89382] flex items-center justify-center font-bold text-xs">
-                    1
+            <div className="lg:col-span-5 xl:col-span-4 space-y-4">
+              {/* ----------------------------------------------------------------------- */}
+              {/* STEP 1: CHOOSE PLAN & TARGET AUDIENCE (Menu with Checkboxes & Buttons) */}
+              {/* ----------------------------------------------------------------------- */}
+              <Card className="p-4 sm:p-5 bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[3px] shadow-xs space-y-3.5">
+                <div className="flex items-center justify-between pb-3 border-b border-[#E8E4DF] dark:border-[#2C2825]">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-6 h-6 rounded-[3px] bg-[#F3EFEA] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] text-[#981C00] dark:text-[#E89382] flex items-center justify-center font-bold text-xs">
+                      1
+                    </div>
+                    <div>
+                      <h2 className="text-sm font-serif font-bold text-[#24211F] dark:text-[#FAF8F5]">
+                        Audience & Plans
+                      </h2>
+                      <p className="text-[11px] text-[#706A65] dark:text-[#A8A29D]">
+                        Select groups via checkboxes
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h2 className="text-sm sm:text-base font-serif font-bold text-[#24211F] dark:text-[#FAF8F5]">
-                      Step 1. Choose Plan & Target Audience
-                    </h2>
-                    <p className="text-xs text-[#706A65] dark:text-[#A8A29D]">
-                      Select which subscription tier to send the morning scripture or spiritual message to.
-                    </p>
-                  </div>
-                </div>
 
-                <div className="flex items-center gap-2">
-                  <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-[3px] text-xs font-bold border ${
+                  <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[3px] text-[11px] font-bold border ${
                     activeRecipients.length > 0
                       ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800'
                       : 'bg-[#F3EFEA] dark:bg-[#1E1B19] text-[#706A65] dark:text-[#A8A29D] border-[#E8E4DF] dark:border-[#2C2825]'
                   }`}>
                     <span className={`w-1.5 h-1.5 rounded-full ${activeRecipients.length > 0 ? 'bg-emerald-600' : 'bg-[#706A65]'}`} />
-                    {activeRecipients.length} {activeRecipients.length === 1 ? 'Recipient' : 'Recipients'} Selected
+                    {activeRecipients.length} Selected
                   </span>
                 </div>
-              </div>
 
-              {/* 4 Clean Editorial Tier Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                {/* 200 ETB Plan Card */}
-                <button
-                  type="button"
-                  onClick={() => setTargetPlan('200')}
-                  className={`relative p-4 rounded-[3px] border text-left transition-all cursor-pointer flex flex-col justify-between space-y-3 ${
-                    targetPlan === '200'
-                      ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-2 border-[#981C00] dark:border-[#E89382] shadow-xs'
-                      : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF]'
-                  }`}
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="w-8 h-8 rounded-[3px] bg-[#F3EFEA] dark:bg-[#201D1B] text-[#981C00] dark:text-[#E89382] flex items-center justify-center">
-                      <BookOpen className="w-4 h-4" />
+                {/* Plan Checkbox Menu List */}
+                <div className="space-y-1.5">
+                  {/* 1. All Approved Members Checkbox */}
+                  <button
+                    type="button"
+                    onClick={() => handleTogglePlan('all')}
+                    className={`w-full p-2.5 rounded-[3px] border text-left transition-all cursor-pointer flex items-center justify-between gap-3 ${
+                      selectedPlans.includes('all')
+                        ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-[#981C00] dark:border-[#E89382] shadow-2xs'
+                        : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF]'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className={`w-4 h-4 rounded-[2px] border flex items-center justify-center transition-colors ${
+                        selectedPlans.includes('all')
+                          ? 'bg-[#981C00] border-[#981C00] text-white'
+                          : 'border-[#A8A29D] dark:border-[#706A65] bg-white dark:bg-[#141211]'
+                      }`}>
+                        {selectedPlans.includes('all') && <Check className="w-3 h-3 stroke-[3]" />}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Users className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
+                        <span className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">All Approved Members</span>
+                      </div>
                     </div>
-                    {targetPlan === '200' ? (
-                      <span className="w-5 h-5 rounded-[3px] bg-[#981C00] dark:bg-[#C43214] text-white flex items-center justify-center">
-                        <Check className="w-3.5 h-3.5 stroke-[3]" />
-                      </span>
-                    ) : (
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-[3px] bg-[#F3EFEA] dark:bg-[#201D1B] text-[#706A65] dark:text-[#A8A29D]">
-                        Tier 1
-                      </span>
-                    )}
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-sm text-[#24211F] dark:text-[#FAF8F5]">
-                      200 ETB Plan
-                    </h3>
-                    <p className="text-xs font-bold text-[#981C00] dark:text-[#E89382] mt-0.5">
-                      {plan200Members.length} Members
-                    </p>
-                    <p className="text-[11px] text-[#706A65] dark:text-[#A8A29D] mt-1 leading-snug">
-                      Standard 30-Day Morning Scripture & Faith Text
-                    </p>
-                  </div>
-                  <div className="pt-2 border-t border-[#E8E4DF] dark:border-[#2C2825]">
-                    <span className="inline-block text-[10px] font-semibold uppercase tracking-wider text-[#706A65] dark:text-[#A8A29D] bg-[#F3EFEA] dark:bg-[#201D1B] px-2 py-0.5 rounded-[3px]">
-                      Daily Morning Cycle
+                    <span className="text-[11px] font-mono font-bold text-[#981C00] dark:text-[#E89382] px-1.5 py-0.5 rounded-[2px] bg-[#F3EFEA] dark:bg-[#201D1B]">
+                      {approvedAll.length}
                     </span>
-                  </div>
-                </button>
+                  </button>
 
-                {/* 600 ETB Plan Card */}
-                <button
-                  type="button"
-                  onClick={() => setTargetPlan('600')}
-                  className={`relative p-4 rounded-[3px] border text-left transition-all cursor-pointer flex flex-col justify-between space-y-3 ${
-                    targetPlan === '600'
-                      ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-2 border-[#981C00] dark:border-[#E89382] shadow-xs'
-                      : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF]'
-                  }`}
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="w-8 h-8 rounded-[3px] bg-[#F3EFEA] dark:bg-[#201D1B] text-[#981C00] dark:text-[#E89382] flex items-center justify-center">
-                      <Heart className="w-4 h-4" />
+                  {/* 2. 200 ETB Plan Checkbox */}
+                  <button
+                    type="button"
+                    onClick={() => handleTogglePlan('200')}
+                    className={`w-full p-2.5 rounded-[3px] border text-left transition-all cursor-pointer flex items-center justify-between gap-3 ${
+                      selectedPlans.includes('200')
+                        ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-[#981C00] dark:border-[#E89382] shadow-2xs'
+                        : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF]'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className={`w-4 h-4 rounded-[2px] border flex items-center justify-center transition-colors ${
+                        selectedPlans.includes('200')
+                          ? 'bg-[#981C00] border-[#981C00] text-white'
+                          : 'border-[#A8A29D] dark:border-[#706A65] bg-white dark:bg-[#141211]'
+                      }`}>
+                        {selectedPlans.includes('200') && <Check className="w-3 h-3 stroke-[3]" />}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <BookOpen className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
+                        <span className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">200 ETB Plan</span>
+                        <span className="text-[10px] text-[#706A65] dark:text-[#A8A29D]">(Tier 1)</span>
+                      </div>
                     </div>
-                    {targetPlan === '600' ? (
-                      <span className="w-5 h-5 rounded-[3px] bg-[#981C00] dark:bg-[#C43214] text-white flex items-center justify-center">
-                        <Check className="w-3.5 h-3.5 stroke-[3]" />
-                      </span>
-                    ) : (
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-[3px] bg-[#F3EFEA] dark:bg-[#201D1B] text-[#706A65] dark:text-[#A8A29D]">
-                        Tier 2
-                      </span>
-                    )}
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-sm text-[#24211F] dark:text-[#FAF8F5]">
-                      600 ETB Plan
-                    </h3>
-                    <p className="text-xs font-bold text-[#981C00] dark:text-[#E89382] mt-0.5">
-                      {plan600Members.length} Members
-                    </p>
-                    <p className="text-[11px] text-[#706A65] dark:text-[#A8A29D] mt-1 leading-snug">
-                      Quarterly 90-Day Full Devotional & Prayer Path
-                    </p>
-                  </div>
-                  <div className="pt-2 border-t border-[#E8E4DF] dark:border-[#2C2825]">
-                    <span className="inline-block text-[10px] font-semibold uppercase tracking-wider text-[#706A65] dark:text-[#A8A29D] bg-[#F3EFEA] dark:bg-[#201D1B] px-2 py-0.5 rounded-[3px]">
-                      3 Months Active
+                    <span className="text-[11px] font-mono font-bold text-[#706A65] dark:text-[#A8A29D] px-1.5 py-0.5 rounded-[2px] bg-[#F3EFEA] dark:bg-[#201D1B]">
+                      {plan200Members.length}
                     </span>
-                  </div>
-                </button>
+                  </button>
 
-                {/* 1,000 ETB VIP Card */}
-                <button
-                  type="button"
-                  onClick={() => setTargetPlan('1000')}
-                  className={`relative p-4 rounded-[3px] border text-left transition-all cursor-pointer flex flex-col justify-between space-y-3 ${
-                    targetPlan === '1000'
-                      ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-2 border-[#981C00] dark:border-[#E89382] shadow-xs'
-                      : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF]'
-                  }`}
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="w-8 h-8 rounded-[3px] bg-[#F3EFEA] dark:bg-[#201D1B] text-[#981C00] dark:text-[#E89382] flex items-center justify-center">
-                      <Crown className="w-4 h-4" />
+                  {/* 3. 600 ETB Plan Checkbox */}
+                  <button
+                    type="button"
+                    onClick={() => handleTogglePlan('600')}
+                    className={`w-full p-2.5 rounded-[3px] border text-left transition-all cursor-pointer flex items-center justify-between gap-3 ${
+                      selectedPlans.includes('600')
+                        ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-[#981C00] dark:border-[#E89382] shadow-2xs'
+                        : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF]'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className={`w-4 h-4 rounded-[2px] border flex items-center justify-center transition-colors ${
+                        selectedPlans.includes('600')
+                          ? 'bg-[#981C00] border-[#981C00] text-white'
+                          : 'border-[#A8A29D] dark:border-[#706A65] bg-white dark:bg-[#141211]'
+                      }`}>
+                        {selectedPlans.includes('600') && <Check className="w-3 h-3 stroke-[3]" />}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Heart className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
+                        <span className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">600 ETB Plan</span>
+                        <span className="text-[10px] text-[#706A65] dark:text-[#A8A29D]">(Tier 2)</span>
+                      </div>
                     </div>
-                    {targetPlan === '1000' ? (
-                      <span className="w-5 h-5 rounded-[3px] bg-[#981C00] dark:bg-[#C43214] text-white flex items-center justify-center">
-                        <Check className="w-3.5 h-3.5 stroke-[3]" />
-                      </span>
-                    ) : (
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-[3px] bg-[#F3EFEA] dark:bg-[#201D1B] text-[#706A65] dark:text-[#A8A29D]">
-                        Tier 3 VIP
-                      </span>
-                    )}
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-sm text-[#24211F] dark:text-[#FAF8F5]">
-                      1,000 ETB VIP
-                    </h3>
-                    <p className="text-xs font-bold text-[#981C00] dark:text-[#E89382] mt-0.5">
-                      {plan1000Members.length} Members
-                    </p>
-                    <p className="text-[11px] text-[#706A65] dark:text-[#A8A29D] mt-1 leading-snug">
-                      VIP 6-Month Comprehensive Guidance & Teachings
-                    </p>
-                  </div>
-                  <div className="pt-2 border-t border-[#E8E4DF] dark:border-[#2C2825]">
-                    <span className="inline-block text-[10px] font-semibold uppercase tracking-wider text-[#706A65] dark:text-[#A8A29D] bg-[#F3EFEA] dark:bg-[#201D1B] px-2 py-0.5 rounded-[3px]">
-                      Semi-Annual VIP
+                    <span className="text-[11px] font-mono font-bold text-[#706A65] dark:text-[#A8A29D] px-1.5 py-0.5 rounded-[2px] bg-[#F3EFEA] dark:bg-[#201D1B]">
+                      {plan600Members.length}
                     </span>
-                  </div>
-                </button>
+                  </button>
 
-                {/* All Approved Members Card */}
-                <button
-                  type="button"
-                  onClick={() => setTargetPlan('all')}
-                  className={`relative p-4 rounded-[3px] border text-left transition-all cursor-pointer flex flex-col justify-between space-y-3 ${
-                    targetPlan === 'all'
-                      ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-2 border-[#981C00] dark:border-[#E89382] shadow-xs'
-                      : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF]'
-                  }`}
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="w-8 h-8 rounded-[3px] bg-[#F3EFEA] dark:bg-[#201D1B] text-[#981C00] dark:text-[#E89382] flex items-center justify-center">
-                      <Users className="w-4 h-4" />
+                  {/* 4. 1,000 ETB VIP Checkbox */}
+                  <button
+                    type="button"
+                    onClick={() => handleTogglePlan('1000')}
+                    className={`w-full p-2.5 rounded-[3px] border text-left transition-all cursor-pointer flex items-center justify-between gap-3 ${
+                      selectedPlans.includes('1000')
+                        ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-[#981C00] dark:border-[#E89382] shadow-2xs'
+                        : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF]'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className={`w-4 h-4 rounded-[2px] border flex items-center justify-center transition-colors ${
+                        selectedPlans.includes('1000')
+                          ? 'bg-[#981C00] border-[#981C00] text-white'
+                          : 'border-[#A8A29D] dark:border-[#706A65] bg-white dark:bg-[#141211]'
+                      }`}>
+                        {selectedPlans.includes('1000') && <Check className="w-3 h-3 stroke-[3]" />}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Crown className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
+                        <span className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">1,000 ETB VIP</span>
+                        <span className="text-[10px] text-[#706A65] dark:text-[#A8A29D]">(Tier 3)</span>
+                      </div>
                     </div>
-                    {targetPlan === 'all' ? (
-                      <span className="w-5 h-5 rounded-[3px] bg-[#981C00] dark:bg-[#C43214] text-white flex items-center justify-center">
-                        <Check className="w-3.5 h-3.5 stroke-[3]" />
-                      </span>
-                    ) : (
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-[3px] bg-[#F3EFEA] dark:bg-[#201D1B] text-[#706A65] dark:text-[#A8A29D]">
-                        Broadcast
-                      </span>
-                    )}
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-sm text-[#24211F] dark:text-[#FAF8F5]">
-                      All Approved
-                    </h3>
-                    <p className="text-xs font-bold text-[#981C00] dark:text-[#E89382] mt-0.5">
-                      {approvedAll.length} Total
-                    </p>
-                    <p className="text-[11px] text-[#706A65] dark:text-[#A8A29D] mt-1 leading-snug">
-                      Broadcast to every verified member across all tiers
-                    </p>
-                  </div>
-                  <div className="pt-2 border-t border-[#E8E4DF] dark:border-[#2C2825]">
-                    <span className="inline-block text-[10px] font-semibold uppercase tracking-wider text-[#706A65] dark:text-[#A8A29D] bg-[#F3EFEA] dark:bg-[#201D1B] px-2 py-0.5 rounded-[3px]">
-                      Complete Roster
+                    <span className="text-[11px] font-mono font-bold text-[#706A65] dark:text-[#A8A29D] px-1.5 py-0.5 rounded-[2px] bg-[#F3EFEA] dark:bg-[#201D1B]">
+                      {plan1000Members.length}
                     </span>
-                  </div>
-                </button>
-              </div>
+                  </button>
 
-              {/* Single Member Direct Option */}
-              <div className="pt-2 border-t border-[#E8E4DF] dark:border-[#2C2825]">
-                <button
-                  type="button"
-                  onClick={() => setTargetPlan('single')}
-                  className={`w-full p-3 rounded-[3px] border flex items-center justify-between text-left transition-all cursor-pointer ${
-                    targetPlan === 'single'
-                      ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-[#981C00] dark:border-[#E89382] text-[#24211F] dark:text-[#FAF8F5]'
-                      : 'border-dashed border-[#DDD7CF] dark:border-[#2C2825] text-[#706A65] dark:text-[#A8A29D] hover:border-[#981C00]'
-                  }`}
-                >
-                  <div className="flex items-center gap-2.5">
-                    <Smartphone className="w-4 h-4 text-[#706A65]" />
-                    <span className="text-xs font-bold">Or send to a single specific member phone</span>
-                  </div>
-                  <span className="text-[11px] font-medium text-[#706A65]">
-                    {targetPlan === 'single' ? 'Selected' : 'Click to choose'}
-                  </span>
-                </button>
+                  {/* 5. Single Direct Phone Option */}
+                  <button
+                    type="button"
+                    onClick={() => handleTogglePlan('single')}
+                    className={`w-full p-2.5 rounded-[3px] border text-left transition-all cursor-pointer flex items-center justify-between gap-3 ${
+                      selectedPlans.includes('single')
+                        ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-[#981C00] dark:border-[#E89382] shadow-2xs'
+                        : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF]'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className={`w-4 h-4 rounded-[2px] border flex items-center justify-center transition-colors ${
+                        selectedPlans.includes('single')
+                          ? 'bg-[#981C00] border-[#981C00] text-white'
+                          : 'border-[#A8A29D] dark:border-[#706A65] bg-white dark:bg-[#141211]'
+                      }`}>
+                        {selectedPlans.includes('single') && <Check className="w-3 h-3 stroke-[3]" />}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Smartphone className="w-3.5 h-3.5 text-[#706A65] dark:text-[#A8A29D]" />
+                        <span className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">Single Direct Phone</span>
+                      </div>
+                    </div>
+                    <span className="text-[10px] text-[#706A65] dark:text-[#A8A29D]">
+                      {selectedPlans.includes('single') ? 'Active' : 'Direct'}
+                    </span>
+                  </button>
+                </div>
 
-                {targetPlan === 'single' && (
-                  <div className="p-4 rounded-[3px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] grid grid-cols-1 sm:grid-cols-2 gap-4 mt-3">
+                {/* Single Member Direct Input Area */}
+                {selectedPlans.includes('single') && (
+                  <div className="p-3 rounded-[3px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] space-y-2.5 animate-in fade-in">
                     <div>
-                      <label className="block text-xs font-semibold text-[#706A65] dark:text-[#A8A29D] mb-1.5">
+                      <label className="block text-[11px] font-semibold text-[#706A65] dark:text-[#A8A29D] mb-1">
                         Choose Approved Member ({approvedAll.length})
                       </label>
                       <select
@@ -1289,124 +1368,171 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                           setSinglePhone(e.target.value);
                           setCustomPhone('');
                         }}
-                        className="w-full p-2.5 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs text-[#24211F] dark:text-[#FAF8F5] focus:ring-1 focus:ring-[#981C00]"
+                        className="w-full p-2 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs text-[#24211F] dark:text-[#FAF8F5] focus:ring-1 focus:ring-[#981C00]"
                       >
                         <option value="">-- Choose Member ({approvedAll.length}) --</option>
                         {approvedAll.map((sub) => (
                           <option key={sub.id} value={sub.userPhone}>
-                            {sub.userName} ({sub.userPhone}) — {sub.planName}
+                            {sub.userName} ({sub.userPhone})
                           </option>
                         ))}
                       </select>
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-[#706A65] dark:text-[#A8A29D] mb-1.5">
+                      <label className="block text-[11px] font-semibold text-[#706A65] dark:text-[#A8A29D] mb-1">
                         Or Type Direct Phone Number
                       </label>
                       <input
                         type="tel"
-                        placeholder="0911223344 or +251911223344"
+                        placeholder="0911223344"
                         value={customPhone}
                         onChange={(e) => {
                           setCustomPhone(e.target.value);
                           setSinglePhone('');
                         }}
-                        className="w-full p-2.5 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs text-[#24211F] dark:text-[#FAF8F5] font-mono focus:ring-1 focus:ring-[#981C00]"
+                        className="w-full p-2 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs text-[#24211F] dark:text-[#FAF8F5] font-mono focus:ring-1 focus:ring-[#981C00]"
                       />
                     </div>
                   </div>
                 )}
-              </div>
-            </Card>
 
-            {/* ========================================================================= */}
-            {/* STEP 2: DISPATCH MODE */}
-            {/* ========================================================================= */}
-            <Card id="step-2-dispatch-mode" className="p-5 sm:p-6 bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] rounded-[3px] shadow-xs space-y-4">
-              <div className="flex items-center gap-3 pb-3 border-b border-[#E8E4DF] dark:border-[#2C2825]">
-                <div className="w-7 h-7 rounded-[3px] bg-[#F3EFEA] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] text-[#981C00] dark:text-[#E89382] flex items-center justify-center font-bold text-xs">
-                  2
-                </div>
-                <div>
-                  <h2 className="text-sm sm:text-base font-serif font-bold text-[#24211F] dark:text-[#FAF8F5]">
-                    Step 2. Dispatch Mode
-                  </h2>
-                  <p className="text-xs text-[#706A65] dark:text-[#A8A29D]">
-                    Choose whether to broadcast right now in safe batches or automate a daily recurring campaign.
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Instant Mode Card */}
-                <button
-                  type="button"
-                  onClick={() => setDispatchMode('instant')}
-                  className={`p-4 rounded-[3px] border text-left transition-all cursor-pointer flex items-start gap-3.5 ${
-                    dispatchMode === 'instant'
-                      ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-2 border-[#981C00] dark:border-[#E89382] shadow-xs'
-                      : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF]'
-                  }`}
-                >
-                  <div className="w-9 h-9 rounded-[3px] bg-[#F3EFEA] dark:bg-[#201D1B] text-[#981C00] dark:text-[#E89382] flex items-center justify-center shrink-0">
-                    <Zap className="w-4 h-4" />
+                {/* Quick Action Buttons */}
+                <div className="flex items-center justify-between gap-2 pt-2 border-t border-[#E8E4DF] dark:border-[#2C2825]">
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedPlans(['all', '200', '600', '1000']);
+                        setTargetPlan('all');
+                      }}
+                      className="px-2 py-1 rounded-[3px] text-[11px] font-semibold bg-[#F3EFEA] dark:bg-[#1E1B19] hover:bg-[#E8E4DF] dark:hover:bg-[#2C2825] text-[#24211F] dark:text-[#FAF8F5] transition-colors cursor-pointer"
+                    >
+                      Select All
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedPlans([]);
+                        setTargetPlan('200');
+                      }}
+                      className="px-2 py-1 rounded-[3px] text-[11px] font-semibold text-[#706A65] dark:text-[#A8A29D] hover:text-rose-600 transition-colors cursor-pointer"
+                    >
+                      Clear
+                    </button>
                   </div>
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-bold text-sm text-[#24211F] dark:text-[#FAF8F5]">
-                        Instant Chunked Dispatch
-                      </h3>
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-[3px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
-                        Right Now
-                      </span>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowRecipientList(!showRecipientList)}
+                    className="text-[11px] font-bold text-[#981C00] dark:text-[#E89382] hover:underline cursor-pointer flex items-center gap-1"
+                  >
+                    <Eye className="w-3 h-3" />
+                    <span>{showRecipientList ? 'Hide List' : `View List (${activeRecipients.length})`}</span>
+                  </button>
+                </div>
+
+                {/* Expandable Recipient List Preview */}
+                {showRecipientList && (
+                  <div className="pt-2 border-t border-[#E8E4DF] dark:border-[#2C2825] space-y-2 animate-in fade-in">
+                    <input
+                      type="text"
+                      placeholder="Filter selected recipients..."
+                      value={recipientSearch}
+                      onChange={(e) => setRecipientSearch(e.target.value)}
+                      className="w-full p-1.5 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-xs text-[#24211F] dark:text-[#FAF8F5]"
+                    />
+                    <div className="max-h-40 overflow-y-auto divide-y divide-[#E8E4DF] dark:divide-[#2C2825] rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615]">
+                      {activeRecipients
+                        .filter((r) =>
+                          !recipientSearch
+                            ? true
+                            : r.userName.toLowerCase().includes(recipientSearch.toLowerCase()) ||
+                              r.userPhone.includes(recipientSearch)
+                        )
+                        .map((r, i) => (
+                          <div key={r.id || i} className="p-2 flex items-center justify-between text-[11px]">
+                            <div>
+                              <span className="font-bold text-[#24211F] dark:text-[#FAF8F5] block line-clamp-1">
+                                {r.userName}
+                              </span>
+                              <span className="font-mono text-[#706A65] dark:text-[#A8A29D]">{r.userPhone}</span>
+                            </div>
+                            <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-[2px] bg-[#F3EFEA] dark:bg-[#201D1B] text-[#706A65] dark:text-[#A8A29D]">
+                              {r.planName || 'Member'}
+                            </span>
+                          </div>
+                        ))}
                     </div>
-                    <p className="text-xs text-[#706A65] dark:text-[#A8A29D] leading-relaxed">
-                      Transmits immediately in small chunks ({batchSize} per batch) with real-time progress.
+                  </div>
+                )}
+              </Card>
+
+              {/* ----------------------------------------------------------------------- */}
+              {/* STEP 2: DISPATCH MODE (Buttons, Toggles, and Scheduling Controls) */}
+              {/* ----------------------------------------------------------------------- */}
+              <Card id="step-2-dispatch-mode" className="p-4 sm:p-5 bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[3px] shadow-xs space-y-3.5">
+                <div className="flex items-center gap-2.5 pb-3 border-b border-[#E8E4DF] dark:border-[#2C2825]">
+                  <div className="w-6 h-6 rounded-[3px] bg-[#F3EFEA] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] text-[#981C00] dark:text-[#E89382] flex items-center justify-center font-bold text-xs">
+                    2
+                  </div>
+                  <div>
+                    <h2 className="text-sm font-serif font-bold text-[#24211F] dark:text-[#FAF8F5]">
+                      Dispatch Mode
+                    </h2>
+                    <p className="text-[11px] text-[#706A65] dark:text-[#A8A29D]">
+                      Immediate send or scheduled campaign
                     </p>
                   </div>
-                </button>
+                </div>
 
-                {/* Scheduled Mode Card */}
-                <button
-                  type="button"
-                  onClick={() => setDispatchMode('schedule')}
-                  className={`p-4 rounded-[3px] border text-left transition-all cursor-pointer flex items-start gap-3.5 ${
-                    dispatchMode === 'schedule'
-                      ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-2 border-[#981C00] dark:border-[#E89382] shadow-xs'
-                      : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF]'
-                  }`}
-                >
-                  <div className="w-9 h-9 rounded-[3px] bg-[#F3EFEA] dark:bg-[#201D1B] text-[#981C00] dark:text-[#E89382] flex items-center justify-center shrink-0">
-                    <Calendar className="w-4 h-4" />
-                  </div>
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-bold text-sm text-[#24211F] dark:text-[#FAF8F5]">
-                        Schedule Recurring Campaign
-                      </h3>
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-[3px] bg-[#F3EFEA] dark:bg-[#201D1B] text-[#981C00] dark:text-[#E89382]">
-                        Automated
-                      </span>
+                {/* Mode Buttons */}
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setDispatchMode('instant')}
+                    className={`p-2.5 rounded-[3px] border text-left transition-all cursor-pointer flex flex-col justify-between space-y-1 ${
+                      dispatchMode === 'instant'
+                        ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-2 border-[#981C00] dark:border-[#E89382] shadow-2xs'
+                        : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF]'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <Zap className="w-4 h-4 text-[#981C00] dark:text-[#E89382]" />
+                      {dispatchMode === 'instant' && <Check className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382] stroke-[3]" />}
                     </div>
-                    <p className="text-xs text-[#706A65] dark:text-[#A8A29D] leading-relaxed">
-                      Schedule daily morning scripture broadcasts for 1 Week, 3 Weeks, or 1 Month (30 Days).
-                    </p>
-                  </div>
-                </button>
-              </div>
+                    <p className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">Instant Send</p>
+                    <p className="text-[10px] text-[#706A65] dark:text-[#A8A29D]">Right now in safe chunks</p>
+                  </button>
 
-              {/* Scheduled Configuration Controls */}
-              {dispatchMode === 'schedule' && (
-                <div className="p-4 rounded-[3px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] space-y-4 animate-in fade-in">
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <button
+                    type="button"
+                    onClick={() => setDispatchMode('schedule')}
+                    className={`p-2.5 rounded-[3px] border text-left transition-all cursor-pointer flex flex-col justify-between space-y-1 ${
+                      dispatchMode === 'schedule'
+                        ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-2 border-[#981C00] dark:border-[#E89382] shadow-2xs'
+                        : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF]'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <Calendar className="w-4 h-4 text-[#981C00] dark:text-[#E89382]" />
+                      {dispatchMode === 'schedule' && <Check className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382] stroke-[3]" />}
+                    </div>
+                    <p className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">Schedule</p>
+                    <p className="text-[10px] text-[#706A65] dark:text-[#A8A29D]">Daily morning cycle</p>
+                  </button>
+                </div>
+
+                {/* Scheduled Mode Form Inputs */}
+                {dispatchMode === 'schedule' && (
+                  <div className="p-3 rounded-[3px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3 animate-in fade-in">
                     <div>
-                      <label className="block text-xs font-semibold text-[#706A65] dark:text-[#A8A29D] mb-1.5">
+                      <label className="block text-[11px] font-semibold text-[#706A65] dark:text-[#A8A29D] mb-1">
                         Campaign Duration
                       </label>
                       <select
                         value={scheduleDuration}
                         onChange={(e) => setScheduleDuration(e.target.value as any)}
-                        className="w-full p-2.5 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs font-semibold text-[#24211F] dark:text-[#FAF8F5]"
+                        className="w-full p-2 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs font-semibold text-[#24211F] dark:text-[#FAF8F5]"
                       >
                         <option value="1_week">1 Week (7 Days)</option>
                         <option value="3_weeks">3 Weeks (21 Days)</option>
@@ -1414,484 +1540,468 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                       </select>
                     </div>
 
-                    <div>
-                      <label className="block text-xs font-semibold text-[#706A65] dark:text-[#A8A29D] mb-1.5">
-                        Daily Morning Send Time
-                      </label>
-                      <input
-                        type="time"
-                        value={scheduleDailyTime}
-                        onChange={(e) => setScheduleDailyTime(e.target.value)}
-                        className="w-full p-2.5 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs text-[#24211F] dark:text-[#FAF8F5] font-mono"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-[#706A65] dark:text-[#A8A29D] mb-1.5">
-                        Start Date
-                      </label>
-                      <input
-                        type="date"
-                        value={scheduleStartDate}
-                        onChange={(e) => setScheduleStartDate(e.target.value)}
-                        className="w-full p-2.5 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs text-[#24211F] dark:text-[#FAF8F5] font-mono"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-[#706A65] dark:text-[#A8A29D] mb-1.5">
-                      Campaign Title (Internal Reference)
-                    </label>
-                    <input
-                      type="text"
-                      placeholder={`e.g. 30-Day Morning Scripture for ${targetPlan === 'all' ? 'All Members' : `${targetPlan} ETB Tier`}`}
-                      value={campaignTitle}
-                      onChange={(e) => setCampaignTitle(e.target.value)}
-                      className="w-full p-2.5 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs text-[#24211F] dark:text-[#FAF8F5]"
-                    />
-                  </div>
-
-                  {/* Quick-Load from Saved Sample Texts for Schedule */}
-                  {customTemplates.length > 0 ? (
-                    <div className="pt-3 border-t border-[#E8E4DF] dark:border-[#2C2825]">
-                      <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                        <span className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">
-                          Use Saved Sample Text for this Schedule:
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => handleOpenNewTemplateModal()}
-                          className="text-[11px] font-bold text-[#981C00] dark:text-[#E89382] hover:underline cursor-pointer flex items-center gap-1"
-                        >
-                          <Plus className="w-3 h-3" />
-                          <span>+ Create New Sample</span>
-                        </button>
-                      </div>
-                      <div className="flex flex-wrap items-center gap-1.5">
-                        {customTemplates.map((tmpl) => (
-                          <button
-                            key={tmpl.id}
-                            type="button"
-                            onClick={() => {
-                              setMessageText(tmpl.text);
-                              if (!campaignTitle) setCampaignTitle(`${tmpl.title} Campaign`);
-                              success('Template Loaded', `"${tmpl.title}" selected for this scheduled campaign.`);
-                            }}
-                            className={`px-3 py-1.5 rounded-[3px] text-xs font-semibold border transition-all cursor-pointer flex items-center gap-1.5 ${
-                              messageText === tmpl.text
-                                ? 'bg-[#24211F] text-[#FAF8F5] dark:bg-[#FAF8F5] dark:text-[#24211F] border-[#24211F] dark:border-[#FAF8F5] shadow-xs'
-                                : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF] text-[#706A65] dark:text-[#A8A29D]'
-                            }`}
-                          >
-                            <span>{tmpl.title}</span>
-                            <span className="text-[10px] opacity-75 font-normal">({tmpl.tag})</span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="pt-3 border-t border-[#E8E4DF] dark:border-[#2C2825] flex flex-wrap items-center justify-between gap-2">
-                      <span className="text-xs text-[#706A65] dark:text-[#A8A29D]">
-                        Tip: You can save your favorite sample texts to quickly schedule repeating campaigns anytime.
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => handleOpenNewTemplateModal()}
-                        className="text-xs font-bold text-[#981C00] dark:text-[#E89382] hover:underline cursor-pointer flex items-center gap-1"
-                      >
-                        <Plus className="w-3.5 h-3.5" />
-                        <span>+ Add Sample Text</span>
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-            </Card>
-
-            {/* ========================================================================= */}
-            {/* STEP 3: MESSAGE CONTENT & DYNAMIC VARIABLES + LIVE PHONE PREVIEW */}
-            {/* ========================================================================= */}
-            <Card className="p-5 sm:p-6 bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[3px] shadow-xs space-y-4">
-              <div className="flex items-center gap-3 pb-3 border-b border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
-                <div className="w-7 h-7 rounded-[3px] bg-[#981C00]/10 dark:bg-[#981C00]/25 text-[#981C00] dark:text-[#E89382] flex items-center justify-center font-bold text-xs">
-                  3
-                </div>
-                <div>
-                  <h2 className="text-sm sm:text-base font-bold text-[#24211F] dark:text-[#F3EFEA]">
-                    Step 3. Message Content & Dynamic Variables
-                  </h2>
-                  <p className="text-xs text-[#706A65] dark:text-[#A8A29D]">
-                    Craft or select an inspired faith message. Real-time preview renders dynamic tags automatically.
-                  </p>
-                </div>
-              </div>
-
-              {/* 2-Column Responsive Layout: Left Composer, Right Phone Preview */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                {/* Left Column: Composer (7 cols) */}
-                <div className="lg:col-span-7 space-y-4">
-                  {/* Saved Sample Texts & Custom Samples */}
-                  <div className="space-y-2">
-                    <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="grid grid-cols-2 gap-2">
                       <div>
-                        <span className="block text-xs font-bold text-[#24211F] dark:text-[#F3EFEA]">
-                          Sample Texts & Templates:
-                        </span>
-                        <span className="text-[11px] text-[#706A65] dark:text-[#A8A29D]">
-                          {customTemplates.length === 0
-                            ? 'Create your own sample texts to use for instant broadcasts or recurring schedules.'
-                            : 'Select a sample text below to load it into the composer or campaign scheduler.'}
-                        </span>
+                        <label className="block text-[11px] font-semibold text-[#706A65] dark:text-[#A8A29D] mb-1">
+                          Morning Time
+                        </label>
+                        <input
+                          type="time"
+                          value={scheduleDailyTime}
+                          onChange={(e) => setScheduleDailyTime(e.target.value)}
+                          className="w-full p-2 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs text-[#24211F] dark:text-[#FAF8F5] font-mono"
+                        />
                       </div>
-                      <div className="flex items-center gap-1.5">
-                        {messageText.trim().length > 0 && (
-                          <button
-                            type="button"
-                            onClick={() => handleOpenNewTemplateModal(messageText)}
-                            className="px-2.5 py-1 rounded-[3px] text-xs font-semibold bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] text-[#24211F] dark:text-[#F3EFEA] transition-colors cursor-pointer flex items-center gap-1"
-                            title="Save current message as a reusable sample"
-                          >
-                            <BookmarkPlus className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
-                            <span>Save Draft as Sample</span>
-                          </button>
-                        )}
-                        <button
-                          type="button"
-                          onClick={() => handleOpenNewTemplateModal()}
-                          className="px-3 py-1 rounded-[3px] text-xs font-bold bg-[#981C00] hover:bg-[#7A1D28] text-white shadow-xs transition-all cursor-pointer flex items-center gap-1"
-                        >
-                          <Plus className="w-3.5 h-3.5" />
-                          <span>Add Sample Text</span>
-                        </button>
+                      <div>
+                        <label className="block text-[11px] font-semibold text-[#706A65] dark:text-[#A8A29D] mb-1">
+                          Start Date
+                        </label>
+                        <input
+                          type="date"
+                          value={scheduleStartDate}
+                          onChange={(e) => setScheduleStartDate(e.target.value)}
+                          className="w-full p-2 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs text-[#24211F] dark:text-[#FAF8F5] font-mono"
+                        />
                       </div>
                     </div>
 
-                    {customTemplates.length === 0 ? (
-                      <div className="p-4 rounded-[3px] border border-dashed border-[#DDD7CF] dark:border-[#2C2825] bg-[#FAF8F5]/60 dark:bg-[#1E1B19]/30 text-center space-y-2">
-                        <div className="w-8 h-8 mx-auto rounded-[3px] bg-[#F3EFEA] dark:bg-[#2C2825] flex items-center justify-center text-[#706A65] dark:text-[#A8A29D]">
-                          <MessageSquare className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <p className="text-xs font-semibold text-[#24211F] dark:text-[#F3EFEA]">
-                            No sample texts saved yet
-                          </p>
-                          <p className="text-[11px] text-[#706A65] dark:text-[#A8A29D] max-w-sm mx-auto">
-                            Add scriptures, devotional greetings, or announcements with dynamic placeholders like &#123;name&#125; and &#123;date&#125; to reuse in instant and scheduled campaigns.
-                          </p>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => handleOpenNewTemplateModal()}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[3px] text-xs font-bold bg-[#981C00] hover:bg-[#7A1D28] text-white cursor-pointer shadow-xs transition-all"
-                        >
-                          <Plus className="w-3.5 h-3.5" />
-                          <span>+ Add Sample Text</span>
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                        {customTemplates.map((tmpl) => {
-                          const isSelected = messageText === tmpl.text;
-                          return (
-                            <div
-                              key={tmpl.id}
-                              className={`p-3 rounded-[3px] border transition-all flex flex-col justify-between ${
-                                isSelected
-                                  ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-[#981C00] dark:border-[#E89382] shadow-xs'
-                                  : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF] bg-white dark:bg-[#181615]'
-                              }`}
-                            >
-                              <div
-                                onClick={() => setMessageText(tmpl.text)}
-                                className="cursor-pointer group"
-                              >
-                                <div className="flex items-center justify-between gap-1 mb-1">
-                                  <span className="font-bold text-xs text-[#24211F] dark:text-[#F3EFEA] group-hover:text-[#981C00] dark:group-hover:text-[#E89382] transition-colors line-clamp-1">
-                                    {tmpl.title}
-                                  </span>
-                                  <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-[3px] bg-[#F3EFEA] dark:bg-[#2C2825] text-[#706A65] dark:text-[#A8A29D] shrink-0">
-                                    {tmpl.tag}
-                                  </span>
-                                </div>
-                                <p className="text-[11px] text-[#706A65] dark:text-[#A8A29D] line-clamp-2 leading-relaxed">
-                                  {tmpl.text}
-                                </p>
-                              </div>
-
-                              <div className="flex items-center justify-between gap-1 pt-2 mt-2 border-t border-[#E8E4DF] dark:border-[#2C2825]">
-                                <button
-                                  type="button"
-                                  onClick={() => setMessageText(tmpl.text)}
-                                  className={`text-[11px] font-bold px-2 py-0.5 rounded-[3px] transition-all cursor-pointer ${
-                                    isSelected
-                                      ? 'bg-[#981C00] text-white'
-                                      : 'text-[#981C00] dark:text-[#E89382] hover:bg-[#981C00]/10'
-                                  }`}
-                                >
-                                  {isSelected ? 'In Composer' : 'Use in SMS'}
-                                </button>
-
-                                <div className="flex items-center gap-1">
-                                  <button
-                                    type="button"
-                                    onClick={() => handleUseTemplateInSchedule(tmpl)}
-                                    title="Use this sample for a scheduled campaign"
-                                    className="p-1 rounded-[3px] text-[#706A65] hover:text-[#981C00] hover:bg-[#FAF8F5] dark:hover:bg-[#1E1B19] cursor-pointer transition-colors"
-                                  >
-                                    <Calendar className="w-3.5 h-3.5" />
-                                  </button>
-                                  <button
-                                    type="button"
-                                    onClick={() => handleOpenEditTemplateModal(tmpl)}
-                                    title="Edit sample text"
-                                    className="p-1 rounded-[3px] text-[#706A65] hover:text-[#24211F] dark:hover:text-[#F3EFEA] hover:bg-[#FAF8F5] dark:hover:bg-[#1E1B19] cursor-pointer transition-colors"
-                                  >
-                                    <Pencil className="w-3.5 h-3.5" />
-                                  </button>
-                                  <button
-                                    type="button"
-                                    onClick={() => handleDeleteTemplate(tmpl.id, tmpl.title)}
-                                    title="Delete sample text"
-                                    className="p-1 rounded-[3px] text-[#706A65] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 cursor-pointer transition-colors"
-                                  >
-                                    <Trash2 className="w-3.5 h-3.5" />
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Personalization Tag Buttons */}
-                  <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-[#24211F] dark:text-[#F3EFEA]">
-                        Personalize:
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => insertPlaceholder('{name}')}
-                        className="px-2.5 py-1 rounded-[3px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] text-[#24211F] dark:text-[#F3EFEA] font-bold text-xs cursor-pointer transition-all flex items-center gap-1.5"
-                      >
-                        + Name
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => insertPlaceholder('{date}')}
-                        className="px-2.5 py-1 rounded-[3px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] text-[#24211F] dark:text-[#F3EFEA] font-bold text-xs cursor-pointer transition-all flex items-center gap-1.5"
-                      >
-                        + Date
-                      </button>
-                    </div>
-
-                    <div className="flex items-center gap-1">
-                      {customTemplates.length > 0 && (
-                        <button
-                          type="button"
-                          onClick={() => setMessageText(customTemplates[0].text)}
-                          className="px-2 py-1 rounded-[3px] text-[11px] font-semibold text-[#706A65] hover:text-[#24211F] dark:hover:text-[#F3EFEA] hover:bg-[#FAF8F5] dark:hover:bg-[#1E1B19] cursor-pointer flex items-center gap-1"
-                          title="Reset to first saved sample text"
-                        >
-                          <RotateCcw className="w-3 h-3" />
-                          First Sample
-                        </button>
-                      )}
-                      <button
-                        type="button"
-                        onClick={() => setMessageText('')}
-                        className="px-2 py-1 rounded-[3px] text-[11px] font-semibold text-[#706A65] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 cursor-pointer"
-                        title="Clear message"
-                      >
-                        Clear
-                      </button>
+                    <div>
+                      <label className="block text-[11px] font-semibold text-[#706A65] dark:text-[#A8A29D] mb-1">
+                        Campaign Title
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 30-Day Morning Scripture"
+                        value={campaignTitle}
+                        onChange={(e) => setCampaignTitle(e.target.value)}
+                        className="w-full p-2 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs text-[#24211F] dark:text-[#FAF8F5]"
+                      />
                     </div>
                   </div>
+                )}
+              </Card>
 
-                  {/* Textarea */}
-                  <div className="space-y-1.5">
-                    <textarea
-                      ref={textareaRef}
-                      rows={5}
-                      value={messageText}
-                      onChange={(e) => setMessageText(e.target.value)}
-                      placeholder="Type your message, morning scripture, or encouragement here (or choose/create a sample text above)..."
-                      className="w-full p-3.5 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-sm text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden resize-none leading-relaxed"
-                    />
-
-                    {/* Character & SMS Part Status Bar */}
-                    <div className="flex flex-wrap items-center justify-between text-xs px-1 text-[#706A65] dark:text-[#A8A29D] gap-2">
-                      <div className="flex items-center gap-2">
-                        <span>Include greetings and encouragement</span>
-                        {isUnicodeMessage && (
-                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-[3px] bg-[#981C00]/10 dark:bg-[#981C00]/25 text-[#981C00] dark:text-[#E89382]">
-                            Amharic / Unicode (70 chars/part)
-                          </span>
-                        )}
-                      </div>
-                      <div className="font-mono text-right font-bold text-[#24211F] dark:text-[#F3EFEA]">
-                        {messageText.length} chars • {currentSegmentCount} SMS {currentSegmentCount === 1 ? 'part' : 'parts'}
-                        <span className="text-[11px] text-[#706A65] dark:text-[#A8A29D] ml-1 font-normal">
-                          ({charsRemainingInSegment} chars left in part)
-                        </span>
-                      </div>
+              {/* ----------------------------------------------------------------------- */}
+              {/* STEP 4: CHUNKING ENGINE & PRIMARY DISPATCH (Buttons, Test SMS, Dispatch) */}
+              {/* ----------------------------------------------------------------------- */}
+              <Card className="p-4 sm:p-5 bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[3px] shadow-xs space-y-3.5">
+                <div className="flex items-center justify-between pb-3 border-b border-[#E8E4DF] dark:border-[#2C2825]">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-6 h-6 rounded-[3px] bg-[#F3EFEA] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] text-[#981C00] dark:text-[#E89382] flex items-center justify-center font-bold text-xs">
+                      4
                     </div>
-                  </div>
-                </div>
-
-                {/* Right Column: Authentic Mobile SMS Preview (5 cols) */}
-                <div className="lg:col-span-5 flex flex-col justify-between">
-                  <div className="rounded-[3px] border border-[#2C2825] bg-[#141211] p-3.5 shadow-sm space-y-3">
-                    {/* Phone Status Bar */}
-                    <div className="flex items-center justify-between px-3 pt-1 text-[11px] font-mono text-[#706A65]">
-                      <span>06:30 AM</span>
-                      <div className="w-12 h-1 bg-[#2C2825] rounded-[2px] mx-auto" />
-                      <span>4G LTE</span>
-                    </div>
-
-                    {/* Phone App Header */}
-                    <div className="flex items-center justify-between px-3 py-1.5 border-b border-[#2C2825]">
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-[3px] bg-[#981C00] text-white font-bold text-xs flex items-center justify-center">
-                          N
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-white leading-tight">NAZAZI SMS</p>
-                          <p className="text-[10px] text-[#706A65]">Official Sender ID</p>
-                        </div>
-                      </div>
-                      <span className="text-[10px] px-1.5 py-0.5 rounded-[3px] bg-[#1E1B19] text-[#E89382] font-mono">
-                        Verified
-                      </span>
-                    </div>
-
-                    {/* Live SMS Bubble */}
-                    <div className="min-h-[140px] p-3 rounded-[3px] bg-[#181615] flex flex-col justify-end space-y-2">
-                      <div className="text-center text-[10px] text-[#706A65] font-mono">
-                        Today • Ethio Telecom / Safaricom
-                      </div>
-
-                      <div className="self-start max-w-[90%] p-3.5 rounded-[3px] bg-[#981C00] text-white text-xs leading-relaxed shadow-xs space-y-1.5">
-                        <p className="font-sans whitespace-pre-wrap">{previewMessage}</p>
-                        <div className="text-[9px] text-[#E89382] text-right font-mono flex items-center justify-end gap-1">
-                          <span>06:30 AM</span>
-                          <Check className="w-3 h-3" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Phone Footer Info */}
-                    <div className="px-2 pt-1 pb-1 text-center">
-                      <p className="text-[10px] text-[#706A65]">
-                        {`{name} dynamically becomes recipient's actual registered name`}
+                    <div>
+                      <h2 className="text-sm font-serif font-bold text-[#24211F] dark:text-[#FAF8F5]">
+                        Gateway & Dispatch
+                      </h2>
+                      <p className="text-[11px] text-[#706A65] dark:text-[#A8A29D]">
+                        Chunking engine & execution
                       </p>
                     </div>
                   </div>
+                  <span className="text-[11px] font-mono text-[#706A65] dark:text-[#A8A29D]">
+                    {batchDelayMs}ms delay
+                  </span>
+                </div>
 
-                  {/* Summary Box under Preview */}
-                  <div className="mt-4 p-3 rounded-[3px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] text-xs space-y-1">
-                    <div className="flex items-center justify-between text-[#706A65] dark:text-[#A8A29D]">
-                      <span>Target Audience:</span>
-                      <strong className="text-[#24211F] dark:text-[#F3EFEA]">
-                        {targetPlan === 'all'
-                          ? 'All Verified Members'
-                          : targetPlan === 'single'
-                          ? 'Single Recipient'
-                          : `${targetPlan} ETB Plan`}
-                      </strong>
-                    </div>
-                    <div className="flex items-center justify-between text-[#706A65] dark:text-[#A8A29D]">
-                      <span>Recipients:</span>
-                      <strong className="text-[#981C00] dark:text-[#E89382] font-bold">
-                        {activeRecipients.length} members
-                      </strong>
-                    </div>
+                {/* 4 Chunk Buttons */}
+                <div className="space-y-1.5">
+                  <label className="block text-[11px] font-semibold text-[#706A65] dark:text-[#A8A29D]">
+                    Batch Chunk Size:
+                  </label>
+                  <div className="grid grid-cols-4 gap-1.5">
+                    {[
+                      { size: 25, label: 'Safest' },
+                      { size: 50, label: '★ Best' },
+                      { size: 100, label: 'Fast' },
+                      { size: 200, label: 'Bulk' },
+                    ].map(({ size, label }) => (
+                      <button
+                        key={size}
+                        type="button"
+                        onClick={() => setBatchSize(size)}
+                        className={`p-2 rounded-[3px] border text-center transition-all cursor-pointer ${
+                          batchSize === size
+                            ? 'bg-[#981C00] text-white border-[#981C00] shadow-2xs font-bold'
+                            : 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-[#E8E4DF] dark:border-[#2C2825] text-[#24211F] dark:text-[#FAF8F5] hover:border-[#981C00]/50'
+                        }`}
+                      >
+                        <p className="text-xs font-mono font-bold">{size}</p>
+                        <p className="text-[9px] opacity-80">{label}</p>
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-[#706A65] dark:text-[#A8A29D] font-mono pt-1">
+                    Math: {activeRecipients.length} recipients ÷ {batchSize} = {Math.ceil((activeRecipients.length || 1) / batchSize)} {Math.ceil((activeRecipients.length || 1) / batchSize) === 1 ? 'batch' : 'batches'}
+                  </p>
+                </div>
+
+                {/* Quick Test SMS Feature */}
+                <div className="pt-2 border-t border-[#E8E4DF] dark:border-[#2C2825] space-y-1.5">
+                  <label className="block text-[11px] font-semibold text-[#706A65] dark:text-[#A8A29D]">
+                    Send Quick Test SMS:
+                  </label>
+                  <div className="flex items-center gap-1.5">
+                    <input
+                      type="tel"
+                      placeholder="0911223344"
+                      value={quickTestPhone}
+                      onChange={(e) => setQuickTestPhone(e.target.value)}
+                      className="flex-1 p-2 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] text-xs font-mono text-[#24211F] dark:text-[#FAF8F5]"
+                    />
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="secondary"
+                      isLoading={isSendingQuickTest}
+                      onClick={handleSendQuickTest}
+                      className="text-xs font-bold rounded-[3px] cursor-pointer"
+                    >
+                      Test
+                    </Button>
                   </div>
                 </div>
-              </div>
-            </Card>
+
+                {/* Primary Action Button */}
+                <div className="pt-2 border-t border-[#E8E4DF] dark:border-[#2C2825]">
+                  {dispatchMode === 'instant' ? (
+                    <Button
+                      type="button"
+                      size="lg"
+                      isLoading={progress.isDispatching}
+                      onClick={handleStartBatchDispatch}
+                      disabled={activeRecipients.length === 0}
+                      className="w-full font-bold bg-[#981C00] text-white hover:bg-[#7A1D28] rounded-[3px] py-3 text-xs sm:text-sm shadow-xs cursor-pointer disabled:opacity-50"
+                      leftIcon={<Send className="w-4 h-4" />}
+                    >
+                      Send Message ({activeRecipients.length})
+                    </Button>
+                  ) : (
+                    <Button
+                      type="button"
+                      size="lg"
+                      isLoading={isCreatingSchedule}
+                      onClick={handleCreateSchedule}
+                      disabled={activeRecipients.length === 0}
+                      className="w-full font-bold bg-[#981C00] text-white hover:bg-[#7A1D28] rounded-[3px] py-3 text-xs sm:text-sm shadow-xs cursor-pointer disabled:opacity-50"
+                      leftIcon={<Calendar className="w-4 h-4" />}
+                    >
+                      Schedule Campaign ({activeRecipients.length})
+                    </Button>
+                  )}
+                </div>
+              </Card>
+            </div>
 
             {/* ========================================================================= */}
-            {/* STEP 4: CHUNKING ENGINE & PRIMARY ACTION */}
+            {/* RIGHT COLUMN: STEP 3 (MESSAGE CONTENT, VARIABLES & LIVE PHONE PREVIEW) */}
             {/* ========================================================================= */}
-            <Card className="p-5 sm:p-6 bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[3px] shadow-xs space-y-4">
-              <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
-                <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-[3px] bg-[#981C00]/10 dark:bg-[#981C00]/25 text-[#981C00] dark:text-[#E89382] flex items-center justify-center font-bold text-xs">
-                    4
-                  </div>
-                  <div>
-                    <h2 className="text-sm sm:text-base font-bold text-[#24211F] dark:text-[#F3EFEA]">
-                      Step 4. Chunking Engine (Protects Gateway from Timeouts & Drops)
-                    </h2>
-                    <p className="text-xs text-[#706A65] dark:text-[#A8A29D]">
-                      Math: {activeRecipients.length} recipients ÷ {batchSize} = {Math.ceil((activeRecipients.length || 1) / batchSize)} {Math.ceil((activeRecipients.length || 1) / batchSize) === 1 ? 'batch' : 'batches'}
-                    </p>
+            <div className="lg:col-span-7 xl:col-span-8 space-y-4">
+              <Card className="p-5 sm:p-6 bg-white dark:bg-[#181615] border border-[#E8E4DF] dark:border-[#2C2825] rounded-[3px] shadow-xs space-y-5">
+                {/* Step Header */}
+                <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#E8E4DF] dark:border-[#2C2825]">
+                  <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-[3px] bg-[#981C00]/10 dark:bg-[#981C00]/25 text-[#981C00] dark:text-[#E89382] flex items-center justify-center font-bold text-xs">
+                      3
+                    </div>
+                    <div>
+                      <h2 className="text-sm sm:text-base font-serif font-bold text-[#24211F] dark:text-[#F3EFEA]">
+                        Step 3. Message Content & Dynamic Variables
+                      </h2>
+                      <p className="text-xs text-[#706A65] dark:text-[#A8A29D]">
+                        Craft or select an inspired faith message. Real-time preview renders dynamic tags automatically.
+                      </p>
+                    </div>
                   </div>
                 </div>
 
-                <div className="text-xs text-[#706A65] dark:text-[#A8A29D] font-mono">
-                  Delay: {batchDelayMs}ms between batches
+                {/* 2-Column Responsive Layout: Left Composer, Right Phone Preview */}
+                <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+                  {/* Left Column: Composer (7 cols on XL) */}
+                  <div className="xl:col-span-7 space-y-4">
+                    {/* Saved Sample Texts & Custom Samples */}
+                    <div className="space-y-2">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                          <span className="block text-xs font-bold text-[#24211F] dark:text-[#F3EFEA]">
+                            Sample Texts & Templates:
+                          </span>
+                          <span className="text-[11px] text-[#706A65] dark:text-[#A8A29D]">
+                            {customTemplates.length === 0
+                              ? 'Create your own sample texts to use for instant broadcasts or recurring schedules.'
+                              : 'Select a sample text below to load it into the composer or campaign scheduler.'}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          {messageText.trim().length > 0 && (
+                            <button
+                              type="button"
+                              onClick={() => handleOpenNewTemplateModal(messageText)}
+                              className="px-2.5 py-1 rounded-[3px] text-xs font-semibold bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] text-[#24211F] dark:text-[#F3EFEA] transition-colors cursor-pointer flex items-center gap-1"
+                              title="Save current message as a reusable sample"
+                            >
+                              <BookmarkPlus className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
+                              <span>Save Draft</span>
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => handleOpenNewTemplateModal()}
+                            className="px-3 py-1 rounded-[3px] text-xs font-bold bg-[#981C00] hover:bg-[#7A1D28] text-white shadow-xs transition-all cursor-pointer flex items-center gap-1"
+                          >
+                            <Plus className="w-3.5 h-3.5" />
+                            <span>Add Sample</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      {customTemplates.length === 0 ? (
+                        <div className="p-4 rounded-[3px] border border-dashed border-[#DDD7CF] dark:border-[#2C2825] bg-[#FAF8F5]/60 dark:bg-[#1E1B19]/30 text-center space-y-2">
+                          <div className="w-8 h-8 mx-auto rounded-[3px] bg-[#F3EFEA] dark:bg-[#2C2825] flex items-center justify-center text-[#706A65] dark:text-[#A8A29D]">
+                            <MessageSquare className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <p className="text-xs font-semibold text-[#24211F] dark:text-[#F3EFEA]">
+                              No sample texts saved yet
+                            </p>
+                            <p className="text-[11px] text-[#706A65] dark:text-[#A8A29D] max-w-sm mx-auto">
+                              Add scriptures, devotional greetings, or announcements with dynamic placeholders like &#123;name&#125; and &#123;date&#125; to reuse in instant and scheduled campaigns.
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleOpenNewTemplateModal()}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[3px] text-xs font-bold bg-[#981C00] hover:bg-[#7A1D28] text-white cursor-pointer shadow-xs transition-all"
+                          >
+                            <Plus className="w-3.5 h-3.5" />
+                            <span>+ Add Sample Text</span>
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                          {customTemplates.map((tmpl) => {
+                            const isSelected = messageText === tmpl.text;
+                            return (
+                              <div
+                                key={tmpl.id}
+                                className={`p-3 rounded-[3px] border transition-all flex flex-col justify-between ${
+                                  isSelected
+                                    ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-[#981C00] dark:border-[#E89382] shadow-xs'
+                                    : 'border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF] bg-white dark:bg-[#181615]'
+                                }`}
+                              >
+                                <div
+                                  onClick={() => setMessageText(tmpl.text)}
+                                  className="cursor-pointer group"
+                                >
+                                  <div className="flex items-center justify-between gap-1 mb-1">
+                                    <span className="font-bold text-xs text-[#24211F] dark:text-[#F3EFEA] group-hover:text-[#981C00] dark:group-hover:text-[#E89382] transition-colors line-clamp-1">
+                                      {tmpl.title}
+                                    </span>
+                                    <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-[3px] bg-[#F3EFEA] dark:bg-[#2C2825] text-[#706A65] dark:text-[#A8A29D] shrink-0">
+                                      {tmpl.tag}
+                                    </span>
+                                  </div>
+                                  <p className="text-[11px] text-[#706A65] dark:text-[#A8A29D] line-clamp-2 leading-relaxed">
+                                    {tmpl.text}
+                                  </p>
+                                </div>
+
+                                <div className="flex items-center justify-between gap-1 pt-2 mt-2 border-t border-[#E8E4DF] dark:border-[#2C2825]">
+                                  <button
+                                    type="button"
+                                    onClick={() => setMessageText(tmpl.text)}
+                                    className={`text-[11px] font-bold px-2 py-0.5 rounded-[3px] transition-all cursor-pointer ${
+                                      isSelected
+                                        ? 'bg-[#981C00] text-white'
+                                        : 'text-[#981C00] dark:text-[#E89382] hover:bg-[#981C00]/10'
+                                    }`}
+                                  >
+                                    {isSelected ? 'In Composer' : 'Use in SMS'}
+                                  </button>
+
+                                  <div className="flex items-center gap-1">
+                                    <button
+                                      type="button"
+                                      onClick={() => handleUseTemplateInSchedule(tmpl)}
+                                      title="Use this sample for a scheduled campaign"
+                                      className="p-1 rounded-[3px] text-[#706A65] hover:text-[#981C00] hover:bg-[#FAF8F5] dark:hover:bg-[#1E1B19] cursor-pointer transition-colors"
+                                    >
+                                      <Calendar className="w-3.5 h-3.5" />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleOpenEditTemplateModal(tmpl)}
+                                      title="Edit sample text"
+                                      className="p-1 rounded-[3px] text-[#706A65] hover:text-[#24211F] dark:hover:text-[#F3EFEA] hover:bg-[#FAF8F5] dark:hover:bg-[#1E1B19] cursor-pointer transition-colors"
+                                    >
+                                      <Pencil className="w-3.5 h-3.5" />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleDeleteTemplate(tmpl.id, tmpl.title)}
+                                      title="Delete sample text"
+                                      className="p-1 rounded-[3px] text-[#706A65] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 cursor-pointer transition-colors"
+                                    >
+                                      <Trash2 className="w-3.5 h-3.5" />
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Personalization Tag Buttons */}
+                    <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-[#24211F] dark:text-[#F3EFEA]">
+                          Personalize:
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => insertPlaceholder('{name}')}
+                          className="px-2.5 py-1 rounded-[3px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] text-[#24211F] dark:text-[#F3EFEA] font-bold text-xs cursor-pointer transition-all flex items-center gap-1.5"
+                        >
+                          + Name
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => insertPlaceholder('{date}')}
+                          className="px-2.5 py-1 rounded-[3px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00] text-[#24211F] dark:text-[#F3EFEA] font-bold text-xs cursor-pointer transition-all flex items-center gap-1.5"
+                        >
+                          + Date
+                        </button>
+                      </div>
+
+                      <div className="flex items-center gap-1">
+                        {customTemplates.length > 0 && (
+                          <button
+                            type="button"
+                            onClick={() => setMessageText(customTemplates[0].text)}
+                            className="px-2 py-1 rounded-[3px] text-[11px] font-semibold text-[#706A65] hover:text-[#24211F] dark:hover:text-[#F3EFEA] hover:bg-[#FAF8F5] dark:hover:bg-[#1E1B19] cursor-pointer flex items-center gap-1"
+                            title="Reset to first saved sample text"
+                          >
+                            <RotateCcw className="w-3 h-3" />
+                            First Sample
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => setMessageText('')}
+                          className="px-2 py-1 rounded-[3px] text-[11px] font-semibold text-[#706A65] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 cursor-pointer"
+                          title="Clear message"
+                        >
+                          Clear
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Textarea */}
+                    <div className="space-y-1.5">
+                      <textarea
+                        ref={textareaRef}
+                        rows={6}
+                        value={messageText}
+                        onChange={(e) => setMessageText(e.target.value)}
+                        placeholder="Type your message, morning scripture, or encouragement here (or choose/create a sample text above)..."
+                        className="w-full p-3.5 rounded-[3px] border border-[#E8E4DF] dark:border-[#2C2825] bg-[#FAF8F5] dark:bg-[#141211] text-sm text-[#24211F] dark:text-[#F3EFEA] focus:border-[#981C00] focus:ring-1 focus:ring-[#981C00] focus:outline-hidden resize-none leading-relaxed"
+                      />
+
+                      {/* Character & SMS Part Status Bar */}
+                      <div className="flex flex-wrap items-center justify-between text-xs px-1 text-[#706A65] dark:text-[#A8A29D] gap-2">
+                        <div className="flex items-center gap-2">
+                          <span>Include greetings & encouragement</span>
+                          {isUnicodeMessage && (
+                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-[3px] bg-[#981C00]/10 dark:bg-[#981C00]/25 text-[#981C00] dark:text-[#E89382]">
+                              Amharic / Unicode (70 chars/part)
+                            </span>
+                          )}
+                        </div>
+                        <div className="font-mono text-right font-bold text-[#24211F] dark:text-[#F3EFEA]">
+                          {messageText.length} chars • {currentSegmentCount} SMS {currentSegmentCount === 1 ? 'part' : 'parts'}
+                          <span className="text-[11px] text-[#706A65] dark:text-[#A8A29D] ml-1 font-normal">
+                            ({charsRemainingInSegment} chars left in part)
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Authentic Mobile SMS Preview (5 cols on XL) */}
+                  <div className="xl:col-span-5 flex flex-col justify-between space-y-4">
+                    <div className="rounded-[3px] border border-[#2C2825] bg-[#141211] p-3.5 shadow-sm space-y-3">
+                      {/* Phone Status Bar */}
+                      <div className="flex items-center justify-between px-3 pt-1 text-[11px] font-mono text-[#706A65]">
+                        <span>06:30 AM</span>
+                        <div className="w-12 h-1 bg-[#2C2825] rounded-[2px] mx-auto" />
+                        <span>4G LTE</span>
+                      </div>
+
+                      {/* Phone App Header */}
+                      <div className="flex items-center justify-between px-3 py-1.5 border-b border-[#2C2825]">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-[3px] bg-[#981C00] text-white font-bold text-xs flex items-center justify-center">
+                            N
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-white leading-tight">NAZAZI SMS</p>
+                            <p className="text-[10px] text-[#706A65]">Official Sender ID</p>
+                          </div>
+                        </div>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded-[3px] bg-[#1E1B19] text-[#E89382] font-mono">
+                          Verified
+                        </span>
+                      </div>
+
+                      {/* Live SMS Bubble */}
+                      <div className="min-h-[160px] p-3 rounded-[3px] bg-[#181615] flex flex-col justify-end space-y-2">
+                        <div className="text-center text-[10px] text-[#706A65] font-mono">
+                          Today • Ethio Telecom / Safaricom
+                        </div>
+
+                        <div className="self-start max-w-[92%] p-3.5 rounded-[3px] bg-[#981C00] text-white text-xs leading-relaxed shadow-xs space-y-1.5">
+                          <p className="font-sans whitespace-pre-wrap">{previewMessage}</p>
+                          <div className="text-[9px] text-[#E89382] text-right font-mono flex items-center justify-end gap-1">
+                            <span>06:30 AM</span>
+                            <Check className="w-3 h-3" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Phone Footer Info */}
+                      <div className="px-2 pt-1 pb-1 text-center">
+                        <p className="text-[10px] text-[#706A65]">
+                          {`{name} dynamically becomes recipient's actual registered name`}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Summary Box under Preview */}
+                    <div className="p-3.5 rounded-[3px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] text-xs space-y-1.5">
+                      <div className="flex items-center justify-between text-[#706A65] dark:text-[#A8A29D]">
+                        <span>Target Audience:</span>
+                        <strong className="text-[#24211F] dark:text-[#F3EFEA]">
+                          {selectedPlans.includes('all')
+                            ? 'All Verified Members'
+                            : selectedPlans.includes('single')
+                            ? 'Single Recipient'
+                            : selectedPlans.map((p) => `${p} ETB`).join(' + ')}
+                        </strong>
+                      </div>
+                      <div className="flex items-center justify-between text-[#706A65] dark:text-[#A8A29D]">
+                        <span>Recipients:</span>
+                        <strong className="text-[#981C00] dark:text-[#E89382] font-bold">
+                          {activeRecipients.length} members
+                        </strong>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-
-              {/* 4 Chunk Options */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {[
-                  { size: 25, label: 'Safest', desc: 'Minimal socket load' },
-                  { size: 50, label: '★ Recommended', desc: 'Optimal speed & stability' },
-                  { size: 100, label: 'Fast', desc: 'For high-rate gateways' },
-                  { size: 200, label: 'Bulk', desc: 'Maximum throughput' },
-                ].map(({ size, label, desc }) => (
-                  <button
-                    key={size}
-                    type="button"
-                    onClick={() => setBatchSize(size)}
-                    className={`p-3 rounded-[3px] border text-center transition-all cursor-pointer ${
-                      batchSize === size
-                        ? 'bg-[#981C00] text-white border-[#981C00] shadow-xs'
-                        : 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#981C00]/50 text-[#24211F] dark:text-[#F3EFEA]'
-                    }`}
-                  >
-                    <p className="font-bold text-sm font-mono">{size} per batch</p>
-                    <p className="text-xs font-semibold mt-0.5 opacity-90">{label}</p>
-                    <p className="text-[10px] opacity-75 mt-1">{desc}</p>
-                  </button>
-                ))}
-              </div>
-
-              {/* Primary Action Button */}
-              <div className="pt-2">
-                {dispatchMode === 'instant' ? (
-                  <Button
-                    type="button"
-                    size="lg"
-                    isLoading={progress.isDispatching}
-                    onClick={handleStartBatchDispatch}
-                    disabled={activeRecipients.length === 0}
-                    className="w-full font-bold bg-[#981C00] text-white hover:bg-[#7A1D28] rounded-[3px] py-3 text-sm shadow-xs cursor-pointer disabled:opacity-50"
-                    leftIcon={<Send className="w-4 h-4" />}
-                  >
-                    Send Message to {activeRecipients.length} {activeRecipients.length === 1 ? 'Recipient' : 'Recipients'}
-                  </Button>
-                ) : (
-                  <Button
-                    type="button"
-                    size="lg"
-                    isLoading={isCreatingSchedule}
-                    onClick={handleCreateSchedule}
-                    disabled={activeRecipients.length === 0}
-                    className="w-full font-bold bg-[#981C00] text-white hover:bg-[#7A1D28] rounded-[3px] py-3 text-sm shadow-xs cursor-pointer disabled:opacity-50"
-                    leftIcon={<Calendar className="w-4 h-4" />}
-                  >
-                    Schedule Daily Campaign for {activeRecipients.length} {activeRecipients.length === 1 ? 'Member' : 'Members'}
-                  </Button>
-                )}
-              </div>
-            </Card>
+              </Card>
+            </div>
           </div>
         </div>
       )}
