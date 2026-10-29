@@ -5,7 +5,6 @@ import { NavigationTab } from '../types';
 import { useTheme } from '../context/ThemeContext';
 import { useLanguage } from '../context/LanguageContext';
 import {
-  Smartphone,
   Sun,
   Moon,
   Menu,
@@ -63,15 +62,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
   };
 
-  const handleVerifyClick = () => {
-    setMobileMenuOpen(false);
-    if (onOpenVerifyModal) {
-      onOpenVerifyModal();
-    } else {
-      onNavigate('landing');
-    }
-  };
-
   const handleSubscribeClick = () => {
     setMobileMenuOpen(false);
     handleNavClick('#pricing');
@@ -101,14 +91,9 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="w-8 h-8 rounded-xl bg-[#981C00] text-white flex items-center justify-center font-bold text-sm tracking-tight shadow-xs group-hover:bg-[#7A1D28] transition-colors shrink-0">
               <span>N</span>
             </div>
-            <div className="flex flex-col">
-              <span className="font-bela-bereka text-2xl font-bold tracking-tight text-[#24211F] dark:text-[#FAF8F5] leading-none pt-0.5">
-                ናዛዚ
-              </span>
-              <span className="text-[10px] text-[#706A65] dark:text-[#A8A19A] tracking-wider uppercase font-semibold leading-none pt-1">
-                {isAmharic ? 'የመንፈስ ማጽናኛ SMS' : 'Spiritual SMS'}
-              </span>
-            </div>
+            <span className="font-bela-bereka text-2xl font-bold tracking-tight text-[#24211F] dark:text-[#FAF8F5] leading-none pt-0.5">
+              ናዛዚ
+            </span>
           </button>
         </div>
 
@@ -151,16 +136,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Actions & Utilities */}
         <div className="hidden sm:flex items-center gap-2.5">
-          {/* Verify Approval Status Link */}
-          <button
-            onClick={handleVerifyClick}
-            className="px-3.5 py-2 rounded-xl text-xs font-semibold text-[#24211F] dark:text-[#FAF8F5] hover:bg-[#EAE5DF] dark:hover:bg-[#25221F] transition-colors cursor-pointer flex items-center gap-1.5"
-            title={isAmharic ? 'የአባልነት ማረጋገጫ በስልክ ቁጥር' : 'Check approval status'}
-          >
-            <Smartphone className="w-3.5 h-3.5 text-[#706A65] dark:text-[#A8A19A]" />
-            <span>{isAmharic ? 'የአባልነት ማረጋገጫ' : 'Verify Status'}</span>
-          </button>
-
           {/* Language Toggle */}
           <button
             onClick={toggleLanguage}
@@ -247,14 +222,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           </nav>
 
           <div className="pt-3 border-t border-[#E8E4DF] dark:border-[#2C2825] space-y-2.5">
-            <button
-              onClick={handleVerifyClick}
-              className="w-full py-2.5 px-3 rounded-xl bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] text-xs font-bold text-[#24211F] dark:text-[#FAF8F5] flex items-center justify-center gap-2 cursor-pointer shadow-xs"
-            >
-              <Smartphone className="w-3.5 h-3.5 text-[#981C00] dark:text-[#C43214]" />
-              <span>{isAmharic ? 'የአባልነት ማረጋገጫ በስልክ ቁጥር' : 'Verify Approval Status'}</span>
-            </button>
-
             <button
               onClick={handleSubscribeClick}
               className="w-full py-2.5 px-4 rounded-xl bg-[#981C00] text-white text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:bg-[#7A1D28] transition-colors"
