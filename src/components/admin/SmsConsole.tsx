@@ -14,6 +14,7 @@ import { normalizePlanAndAmount } from '@/lib/planUtils';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import { Checkbox } from '@/components/ui/Checkbox';
 import { useToast } from '@/context/ToastContext';
 import {
   Send,
@@ -108,15 +109,15 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
   const [quickTestPhone, setQuickTestPhone] = useState('');
   const [isSendingQuickTest, setIsSendingQuickTest] = useState(false);
 
-  // Unified Menu dropdown accordions
+  // Unified Menu dropdown accordions (closed by default)
   const [openMenuSections, setOpenMenuSections] = useState<{
     audience: boolean;
     mode: boolean;
     gateway: boolean;
   }>({
-    audience: true,
-    mode: true,
-    gateway: true,
+    audience: false,
+    mode: false,
+    gateway: false,
   });
 
   const toggleMenuSection = (section: 'audience' | 'mode' | 'gateway') => {
@@ -1264,156 +1265,84 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                     </button>
 
                     {openMenuSections.audience && (
-                      <div className="p-4 pt-1 sm:p-5 sm:pt-2 space-y-3.5 border-t border-[#E8E4DF]/60 dark:border-[#2C2825]/60 bg-white dark:bg-[#181615] animate-in fade-in">
+                      <div className="p-4 pt-2 sm:p-5 sm:pt-2 space-y-3 animate-in fade-in">
                         {/* Plan Checkbox Menu List */}
-                        <div className="space-y-1.5">
+                        <div className="space-y-1">
                           {/* 1. All Approved Members Checkbox */}
-                          <button
-                            type="button"
-                            onClick={() => handleTogglePlan('all')}
-                            className={`w-full p-2.5 rounded-[5px] border text-left transition-all cursor-pointer flex items-center justify-between gap-3 ${
-                              selectedPlans.includes('all')
-                                ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-[#981C00] dark:border-[#E89382] shadow-2xs'
-                                : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF]'
-                            }`}
-                          >
-                            <div className="flex items-center gap-2.5">
-                              <div className={`w-4 h-4 rounded-[2px] border flex items-center justify-center transition-colors ${
-                                selectedPlans.includes('all')
-                                  ? 'bg-[#981C00] border-[#981C00] text-white'
-                                  : 'border-[#A8A29D] dark:border-[#706A65] bg-white dark:bg-[#141211]'
-                              }`}>
-                                {selectedPlans.includes('all') && <Check className="w-3 h-3 stroke-[3]" />}
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <Users className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
-                                <span className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">All Approved Members</span>
-                              </div>
-                            </div>
-                            <span className="text-[11px] font-mono font-bold text-[#981C00] dark:text-[#E89382] px-1.5 py-0.5 rounded-[2px] bg-[#F3EFEA] dark:bg-[#201D1B]">
-                              {approvedAll.length}
-                            </span>
-                          </button>
+                          <Checkbox
+                            checked={selectedPlans.includes('all')}
+                            indeterminate={selectedPlans.length > 0 && selectedPlans.length < 4 && !selectedPlans.includes('all')}
+                            onCheckedChange={() => handleTogglePlan('all')}
+                            label="All Approved Members"
+                            description="Broadcast to all active subscribers across all tiers"
+                            icon={<Users className="w-3.5 h-3.5" />}
+                            badge={
+                              <span className="text-[11px] font-mono font-bold text-[#981C00] dark:text-[#E89382] px-1.5 py-0.5 rounded-[2px] bg-[#F3EFEA] dark:bg-[#201D1B]">
+                                {approvedAll.length}
+                              </span>
+                            }
+                          />
 
                           {/* 2. 200 ETB Plan Checkbox */}
-                          <button
-                            type="button"
-                            onClick={() => handleTogglePlan('200')}
-                            className={`w-full p-2.5 rounded-[5px] border text-left transition-all cursor-pointer flex items-center justify-between gap-3 ${
-                              selectedPlans.includes('200')
-                                ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-[#981C00] dark:border-[#E89382] shadow-2xs'
-                                : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF]'
-                            }`}
-                          >
-                            <div className="flex items-center gap-2.5">
-                              <div className={`w-4 h-4 rounded-[2px] border flex items-center justify-center transition-colors ${
-                                selectedPlans.includes('200')
-                                  ? 'bg-[#981C00] border-[#981C00] text-white'
-                                  : 'border-[#A8A29D] dark:border-[#706A65] bg-white dark:bg-[#141211]'
-                              }`}>
-                                {selectedPlans.includes('200') && <Check className="w-3 h-3 stroke-[3]" />}
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <BookOpen className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
-                                <span className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">200 ETB Plan</span>
-                                <span className="text-[10px] text-[#706A65] dark:text-[#A8A29D]">(Tier 1)</span>
-                              </div>
-                            </div>
-                            <span className="text-[11px] font-mono font-bold text-[#706A65] dark:text-[#A8A29D] px-1.5 py-0.5 rounded-[2px] bg-[#F3EFEA] dark:bg-[#201D1B]">
-                              {plan200Members.length}
-                            </span>
-                          </button>
+                          <Checkbox
+                            checked={selectedPlans.includes('200')}
+                            onCheckedChange={() => handleTogglePlan('200')}
+                            label="200 ETB Plan"
+                            description="Tier 1 standard members"
+                            icon={<BookOpen className="w-3.5 h-3.5" />}
+                            badge={
+                              <span className="text-[11px] font-mono font-bold text-[#706A65] dark:text-[#A8A29D] px-1.5 py-0.5 rounded-[2px] bg-[#F3EFEA] dark:bg-[#201D1B]">
+                                {plan200Members.length}
+                              </span>
+                            }
+                          />
 
                           {/* 3. 600 ETB Plan Checkbox */}
-                          <button
-                            type="button"
-                            onClick={() => handleTogglePlan('600')}
-                            className={`w-full p-2.5 rounded-[5px] border text-left transition-all cursor-pointer flex items-center justify-between gap-3 ${
-                              selectedPlans.includes('600')
-                                ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-[#981C00] dark:border-[#E89382] shadow-2xs'
-                                : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF]'
-                            }`}
-                          >
-                            <div className="flex items-center gap-2.5">
-                              <div className={`w-4 h-4 rounded-[2px] border flex items-center justify-center transition-colors ${
-                                selectedPlans.includes('600')
-                                  ? 'bg-[#981C00] border-[#981C00] text-white'
-                                  : 'border-[#A8A29D] dark:border-[#706A65] bg-white dark:bg-[#141211]'
-                              }`}>
-                                {selectedPlans.includes('600') && <Check className="w-3 h-3 stroke-[3]" />}
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <Heart className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
-                                <span className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">600 ETB Plan</span>
-                                <span className="text-[10px] text-[#706A65] dark:text-[#A8A29D]">(Tier 2)</span>
-                              </div>
-                            </div>
-                            <span className="text-[11px] font-mono font-bold text-[#706A65] dark:text-[#A8A29D] px-1.5 py-0.5 rounded-[2px] bg-[#F3EFEA] dark:bg-[#201D1B]">
-                              {plan600Members.length}
-                            </span>
-                          </button>
+                          <Checkbox
+                            checked={selectedPlans.includes('600')}
+                            onCheckedChange={() => handleTogglePlan('600')}
+                            label="600 ETB Plan"
+                            description="Tier 2 supporter members"
+                            icon={<Heart className="w-3.5 h-3.5" />}
+                            badge={
+                              <span className="text-[11px] font-mono font-bold text-[#706A65] dark:text-[#A8A29D] px-1.5 py-0.5 rounded-[2px] bg-[#F3EFEA] dark:bg-[#201D1B]">
+                                {plan600Members.length}
+                              </span>
+                            }
+                          />
 
                           {/* 4. 1,000 ETB VIP Checkbox */}
-                          <button
-                            type="button"
-                            onClick={() => handleTogglePlan('1000')}
-                            className={`w-full p-2.5 rounded-[5px] border text-left transition-all cursor-pointer flex items-center justify-between gap-3 ${
-                              selectedPlans.includes('1000')
-                                ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-[#981C00] dark:border-[#E89382] shadow-2xs'
-                                : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF]'
-                            }`}
-                          >
-                            <div className="flex items-center gap-2.5">
-                              <div className={`w-4 h-4 rounded-[2px] border flex items-center justify-center transition-colors ${
-                                selectedPlans.includes('1000')
-                                  ? 'bg-[#981C00] border-[#981C00] text-white'
-                                  : 'border-[#A8A29D] dark:border-[#706A65] bg-white dark:bg-[#141211]'
-                              }`}>
-                                {selectedPlans.includes('1000') && <Check className="w-3 h-3 stroke-[3]" />}
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <Crown className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
-                                <span className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">1,000 ETB VIP</span>
-                                <span className="text-[10px] text-[#706A65] dark:text-[#A8A29D]">(Tier 3)</span>
-                              </div>
-                            </div>
-                            <span className="text-[11px] font-mono font-bold text-[#706A65] dark:text-[#A8A29D] px-1.5 py-0.5 rounded-[2px] bg-[#F3EFEA] dark:bg-[#201D1B]">
-                              {plan1000Members.length}
-                            </span>
-                          </button>
+                          <Checkbox
+                            checked={selectedPlans.includes('1000')}
+                            onCheckedChange={() => handleTogglePlan('1000')}
+                            label="1,000 ETB VIP"
+                            description="Tier 3 patron members"
+                            icon={<Crown className="w-3.5 h-3.5" />}
+                            badge={
+                              <span className="text-[11px] font-mono font-bold text-[#706A65] dark:text-[#A8A29D] px-1.5 py-0.5 rounded-[2px] bg-[#F3EFEA] dark:bg-[#201D1B]">
+                                {plan1000Members.length}
+                              </span>
+                            }
+                          />
 
                           {/* 5. Single Direct Phone Option */}
-                          <button
-                            type="button"
-                            onClick={() => handleTogglePlan('single')}
-                            className={`w-full p-2.5 rounded-[5px] border text-left transition-all cursor-pointer flex items-center justify-between gap-3 ${
-                              selectedPlans.includes('single')
-                                ? 'bg-[#FAF8F5] dark:bg-[#1E1B19] border-[#981C00] dark:border-[#E89382] shadow-2xs'
-                                : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] hover:border-[#DDD7CF]'
-                            }`}
-                          >
-                            <div className="flex items-center gap-2.5">
-                              <div className={`w-4 h-4 rounded-[2px] border flex items-center justify-center transition-colors ${
-                                selectedPlans.includes('single')
-                                  ? 'bg-[#981C00] border-[#981C00] text-white'
-                                  : 'border-[#A8A29D] dark:border-[#706A65] bg-white dark:bg-[#141211]'
-                              }`}>
-                                {selectedPlans.includes('single') && <Check className="w-3 h-3 stroke-[3]" />}
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <Smartphone className="w-3.5 h-3.5 text-[#706A65] dark:text-[#A8A29D]" />
-                                <span className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">Single Direct Phone</span>
-                              </div>
-                            </div>
-                            <span className="text-[10px] text-[#706A65] dark:text-[#A8A29D]">
-                              {selectedPlans.includes('single') ? 'Active' : 'Direct'}
-                            </span>
-                          </button>
+                          <Checkbox
+                            checked={selectedPlans.includes('single')}
+                            onCheckedChange={() => handleTogglePlan('single')}
+                            label="Single Direct Phone"
+                            description="Send to one specific member or phone number"
+                            icon={<Smartphone className="w-3.5 h-3.5" />}
+                            badge={
+                              <span className="text-[10px] text-[#706A65] dark:text-[#A8A29D]">
+                                {selectedPlans.includes('single') ? 'Active' : 'Direct'}
+                              </span>
+                            }
+                          />
                         </div>
 
                         {/* Single Member Direct Input Area */}
                         {selectedPlans.includes('single') && (
-                          <div className="p-3 rounded-[5px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] space-y-2.5 animate-in fade-in">
+                          <div className="pt-2 space-y-2.5 animate-in fade-in">
                             <div>
                               <label className="block text-[11px] font-semibold text-[#706A65] dark:text-[#A8A29D] mb-1">
                                 Choose Approved Member ({approvedAll.length})
@@ -1453,7 +1382,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                         )}
 
                         {/* Quick Action Buttons */}
-                        <div className="flex items-center justify-between gap-2 pt-2 border-t border-[#E8E4DF] dark:border-[#2C2825]">
+                        <div className="flex items-center justify-between gap-2 pt-2">
                           <div className="flex items-center gap-1.5">
                             <button
                               type="button"
@@ -1489,7 +1418,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
 
                         {/* Expandable Recipient List Preview */}
                         {showRecipientList && (
-                          <div className="pt-2 border-t border-[#E8E4DF] dark:border-[#2C2825] space-y-2 animate-in fade-in">
+                          <div className="pt-2 space-y-2 animate-in fade-in">
                             <input
                               type="text"
                               placeholder="Filter selected recipients..."
@@ -1558,7 +1487,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                     </button>
 
                     {openMenuSections.mode && (
-                      <div className="p-4 pt-1 sm:p-5 sm:pt-2 space-y-3.5 border-t border-[#E8E4DF]/60 dark:border-[#2C2825]/60 bg-white dark:bg-[#181615] animate-in fade-in">
+                      <div className="p-4 pt-2 sm:p-5 sm:pt-2 space-y-3.5 animate-in fade-in">
                         {/* Mode Buttons */}
                         <div className="grid grid-cols-2 gap-2">
                           <button
@@ -1598,7 +1527,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
 
                         {/* Scheduled Mode Form Inputs */}
                         {dispatchMode === 'schedule' && (
-                          <div className="p-3 rounded-[5px] bg-[#FAF8F5] dark:bg-[#1E1B19] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3 animate-in fade-in">
+                          <div className="pt-2 space-y-3 animate-in fade-in">
                             <div>
                               <label className="block text-[11px] font-semibold text-[#706A65] dark:text-[#A8A29D] mb-1">
                                 Campaign Duration
@@ -1690,7 +1619,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                     </button>
 
                     {openMenuSections.gateway && (
-                      <div className="p-4 pt-1 sm:p-5 sm:pt-2 space-y-3.5 border-t border-[#E8E4DF]/60 dark:border-[#2C2825]/60 bg-white dark:bg-[#181615] animate-in fade-in">
+                      <div className="p-4 pt-2 sm:p-5 sm:pt-2 space-y-3.5 animate-in fade-in">
                         {/* 4 Chunk Buttons */}
                         <div className="space-y-1.5">
                           <label className="block text-[11px] font-semibold text-[#706A65] dark:text-[#A8A29D]">
@@ -1724,7 +1653,7 @@ export const SmsConsole: React.FC<SmsConsoleProps> = ({
                         </div>
 
                         {/* Quick Test SMS Feature */}
-                        <div className="pt-2 border-t border-[#E8E4DF] dark:border-[#2C2825] space-y-1.5">
+                        <div className="pt-2 space-y-1.5">
                           <label className="block text-[11px] font-semibold text-[#706A65] dark:text-[#A8A29D]">
                             Send Quick Test SMS:
                           </label>
