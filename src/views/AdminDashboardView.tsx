@@ -14,7 +14,6 @@ import { useLanguage } from '../context/LanguageContext';
 import { PaymentSubmission } from '../types';
 import { AdminLoginGate } from '../components/AdminLoginGate';
 import { SmsConsole } from '../components/admin/SmsConsole';
-import { useRegistrationDeadline } from '../hooks/useRegistrationDeadline';
 import {
   ShieldCheck,
   Search,
@@ -75,7 +74,6 @@ interface AdminDashboardViewProps {
 export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAdmin }) => {
   const { theme, toggleTheme } = useTheme();
   const { language, toggleLanguage } = useLanguage();
-  const { days, hours, isClosed: isRegistrationClosedDeadline } = useRegistrationDeadline();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       const token =
@@ -788,81 +786,13 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
     <div className="space-y-6 pb-16 max-w-7xl mx-auto">
       {/* 1. Header Bar with Settings Popover */}
       <div className="flex items-center justify-between gap-3 pb-4 border-b border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
-        <div className="flex items-center gap-2 sm:gap-3">
-          {onExitAdmin && (
-            <button
-              onClick={onExitAdmin}
-              className="p-2 sm:px-3 sm:py-1.5 rounded-[5px] bg-white dark:bg-[#181615] hover:bg-[#FAF8F5] dark:hover:bg-[#201D1B] text-[#24211F] dark:text-[#FAF8F5] transition-colors flex items-center gap-1.5 text-xs font-semibold cursor-pointer border border-[#E8E4DF] dark:border-[#2C2825] shadow-2xs"
-              title="Back to Public Site"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Public Site</span>
-            </button>
-          )}
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-[5px] bg-[#981C00] text-white font-black flex items-center justify-center shadow-xs text-sm">
-              N
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-base sm:text-lg font-bold tracking-tight text-[#24211F] dark:text-[#FAF8F5] leading-tight">
-                  Nazazi Admin
-                </h1>
-                <span className="px-2 py-0.5 rounded-[5px] bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#E89382] border border-[#E8DCD9] dark:border-[#3A2420] text-[10px] font-bold uppercase tracking-wider">
-                  Portal
-                </span>
-              </div>
-              <p className="text-[11px] text-[#706A65] dark:text-[#A8A19A] font-normal">
-                Subscriptions & SMS Broadcast Engine
-              </p>
-            </div>
-          </div>
+        <div>
+          <h1 className="text-base sm:text-lg font-bold tracking-tight text-[#24211F] dark:text-[#FAF8F5] leading-tight">
+            Nazazi Admin
+          </h1>
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Public Registration Countdown & Status Indicator */}
-          <div
-            className={`hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-[5px] border text-xs font-medium ${
-              isRegistrationClosedDeadline
-                ? 'bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400'
-                : 'bg-white dark:bg-[#181615] border-[#E8E4DF] dark:border-[#2C2825] text-[#706A65] dark:text-[#A8A19A]'
-            }`}
-            title={
-              isRegistrationClosedDeadline
-                ? 'Public registration has closed. Admin remains 100% active.'
-                : `Public registration is active with ~${days}d ${hours}h remaining.`
-            }
-          >
-            {isRegistrationClosedDeadline ? (
-              <>
-                <Lock className="w-3.5 h-3.5 text-amber-500" />
-                <span>Registration Closed</span>
-              </>
-            ) : (
-              <>
-                <Clock className="w-3.5 h-3.5 text-[#981C00] dark:text-[#E89382]" />
-                <span>Reg: {days}d {hours}h left</span>
-              </>
-            )}
-          </div>
-
-          {/* Real-time Live Sync Indicator & Quick Refresh */}
-          <button
-            onClick={() => {
-              fetchRegistrations();
-              info('Synced', 'Registrations refreshed & synchronized across all devices.');
-            }}
-            disabled={isLoading}
-            className="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-[5px] border border-[#E8E4DF] dark:border-[#2C2825] bg-white dark:bg-[#181615] hover:bg-[#FAF8F5] dark:hover:bg-[#201D1B] text-[#24211F] dark:text-[#FAF8F5] transition-all flex items-center gap-2 text-xs font-medium cursor-pointer shadow-2xs disabled:opacity-50"
-            title="Auto-sync active every 3s. Click to force instant cloud refresh."
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin text-[#981C00]' : 'text-[#706A65]'}`} />
-            <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hidden md:inline">Live</span>
-          </button>
 
           {/* Settings Menu Popover */}
           <div className="relative" ref={settingsRef}>
@@ -899,6 +829,32 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                   </div>
 
                   <div className="pt-2 space-y-1">
+                    {/* Public Site Return Option */}
+                    {onExitAdmin && (
+                      <button
+                        onClick={() => {
+                          setIsSettingsOpen(false);
+                          onExitAdmin();
+                        }}
+                        className="w-full flex items-center justify-between p-2.5 rounded-[5px] hover:bg-[#FAF8F5] dark:hover:bg-[#201D1B] transition-colors cursor-pointer text-left group"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-[5px] bg-[#FAF8F5] dark:bg-[#221F1D] text-[#24211F] dark:text-[#FAF8F5] flex items-center justify-center font-bold text-sm border border-[#E8E4DF] dark:border-[#2C2825]">
+                            <ArrowLeft className="w-4 h-4 text-[#706A65] dark:text-[#A8A19A]" />
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5]">
+                              Public Site
+                            </p>
+                            <p className="text-[11px] text-[#706A65] dark:text-[#A8A19A]">
+                              Return to public website
+                            </p>
+                          </div>
+                        </div>
+                        <ChevronRight className="w-4 h-4 text-[#706A65] group-hover:translate-x-0.5 transition-transform" />
+                      </button>
+                    )}
+
                     {/* 1. Language Switcher */}
                     <button
                       onClick={() => {
