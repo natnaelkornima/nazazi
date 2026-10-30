@@ -13,6 +13,7 @@ import { useToast } from '../context/ToastContext';
 import { useLanguage } from '../context/LanguageContext';
 import { PaymentSubmission } from '../types';
 import { validateFullName, validateEthiopianPhone } from '../lib/validation';
+import { parseEthiopianPaymentSms } from '../lib/smsParser';
 import {
   CreditCard,
   Check,
@@ -29,6 +30,8 @@ import {
   Info,
   Loader2,
   Zap,
+  ClipboardPaste,
+  X,
 } from 'lucide-react';
 
 export const PaymentView: React.FC = () => {
@@ -95,6 +98,50 @@ export const PaymentView: React.FC = () => {
       setIsStatusModalOpen(true);
     } finally {
       setIsSearchingPhone(false);
+    }
+  };
+
+  const handleProcessTransactionInput = (rawText: string) => {
+    const trimmed = (rawText || '').trim();
+    if (!trimmed) {
+      setTransactionId('');
+      return;
+    }
+
+    const parsed = parseEthiopianPaymentSms(trimmed);
+    if (parsed.isSms && parsed.reference) {
+      setTransactionId(parsed.reference);
+      if (parsed.detectedBank && (parsed.detectedBank === 'cbe' || parsed.detectedBank === 'telebirr')) {
+        setSelectedBank(parsed.detectedBank);
+      }
+      if (parsed.extractedAmount && [200, 600, 1000].includes(parsed.extractedAmount)) {
+        if (parsed.extractedAmount === 1000) {
+          setPlan(isAmharic ? 'የ6 ወር አገልግሎት (1000 ብር)' : '6 Months Access Plan (1000 Birr)');
+        } else if (parsed.extractedAmount === 600) {
+          setPlan(isAmharic ? 'የ3 ወር አገልግሎት (600 ብር)' : '3 Months Access Plan (600 Birr)');
+        } else if (parsed.extractedAmount === 200) {
+          setPlan(isAmharic ? 'የ1 ወር አገልግሎት (200 ብር)' : '1 Month Access Plan (200 Birr)');
+        }
+      }
+      info(
+        isAmharic ? 'ከ SMS የትራንዛክሽን ቁጥር ተለይቷል' : 'Extracted from SMS',
+        `${parsed.reference} (${parsed.detectedBank === 'cbe' ? 'CBE' : parsed.detectedBank === 'telebirr' ? 'Telebirr' : 'Bank'}${parsed.extractedAmount ? ` • ${parsed.extractedAmount} ETB` : ''})`
+      );
+    } else {
+      setTransactionId(trimmed);
+    }
+  };
+
+  const handlePasteFromClipboard = async () => {
+    try {
+      if (typeof navigator !== 'undefined' && navigator.clipboard?.readText) {
+        const text = await navigator.clipboard.readText();
+        if (text) {
+          handleProcessTransactionInput(text);
+        }
+      }
+    } catch {
+      // Clipboard access blocked
     }
   };
 
@@ -499,20 +546,73 @@ export const PaymentView: React.FC = () => {
                   </div>
                 </div>
 
-                <Input
-                  label="Transaction ID / Reference Number or Receipt Link"
-                  placeholder={
-                    selectedBank === 'telebirr'
-                      ? 'e.g. CI72984X12 (Telebirr 10-char code)'
-                      : selectedBank === 'cbe'
-                      ? 'e.g. fHCxyTVljBclm... or CBE receipt link'
-                      : 'e.g. Telebirr code, CBE Receipt ID, or receipt link'
-                  }
-                  value={transactionId}
-                  onChange={(e) => setTransactionId(e.target.value)}
-                  leftIcon={<Zap className="w-3.5 h-3.5 text-amber-500" />}
-                  required
-                />
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                    {isAmharic ? 'የትራንዛክሽን ቁጥር ወይም ሙሉ የ SMS መልእክት' : 'Transaction ID / Reference or Full Payment SMS'}
+                  </label>
+                  <div className="relative flex items-center">
+                    <input
+                      type="text"
+                      value={transactionId}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (val.length > 18 && parseEthiopianPaymentSms(val).isSms) {
+                          handleProcessTransactionInput(val);
+                        } else {
+                          setTransactionId(val);
+                        }
+                      }}
+                      onPaste={(e) => {
+                        const text = e.clipboardData?.getData('text');
+                        if (text && (parseEthiopianPaymentSms(text).isSms || text.length > 25)) {
+                          e.preventDefault();
+                          handleProcessTransactionInput(text);
+                        }
+                      }}
+                      placeholder={
+                        selectedBank === 'telebirr'
+                          ? (isAmharic ? 'ምሳሌ፡ CI72984X12 ወይም ሙሉ የቴሌብር SMS እዚህ ይለጥፉ' : 'e.g. CI72984X12 or paste Telebirr SMS')
+                          : selectedBank === 'cbe'
+                          ? (isAmharic ? 'ምሳሌ፡ fHCxyTV... ወይም የደረሰኝ ሊንክ/SMS' : 'e.g. fHCxyTV... or CBE receipt link/SMS')
+                          : (isAmharic ? 'የትራንዛክሽን ቁጥር ወይም ሙሉ SMS እዚህ ይለጥፉ...' : 'Enter Transaction ID or paste full bank SMS...')
+                      }
+                      className="w-full h-11 px-3.5 pr-20 text-xs sm:text-sm font-mono font-medium rounded-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border border-zinc-300 dark:border-zinc-700 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 shadow-2xs transition-all placeholder:text-zinc-400 placeholder:font-sans"
+                      required
+                    />
+
+                    {/* Inline Clear or Paste Action */}
+                    <div className="absolute right-2 flex items-center">
+                      {transactionId ? (
+                        <button
+                          type="button"
+                          onClick={() => setTransactionId('')}
+                          className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                          title={isAmharic ? 'አጽዳ' : 'Clear'}
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={handlePasteFromClipboard}
+                          className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-zinc-200/80 hover:bg-zinc-300 dark:bg-zinc-750 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 border border-zinc-300/60 dark:border-zinc-650 transition-all cursor-pointer shadow-2xs"
+                          title={isAmharic ? 'ከክሊፕቦርድ ለጥፍ' : 'Paste from clipboard'}
+                        >
+                          <ClipboardPaste className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-300" />
+                          <span className="text-[11px]">{isAmharic ? 'ለጥፍ' : 'Paste'}</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 pt-0.5">
+                    <Sparkles className="w-3 h-3 text-amber-500 shrink-0" />
+                    <span>
+                      {isAmharic
+                        ? 'ከባንክ ወይም ከቴሌብር የደረሰዎትን ሙሉ የ SMS መልእክት እዚህ መለጠፍ ይችላሉ። የትራንዛክሽን ቁጥሩ በራስ-ሰር ይለያል።'
+                        : 'You can paste your entire bank SMS here — the transaction ID is extracted automatically.'}
+                    </span>
+                  </p>
+                </div>
               </div>
 
               {/* Optional Glass Folder File Upload */}

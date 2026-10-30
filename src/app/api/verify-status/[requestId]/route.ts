@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { checkVerifyEtStatus } from '@/lib/verifyEt';
+import { checkVerifyEtStatus, validateSubscriptionAmount } from '@/lib/verifyEt';
 import { updateRegistrationStatus } from '@/lib/supabaseServer';
 
 export const dynamic = 'force-dynamic';
@@ -17,6 +17,20 @@ export async function GET(
     const verification = await checkVerifyEtStatus(requestId);
 
     if (verification.verified && verification.status === 'success') {
+      const amountValidation = validateSubscriptionAmount(verification.amount);
+      if (!amountValidation.isValidTier) {
+        return NextResponse.json(
+          {
+            success: false,
+            verified: false,
+            status: 'failed',
+            error: amountValidation.errorAm || amountValidation.error,
+            amount: verification.amount,
+          },
+          { status: 422 }
+        );
+      }
+
       // If registration ID was provided in query or phone, we can update status
       const { searchParams } = new URL(req.url);
       const regId = searchParams.get('regId');
@@ -33,7 +47,7 @@ export async function GET(
         message: 'Payment verified successfully by Verify.ET',
         details: {
           bank: verification.bank,
-          amount: verification.amount,
+          amount: amountValidation.matchedAmount,
           senderName: verification.senderName,
           receiverName: verification.receiverName,
           timestamp: verification.timestamp,

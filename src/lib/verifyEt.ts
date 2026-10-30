@@ -52,33 +52,23 @@ export function isVerifyEtConfigured(): boolean {
   return Boolean(key && key.startsWith('VERIFY_BANK_ET_') && key.length > 20);
 }
 
-/**
- * Normalizes Ethiopian transaction references (removes accidental spaces, prefixes, etc.)
- */
-export function normalizeTransactionReference(raw: string): { reference: string; detectedBank?: string } {
-  let clean = (raw || '').trim();
-  // Strip internal spaces/tabs
-  if (!clean.startsWith('http://') && !clean.startsWith('https://')) {
-    clean = clean.replace(/\s+/g, '');
-  }
+import {
+  type ParsedPaymentInput,
+  VALID_SUBSCRIPTION_AMOUNTS,
+  extractNumericAmount,
+  validateSubscriptionAmount,
+  parseEthiopianPaymentSms,
+  normalizeTransactionReference,
+} from './smsParser';
 
-  // Detect CBE receipt URL
-  if (clean.includes('mbreciept.cbe.com.et') || clean.includes('cbe.com.et')) {
-    return { reference: clean, detectedBank: 'cbe' };
-  }
-
-  // Detect Telebirr typical pattern (often 10 alphanumeric chars e.g. CI72984X12)
-  if (/^[A-Za-z0-9]{10}$/.test(clean)) {
-    return { reference: clean, detectedBank: 'telebirr' };
-  }
-
-  // Detect CBE Receipt ID (typically 12-32 chars alphanumeric)
-  if (/^[A-Za-z0-9_-]{12,64}$/.test(clean) && !clean.startsWith('FT')) {
-    return { reference: clean, detectedBank: 'cbe' };
-  }
-
-  return { reference: clean };
-}
+export {
+  type ParsedPaymentInput,
+  VALID_SUBSCRIPTION_AMOUNTS,
+  extractNumericAmount,
+  validateSubscriptionAmount,
+  parseEthiopianPaymentSms,
+  normalizeTransactionReference,
+};
 
 import https from 'node:https';
 import { URL } from 'node:url';
@@ -364,13 +354,14 @@ function parseVerifyEtResponse(json: any): VerifyEtResult {
   const processingStatus = verification?.processingStatus || dataItem?.processingStatus || (verified ? 'completed' : 'running');
 
   const amount =
-    typeof result?.amount === 'number'
-      ? result.amount
-      : typeof dataItem?.amount === 'number'
-      ? dataItem.amount
-      : typeof result?.amountValue === 'number'
-      ? result.amountValue
-      : undefined;
+    extractNumericAmount(result?.amount) ??
+    extractNumericAmount(dataItem?.amount) ??
+    extractNumericAmount(result?.amountValue) ??
+    extractNumericAmount(dataItem?.amountValue) ??
+    extractNumericAmount(result?.paidAmount) ??
+    extractNumericAmount(dataItem?.paidAmount) ??
+    extractNumericAmount(verification?.amount) ??
+    extractNumericAmount(json?.amount);
 
   const bank = result?.bank || dataItem?.bank || verification?.bank || undefined;
   const senderName = result?.senderName || dataItem?.senderName || undefined;

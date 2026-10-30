@@ -36,7 +36,7 @@ export const translations = {
     'action.createKey': 'Generate Key',
     'action.lightMode': 'Light Mode',
     'action.darkMode': 'Dark Mode',
-    'action.switchLang': 'አማርኛ',
+    'action.switchLang': 'አማ',
 
     // Hero Section
     'landing.heroTitle': 'A Beacon of Hope for Times of Spiritual Weariness.',
@@ -48,16 +48,16 @@ export const translations = {
     'landing.featureOutreachTitle': 'Spiritual Outreach',
     'landing.featureOutreachSubtitle': 'Direct SMS encouragement.',
     'landing.featureOutreachDesc': 'Uplifting scripture delivered straight to your phone.',
-    
+
     'landing.featureDirectTitle': 'Direct SMS Delivery',
     'landing.featureDirectDesc': 'Scripture delivered directly to your mobile phone.',
-    
+
     'landing.featureContinuousTitle': 'Daily Spiritual Renewal',
     'landing.featureContinuousDesc': 'Daily messages of hope and scripture tailored for encouragement.',
-    
+
     'landing.featurePrivacyTitle': 'Privacy & Trust',
     'landing.featurePrivacyDesc': 'Your details are kept strictly private.',
-    
+
     'landing.featureUnfailingTitle': 'Reliable Delivery',
     'landing.featureUnfailingDesc': 'Reliable delivery across all mobile networks.',
     'landing.featureAlwaysOn': 'Always On',
@@ -66,7 +66,7 @@ export const translations = {
     'landing.pricingHeaderTitle': 'Transparent Pricing',
     'landing.pricingHeaderSubtitle': 'Simple, predictable pricing plans.',
     'landing.pricingSubText': 'Simple, transparent plans for spiritual SMS encouragement.',
-    
+
     'landing.plan1Name': '1 Month Access',
     'landing.plan1Badge': 'Flexible Plan',
     'landing.plan1Price': '200 Birr / 1 Month',
@@ -160,7 +160,7 @@ export const translations = {
     'action.copyKey': 'ኤፒአይ ቁልፍ ቅዳ',
     'action.createKey': 'አዲስ ቁልፍ አውጣ',
     'action.lightMode': 'ብርሃናማ',
-    'action.darkMode': 'ጨለማማ',
+    'action.darkMode': 'ጨለማ',
     'action.switchLang': 'English',
 
     // Hero Section
@@ -173,16 +173,16 @@ export const translations = {
     'landing.featureOutreachTitle': 'ቀጥታ በSMS የሚደርስ (ኢንተርኔት አይጠይቅም)',
     'landing.featureOutreachSubtitle': 'አካውንትና ፓስወርድ አያስፈልግም',
     'landing.featureOutreachDesc': 'በቴሌብር እና በንግድ ባንክ (CBE) ቀላል ክፍያ',
-    
+
     'landing.featureDirectTitle': 'ቀጥታ የSMS ስርጭት',
     'landing.featureDirectDesc': 'ያለ ኢንተርኔት በማንኛውም ስልክ የሚሰራ።',
-    
+
     'landing.featureContinuousTitle': 'የዕለቱ ቃል',
     'landing.featureContinuousDesc': 'የመንፈስ እረፍትና ብርታት የሚሰጥ የዕለት ቃል።',
-    
-    'landing.featurePrivacyTitle': 'ታማኝነት እና ደህንነት',
-    'landing.featurePrivacyDesc': 'የስልክ ቁጥርዎ ምስጢራዊነቱ የተጠበቀ ነው።',
-    
+
+    'landing.featurePrivacyTitle': 'ታማኝነታችንና እና የእርሶ ደህንነት',
+    'landing.featurePrivacyDesc': 'የስልክ ቁጥርዎ ደህንነቱ የተጠበቀ ነው።',
+
     'landing.featureUnfailingTitle': 'ማለዳ 12:30',
     'landing.featureUnfailingDesc': 'በየዕለቱ ሳይዛነፍ በሰዓቱ የሚደርስ።',
     'landing.featureAlwaysOn': 'ሁልጊዜም ዝግጁ',
@@ -191,7 +191,7 @@ export const translations = {
     'landing.pricingHeaderTitle': 'ግልጽ እና ተመጣጣኝ ክፍያ',
     'landing.pricingHeaderSubtitle': 'የአገልግሎት አማራጮች',
     'landing.pricingSubText': 'ምንም የተደበቀ ተጨማሪ ክፍያ የለም። ለእርስዎ ወይም ለወዳጅ ዘመድዎ የሚስማማውን የአገልግሎት ጊዜ ይምረጡ።',
-    
+
     'landing.plan1Name': 'የ1 ወር አገልግሎት',
     'landing.plan1Badge': 'ለሙከራ ተስማሚ',
     'landing.plan1Price': '200 ብር / ለ1 ወር (30 ቀናት)',

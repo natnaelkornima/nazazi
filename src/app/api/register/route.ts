@@ -4,7 +4,11 @@ import { saveRegistrationToSupabase } from '@/lib/supabaseServer';
 import { validateFullName, validateStrict09Phone } from '@/lib/validation';
 import { normalizePlanAndAmount } from '@/lib/planUtils';
 import { isRegistrationClosed } from '@/lib/deadlineConfig';
-import { verifyTransactionWithVerifyEt } from '@/lib/verifyEt';
+import {
+  verifyTransactionWithVerifyEt,
+  parseEthiopianPaymentSms,
+  validateSubscriptionAmount,
+} from '@/lib/verifyEt';
 
 export const dynamic = 'force-dynamic';
 
@@ -193,24 +197,37 @@ export async function POST(req: NextRequest) {
 
     if (transactionId) {
       try {
+        const parsed = parseEthiopianPaymentSms(transactionId);
+        const cleanRef = parsed.reference;
+        const autoBank = (bank && bank !== 'auto' ? bank : parsed.detectedBank) as any;
+
         const verification = await verifyTransactionWithVerifyEt({
-          reference: transactionId,
-          bank: (bank && bank !== 'auto' ? bank : undefined) as any,
+          reference: cleanRef,
+          bank: autoBank,
           phoneNumber: cleanPhone,
           waitMs: 6000,
         });
 
         if (verification.verified && verification.status === 'success') {
-          isAutoApproved = true;
-          verifiedBank = verification.bank || verifiedBank || 'cbe';
-          verifiedRequestId = verification.requestId;
-          verifiedDetails = {
-            bank: verification.bank,
-            amount: verification.amount,
-            senderName: verification.senderName,
-            receiverName: verification.receiverName,
-            timestamp: verification.timestamp,
-          };
+          // Check payment amount (strictly 200, 600, or 1000 Birr)
+          const paidAmount = verification.amount ?? parsed.extractedAmount;
+          const amountValidation = validateSubscriptionAmount(paidAmount, amount);
+
+          if (amountValidation.isValidTier && amountValidation.isCovered) {
+            isAutoApproved = true;
+            verifiedBank = verification.bank || autoBank || 'cbe';
+            verifiedRequestId = verification.requestId;
+            transactionId = verification.transactionNumber || cleanRef;
+            verifiedDetails = {
+              bank: verifiedBank,
+              amount: amountValidation.matchedAmount,
+              senderName: verification.senderName,
+              receiverName: verification.receiverName,
+              timestamp: verification.timestamp,
+            };
+          } else {
+            verificationError = amountValidation.errorAm || amountValidation.error || 'Invalid payment amount';
+          }
         } else if (verification.errorMessage) {
           verificationError = verification.errorMessage;
         }

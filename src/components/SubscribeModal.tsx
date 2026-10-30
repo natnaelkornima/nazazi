@@ -10,6 +10,7 @@ import { useToast } from '../context/ToastContext';
 import { useLanguage } from '../context/LanguageContext';
 import { PaymentSubmission } from '../types';
 import { validateFullName, validateStrict09Phone } from '../lib/validation';
+import { parseEthiopianPaymentSms } from '../lib/smsParser';
 import {
   User,
   Smartphone,
@@ -141,14 +142,40 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
     }, 2000);
   };
 
+  const handleProcessTransactionInput = (rawText: string) => {
+    const trimmed = (rawText || '').trim();
+    if (!trimmed) {
+      setTransactionId('');
+      return;
+    }
+
+    const parsed = parseEthiopianPaymentSms(trimmed);
+    if (parsed.isSms && parsed.reference) {
+      setTransactionId(parsed.reference);
+      if (parsed.detectedBank && (parsed.detectedBank === 'cbe' || parsed.detectedBank === 'telebirr')) {
+        setSelectedBank(parsed.detectedBank);
+      }
+      if (parsed.extractedAmount && [200, 600, 1000].includes(parsed.extractedAmount)) {
+        if (parsed.extractedAmount === 1000) handleSelectPlan('6m');
+        else if (parsed.extractedAmount === 600) handleSelectPlan('3m');
+        else if (parsed.extractedAmount === 200) handleSelectPlan('1m');
+      }
+      info(
+        isAmharic ? 'ከ SMS የትራንዛክሽን ቁጥር ተለይቷል' : 'Extracted from SMS',
+        `${parsed.reference} (${parsed.detectedBank === 'cbe' ? 'CBE' : parsed.detectedBank === 'telebirr' ? 'Telebirr' : 'Bank'}${parsed.extractedAmount ? ` • ${parsed.extractedAmount} ETB` : ''})`
+      );
+    } else {
+      setTransactionId(trimmed);
+    }
+    setTransactionIdTouched(true);
+  };
+
   const handlePasteFromClipboard = async () => {
     try {
       if (typeof navigator !== 'undefined' && navigator.clipboard?.readText) {
         const text = await navigator.clipboard.readText();
         if (text) {
-          setTransactionId(text.trim());
-          setTransactionIdTouched(true);
-          info(isAmharic ? 'የትራንዛክሽን ኮድ ተለጥፏል' : 'Pasted from clipboard', text.trim());
+          handleProcessTransactionInput(text);
         }
       }
     } catch {
@@ -623,7 +650,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                 <div className="space-y-2 pt-1">
                   <div className="flex items-center justify-between">
                     <label className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">
-                      {isAmharic ? 'የትራንዛክሽን ቁጥር (Transaction ID)' : 'Transaction ID / Reference'}
+                      {isAmharic ? 'የትራንዛክሽን ቁጥር ወይም ሙሉ የ SMS መልእክት' : 'Transaction ID or Full SMS'}
                     </label>
 
                     {/* Method Selector Pills */}
@@ -654,16 +681,28 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                       type="text"
                       value={transactionId}
                       onChange={(e) => {
-                        setTransactionId(e.target.value);
-                        if (!transactionIdTouched) setTransactionIdTouched(true);
+                        const val = e.target.value;
+                        if (val.length > 18 && parseEthiopianPaymentSms(val).isSms) {
+                          handleProcessTransactionInput(val);
+                        } else {
+                          setTransactionId(val);
+                          if (!transactionIdTouched) setTransactionIdTouched(true);
+                        }
+                      }}
+                      onPaste={(e) => {
+                        const text = e.clipboardData?.getData('text');
+                        if (text && (parseEthiopianPaymentSms(text).isSms || text.length > 25)) {
+                          e.preventDefault();
+                          handleProcessTransactionInput(text);
+                        }
                       }}
                       onBlur={() => setTransactionIdTouched(true)}
                       placeholder={
                         selectedBank === 'telebirr'
-                          ? (isAmharic ? 'ምሳሌ፡ CI72984X12' : 'e.g. CI72984X12')
+                          ? (isAmharic ? 'ምሳሌ፡ CI72984X12 ወይም ሙሉ SMS' : 'e.g. CI72984X12 or paste SMS')
                           : selectedBank === 'cbe'
-                          ? (isAmharic ? 'ምሳሌ፡ fHCxyTV... ወይም ሊንክ' : 'e.g. fHCxyTV... or link')
-                          : (isAmharic ? 'ምሳሌ፡ CI72984X12 ወይም fHCxyTV...' : 'e.g. CI72984X12 or link')
+                          ? (isAmharic ? 'ምሳሌ፡ fHCxyTV... ወይም የደረሰኝ ሊንክ/SMS' : 'e.g. fHCxyTV... or CBE SMS')
+                          : (isAmharic ? 'የትራንዛክሽን ቁጥር ወይም ሙሉ SMS እዚህ ይለጥፉ...' : 'Enter Transaction ID or paste full bank SMS...')
                       }
                       className="w-full h-11 px-3.5 pr-20 text-xs sm:text-sm font-mono font-medium rounded-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border border-zinc-200/90 dark:border-zinc-800 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 focus:ring-2 focus:ring-zinc-900/10 dark:focus:ring-white/10 shadow-2xs transition-all placeholder:text-zinc-400 placeholder:font-sans"
                     />
@@ -692,6 +731,15 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                       )}
                     </div>
                   </div>
+
+                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 pt-0.5">
+                    <Sparkles className="w-3 h-3 text-amber-500 shrink-0" />
+                    <span>
+                      {isAmharic
+                        ? 'ከባንክ ወይም ከቴሌብር የደረሰዎትን ሙሉ የ SMS መልእክት እዚህ መለጠፍ ይችላሉ።'
+                        : 'You can paste the entire bank SMS message — the ID is auto-extracted.'}
+                    </span>
+                  </p>
                 </div>
 
                 {/* Bottom Actions with Breathing Room */}
