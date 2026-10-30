@@ -1,8 +1,6 @@
-"use client";
-
 import * as React from "react";
-import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { GoogleIcon } from "./google-icon";
 
 /**
  * NotchedProjectCard
@@ -27,8 +25,8 @@ export interface NotchedProjectCardProps {
   /** a pill at the top of the cover, e.g. the year or pillar index */
   badge?: string;
   tags?: string[];
-  /** custom icon inside the disc (defaults to ArrowUpRight) */
-  icon?: React.ReactNode;
+  /** Google icon name (e.g. 'how_to_reg', 'verified_user') or custom icon element */
+  icon?: string | React.ReactNode;
   /** a product screen over the photo (transparent PNG/WebP works best) */
   screen?: { src: string; alt: string; className?: string };
   /** a dark wash between the photo and the screen, 0 to 1 */
@@ -165,11 +163,15 @@ export function NotchedProjectCard({
           }
         >
           {icon ? (
-            <div className="size-5 transition-transform duration-300 group-hover:scale-110 flex items-center justify-center">
-              {icon}
+            <div className="size-6 transition-transform duration-300 group-hover:scale-110 flex items-center justify-center">
+              {typeof icon === "string" ? <GoogleIcon name={icon} size={22} /> : icon}
             </div>
           ) : (
-            <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            <GoogleIcon
+              name="north_east"
+              size={22}
+              className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            />
           )}
         </span>
       </div>

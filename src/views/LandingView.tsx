@@ -7,6 +7,7 @@ import { SubscribeModal } from '../components/SubscribeModal';
 import { SubscriptionStatusModal } from '../components/SubscriptionStatusModal';
 import { IntegrationBeam } from '../components/ui/IntegrationBeam';
 import { NotchedProjectCard } from '../components/ui/notched-project-card';
+import { GoogleIcon } from '../components/ui/google-icon';
 import { useRegistrationDeadline } from '../hooks/useRegistrationDeadline';
 import { useLanguage } from '../context/LanguageContext';
 import {
@@ -1083,15 +1084,15 @@ export const LandingView: React.FC<LandingViewProps> = ({
           {/* Bottom Assurance Bar */}
           <div className="pt-8 max-w-4xl mx-auto flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs text-[#706A65] dark:text-[#A8A19A] border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
             <div className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-[#981C00] dark:text-[#C43214]" />
+              <GoogleIcon name="verified_user" size={16} className="text-[#981C00] dark:text-[#C43214]" />
               <span>{isAmharic ? 'በራሱ ጊዜ ከሂሳብዎ የሚቆርጥ (Auto-renewal) አይደለም — ለመረጡት ጊዜ አንድ ጊዜ ብቻ ይከፍላሉ' : 'One-time payment — no auto-debit renewals'}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Smartphone className="w-4 h-4 text-[#981C00] dark:text-[#C43214]" />
+              <GoogleIcon name="phone_iphone" size={16} className="text-[#981C00] dark:text-[#C43214]" />
               <span>{isAmharic ? 'በቴሌብር እና በንግድ ባንክ (CBE) የተሳለጠ ክፍያ' : 'Pay seamlessly with Telebirr & CBE'}</span>
             </div>
             <div className="flex items-center gap-2">
-              <UserCheck className="w-4 h-4 text-[#981C00] dark:text-[#C43214]" />
+              <GoogleIcon name="how_to_reg" size={16} className="text-[#981C00] dark:text-[#C43214]" />
               <span>{isAmharic ? 'ቅጽበታዊ የአባልነት ሁኔታ ማረጋገጫ' : 'Instant phone approval status check'}</span>
             </div>
           </div>
@@ -1129,7 +1130,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   : 'No account registration or passwords to manage. Sign up with your phone number alone.'
               }
               image="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80"
-              icon={<UserCheck className="w-5 h-5 stroke-[2]" />}
+              icon="how_to_reg"
               tags={isAmharic ? ['ቀላል ምዝገባ', 'ያለ ፓስወርድ'] : ['Instant Signup', 'No Password']}
               accent="#981C00"
               accentForeground="#FFFFFF"
@@ -1146,7 +1147,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   : 'Your phone number is strictly guarded and used exclusively for your spiritual SMS.'
               }
               image="https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=800&q=80"
-              icon={<ShieldCheck className="w-5 h-5 stroke-[2]" />}
+              icon="verified_user"
               tags={isAmharic ? ['100% ምስጢራዊ', 'ያለ ማስታወቂያ'] : ['Strict Privacy', 'Zero Spam']}
               accent="#981C00"
               accentForeground="#FFFFFF"
@@ -1163,7 +1164,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   : 'Check whether your payment has been approved anytime with a simple phone number lookup.'
               }
               image="https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80"
-              icon={<CheckCircle2 className="w-5 h-5 stroke-[2]" />}
+              icon="task_alt"
               tags={isAmharic ? ['ቀጥተኛ ማረጋገጫ', 'የቀሪ ቀናት ሁኔታ'] : ['Direct Lookup', 'CBE & Telebirr']}
               onClick={() => handleTriggerVerifyModal(null)}
               accent="#981C00"
@@ -1181,7 +1182,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   : 'Reach out through our official Telegram channel for prompt and friendly assistance.'
               }
               image="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80"
-              icon={<MessageSquare className="w-5 h-5 stroke-[2]" />}
+              icon="support_agent"
               tags={isAmharic ? ['በቴሌግራም', 'ቀጥተኛ እገዛ'] : ['Telegram Support', 'Friendly Help']}
               href="https://t.me/nazazisupport"
               accent="#981C00"
