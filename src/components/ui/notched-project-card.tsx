@@ -38,6 +38,8 @@ export interface NotchedProjectCardProps {
   accent?: string;
   /** the icon's colour on that fill; pick one that contrasts with `accent` */
   accentForeground?: string;
+  /** aspect ratio class for the cover photo container (defaults to 'aspect-[4/3]') */
+  aspectRatio?: string;
   className?: string;
 }
 
@@ -56,11 +58,12 @@ export function NotchedProjectCard({
   tags = [],
   icon,
   screen,
-  dim = screen ? 0.4 : 0.15,
+  dim = screen ? 0.4 : 0,
   monochrome = false,
   surface = "var(--bg-primary, #FAF8F5)",
   accent = "#981C00",
   accentForeground = "#FFFFFF",
+  aspectRatio = "aspect-[4/3]",
   className,
 }: NotchedProjectCardProps) {
   const tone = monochrome
@@ -81,7 +84,7 @@ export function NotchedProjectCard({
     >
       <div className="relative">
         {/* The Cover Photo */}
-        <div className="relative aspect-[16/11] overflow-hidden rounded-[26px] bg-[#EAE5DF] dark:bg-[#201C19] border border-[#E5E0D8] dark:border-[#2C2723]">
+        <div className={cn("relative overflow-hidden rounded-[26px] bg-[#F7F4F0] dark:bg-[#1E1B18] border border-[#E5E0D8] dark:border-[#2C2723]", aspectRatio)}>
           <img
             src={image}
             alt={screen ? "" : imageAlt}

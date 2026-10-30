@@ -1129,7 +1129,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   ? 'ኢሜይል፣ የተጠቃሚ ስም (Username) ወይም ፓስወርድ ሳያስፈልግ በስልክ ቁጥርዎ ብቻ በሰከንዶች ውስጥ ይመዘገባሉ።'
                   : 'No account registration or passwords to manage. Sign up with your phone number alone.'
               }
-              image="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80"
+              image="/images/trust/pillar-1-no-account.png"
+              imageAlt={isAmharic ? 'ምንም ውጣ ውረድ የለውም - ቀላል ምዝገባ' : 'No Account Needed - Instant Signup'}
               icon="how_to_reg"
               tags={isAmharic ? ['ቀላል ምዝገባ', 'ያለ ፓስወርድ'] : ['Instant Signup', 'No Password']}
               accent="#981C00"
@@ -1146,7 +1147,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   ? 'ስልክ ቁጥርዎ የዕለቱን መንፈሳዊ መልእክት ለመላክ ብቻ ይውላል። ለማንኛውም ሶስተኛ ወገን ወይም ለማስታወቂያ አሳልፈን አንሰጥም።'
                   : 'Your phone number is strictly guarded and used exclusively for your spiritual SMS.'
               }
-              image="https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=800&q=80"
+              image="/images/trust/pillar-2-privacy.png"
+              imageAlt={isAmharic ? 'የስልክ ቁጥርዎ ምስጢራዊነት' : 'Phone Number Privacy'}
               icon="verified_user"
               tags={isAmharic ? ['100% ምስጢራዊ', 'ያለ ማስታወቂያ'] : ['Strict Privacy', 'Zero Spam']}
               accent="#981C00"
@@ -1163,7 +1165,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   ? 'ክፍያዎን ከፈጸሙ በኋላ ስልክ ቁጥርዎን ብቻ በማስገባት የአገልግሎትዎን ሁኔታና ቀሪ ቀናት በማንኛውም ሰዓት ማየት ይችላሉ።'
                   : 'Check whether your payment has been approved anytime with a simple phone number lookup.'
               }
-              image="https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80"
+              image="/images/trust/pillar-3-verification.png"
+              imageAlt={isAmharic ? 'ቅጽበታዊ ማረጋገጫ' : 'Direct Status Verification'}
               icon="task_alt"
               tags={isAmharic ? ['ቀጥተኛ ማረጋገጫ', 'የቀሪ ቀናት ሁኔታ'] : ['Direct Lookup', 'CBE & Telebirr']}
               onClick={() => handleTriggerVerifyModal(null)}
@@ -1181,7 +1184,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   ? 'ማንኛውም ጥያቄ ወይም እገዛ ቢያስፈልግዎት በይፋዊው የቴሌግራም አድራሻችን ፈጣን ምላሽ ያገኛሉ።'
                   : 'Reach out through our official Telegram channel for prompt and friendly assistance.'
               }
-              image="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80"
+              image="/images/trust/pillar-4-support.png"
+              imageAlt={isAmharic ? 'ፈጣን የደንበኞች ድጋፍ' : 'Direct Support'}
               icon="support_agent"
               tags={isAmharic ? ['በቴሌግራም', 'ቀጥተኛ እገዛ'] : ['Telegram Support', 'Friendly Help']}
               href="https://t.me/nazazisupport"
