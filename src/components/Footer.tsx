@@ -51,7 +51,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenVerifyModal })
             </div>
             <p className="text-xs text-[#706A65] dark:text-[#A8A19A] max-w-sm leading-relaxed">
               {isAmharic
-                ? 'ለደከመች ነፍስ የዕለት ተስፋ እና ማጽናኛ። የሚያንፁ የመጽሐፍ ቅዱስ ቃላቶች እና መንፈሳዊ መልእክቶች በSMS በቀጥታ በስልክዎ ይደርስዎታል። ምንም መለያ መክፈት አይጠበቅብዎትም።'
+                ? 'ለዛለች ነፍስ እረፍት፣ ለየዕለቱ ተስፋና ብርታት። የሚያንፁ የመጽሐፍ ቅዱስ ጥቅሶች በየማለዳው በSMS በቀጥታ ወደ ስልክዎ ይላካሉ። ምንም አካውንት መክፈት አይጠበቅብዎትም።'
                 : 'Spiritual encouragement, uplifting Bible verses, and inspirational SMS delivered directly to your mobile phone. No account or password required.'}
             </p>
           </div>
@@ -75,7 +75,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenVerifyModal })
                   onClick={() => handleNavClick('#pricing')}
                   className="hover:text-[#981C00] dark:hover:text-[#C43214] transition-colors cursor-pointer text-left"
                 >
-                  {isAmharic ? 'የደንበኝነት እቅዶች' : 'Subscription Plans'}
+                  {isAmharic ? 'የአገልግሎት አማራጮች' : 'Subscription Plans'}
                 </button>
               </li>
               <li>
@@ -83,7 +83,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenVerifyModal })
                   onClick={() => handleNavClick('#trust')}
                   className="hover:text-[#981C00] dark:hover:text-[#C43214] transition-colors cursor-pointer text-left"
                 >
-                  {isAmharic ? 'እምነት እና ደህንነት' : 'Trust & Privacy'}
+                  {isAmharic ? 'ታማኝነት እና ደህንነት' : 'Trust & Privacy'}
                 </button>
               </li>
               <li>
@@ -91,7 +91,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenVerifyModal })
                   onClick={() => handleNavClick('#testimonials')}
                   className="hover:text-[#981C00] dark:hover:text-[#C43214] transition-colors cursor-pointer text-left"
                 >
-                  {isAmharic ? 'የተጠቃሚዎች ምስክርነት' : 'Testimonials'}
+                  {isAmharic ? 'የደንበኞች አስተያየት' : 'Testimonials'}
                 </button>
               </li>
               <li>
@@ -117,7 +117,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenVerifyModal })
                   className="inline-flex items-center gap-1.5 hover:text-[#981C00] dark:hover:text-[#C43214] transition-colors cursor-pointer text-left font-medium"
                 >
                   <Smartphone className="w-3.5 h-3.5" />
-                  <span>{isAmharic ? 'የአባልነት ማረጋገጫ በስልክ ቁጥር' : 'Check Approval Status'}</span>
+                  <span>{isAmharic ? 'የአባልነት ሁኔታዎን ያረጋግጡ' : 'Check Approval Status'}</span>
                 </button>
               </li>
               <li>
@@ -137,7 +137,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenVerifyModal })
 
         {/* Bottom Bar: Copyright & Discrete Admin Entry */}
         <div className="pt-8 border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825] flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[#A8A19A] dark:text-[#706A65]">
-          <p>© {new Date().getFullYear()} NAZAZI. {isAmharic ? 'መብቱ በህግ የተጠበቀ ነው።' : 'All rights reserved.'}</p>
+          <p>© 2026 ናዛዚ (NAZAZI). {isAmharic ? 'መብቱ በህግ የተጠበቀ ነው።' : 'All rights reserved.'}</p>
           
           {/* Discrete, unobtrusive administrator access separate from customer flows */}
           <div className="flex items-center gap-4">

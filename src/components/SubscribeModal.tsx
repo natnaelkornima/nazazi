@@ -273,7 +273,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
           success(
             isAmharic ? '✅ ክፍያዎ በ Verify.ET ተረጋግጧል!' : '✅ Payment Verified via Verify.ET!',
             isAmharic
-              ? 'የደንበኝነት ምዝገባዎ ወዲያውኑ ገቢር ሆኗል (ራስ-ሰር ማረጋገጫ ተጠናቋል)'
+              ? 'የአገልግሎት ምዝገባዎ ወዲያውኑ ገቢር ሆኗል (ራስ-ሰር ማረጋገጫ ተጠናቋል)'
               : 'Your subscription is now active! Auto-approval complete.'
           );
         } else {
@@ -333,7 +333,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
               </h3>
               <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
                 {isAmharic
-                  ? 'ለዚህ ዙር የተዘጋጀው ምዝገባ ቀነ-ገደብ አልፏል። አዲስ ምዝገባ በአሁኑ ወቅት አይቻልም። ቀድመው የተመዘገቡ አባላት የአባልነት ማረጋገጫቸውን በስልክ ቁጥር ማረጋገጥ ይችላሉ።'
+                  ? 'ለዚህ ዙር የተዘጋጀው ምዝገባ ቀነ-ገደብ አልፏል። አዲስ ምዝገባ በአሁኑ ወቅት አይቻልም። ቀድመው የተመዘገቡ አባላት የአባልነት ሁኔታቸውን በስልክ ቁጥር ማረጋገጥ ይችላሉ።'
                   : 'The registration deadline for this cohort has concluded and no new sign-ups are being accepted. Previously registered members can verify their approval status anytime.'}
               </p>
             </div>
@@ -350,7 +350,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                   }}
                 >
                   <Smartphone className="w-3.5 h-3.5 mr-1.5" />
-                  <span>{isAmharic ? 'የአባልነት ማረጋገጫ በስልክ' : 'Verify Approval Status'}</span>
+                  <span>{isAmharic ? 'የአባልነት ሁኔታዎን ያረጋግጡ' : 'Verify Approval Status'}</span>
                 </Button>
               )}
               <Button

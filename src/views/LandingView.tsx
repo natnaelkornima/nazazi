@@ -216,20 +216,20 @@ export const LandingView: React.FC<LandingViewProps> = ({
           name: 'የ1 ወር አገልግሎት',
           price: '200',
           originalPrice: null,
-          period: 'ለ1 ወር',
-          badge: 'ተለዋዋጭ',
+          period: 'ለ1 ወር (30 ቀናት)',
+          badge: 'ለሙከራ ተስማሚ',
           savingsBadge: null,
           recommended: false,
           cta: 'ለ1 ወር ይመዝገቡ',
           description:
-            'የናዛዚን መንፈሳዊ አገልግሎት ለመሞከር እና በየዕለቱ ማለዳ በሚደርሱ የእግዚአብሔር ቃላት ለመጽናናት ተስማሚ የሆነ የመግቢያ እቅድ።',
+            'የናዛዚን አገልግሎት ለመሞከር እና በየማለዳው በሚደርሱ የእግዚአብሔር ቃላት ቀንዎን በበረከት ለመጀመር ተስማሚ እቅድ።',
           monthlyBreakdown: '200 ብር / በወር',
           features: [
-            'የየዕለቱ የሚያጽናና SMS መልእክት',
-            'ቀጥታ ወደ ሞባይል ስልክ የሚላክ (ኢትዮ ቴሌኮም)',
-            'ፈጣን የስልክ ቁጥር ማረጋገጫ',
-            'ምንም ዓይነት መለያ ወይም የይለፍ ቃል አያስፈልግም',
-            'በCBE ወይም በTelebirr ቀላል ክፍያ',
+            'በየማለዳው የሚላክ የዕለቱ የመጽሐፍ ቅዱስ ቃል',
+            'ያለ ኢንተርኔት በቀጥታ በSMS የሚደርስ',
+            'ፈጣን የክፍያ እና የስልክ ቁጥር ማረጋገጫ',
+            'ምንም አካውንት ወይም የይለፍ ቃል (Password) የማይጠይቅ',
+            'በቴሌብር ወይም በCBE ቀላል ክፍያ',
           ],
         },
         {
@@ -238,19 +238,18 @@ export const LandingView: React.FC<LandingViewProps> = ({
           price: '600',
           originalPrice: null,
           period: 'ለ3 ወራት',
-          badge: 'ተወዳጅ',
+          badge: 'የብዙዎች ምርጫ',
           savingsBadge: null,
           recommended: false,
           cta: 'ለ3 ወር ይመዝገቡ',
           description:
-            'ለተከታታይ 3 ወራት (90 ቀናት) ማለዳዎን በእግዚአብሔር ቃል ለመክፈትና መንፈሳዊ ብርታትን ያለማቋረጥ ለማግኘት ተመራጭ እቅድ።',
-          monthlyBreakdown: '200 ብር / በወር',
+            'ለተከታታይ 3 ወራት (90 ቀናት) ማለዳዎን በእግዚአብሔር ቃል ለመክፈትና መንፈሳዊ ብርታትን ሳይቆራረጥ ለማግኘት ተመራጭ እቅድ።',
+          monthlyBreakdown: 'በወር 200 ብር',
           features: [
-            'የየዕለቱ የሚያጽናና SMS መልእክት',
-            'ያለማቋረጥ ለ3 ወራት (90 ቀናት) የሚላክ',
-            'የቅድሚያ SMS ስርጭት ስርዓት',
-            'የስልክ ቁጥር መቀየር ካለ ፈጣን ድጋፍ',
-            'የአባልነት ሁኔታን በማንኛውም ጊዜ የማረጋገጥ ዕድል',
+            'ለ90 ተከታታይ ቀናት በየማለዳው የሚላክ መንፈሳዊ ቃል',
+            'ያለ ኢንተርኔት በማንኛውም ስልክ በSMS የሚደርስ',
+            'ስልክ ቁጥር መቀየር ቢፈልጉ ፈጣን ማስተካከያ',
+            'በማንኛውም ጊዜ የአባልነት ቀሪ ጊዜን በስልክ የማረጋገጥ ዕድል',
           ],
         },
         {
@@ -259,20 +258,18 @@ export const LandingView: React.FC<LandingViewProps> = ({
           price: '1,000',
           originalPrice: '1,200',
           period: 'ለ6 ወራት',
-          badge: 'እጅግ ተመራጭ',
-          savingsBadge: '200 ብር ቅናሽ',
+          badge: 'ከፍተኛ ቅናሽ (ምርጥ አማራጭ)',
+          savingsBadge: 'የ200 ብር ቅናሽ',
           recommended: true,
           cta: 'ለ6 ወር ይመዝገቡ',
           description:
-            'የላቀ የ200 ብር ቅናሽ ያካተተ፤ ለግማሽ ዓመት (180 ቀናት) ያለማቋረጥ የዕለት ተስፋ እና ማጽናኛን በቅድሚያ የሚያረጋግጥ ምርጥ እቅድ።',
-          monthlyBreakdown: 'በወር 166 ብር ብቻ (200 ብር ቁጠባ)',
+            'የ200 ብር ቅናሽ ያካተተ፤ ለግማሽ ዓመት (180 ቀናት) ለራስዎ ወይም ለወላጆችዎ የዕለት ተስፋና ማጽናኛን የሚያበረክቱበት ምርጥ እቅድ።',
+          monthlyBreakdown: 'በወር 166 ብር ብቻ',
           features: [
-            'የየዕለቱ የሚያጽናና SMS መልእክት',
-            'ያለማቋረጥ ለ6 ወራት (180 ቀናት) የሚላክ',
-            'የ200 ብር ቅናሽ (ከ1,200 ብር ወደ 1,000 ብር)',
-            'ቅድሚያ የሚሰጠው የSMS ማሰራጫ ቅደም ተከተል',
-            'ቀጥታ የቴሌግራም የደንበኞች ድጋፍ አገልግሎት',
-            'የአገልግሎት ማጠናቀቂያ ማስታወሻ አስቀድሞ የሚላክ',
+            'ለ180 ተከታታይ ቀናት በየማለዳው የሚላክ መንፈሳዊ ቃል',
+            'የ200 ብር ቅናሽ (ከ1,200 ብር ወደ 1,000 ብር ዝቅ ያለ)',
+            'ቀጥተኛ የቴሌግራም የደንበኞች ድጋፍ አገልግሎት',
+            'የአገልግሎት ጊዜው ሊጠናቀቅ ሲል አስቀድሞ የሚላክ ማስታወሻ',
           ],
         },
       ]
@@ -346,24 +343,24 @@ export const LandingView: React.FC<LandingViewProps> = ({
   const faqs = isAmharic
     ? [
         {
-          q: 'ናዛዚ ማለት ምን ማለት ነው? ተልዕኮውስ ምንድን ነው?',
-          a: 'ናዛዚ ማለት "አጽናኝ ወይም ተስፋ ሰጪ" ማለት ነው። ተልዕኮአችን በሕይወት ውጣ ውረድ ውስጥ ለደከሙና መጽናናትን ለሚሹ ክርስቲያኖች በየዕለቱ የሚያበረቱና የሚያንፁ የመጽሐፍ ቅዱስ ቃላትን በቀጥታ በSMS ማድረስ ነው።',
+          q: '«ናዛዚ» ማለት ምን ማለት ነው? ዓላማውስ ምንድን ነው?',
+          a: '«ናዛዚ» ማለት በግዕዝ «አጽናኝ» ወይም «ተስፋ ሰጪ» ማለት ነው። ዓላማችን በዕለት ተዕለት የሕይወት ውጣ ውረድ ውስጥ ለደከሙና መንፈሳዊ ብርታትን ለሚሹ ወገኖች፣ በየማለዳው የሚያጽናኑና የሚያንፁ የመጽሐፍ ቅዱስ ጥቅሶችን በቀጥታ በSMS ማድረስ ነው።',
         },
         {
-          q: 'ለመመዝገብ መለያ (Account) መክፈት ወይም ኢሜይል ያስፈልጋል?',
-          a: 'አይ! ምንም ዓይነት መለያ፣ የተጠቃሚ ስም ወይም የይለፍ ቃል መፍጠር አያስፈልግዎትም። ስምዎንና ስልክ ቁጥርዎን በማስገባት እና የከፈሉበትን ደረሰኝ በማያያዝ በቀላሉ በደቂቃዎች ውስጥ ይመዘገባሉ።',
+          q: 'ለመመዝገብ አካውንት መክፈት ወይም ኢሜይል ያስፈልጋል?',
+          a: 'አያስፈልግም። ምንም ዓይነት ኢሜይል፣ ፓስወርድ ወይም አካውንት መክፈት ሳይጠበቅብዎት መልእክቱ እንዲደርስዎት የሚፈልጉበትን የስልክ ቁጥር ብቻ በማስገባት መመዝገብ ይችላሉ። ለወላጆችዎ ወይም ለወዳጅዎም የእነሱን ስልክ ቁጥር በማስገባት በቀላሉ መመዝገብ ይችላሉ።',
         },
         {
           q: 'የከፈልኩት ክፍያ መጽደቁን እንዴት ማረጋገጥ እችላለሁ?',
-          a: 'በድረ-ገጹ አናት ወይም ግርጌ ላይ የሚገኘውን "የአባልነት ማረጋገጫ" የሚለውን በመጫን የስልክ ቁጥርዎን በማስገባት የክፍያዎን ወቅታዊ ሁኔታ (በመጠባበቅ ላይ፣ የጸደቀ) ወዲያውኑ ማየት ይችላሉ።',
+          a: 'በቴሌብር ወይም በንግድ ባንክ (CBE) ክፍያዎን እንደፈጸሙ ሲስተሙ ወዲያውኑ በራሱ ያረጋግጣል። በተጨማሪም ድረ-ገጹ ላይ ያለውን «የአባልነት ሁኔታዎን ያረጋግጡ» የሚለውን በመጫንና ስልክ ቁጥርዎን በማስገባት በማንኛውም ሰዓት ማረጋገጥ ይችላሉ።',
         },
         {
-          q: 'የስልክ ቁጥሬ በጥንቃቄ የተጠበቀ እና ሚስጥራዊ ነው?',
-          a: 'አዎ። የአባላት መረጃ በጥብቅ ሚስጥራዊነቱ ተጠብቆ የሚቆይ ሲሆን፣ ለተመረጠው የናዛዚ መንፈሳዊ SMS አገልግሎት ብቻ ጥቅም ላይ ይውላል። ለማንም ሶስተኛ ወገን አይተላለፍም።',
+          q: 'የስልክ ቁጥሬ ደህንነት የተጠበቀ እና ምስጢራዊ ነው?',
+          a: 'አዎ፣ በሚገባ የተጠበቀ ነው። ስልክ ቁጥርዎ የዕለቱን የመጽሐፍ ቅዱስ ቃል ለመላክ ብቻ ጥቅም ላይ ይውላል። ለማንኛውም ሶስተኛ ወገን ወይም ለማስታወቂያ ድርጅቶች አሳልፈን አንሰጥም።',
         },
         {
           q: 'መልእክቶቹ በምን ሰዓት ነው ወደ ስልኬ የሚደርሱኝ?',
-          a: 'መልእክቶቹ በየዕለቱ ጥዋት ወደ ስልክዎ ይላካሉ። ቀኑን በእግዚአብሔር ቃል፣ በተስፋ እና በሰላም ለመጀመር እንዲያስችል ታስቦ የተዘጋጀ ነው።',
+          a: 'መልእክቶቹ በየዕለቱ ማለዳ ልክ ከጠዋቱ 12:30 ሰዓት (በኢትዮጵያ አቆጣጠር) ወደ ስልክዎ ይላካሉ። ኢንተርኔት ስለማይጠይቅ በማንኛውም የሞባይል ስልክ ላይ ይደርስዎታል።',
         },
       ]
     : [
@@ -394,10 +391,10 @@ export const LandingView: React.FC<LandingViewProps> = ({
         {
           id: 'tesfaye',
           name: 'አባ ተስፋዬ ገ/ማሪያም',
-          role: 'አባትና ጡረተኛ መምህር',
+          role: 'ጡረተኛ መምህር',
           city: 'አዲስ አበባ',
-          plan: 'የ1 ዓመት አባል',
-          quote: '«በየማለዳው 12:30 በትንሿ ባትሪ ስልኬ ላይ የሚመጣው የእግዚአብሔር ቃል ቀኔን በሰላም እንድጀምር ብርታት ይሆነኛል።»',
+          plan: 'የ1 ወር አባል',
+          quote: '«በየማለዳው 12:30 በመደበኛዋ የኪስ ስልኬ ላይ የሚገባው የእግዚአብሔር ቃል ቀኔን በሰላምና በምስጋና እንድጀምር ብርታት ሆኖኛል።»',
           favoriteVerse: 'መዝሙር 46:1',
           avatarBg: 'from-[#981C00] to-[#7A1D28]',
           avatarInitials: 'ተገ',
@@ -405,10 +402,10 @@ export const LandingView: React.FC<LandingViewProps> = ({
         {
           id: 'yonas',
           name: 'ዮናስ ታደሰ',
-          role: 'ዲያስፖራ (ለእናቱ ያስመዘገበ)',
+          role: 'ከውጭ ሀገር ለእናቱ ያስመዘገበ',
           city: 'ባህር ዳር',
-          plan: 'የ1 ዓመት አባል',
-          quote: '«ለእናቴ በTelebirr የዓመት ምዝገባ አደረግኩላት። በየሳምንቱ ስንደዋወል ቃሉ እንዴት እንዳበረታት በደስታ ታካፍለኛለች።»',
+          plan: 'የ6 ወር አባል',
+          quote: '«ለእናቴ በቴሌብር የ6 ወር ምዝገባ አድርጌላት ነበር። በየሳምንቱ ስንደዋወል ጥቅሶቹ እንዴት እንደሚያጽናኗት በደስታ ትነግረኛለች።»',
           favoriteVerse: 'ኢሳይያስ 40:31',
           avatarBg: 'from-[#B45309] to-[#92400E]',
           avatarInitials: 'ዮታ',
@@ -419,7 +416,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
           role: 'የሕክምና ባለሙያ',
           city: 'ሐዋሳ',
           plan: 'የ6 ወር አባል',
-          quote: '«ከሆስፒታል የሌሊት ፈረቃዬ በኋላ የሚደርሰኝ ቃል ልክ እንደ ነፍስ እረፍት ነው። አጭር እና ልብን የሚያጽናና።»',
+          quote: '«ከሆስፒታል የሌሊት ፈረቃዬ በኋላ በጠዋት የሚደርሰኝ ቃል ለነፍሴ እረፍት ይሰጣል። አጭር፣ ግልጽ እና ልብ የሚነካ ነው።»',
           favoriteVerse: 'ፊልጵስዩስ 4:6-7',
           avatarBg: 'from-[#0F766E] to-[#115E59]',
           avatarInitials: 'ሰአ',
@@ -430,7 +427,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
           role: 'የዩኒቨርሲቲ ተማሪ',
           city: 'አዲስ አበባ',
           plan: 'የ3 ወር አባል',
-          quote: '«በፈተና ወቅት ማለዳን በእግዚአብሔር ቃል መጀመሬ ውስጣዊ መረጋጋትን ሰጥቶኛል። ያለ ዳታ በSMS መድረሱ ለተማሪዎች ፍቱን ነው።»',
+          quote: '«በፈተና ወቅት ማለዳዬን በእግዚአብሔር ቃል መጀመሬ ውስጣዊ መረጋጋትን ሰጥቶኛል። ያለ ኢንተርኔት በSMS መምጣቱ ለተማሪዎች በጣም አመቺ ነው።»',
           favoriteVerse: 'ማቴዎስ 11:28',
           avatarBg: 'from-[#7C3AED] to-[#5B21B6]',
           avatarInitials: 'ማኃ',
@@ -440,8 +437,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
           name: 'ቀሲስ ዳዊት ወ/ሚካኤል',
           role: 'የመንፈሳዊ ትምህርት አገልጋይ',
           city: 'አዳማ',
-          plan: 'የ1 ዓመት አባል',
-          quote: '«የሚመረጡት ጥቅሶች ጥልቅ መንፈሳዊ ጥንቃቄ ያለባቸው እና የዕለት ኑሮን በጸሎት ለመምራት የሚያነሳሱ ናቸው።»',
+          plan: 'የ6 ወር አባል',
+          quote: '«የሚላኩት ጥቅሶች በጥሞና የተመረጡ፣ መንፈስን የሚያድሱ እና የዕለት ውሏችንን በጸሎት እንድንመራ የሚያነሳሱ ናቸው።»',
           favoriteVerse: 'መዝሙር 23:1',
           avatarBg: 'from-[#981C00] to-[#5A1200]',
           avatarInitials: 'ዳወ',
@@ -449,10 +446,10 @@ export const LandingView: React.FC<LandingViewProps> = ({
         {
           id: 'birhanu',
           name: 'ብርሃኑ አሰፋ',
-          role: 'የንግድ ሥራ ባለቤት',
-          city: 'መርካቶ',
+          role: 'ነጋዴ',
+          city: 'አዲስ አበባ፣ መርካቶ',
           plan: 'የ6 ወር አባል',
-          quote: '«ጠዋት ወደ ንግድ ሥራዬ ስወጣ ቀኔን በፈጣሪ ቃል መክፈት ልማዴ ሆኗል። 12:30 ላይ በሰዓቱ መድረሱ የሚያስመሰግን ነው።»',
+          quote: '«ጠዋት ወደ ሥራዬ ስወጣ ቀኔን በፈጣሪ ቃል መክፈት ልማዴ ሆኗል። ሁሌም ልክ 12:30 ላይ ሳይዛነፍ መድረሱ ያስመሰግናል።»',
           favoriteVerse: 'ምሳሌ 3:5-6',
           avatarBg: 'from-[#C2410C] to-[#9A3412]',
           avatarInitials: 'ብአ',
@@ -543,14 +540,14 @@ export const LandingView: React.FC<LandingViewProps> = ({
             {/* Spiritual Category Definition */}
             <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#981C00] dark:text-[#C43214]">
               <span className="w-1.5 h-1.5 rounded-full bg-[#981C00] dark:bg-[#C43214]" />
-              <span>{isAmharic ? 'የዕለት መንፈሳዊ ማጽናኛ SMS' : 'Daily Spiritual Encouragement SMS'}</span>
+              <span>{isAmharic ? 'የዕለት መንፈሳዊ ስንቅ በSMS' : 'Daily Spiritual Encouragement SMS'}</span>
             </div>
 
             {/* Main Headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#24211F] dark:text-[#FAF8F5] leading-[1.12]">
               {isAmharic ? (
                 <>
-                  ለደከመች ነፍስ የዕለት <span className="font-bela-bereka text-[#981C00] dark:text-[#C43214]">ተስፋ</span> እና ማጽናኛ
+                  ለዛለች ነፍስ እረፍት፣ ለየዕለቱ <span className="font-bela-bereka text-[#981C00] dark:text-[#C43214]">ተስፋና</span> ብርታት
                 </>
               ) : (
                 <>
@@ -562,7 +559,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             {/* Supporting Paragraph */}
             <p className="text-base sm:text-lg text-[#706A65] dark:text-[#A8A19A] leading-relaxed max-w-xl font-normal">
               {isAmharic
-                ? 'የሚያጽናኑ እና የሚያበረቱ የመጽሐፍ ቅዱስ ቃላቶች በየዕለቱ በቀጥታ በስልክዎ በSMS ይደርስዎታል። ምንም መለያ መክፈት አያስፈልግም፤ በስልክ ቁጥርዎ ብቻ ይቀላቀሉ።'
+                ? 'ልብን የሚያጽናኑ እና መንፈስን የሚያድሱ የመጽሐፍ ቅዱስ ጥቅሶች በየማለዳው በቀጥታ ወደ ስልክዎ በSMS ይላካሉ። ምንም አካውንት መክፈት ሳያስፈልግ በስልክ ቁጥርዎ ብቻ ይጀምሩ።'
                 : 'Uplifting Bible scriptures and spiritual encouragement delivered directly to your mobile phone every morning. No account or password required.'}
             </p>
 
@@ -590,7 +587,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                 className="h-11 px-5 rounded-[15px] bg-[#FFFFFF] dark:bg-[#1D1A18] hover:bg-[#F3EFEA] dark:hover:bg-[#25221F] border border-[#E8E4DF] dark:border-[#2C2825] text-sm font-semibold text-[#24211F] dark:text-[#FAF8F5] transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
               >
                 <Smartphone className="w-4 h-4 text-[#706A65] dark:text-[#A8A19A]" />
-                <span>{isAmharic ? 'የአባልነት ማረጋገጫ በስልክ' : 'Check Approval Status'}</span>
+                <span>{isAmharic ? 'የአባልነት ሁኔታዎን ያረጋግጡ' : 'Check Approval Status'}</span>
               </button>
             </div>
 
@@ -598,15 +595,15 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <div className="pt-2 flex items-center gap-4 text-xs text-[#706A65] dark:text-[#A8A19A]">
               <span className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 text-[#981C00] dark:text-[#C43214] stroke-[3]" />
-                {isAmharic ? 'ቀጥታ በSMS የሚላክ' : 'Direct SMS Delivery'}
+                {isAmharic ? 'በቀጥታ በSMS የሚደርስ (ኢንተርኔት አይጠይቅም)' : 'Direct SMS Delivery'}
               </span>
               <span className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 text-[#981C00] dark:text-[#C43214] stroke-[3]" />
-                {isAmharic ? 'ምንም መለያ አያስፈልግም' : 'No Account Needed'}
+                {isAmharic ? 'አካውንትና ፓስወርድ አያስፈልግም' : 'No Account Needed'}
               </span>
               <span className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 text-[#981C00] dark:text-[#C43214] stroke-[3]" />
-                {isAmharic ? 'በCBE እና በTelebirr' : 'CBE & Telebirr'}
+                {isAmharic ? 'በቴሌብር እና በንግድ ባንክ (CBE) ቀላል ክፍያ' : 'CBE & Telebirr'}
               </span>
             </div>
           </div>
@@ -798,7 +795,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             {/* Interactive Day/Verse Switcher Controls */}
             <div className="mt-5 flex flex-col items-center gap-2">
               <span className="text-xs text-[#706A65] dark:text-[#A8A19A] font-semibold">
-                {isAmharic ? 'የቀናት የናሙና መልእክቶች ይቀይሩ:' : 'Preview daily morning messages:'}
+                {isAmharic ? 'የናሙና መልእክቶችን ይመልከቱ:' : 'Preview daily morning messages:'}
               </span>
               <div className="flex items-center gap-1.5 p-1 rounded-lg bg-[#EAE5DF] dark:bg-[#25221F] border border-[#DCD6CE] dark:border-[#332E2A]">
                 {sampleVerses.map((v, i) => (
@@ -831,14 +828,14 @@ export const LandingView: React.FC<LandingViewProps> = ({
           <div className="text-center max-w-2xl mx-auto space-y-3 sm:space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[15px] text-xs font-bold uppercase tracking-wider bg-[#FAF4F2] dark:bg-[#2A1D1A] text-[#981C00] dark:text-[#C43214] border border-[#E8DCD9] dark:border-[#3A2420]">
               <span className="w-1.5 h-1.5 rounded-full bg-[#981C00] dark:bg-[#C43214]" />
-              <span>{isAmharic ? 'ቀላል የ3-ደረጃ ሂደት' : 'Simple 3-Step Process'}</span>
+              <span>{isAmharic ? 'በ3 ቀላል ደረጃዎች' : 'Simple 3-Step Process'}</span>
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#24211F] dark:text-[#FAF8F5]">
-              {isAmharic ? 'ናዛዚ እንዴት እንደሚሰራ' : 'How Nazazi Works'}
+              {isAmharic ? 'ናዛዚ እንዴት ይሰራል?' : 'How Nazazi Works'}
             </h2>
             <p className="text-sm sm:text-base text-[#706A65] dark:text-[#A8A19A] leading-relaxed max-w-xl mx-auto">
               {isAmharic
-                ? 'ምንም የተወሳሰበ ቅጽ ወይም አካውንት መክፈት አይጠበቅብዎትም። በ3 ቀላል እና ፈጣን እርምጃዎች የዕለቱን መንፈሳዊ መጽናኛ ማግኘት ይጀምሩ።'
+                ? 'ምንም የተወሳሰበ ቅጽ መሙላት ወይም አካውንት መክፈት አይጠበቅብዎትም። በ3 ቀላል እርምጃዎች የዕለቱን መንፈሳዊ ስንቅ መቀበል ይጀምሩ።'
                 : 'No complex registrations, passwords, or accounts required. Begin receiving daily comforting Scripture verses right on your phone in three simple steps.'}
             </p>
           </div>
@@ -909,7 +906,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   href="#pricing"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[15px] text-xs font-bold bg-[#FAF4F2] hover:bg-[#F2EAE7] dark:bg-[#251A18] dark:hover:bg-[#2E201D] text-[#981C00] dark:text-[#C43214] border border-[#E8DCD9] dark:border-[#382622] transition-all duration-200 cursor-pointer shadow-2xs group"
                 >
-                  <span>{isAmharic ? 'የደንበኝነት እቅዶችን ይመልከቱ' : 'Explore Subscription Plans'}</span>
+                  <span>{isAmharic ? 'የአገልግሎት አማራጮችን ይመልከቱ' : 'Explore Subscription Plans'}</span>
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                 </a>
               </div>
@@ -928,14 +925,14 @@ export const LandingView: React.FC<LandingViewProps> = ({
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#981C00] dark:text-[#C43214]">
               <span className="w-1.5 h-1.5 rounded-full bg-[#981C00] dark:bg-[#C43214]" />
-              <span>{isAmharic ? 'ግልጽ እና ተመጣጣኝ ዋጋ' : 'Transparent Pricing'}</span>
+              <span>{isAmharic ? 'ግልጽ እና ተመጣጣኝ ክፍያ' : 'Transparent Pricing'}</span>
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#24211F] dark:text-[#FAF8F5]">
-              {isAmharic ? 'የደንበኝነት እቅዶች' : 'Subscription Plans'}
+              {isAmharic ? 'የአገልግሎት አማራጮች' : 'Subscription Plans'}
             </h2>
             <p className="text-sm sm:text-base text-[#706A65] dark:text-[#A8A19A] leading-relaxed max-w-xl mx-auto">
               {isAmharic
-                ? 'ምንም የተደበቀ ወጪ የለም። ለእርሶ የሚስማማውን የአገልግሎት ጊዜ ይምረጡ።'
+                ? 'ምንም የተደበቀ ተጨማሪ ክፍያ የለም። ለእርስዎ ወይም ለወዳጅ ዘመድዎ የሚስማማውን የአገልግሎት ጊዜ ይምረጡ።'
                 : 'No hidden fees or unexpected charges. Choose the duration that suits you best.'}
             </p>
           </div>
@@ -949,7 +946,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               </div>
               <p className="text-xs text-[#706A65] dark:text-[#A8A19A]">
                 {isAmharic
-                  ? 'ለዚህ ዙር የተዘጋጀው ምዝገባ ተጠናቋል። የተመዘገቡ አባላት የአባልነት ማረጋገጫቸውን በስልክ ቁጥር ማየት ይችላሉ።'
+                  ? 'ለዚህ ዙር የተዘጋጀው ምዝገባ ተጠናቋል። የተመዘገቡ አባላት የአባልነት ሁኔታቸውን በስልክ ቁጥር ማየት ይችላሉ።'
                   : 'Registration for this cohort is closed. Members can verify their approval status below.'}
               </p>
               <div>
@@ -957,7 +954,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   onClick={() => handleTriggerVerifyModal(null)}
                   className="px-4 py-2 rounded-xl text-xs font-bold bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] text-[#24211F] dark:text-[#FAF8F5] cursor-pointer shadow-xs"
                 >
-                  {isAmharic ? 'የአባልነት ማረጋገጫ በስልክ' : 'Verify Status'}
+                  {isAmharic ? 'የአባልነት ሁኔታዎን ያረጋግጡ' : 'Verify Status'}
                 </button>
               </div>
             </div>
@@ -1093,15 +1090,15 @@ export const LandingView: React.FC<LandingViewProps> = ({
           <div className="pt-8 max-w-4xl mx-auto flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs text-[#706A65] dark:text-[#A8A19A] border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-[#981C00] dark:text-[#C43214]" />
-              <span>{isAmharic ? 'ምንም አውቶማቲክ ቅነሳ የለም — አንድ ጊዜ ብቻ የሚከፈል' : 'One-time payment — no auto-debit renewals'}</span>
+              <span>{isAmharic ? 'በራሱ ጊዜ ከሂሳብዎ የሚቆርጥ (Auto-renewal) አይደለም — ለመረጡት ጊዜ አንድ ጊዜ ብቻ ይከፍላሉ' : 'One-time payment — no auto-debit renewals'}</span>
             </div>
             <div className="flex items-center gap-2">
               <Smartphone className="w-4 h-4 text-[#981C00] dark:text-[#C43214]" />
-              <span>{isAmharic ? 'በTelebirr እና በCBE ቀላል ክፍያ' : 'Pay seamlessly with Telebirr & CBE'}</span>
+              <span>{isAmharic ? 'በቴሌብር እና በንግድ ባንክ (CBE) የተሳለጠ ክፍያ' : 'Pay seamlessly with Telebirr & CBE'}</span>
             </div>
             <div className="flex items-center gap-2">
               <UserCheck className="w-4 h-4 text-[#981C00] dark:text-[#C43214]" />
-              <span>{isAmharic ? 'ፈጣን የአባልነት ሁኔታ ማረጋገጫ' : 'Instant phone approval status check'}</span>
+              <span>{isAmharic ? 'ቅጽበታዊ የአባልነት ሁኔታ ማረጋገጫ' : 'Instant phone approval status check'}</span>
             </div>
           </div>
         </div>
@@ -1115,14 +1112,14 @@ export const LandingView: React.FC<LandingViewProps> = ({
         <div className="border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825] py-20 sm:py-24 space-y-12">
           <div className="max-w-xl space-y-2">
             <p className="text-xs font-bold uppercase tracking-wider text-[#981C00] dark:text-[#C43214]">
-              {isAmharic ? 'ደህንነት እና ግልጽነት' : 'Trust & Reliability'}
+              {isAmharic ? 'ግልጽነት እና ጥንቃቄ' : 'Trust & Reliability'}
             </p>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#24211F] dark:text-[#FAF8F5]">
-              {isAmharic ? 'እምነት እና ምስጢራዊነት' : 'Built on Trust & Respect'}
+              {isAmharic ? 'ታማኝነት እና ምስጢራዊነት' : 'Built on Trust & Respect'}
             </h2>
             <p className="text-sm text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
               {isAmharic
-                ? 'የግል መረጃዎ ክብር እና ጥበቃ ይገባዋል። ናዛዚ ግልጽ በሆነ ስርዓት የተደራጀ ነው።'
+                ? 'የግል መረጃዎ ክብርና ጥበቃ ይገባዋል። ናዛዚ ግልጽ፣ ቀላል እና አስተማማኝ በሆነ ስርዓት የተዘጋጀ ነው።'
                 : 'Your contact details and trust are sacred. Nazazi is designed with clear privacy and simplicity.'}
             </p>
           </div>
@@ -1132,11 +1129,11 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <div className="p-6 rounded-[15px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
               <UserCheck className="w-5 h-5 text-[#981C00] dark:text-[#C43214]" />
               <h3 className="text-sm font-bold text-[#24211F] dark:text-[#FAF8F5]">
-                {isAmharic ? 'ምንም መለያ አያስፈልግም' : 'No Account Needed'}
+                {isAmharic ? 'ምንም ውጣ ውረድ የለውም' : 'No Account Needed'}
               </h3>
               <p className="text-xs text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
                 {isAmharic
-                  ? 'ኢሜይል፣ የተጠቃሚ ስም ወይም የይለፍ ቃል ሳያስፈልግ በስልክ ቁጥርዎ ብቻ ይመዝገቡ።'
+                  ? 'ኢሜይል፣ የተጠቃሚ ስም (Username) ወይም ፓስወርድ ሳያስፈልግ በስልክ ቁጥርዎ ብቻ በሰከንዶች ውስጥ ይመዘገባሉ።'
                   : 'No account registration or passwords to manage. Sign up with your phone number alone.'}
               </p>
             </div>
@@ -1145,11 +1142,11 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <div className="p-6 rounded-[15px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
               <ShieldCheck className="w-5 h-5 text-[#981C00] dark:text-[#C43214]" />
               <h3 className="text-sm font-bold text-[#24211F] dark:text-[#FAF8F5]">
-                {isAmharic ? 'የስልክ ቁጥር ምስጢራዊነት' : 'Phone Number Privacy'}
+                {isAmharic ? 'የስልክ ቁጥርዎ ምስጢራዊነት' : 'Phone Number Privacy'}
               </h3>
               <p className="text-xs text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
                 {isAmharic
-                  ? 'ስልክ ቁጥርዎ ለናዛዚ መንፈሳዊ መልእክት ብቻ ይውላል። ለማንም ሶስተኛ ወገን አይተላለፍም።'
+                  ? 'ስልክ ቁጥርዎ የዕለቱን መንፈሳዊ መልእክት ለመላክ ብቻ ይውላል። ለማንኛውም ሶስተኛ ወገን ወይም ለማስታወቂያ አሳልፈን አንሰጥም።'
                   : 'Your phone number is strictly guarded and used exclusively for your spiritual SMS.'}
               </p>
             </div>
@@ -1158,11 +1155,11 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <div className="p-6 rounded-[15px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
               <CheckCircle2 className="w-5 h-5 text-[#981C00] dark:text-[#C43214]" />
               <h3 className="text-sm font-bold text-[#24211F] dark:text-[#FAF8F5]">
-                {isAmharic ? 'ቀጥታ ማረጋገጫ' : 'Direct Status Verification'}
+                {isAmharic ? 'ቅጽበታዊ ማረጋገጫ' : 'Direct Status Verification'}
               </h3>
               <p className="text-xs text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
                 {isAmharic
-                  ? 'ክፍያዎን ከፈጸሙ በኋላ በስልክ ቁጥርዎ ብቻ የክፍያዎን ሁኔታ በማንኛውም ሰዓት ያረጋግጡ።'
+                  ? 'ክፍያዎን ከፈጸሙ በኋላ ስልክ ቁጥርዎን ብቻ በማስገባት የአገልግሎትዎን ሁኔታና ቀሪ ቀናት በማንኛውም ሰዓት ማየት ይችላሉ።'
                   : 'Check whether your payment has been approved anytime with a simple phone number lookup.'}
               </p>
             </div>
@@ -1171,11 +1168,11 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <div className="p-6 rounded-[15px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
               <MessageSquare className="w-5 h-5 text-[#981C00] dark:text-[#C43214]" />
               <h3 className="text-sm font-bold text-[#24211F] dark:text-[#FAF8F5]">
-                {isAmharic ? 'ቀጥተኛ ድጋፍ' : 'Direct Support'}
+                {isAmharic ? 'ፈጣን የደንበኞች ድጋፍ' : 'Direct Support'}
               </h3>
               <p className="text-xs text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
                 {isAmharic
-                  ? 'ለሚገጥምዎት ማንኛውም ጥያቄ በይፋዊው የቴሌግራም ቻናላችን ፈጣን ምላሽ ያገኛሉ።'
+                  ? 'ማንኛውም ጥያቄ ወይም እገዛ ቢያስፈልግዎት በይፋዊው የቴሌግራም አድራሻችን ፈጣን ምላሽ ያገኛሉ።'
                   : 'Reach out through our official Telegram channel for prompt and friendly assistance.'}
               </p>
             </div>
@@ -1193,14 +1190,14 @@ export const LandingView: React.FC<LandingViewProps> = ({
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div className="space-y-1.5">
               <p className="text-xs font-bold uppercase tracking-wider text-[#981C00] dark:text-[#C43214]">
-                {isAmharic ? 'ምስክርነቶች' : 'Testimonials'}
+                {isAmharic ? 'ከተጠቃሚዎቻችን አንደበት' : 'Testimonials'}
               </p>
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#24211F] dark:text-[#FAF8F5]">
-                {isAmharic ? 'የተጠቃሚዎቻችን ድምፅ' : 'Loved by Daily Readers'}
+                {isAmharic ? 'የደንበኞቻችን ድምፅ' : 'Loved by Daily Readers'}
               </h2>
               <p className="text-xs sm:text-sm text-[#706A65] dark:text-[#A8A19A]">
                 {isAmharic
-                  ? 'በየማለዳው በSMS ከሚደርሳቸው ቃል ያገኙት ብርታትና ሰላም'
+                  ? 'በየማለዳው በSMS ከሚደርሳቸው የእግዚአብሔር ቃል ያገኙት ብርታትና ሰላም'
                   : 'Heartfelt words from subscribers who start each day with morning Scripture.'}
               </p>
             </div>
@@ -1264,7 +1261,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
           {/* Micro pause indicator */}
           <div className="text-center pt-1">
             <span className="text-[10.5px] text-[#706A65]/70 dark:text-[#A8A19A]/70">
-              {isAmharic ? '• ካርዶቹን ለማቆም ማውዝዎን (cursor) በላያቸው ላይ ያሳርፉ' : '• Hover over any card to pause'}
+              {isAmharic ? '• ለማንበብ ካርዱ ላይ ይጫኑ' : '• Hover over any card to pause'}
             </span>
           </div>
         </div>
@@ -1325,11 +1322,11 @@ export const LandingView: React.FC<LandingViewProps> = ({
         <div className="p-8 sm:p-12 rounded-[15px] bg-[#981C00] text-white text-center space-y-6 shadow-md">
           <div className="space-y-2 max-w-xl mx-auto">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
-              {isAmharic ? 'ተስፋን እና መንፈሳዊ ማጽናኛን ይቀበሉ' : 'Receive Daily Hope & Encouragement'}
+              {isAmharic ? 'ቀንዎን በተስፋ እና በእግዚአብሔር ቃል ይጀምሩ' : 'Receive Daily Hope & Encouragement'}
             </h2>
             <p className="text-xs sm:text-sm text-white/80 leading-relaxed font-normal">
               {isAmharic
-                ? 'ለነፍስዎ ብርታት የሚሆኑ የእግዚአብሔር ቃላቶች በየዕለቱ በስልክዎ እንዲደርስዎ አሁኑኑ ይመዝገቡ።'
+                ? 'ለነፍስዎ ብርታት የሚሆኑ የመጽሐፍ ቅዱስ ቃላት በየማለዳው ወደ ስልክዎ እንዲላኩ አሁኑኑ ይመዝገቡ።'
                 : 'Subscribe today to begin receiving uplifting Bible verses and spiritual words directly to your phone.'}
             </p>
           </div>
@@ -1352,7 +1349,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               onClick={() => handleTriggerVerifyModal(null)}
               className="w-full sm:w-auto h-11 px-5 rounded-[15px] bg-transparent hover:bg-black/10 border border-white/40 text-white text-xs sm:text-sm font-semibold transition-colors cursor-pointer flex items-center justify-center"
             >
-              {isAmharic ? 'የአባልነት ማረጋገጫ በስልክ ቁጥር' : 'Check Approval Status'}
+              {isAmharic ? 'የአባልነት ሁኔታዎን ያረጋግጡ' : 'Check Approval Status'}
             </button>
           </div>
         </div>

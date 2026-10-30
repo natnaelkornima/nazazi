@@ -291,7 +291,7 @@ export const SubscriptionStatusModal: React.FC<SubscriptionStatusModalProps> = (
                   </div>
                   <div className="space-y-1">
                     <h3 className="text-lg font-black tracking-tight text-zinc-950 dark:text-white">
-                      {isAmharic ? 'የአባልነት ማረጋገጫ በስልክ ቁጥር' : 'Verify Approval Status'}
+                      {isAmharic ? 'የአባልነት ሁኔታዎን ያረጋግጡ' : 'Verify Approval Status'}
                     </h3>
                     <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-xs mx-auto leading-relaxed">
                       {isAmharic
@@ -629,7 +629,7 @@ export const SubscriptionStatusModal: React.FC<SubscriptionStatusModalProps> = (
                       <div className="flex items-center justify-between text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
                         <span className="flex items-center gap-1">
                           <CheckCircle2 className="w-3 h-3 text-emerald-500" />
-                          <span>{isAmharic ? 'የግብይት መለያ (TxID)' : 'Transaction ID'}</span>
+                          <span>{isAmharic ? 'የትራንዛክሽን ቁጥር (TxID)' : 'Transaction ID'}</span>
                         </span>
                         {activeSubmission.bank && (
                           <span className="font-mono text-zinc-500 uppercase">{activeSubmission.bank}</span>

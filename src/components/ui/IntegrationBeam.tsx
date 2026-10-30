@@ -67,7 +67,7 @@ export function IntegrationBeam({
   const defaultLeft: BeamTool[] = [
     {
       name: isAmharic ? "ቴሌብር (Telebirr)" : "Telebirr",
-      subtitle: isAmharic ? "የሞባይል ክፍያ" : "Mobile Money",
+      subtitle: isAmharic ? "ፈጣን የሞባይል ክፍያ" : "Mobile Money",
       logo: (
         <img
           src="/images/logos/telebirr.png"
@@ -91,7 +91,7 @@ export function IntegrationBeam({
     },
     {
       name: isAmharic ? "Verify.ET" : "Verify.ET",
-      subtitle: isAmharic ? "ቅጽበታዊ ማረጋገጫ" : "Instant Verification",
+      subtitle: isAmharic ? "ቅጽበታዊ የክፍያ ማረጋገጫ" : "Instant Verification",
       logo: (
         <img
           src="/images/logos/verifyet.png"
@@ -106,7 +106,7 @@ export function IntegrationBeam({
   const defaultRight: BeamTool[] = [
     {
       name: isAmharic ? "ቀጥታ SMS" : "Direct SMS",
-      subtitle: isAmharic ? "ያለ ኢንተርኔት" : "Offline Delivery",
+      subtitle: isAmharic ? "ያለ ኢንተርኔት በማንኛውም ስልክ የሚሰራ" : "Offline Delivery",
       logo: (
         <img
           src="/images/icons/sms.png"
@@ -118,7 +118,7 @@ export function IntegrationBeam({
     },
     {
       name: isAmharic ? "የዕለቱ ቃል" : "Daily Scripture",
-      subtitle: isAmharic ? "የመንፈስ ብርታት" : "Spiritual Verses",
+      subtitle: isAmharic ? "የመንፈስ እረፍትና ብርታት" : "Spiritual Verses",
       logo: (
         <img
           src="/images/icons/fire.png"
@@ -130,7 +130,7 @@ export function IntegrationBeam({
     },
     {
       name: isAmharic ? "ማለዳ 12:30" : "Dawn 12:30",
-      subtitle: isAmharic ? "በየዕለቱ በሰዓቱ" : "Every Morning",
+      subtitle: isAmharic ? "በየዕለቱ ሳይዛነፍ በሰዓቱ" : "Every Morning",
       logo: (
         <img
           src="/images/icons/sun.png"

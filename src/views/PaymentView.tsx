@@ -220,7 +220,7 @@ export const PaymentView: React.FC = () => {
             {isAmharic ? 'የክፍያ እና ደንበኝነት ማረጋገጫ' : 'Subscription & Payment Verification'}
           </h1>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-            {isAmharic ? 'የክፍያ ደረሰኝ ፎቶ ይላኩ፣ የትራንዛክሽን መለያ ያረጋግጡ እና የአገልግሎት ሁኔታን ይመልከቱ።' : 'Submit payment receipt screenshots, verify transaction IDs, and check active phone status.'}
+            {isAmharic ? 'የክፍያ ደረሰኝ ፎቶ ይላኩ፣ የትራንዛክሽን ቁጥር ያረጋግጡ እና የአገልግሎት ሁኔታን ይመልከቱ።' : 'Submit payment receipt screenshots, verify transaction IDs, and check active phone status.'}
           </p>
         </div>
 
@@ -283,7 +283,7 @@ export const PaymentView: React.FC = () => {
           {/* Plan Selector */}
           <Card className="p-6 space-y-4">
             <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-400">
-              {isAmharic ? '1. የደንበኝነት እቅድ ይምረጡ' : '1. Select Subscription Plan'}
+              {isAmharic ? '1. የአገልግሎት አማራጭ ይምረጡ' : '1. Select Subscription Plan'}
             </h2>
 
             <div className="space-y-3">
@@ -347,7 +347,7 @@ export const PaymentView: React.FC = () => {
               >
                 <div>
                   <p className="font-bold text-sm text-zinc-900 dark:text-zinc-100">{isAmharic ? 'የ1 ወር አገልግሎት' : '1 Month Plan'}</p>
-                  <p className="text-xs text-zinc-500 mt-0.5">{isAmharic ? '200 ብር / በወር • ተለዋዋጭ' : '200 Birr / month • Flexible'}</p>
+                  <p className="text-xs text-zinc-500 mt-0.5">{isAmharic ? '200 ብር / በወር • ለሙከራ ተስማሚ' : '200 Birr / month • Flexible'}</p>
                 </div>
                 <div className="text-right">
                   <span className="font-extrabold text-base text-zinc-900 dark:text-zinc-100">200</span>

@@ -112,25 +112,25 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => handleNavClick('#pricing')}
             className="hover:text-[#24211F] dark:hover:text-[#FAF8F5] transition-colors cursor-pointer py-1"
           >
-            {isAmharic ? 'የደንበኝነት እቅዶች' : 'Plans & Pricing'}
+            {isAmharic ? 'የአገልግሎት አማራጮች' : 'Plans & Pricing'}
           </button>
           <button
             onClick={() => handleNavClick('#trust')}
             className="hover:text-[#24211F] dark:hover:text-[#FAF8F5] transition-colors cursor-pointer py-1"
           >
-            {isAmharic ? 'እምነት እና ደህንነት' : 'Trust & Privacy'}
+            {isAmharic ? 'ታማኝነት እና ደህንነት' : 'Trust & Privacy'}
           </button>
           <button
             onClick={() => handleNavClick('#testimonials')}
             className="hover:text-[#24211F] dark:hover:text-[#FAF8F5] transition-colors cursor-pointer py-1"
           >
-            {isAmharic ? 'ምስክርነቶች' : 'Testimonials'}
+            {isAmharic ? 'የደንበኞች አስተያየት' : 'Testimonials'}
           </button>
           <button
             onClick={() => handleNavClick('#faq')}
             className="hover:text-[#24211F] dark:hover:text-[#FAF8F5] transition-colors cursor-pointer py-1"
           >
-            {isAmharic ? 'ጥያቄዎች' : 'FAQ'}
+            {isAmharic ? 'ተደጋጋሚ ጥያቄዎች' : 'FAQ'}
           </button>
         </nav>
 
@@ -199,19 +199,19 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => handleNavClick('#pricing')}
               className="text-left py-1.5 hover:text-[#981C00] dark:hover:text-[#C43214] transition-colors"
             >
-              {isAmharic ? 'የደንበኝነት እቅዶች' : 'Plans & Pricing'}
+              {isAmharic ? 'የአገልግሎት አማራጮች' : 'Plans & Pricing'}
             </button>
             <button
               onClick={() => handleNavClick('#trust')}
               className="text-left py-1.5 hover:text-[#981C00] dark:hover:text-[#C43214] transition-colors"
             >
-              {isAmharic ? 'እምነት እና ደህንነት' : 'Trust & Privacy'}
+              {isAmharic ? 'ታማኝነት እና ደህንነት' : 'Trust & Privacy'}
             </button>
             <button
               onClick={() => handleNavClick('#testimonials')}
               className="text-left py-1.5 hover:text-[#981C00] dark:hover:text-[#C43214] transition-colors"
             >
-              {isAmharic ? 'የተጠቃሚዎች ምስክርነት' : 'Testimonials'}
+              {isAmharic ? 'የደንበኞች አስተያየት' : 'Testimonials'}
             </button>
             <button
               onClick={() => handleNavClick('#faq')}
@@ -226,7 +226,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={handleSubscribeClick}
               className="w-full py-2.5 px-4 rounded-xl bg-[#981C00] text-white text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:bg-[#7A1D28] transition-colors"
             >
-              <span>{isAmharic ? 'አሁኑኑ ይመዝገቡ' : 'Subscribe Now'}</span>
+              <span>{isAmharic ? 'ይመዝገቡ' : 'Subscribe Now'}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
 

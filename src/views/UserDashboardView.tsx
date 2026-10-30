@@ -102,7 +102,7 @@ export const UserDashboardView: React.FC<UserDashboardViewProps> = ({ onNavigate
         <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 flex flex-col justify-between shadow-xs transition-all hover:shadow-sm">
           <div className="flex justify-between items-start">
             <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">
-              {isAmharic ? 'የደንበኝነት እቅድ' : 'Subscription Tier'}
+              {isAmharic ? 'የአገልግሎት አማራጭ' : 'Subscription Tier'}
             </span>
             <span className="px-2 py-0.5 bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400 text-[10px] font-bold rounded-[15px]">
               {isAmharic ? 'ንቁ' : 'Active Scale'}
