@@ -6,6 +6,7 @@ import { NavigationTab, PaymentSubmission } from '../types';
 import { SubscribeModal } from '../components/SubscribeModal';
 import { SubscriptionStatusModal } from '../components/SubscriptionStatusModal';
 import { IntegrationBeam } from '../components/ui/IntegrationBeam';
+import { NotchedProjectCard } from '../components/ui/notched-project-card';
 import { useRegistrationDeadline } from '../hooks/useRegistrationDeadline';
 import { useLanguage } from '../context/LanguageContext';
 import {
@@ -19,7 +20,6 @@ import {
   UserCheck,
   CheckCircle2,
   Clock,
-  Sparkles,
   MessageSquare,
   Plus,
   Mic,
@@ -81,57 +81,57 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
   const sampleVerses: SampleVerse[] = isAmharic
     ? [
-        {
-          day: 'ሰኞ',
-          reference: 'መዝሙር 46:1',
-          verse: '«እግዚአብሔር መጠጊያችንና ኃይላችን፥ በሚደርስብን መከራ ሁሉ ታላቅ ረዳታችን ነው።»',
-          reflection: 'ሰላም ወዳጄ፤ የዛሬው ቀን የድካም ሳይሆን የእግዚአብሔር አዲስ ምሕረት የሚገለጥበት የተስፋ ቀን ይሁንልዎ።',
-          signoff: 'ናዛዚ የዕለት አገልግሎት',
-          time: '12:30 ጥዋት',
-        },
-        {
-          day: 'ማክሰኞ',
-          reference: 'ኢሳይያስ 40:29',
-          verse: '«ለደከመው ኃይልን ይሰጣል፥ ጉልበት ለሌለውም ብርታትን ይጨምራል።»',
-          reflection: 'ሰላም ወዳጄ፤ በሚያስጨንቅዎት ነገር ሁሉ ጌታ ከጎንዎ ነው። በሰላሙ ልብዎን ያሳርፈው።',
-          signoff: 'ናዛዚ የዕለት አገልግሎት',
-          time: '12:30 ጥዋት',
-        },
-        {
-          day: 'ረቡዕ',
-          reference: 'ማቴዎስ 11:28',
-          verse: '«እናንተ ደካሞች ሸክማችሁ የከበደ ሁሉ፥ ወደ እኔ ኑ፥ እኔም አሳርፋችኋለሁ።»',
-          reflection: 'ሰላም ወዳጄ፤ ከእግዚአብሔር ጋር የተጀመረ ቀን በበረከት እና በዕረፍት ይጠናቀቃል።',
-          signoff: 'ናዛዚ የዕለት አገልግሎት',
-          time: '12:30 ጥዋት',
-        },
-      ]
+      {
+        day: 'ሰኞ',
+        reference: 'መዝሙር 46:1',
+        verse: '«እግዚአብሔር መጠጊያችንና ኃይላችን፥ በሚደርስብን መከራ ሁሉ ታላቅ ረዳታችን ነው።»',
+        reflection: 'ሰላም ወዳጄ፤ የዛሬው ቀን የድካም ሳይሆን የእግዚአብሔር አዲስ ምሕረት የሚገለጥበት የተስፋ ቀን ይሁንልዎ።',
+        signoff: 'ናዛዚ የዕለት አገልግሎት',
+        time: '12:30 ጥዋት',
+      },
+      {
+        day: 'ማክሰኞ',
+        reference: 'ኢሳይያስ 40:29',
+        verse: '«ለደከመው ኃይልን ይሰጣል፥ ጉልበት ለሌለውም ብርታትን ይጨምራል።»',
+        reflection: 'ሰላም ወዳጄ፤ በሚያስጨንቅዎት ነገር ሁሉ ጌታ ከጎንዎ ነው። በሰላሙ ልብዎን ያሳርፈው።',
+        signoff: 'ናዛዚ የዕለት አገልግሎት',
+        time: '12:30 ጥዋት',
+      },
+      {
+        day: 'ረቡዕ',
+        reference: 'ማቴዎስ 11:28',
+        verse: '«እናንተ ደካሞች ሸክማችሁ የከበደ ሁሉ፥ ወደ እኔ ኑ፥ እኔም አሳርፋችኋለሁ።»',
+        reflection: 'ሰላም ወዳጄ፤ ከእግዚአብሔር ጋር የተጀመረ ቀን በበረከት እና በዕረፍት ይጠናቀቃል።',
+        signoff: 'ናዛዚ የዕለት አገልግሎት',
+        time: '12:30 ጥዋት',
+      },
+    ]
     : [
-        {
-          day: 'Monday',
-          reference: 'Psalm 46:1',
-          verse: '"God is our refuge and strength, an ever-present help in trouble."',
-          reflection: 'Good morning friend; may today bring renewed peace and spiritual strength to your spirit.',
-          signoff: 'Nazazi Daily Ministry',
-          time: '6:30 AM',
-        },
-        {
-          day: 'Tuesday',
-          reference: 'Isaiah 40:29',
-          verse: '"He gives strength to the weary and increases the power of the weak."',
-          reflection: 'Good morning friend; whatever weight you carry today, God walks right beside you.',
-          signoff: 'Nazazi Daily Ministry',
-          time: '6:30 AM',
-        },
-        {
-          day: 'Wednesday',
-          reference: 'Matthew 11:28',
-          verse: '"Come to me, all you who are weary and burdened, and I will give you rest."',
-          reflection: 'Good morning friend; begin this day in peace and confidence.',
-          signoff: 'Nazazi Daily Ministry',
-          time: '6:30 AM',
-        },
-      ];
+      {
+        day: 'Monday',
+        reference: 'Psalm 46:1',
+        verse: '"God is our refuge and strength, an ever-present help in trouble."',
+        reflection: 'Good morning friend; may today bring renewed peace and spiritual strength to your spirit.',
+        signoff: 'Nazazi Daily Ministry',
+        time: '6:30 AM',
+      },
+      {
+        day: 'Tuesday',
+        reference: 'Isaiah 40:29',
+        verse: '"He gives strength to the weary and increases the power of the weak."',
+        reflection: 'Good morning friend; whatever weight you carry today, God walks right beside you.',
+        signoff: 'Nazazi Daily Ministry',
+        time: '6:30 AM',
+      },
+      {
+        day: 'Wednesday',
+        reference: 'Matthew 11:28',
+        verse: '"Come to me, all you who are weary and burdened, and I will give you rest."',
+        reflection: 'Good morning friend; begin this day in peace and confidence.',
+        signoff: 'Nazazi Daily Ministry',
+        time: '6:30 AM',
+      },
+    ];
 
   // URL query params handler for direct campaigns (?plan=6m, ?subscribe=1)
   useEffect(() => {
@@ -161,7 +161,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
         if (subscribeParam === 'true' || subscribeParam === '1') {
           setIsSubscribeModalOpen(true);
         }
-      } catch {}
+      } catch { }
     }
   }, []);
 
@@ -175,7 +175,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
         try {
           sessionStorage.setItem('nazazi_selected_plan_id', planId);
           localStorage.setItem('nazazi_selected_plan_id', planId);
-        } catch {}
+        } catch { }
       }
     } else {
       setSelectedPlanForSubscribe('');
@@ -211,318 +211,325 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
   const pricingPlans = isAmharic
     ? [
-        {
-          id: '1m',
-          name: 'የ1 ወር አገልግሎት',
-          price: '200',
-          originalPrice: null,
-          period: 'ለ1 ወር (30 ቀናት)',
-          badge: 'ለሙከራ ተስማሚ',
-          savingsBadge: null,
-          recommended: false,
-          cta: 'ለ1 ወር ይመዝገቡ',
-          description:
-            'የናዛዚን አገልግሎት ለመሞከር እና በየማለዳው በሚደርሱ የእግዚአብሔር ቃላት ቀንዎን በበረከት ለመጀመር ተስማሚ እቅድ።',
-          monthlyBreakdown: '200 ብር / በወር',
-          features: [
-            'በየማለዳው የሚላክ የዕለቱ የመጽሐፍ ቅዱስ ቃል',
-            'ያለ ኢንተርኔት በቀጥታ በSMS የሚደርስ',
-            'ፈጣን የክፍያ እና የስልክ ቁጥር ማረጋገጫ',
-            'ምንም አካውንት ወይም የይለፍ ቃል (Password) የማይጠይቅ',
-            'በቴሌብር ወይም በCBE ቀላል ክፍያ',
-          ],
-        },
-        {
-          id: '3m',
-          name: 'የ3 ወር አገልግሎት',
-          price: '600',
-          originalPrice: null,
-          period: 'ለ3 ወራት',
-          badge: 'የብዙዎች ምርጫ',
-          savingsBadge: null,
-          recommended: false,
-          cta: 'ለ3 ወር ይመዝገቡ',
-          description:
-            'ለተከታታይ 3 ወራት (90 ቀናት) ማለዳዎን በእግዚአብሔር ቃል ለመክፈትና መንፈሳዊ ብርታትን ሳይቆራረጥ ለማግኘት ተመራጭ እቅድ።',
-          monthlyBreakdown: 'በወር 200 ብር',
-          features: [
-            'ለ90 ተከታታይ ቀናት በየማለዳው የሚላክ መንፈሳዊ ቃል',
-            'ያለ ኢንተርኔት በማንኛውም ስልክ በSMS የሚደርስ',
-            'ስልክ ቁጥር መቀየር ቢፈልጉ ፈጣን ማስተካከያ',
-            'በማንኛውም ጊዜ የአባልነት ቀሪ ጊዜን በስልክ የማረጋገጥ ዕድል',
-          ],
-        },
-        {
-          id: '6m',
-          name: 'የ6 ወር አገልግሎት',
-          price: '1,000',
-          originalPrice: '1,200',
-          period: 'ለ6 ወራት',
-          badge: 'ከፍተኛ ቅናሽ (ምርጥ አማራጭ)',
-          savingsBadge: 'የ200 ብር ቅናሽ',
-          recommended: true,
-          cta: 'ለ6 ወር ይመዝገቡ',
-          description:
-            'የ200 ብር ቅናሽ ያካተተ፤ ለግማሽ ዓመት (180 ቀናት) ለራስዎ ወይም ለወላጆችዎ የዕለት ተስፋና ማጽናኛን የሚያበረክቱበት ምርጥ እቅድ።',
-          monthlyBreakdown: 'በወር 166 ብር ብቻ',
-          features: [
-            'ለ180 ተከታታይ ቀናት በየማለዳው የሚላክ መንፈሳዊ ቃል',
-            'የ200 ብር ቅናሽ (ከ1,200 ብር ወደ 1,000 ብር ዝቅ ያለ)',
-            'ቀጥተኛ የቴሌግራም የደንበኞች ድጋፍ አገልግሎት',
-            'የአገልግሎት ጊዜው ሊጠናቀቅ ሲል አስቀድሞ የሚላክ ማስታወሻ',
-          ],
-        },
-      ]
+      {
+        id: '1m',
+        name: 'የ1 ወር አገልግሎት',
+        price: '200',
+        originalPrice: null,
+        period: 'ለ30 ቀናት',
+        badge: 'የ30 ቀናት ጅማሮ',
+        durationSubtitle: '30 ተከታታይ ማለዳዎች',
+        savingsBadge: null,
+        recommended: false,
+        cta: 'የ1 ወር አገልግሎት ጀምር',
+        description:
+          'ቀንዎን በየማለዳው በሚደርሱ የእግዚአብሔር ቃላት በሰላም ለመጀመር የሚያስችል የመነሻ እቅድ።',
+        monthlyBreakdown: '200 ብር / በወር',
+        features: [
+          'በየማለዳው የሚደርስ የእለቱ የመጽሐፍ ቅዱስ ቃል',
+          'ያለ ኢንተርኔት በቀጥታ በማንኛውም ስልክ በ SMS',
+          'ቀጥተኛ የቴሌብር ወይም የንግድ ባንክ ክፍያ',
+          'ምንም መለያ ወይም የይለፍ ቃል (Password) አይጠይቅም',
+          'ፈጣን የክፍያ እና የስልክ ቁጥር ማረጋገጫ',
+        ],
+      },
+      {
+        id: '3m',
+        name: 'የ3 ወር አገልግሎት',
+        price: '600',
+        originalPrice: null,
+        period: 'ለ90 ቀናት',
+        badge: 'የሩብ ዓመት ጉዞ',
+        durationSubtitle: '90 ተከታታይ ማለዳዎች',
+        savingsBadge: null,
+        recommended: false,
+        cta: 'የ3 ወር አገልግሎት ጀምር',
+        description:
+          'ለተከታታይ ሩብ ዓመት ማለዳዎን በእግዚአብሔር ቃል ለመክፈትና መንፈሳዊ ብርታትን ሳይቋረጥ ለማግኘት።',
+        monthlyBreakdown: 'በወር 200 ብር',
+        features: [
+          'ለ90 ተከታታይ ቀናት የማያቋርጥ የጠዋት ቃል',
+          'ያለ ኢንተርኔት በማንኛውም ስልክ በ SMS',
+          'የስልክ ቁጥር መቀየር ቢያስፈልግ ፈጣን ማስተካከያ',
+          'በማንኛውም ጊዜ የቀሪ ቀናት ሁኔታን በስልክ የማረጋገጥ እድል',
+          'ቀጥተኛ የደንበኞች ድጋፍ',
+        ],
+      },
+      {
+        id: '6m',
+        name: 'የ6 ወር አገልግሎት',
+        price: '1,000',
+        originalPrice: '1,200',
+        period: 'ለ180 ቀናት',
+        badge: 'የግማሽ ዓመት ምርጫ',
+        durationSubtitle: '180 ተከታታይ ማለዳዎች',
+        savingsBadge: 'የ200 ብር ቅናሽ ያካተተ',
+        recommended: true,
+        cta: 'የ6 ወር አገልግሎት ጀምር',
+        description:
+          'ለግማሽ ዓመት ለራስዎ ወይም ለቤተሰብዎ የዕለት ተስፋና መንፈሳዊ ብርታትን የሚያበረክቱበት የተሟላ እቅድ።',
+        monthlyBreakdown: 'በወር ~166 ብር ብቻ',
+        features: [
+          'ለ180 ተከታታይ ቀናት በየማለዳው የሚላክ መንፈሳዊ ቃል',
+          'የ200 ብር ቅናሽ (ከ1,200 ብር ወደ 1,000 ብር ዝቅ ያለ)',
+          'ቀጥተኛ የደንበኞች ድጋፍ አገልግሎት',
+          'የአገልግሎት ጊዜው ሊጠናቀቅ ሲል አስቀድሞ የሚላክ ማስታወሻ',
+          'በማንኛውም ጊዜ የቀሪ ቀናት ሁኔታን በስልክ ማረጋገጥ',
+        ],
+      },
+    ]
     : [
-        {
-          id: '1m',
-          name: '1 Month Access',
-          price: '200',
-          originalPrice: null,
-          period: '1 Month',
-          badge: 'Flexible',
-          savingsBadge: null,
-          recommended: false,
-          cta: 'Register for 1 Month',
-          description:
-            'An ideal introductory plan to experience daily spiritual peace, uplifting scriptures, and comforting words on your mobile phone.',
-          monthlyBreakdown: '200 ETB / month',
-          features: [
-            'Daily spiritual SMS encouragement',
-            'Direct mobile phone delivery (ethio telecom)',
-            'Instant phone approval status check',
-            'No password or registration account required',
-            'Seamless CBE or Telebirr bank transfer',
-          ],
-        },
-        {
-          id: '3m',
-          name: '3 Months Access',
-          price: '600',
-          originalPrice: null,
-          period: '3 Months',
-          badge: 'Popular',
-          savingsBadge: null,
-          recommended: false,
-          cta: 'Register for 3 Months',
-          description:
-            'A continuous 90-day spiritual walk to keep your mornings rooted in encouragement, renewed hope, and God\'s Word.',
-          monthlyBreakdown: '200 ETB / month',
-          features: [
-            'Daily spiritual SMS encouragement',
-            '3 months (90 days) uninterrupted morning broadcasts',
-            'Priority queue message dispatch',
-            'Quick assistance if your phone number changes',
-            'Real-time status lookup available anytime',
-          ],
-        },
-        {
-          id: '6m',
-          name: '6 Months Access',
-          price: '1,000',
-          originalPrice: '1,200',
-          period: '6 Months',
-          badge: 'Best Value',
-          savingsBadge: 'Save 200 ETB',
-          recommended: true,
-          cta: 'Register for 6 Months',
-          description:
-            'Our most dedicated plan with 200 ETB instant savings, ensuring half a year of uninterrupted morning spiritual nourishment.',
-          monthlyBreakdown: 'Only 166 ETB / month (Save 200 ETB)',
-          features: [
-            'Daily spiritual SMS encouragement',
-            '6 months (180 days) uninterrupted morning broadcasts',
-            'Instant 200 ETB discount included',
-            'Highest priority queue message dispatch',
-            'Direct priority Telegram subscriber support',
-            'Advance renewal notification before term concludes',
-          ],
-        },
-      ];
+      {
+        id: '1m',
+        name: '1 Month Access',
+        price: '200',
+        originalPrice: null,
+        period: 'for 30 days',
+        badge: '30-Day Starter',
+        durationSubtitle: '30 consecutive mornings',
+        savingsBadge: null,
+        recommended: false,
+        cta: 'Start 1 Month',
+        description:
+          'Start each morning centered in peace and daily Scripture, delivered quietly to your mobile phone.',
+        monthlyBreakdown: '200 ETB / month',
+        features: [
+          'Daily morning Scripture verse via SMS',
+          'Direct mobile phone delivery — zero data needed',
+          'Instant phone approval status check',
+          'No password or registration account required',
+          'Simple CBE or Telebirr bank transfer',
+        ],
+      },
+      {
+        id: '3m',
+        name: '3 Months Access',
+        price: '600',
+        originalPrice: null,
+        period: 'for 90 days',
+        badge: 'Quarterly Walk',
+        durationSubtitle: '90 consecutive mornings',
+        savingsBadge: null,
+        recommended: false,
+        cta: 'Start 3 Months',
+        description:
+          'A steady 90-day spiritual walk to keep your mornings rooted in encouragement and God’s Word.',
+        monthlyBreakdown: '200 ETB / month',
+        features: [
+          '90 consecutive mornings of Scripture via SMS',
+          'Uninterrupted morning broadcast delivery',
+          'Quick assistance if your phone number changes',
+          'Real-time remaining subscription check anytime',
+          'Direct subscriber support',
+        ],
+      },
+      {
+        id: '6m',
+        name: '6 Months Access',
+        price: '1,000',
+        originalPrice: '1,200',
+        period: 'for 180 days',
+        badge: 'Half-Year Choice',
+        durationSubtitle: '180 consecutive mornings',
+        savingsBadge: 'Save 200 ETB',
+        recommended: true,
+        cta: 'Start 6 Months',
+        description:
+          'Our most dedicated plan. Half a year of peaceful morning Scripture for you or a loved one.',
+        monthlyBreakdown: 'Only ~166 ETB / month',
+        features: [
+          '180 consecutive mornings of Scripture via SMS',
+          'Built-in 200 ETB savings (1,000 vs 1,200 ETB)',
+          'Advance renewal reminder before expiration',
+          'Direct priority subscriber assistance',
+          'Real-time remaining subscription check anytime',
+        ],
+      },
+    ];
 
   const faqs = isAmharic
     ? [
-        {
-          q: '«ናዛዚ» ማለት ምን ማለት ነው? ዓላማውስ ምንድን ነው?',
-          a: '«ናዛዚ» ማለት በግዕዝ «አጽናኝ» ወይም «ተስፋ ሰጪ» ማለት ነው። ዓላማችን በዕለት ተዕለት የሕይወት ውጣ ውረድ ውስጥ ለደከሙና መንፈሳዊ ብርታትን ለሚሹ ወገኖች፣ በየማለዳው የሚያጽናኑና የሚያንፁ የመጽሐፍ ቅዱስ ጥቅሶችን በቀጥታ በSMS ማድረስ ነው።',
-        },
-        {
-          q: 'ለመመዝገብ አካውንት መክፈት ወይም ኢሜይል ያስፈልጋል?',
-          a: 'አያስፈልግም። ምንም ዓይነት ኢሜይል፣ ፓስወርድ ወይም አካውንት መክፈት ሳይጠበቅብዎት መልእክቱ እንዲደርስዎት የሚፈልጉበትን የስልክ ቁጥር ብቻ በማስገባት መመዝገብ ይችላሉ። ለወላጆችዎ ወይም ለወዳጅዎም የእነሱን ስልክ ቁጥር በማስገባት በቀላሉ መመዝገብ ይችላሉ።',
-        },
-        {
-          q: 'የከፈልኩት ክፍያ መጽደቁን እንዴት ማረጋገጥ እችላለሁ?',
-          a: 'በቴሌብር ወይም በንግድ ባንክ (CBE) ክፍያዎን እንደፈጸሙ ሲስተሙ ወዲያውኑ በራሱ ያረጋግጣል። በተጨማሪም ድረ-ገጹ ላይ ያለውን «የአባልነት ሁኔታዎን ያረጋግጡ» የሚለውን በመጫንና ስልክ ቁጥርዎን በማስገባት በማንኛውም ሰዓት ማረጋገጥ ይችላሉ።',
-        },
-        {
-          q: 'የስልክ ቁጥሬ ደህንነት የተጠበቀ እና ምስጢራዊ ነው?',
-          a: 'አዎ፣ በሚገባ የተጠበቀ ነው። ስልክ ቁጥርዎ የዕለቱን የመጽሐፍ ቅዱስ ቃል ለመላክ ብቻ ጥቅም ላይ ይውላል። ለማንኛውም ሶስተኛ ወገን ወይም ለማስታወቂያ ድርጅቶች አሳልፈን አንሰጥም።',
-        },
-        {
-          q: 'መልእክቶቹ በምን ሰዓት ነው ወደ ስልኬ የሚደርሱኝ?',
-          a: 'መልእክቶቹ በየዕለቱ ማለዳ ልክ ከጠዋቱ 12:30 ሰዓት (በኢትዮጵያ አቆጣጠር) ወደ ስልክዎ ይላካሉ። ኢንተርኔት ስለማይጠይቅ በማንኛውም የሞባይል ስልክ ላይ ይደርስዎታል።',
-        },
-      ]
+      {
+        q: '«ናዛዚ» ማለት ምን ማለት ነው? ዓላማውስ ምንድን ነው?',
+        a: '«ናዛዚ» ማለት በግዕዝ «አጽናኝ» ወይም «ተስፋ ሰጪ» ማለት ነው። ዓላማችን በዕለት ተዕለት የሕይወት ውጣ ውረድ ውስጥ ለደከሙና መንፈሳዊ ብርታትን ለሚሹ ወገኖች፣ በየማለዳው የሚያጽናኑና የሚያንፁ የመጽሐፍ ቅዱስ ጥቅሶችን በቀጥታ በSMS ማድረስ ነው።',
+      },
+      {
+        q: 'ለመመዝገብ አካውንት መክፈት ወይም ኢሜይል ያስፈልጋል?',
+        a: 'አያስፈልግም። ምንም ዓይነት ኢሜይል፣ ፓስወርድ ወይም አካውንት መክፈት ሳይጠበቅብዎት መልእክቱ እንዲደርስዎት የሚፈልጉበትን የስልክ ቁጥር ብቻ በማስገባት መመዝገብ ይችላሉ። ለወላጆችዎ ወይም ለወዳጅዎም የእነሱን ስልክ ቁጥር በማስገባት በቀላሉ መመዝገብ ይችላሉ።',
+      },
+      {
+        q: 'የከፈልኩት ክፍያ መጽደቁን እንዴት ማረጋገጥ እችላለሁ?',
+        a: 'በቴሌብር ወይም በንግድ ባንክ (CBE) ክፍያዎን እንደፈጸሙ ሲስተሙ ወዲያውኑ በራሱ ያረጋግጣል። በተጨማሪም ድረ-ገጹ ላይ ያለውን «የአባልነት ሁኔታዎን ያረጋግጡ» የሚለውን በመጫንና ስልክ ቁጥርዎን በማስገባት በማንኛውም ሰዓት ማረጋገጥ ይችላሉ።',
+      },
+      {
+        q: 'የስልክ ቁጥሬ ደህንነት የተጠበቀ እና ምስጢራዊ ነው?',
+        a: 'አዎ፣ በሚገባ የተጠበቀ ነው። ስልክ ቁጥርዎ የዕለቱን የመጽሐፍ ቅዱስ ቃል ለመላክ ብቻ ጥቅም ላይ ይውላል። ለማንኛውም ሶስተኛ ወገን ወይም ለማስታወቂያ ድርጅቶች አሳልፈን አንሰጥም።',
+      },
+      {
+        q: 'መልእክቶቹ በምን ሰዓት ነው ወደ ስልኬ የሚደርሱኝ?',
+        a: 'መልእክቶቹ በየዕለቱ ማለዳ ልክ ከጠዋቱ 12:30 ሰዓት (በኢትዮጵያ አቆጣጠር) ወደ ስልክዎ ይላካሉ። ኢንተርኔት ስለማይጠይቅ በማንኛውም የሞባይል ስልክ ላይ ይደርስዎታል።',
+      },
+    ]
     : [
-        {
-          q: 'What does Nazazi mean and what is its mission?',
-          a: 'Nazazi means "Comforter" or "Encourager". Our mission is to deliver uplifting Bible verses and Christian spiritual encouragement directly to your mobile phone every morning.',
-        },
-        {
-          q: 'Do I need to create an account or provide a password?',
-          a: 'No. No password, username, or login account is required. Simply provide your name, phone number, and a screenshot of your bank transfer receipt.',
-        },
-        {
-          q: 'How do I check if my payment has been approved?',
-          a: 'You can verify anytime by clicking "Verify Status" in the header or footer, then entering your registered Ethiopian phone number to view your real-time approval status.',
-        },
-        {
-          q: 'Is my phone number kept private and safe?',
-          a: 'Yes. Subscriber information is handled with strict confidentiality and is used exclusively for Nazazi spiritual SMS broadcasts. We never share your contact details.',
-        },
-        {
-          q: 'What time of day are the SMS messages delivered?',
-          a: 'Messages are broadcast every morning directly to your phone, helping you begin each day rooted in peace, hope, and God\'s Word.',
-        },
-      ];
+      {
+        q: 'What does Nazazi mean and what is its mission?',
+        a: 'Nazazi means "Comforter" or "Encourager". Our mission is to deliver uplifting Bible verses and Christian spiritual encouragement directly to your mobile phone every morning.',
+      },
+      {
+        q: 'Do I need to create an account or provide a password?',
+        a: 'No. No password, username, or login account is required. Simply provide your name, phone number, and a screenshot of your bank transfer receipt.',
+      },
+      {
+        q: 'How do I check if my payment has been approved?',
+        a: 'You can verify anytime by clicking "Verify Status" in the header or footer, then entering your registered Ethiopian phone number to view your real-time approval status.',
+      },
+      {
+        q: 'Is my phone number kept private and safe?',
+        a: 'Yes. Subscriber information is handled with strict confidentiality and is used exclusively for Nazazi spiritual SMS broadcasts. We never share your contact details.',
+      },
+      {
+        q: 'What time of day are the SMS messages delivered?',
+        a: 'Messages are broadcast every morning directly to your phone, helping you begin each day rooted in peace, hope, and God\'s Word.',
+      },
+    ];
 
   const testimonials: TestimonialItem[] = isAmharic
     ? [
-        {
-          id: 'tesfaye',
-          name: 'አባ ተስፋዬ ገ/ማሪያም',
-          role: 'ጡረተኛ መምህር',
-          city: 'አዲስ አበባ',
-          plan: 'የ1 ወር አባል',
-          quote: '«በየማለዳው 12:30 በመደበኛዋ የኪስ ስልኬ ላይ የሚገባው የእግዚአብሔር ቃል ቀኔን በሰላምና በምስጋና እንድጀምር ብርታት ሆኖኛል።»',
-          favoriteVerse: 'መዝሙር 46:1',
-          avatarBg: 'from-[#981C00] to-[#7A1D28]',
-          avatarInitials: 'ተገ',
-        },
-        {
-          id: 'yonas',
-          name: 'ዮናስ ታደሰ',
-          role: 'ከውጭ ሀገር ለእናቱ ያስመዘገበ',
-          city: 'ባህር ዳር',
-          plan: 'የ6 ወር አባል',
-          quote: '«ለእናቴ በቴሌብር የ6 ወር ምዝገባ አድርጌላት ነበር። በየሳምንቱ ስንደዋወል ጥቅሶቹ እንዴት እንደሚያጽናኗት በደስታ ትነግረኛለች።»',
-          favoriteVerse: 'ኢሳይያስ 40:31',
-          avatarBg: 'from-[#B45309] to-[#92400E]',
-          avatarInitials: 'ዮታ',
-        },
-        {
-          id: 'selamawit',
-          name: 'ዶ/ር ሰላማዊት አበበ',
-          role: 'የሕክምና ባለሙያ',
-          city: 'ሐዋሳ',
-          plan: 'የ6 ወር አባል',
-          quote: '«ከሆስፒታል የሌሊት ፈረቃዬ በኋላ በጠዋት የሚደርሰኝ ቃል ለነፍሴ እረፍት ይሰጣል። አጭር፣ ግልጽ እና ልብ የሚነካ ነው።»',
-          favoriteVerse: 'ፊልጵስዩስ 4:6-7',
-          avatarBg: 'from-[#0F766E] to-[#115E59]',
-          avatarInitials: 'ሰአ',
-        },
-        {
-          id: 'martha',
-          name: 'ማርታ ኃይሌ',
-          role: 'የዩኒቨርሲቲ ተማሪ',
-          city: 'አዲስ አበባ',
-          plan: 'የ3 ወር አባል',
-          quote: '«በፈተና ወቅት ማለዳዬን በእግዚአብሔር ቃል መጀመሬ ውስጣዊ መረጋጋትን ሰጥቶኛል። ያለ ኢንተርኔት በSMS መምጣቱ ለተማሪዎች በጣም አመቺ ነው።»',
-          favoriteVerse: 'ማቴዎስ 11:28',
-          avatarBg: 'from-[#7C3AED] to-[#5B21B6]',
-          avatarInitials: 'ማኃ',
-        },
-        {
-          id: 'dawit',
-          name: 'ቀሲስ ዳዊት ወ/ሚካኤል',
-          role: 'የመንፈሳዊ ትምህርት አገልጋይ',
-          city: 'አዳማ',
-          plan: 'የ6 ወር አባል',
-          quote: '«የሚላኩት ጥቅሶች በጥሞና የተመረጡ፣ መንፈስን የሚያድሱ እና የዕለት ውሏችንን በጸሎት እንድንመራ የሚያነሳሱ ናቸው።»',
-          favoriteVerse: 'መዝሙር 23:1',
-          avatarBg: 'from-[#981C00] to-[#5A1200]',
-          avatarInitials: 'ዳወ',
-        },
-        {
-          id: 'birhanu',
-          name: 'ብርሃኑ አሰፋ',
-          role: 'ነጋዴ',
-          city: 'አዲስ አበባ፣ መርካቶ',
-          plan: 'የ6 ወር አባል',
-          quote: '«ጠዋት ወደ ሥራዬ ስወጣ ቀኔን በፈጣሪ ቃል መክፈት ልማዴ ሆኗል። ሁሌም ልክ 12:30 ላይ ሳይዛነፍ መድረሱ ያስመሰግናል።»',
-          favoriteVerse: 'ምሳሌ 3:5-6',
-          avatarBg: 'from-[#C2410C] to-[#9A3412]',
-          avatarInitials: 'ብአ',
-        },
-      ]
+      {
+        id: 'tesfaye',
+        name: 'አባ ተስፋዬ ገ/ማሪያም',
+        role: 'ጡረተኛ መምህር',
+        city: 'አዲስ አበባ',
+        plan: 'የ1 ወር አባል',
+        quote: '«በየማለዳው 12:30 በመደበኛዋ የኪስ ስልኬ ላይ የሚገባው የእግዚአብሔር ቃል ቀኔን በሰላምና በምስጋና እንድጀምር ብርታት ሆኖኛል።»',
+        favoriteVerse: 'መዝሙር 46:1',
+        avatarBg: 'from-[#981C00] to-[#7A1D28]',
+        avatarInitials: 'ተገ',
+      },
+      {
+        id: 'yonas',
+        name: 'ዮናስ ታደሰ',
+        role: 'ከውጭ ሀገር ለእናቱ ያስመዘገበ',
+        city: 'ባህር ዳር',
+        plan: 'የ6 ወር አባል',
+        quote: '«ለእናቴ በቴሌብር የ6 ወር ምዝገባ አድርጌላት ነበር። በየሳምንቱ ስንደዋወል ጥቅሶቹ እንዴት እንደሚያጽናኗት በደስታ ትነግረኛለች።»',
+        favoriteVerse: 'ኢሳይያስ 40:31',
+        avatarBg: 'from-[#B45309] to-[#92400E]',
+        avatarInitials: 'ዮታ',
+      },
+      {
+        id: 'selamawit',
+        name: 'ዶ/ር ሰላማዊት አበበ',
+        role: 'የሕክምና ባለሙያ',
+        city: 'ሐዋሳ',
+        plan: 'የ6 ወር አባል',
+        quote: '«ከሆስፒታል የሌሊት ፈረቃዬ በኋላ በጠዋት የሚደርሰኝ ቃል ለነፍሴ እረፍት ይሰጣል። አጭር፣ ግልጽ እና ልብ የሚነካ ነው።»',
+        favoriteVerse: 'ፊልጵስዩስ 4:6-7',
+        avatarBg: 'from-[#0F766E] to-[#115E59]',
+        avatarInitials: 'ሰአ',
+      },
+      {
+        id: 'martha',
+        name: 'ማርታ ኃይሌ',
+        role: 'የዩኒቨርሲቲ ተማሪ',
+        city: 'አዲስ አበባ',
+        plan: 'የ3 ወር አባል',
+        quote: '«በፈተና ወቅት ማለዳዬን በእግዚአብሔር ቃል መጀመሬ ውስጣዊ መረጋጋትን ሰጥቶኛል። ያለ ኢንተርኔት በSMS መምጣቱ ለተማሪዎች በጣም አመቺ ነው።»',
+        favoriteVerse: 'ማቴዎስ 11:28',
+        avatarBg: 'from-[#7C3AED] to-[#5B21B6]',
+        avatarInitials: 'ማኃ',
+      },
+      {
+        id: 'dawit',
+        name: 'ቀሲስ ዳዊት ወ/ሚካኤል',
+        role: 'የመንፈሳዊ ትምህርት አገልጋይ',
+        city: 'አዳማ',
+        plan: 'የ6 ወር አባል',
+        quote: '«የሚላኩት ጥቅሶች በጥሞና የተመረጡ፣ መንፈስን የሚያድሱ እና የዕለት ውሏችንን በጸሎት እንድንመራ የሚያነሳሱ ናቸው።»',
+        favoriteVerse: 'መዝሙር 23:1',
+        avatarBg: 'from-[#981C00] to-[#5A1200]',
+        avatarInitials: 'ዳወ',
+      },
+      {
+        id: 'birhanu',
+        name: 'ብርሃኑ አሰፋ',
+        role: 'ነጋዴ',
+        city: 'አዲስ አበባ፣ መርካቶ',
+        plan: 'የ6 ወር አባል',
+        quote: '«ጠዋት ወደ ሥራዬ ስወጣ ቀኔን በፈጣሪ ቃል መክፈት ልማዴ ሆኗል። ሁሌም ልክ 12:30 ላይ ሳይዛነፍ መድረሱ ያስመሰግናል።»',
+        favoriteVerse: 'ምሳሌ 3:5-6',
+        avatarBg: 'from-[#C2410C] to-[#9A3412]',
+        avatarInitials: 'ብአ',
+      },
+    ]
     : [
-        {
-          id: 'tesfaye',
-          name: 'Aba Tesfaye G/Mariam',
-          role: 'Retired Teacher',
-          city: 'Addis Ababa',
-          plan: '1-Year Member',
-          quote: '"The 6:30 AM Scripture on my simple phone helps me start each day anchored in God’s peace."',
-          favoriteVerse: 'Psalm 46:1',
-          avatarBg: 'from-[#981C00] to-[#7A1D28]',
-          avatarInitials: 'TG',
-        },
-        {
-          id: 'yonas',
-          name: 'Yonas Tadesse',
-          role: 'Diaspora (Gift for Mother)',
-          city: 'Bahir Dar',
-          plan: '1-Year Member',
-          quote: '"I subscribed for my mother via Telebirr. Every week, she happily shares how the verses encourage her."',
-          favoriteVerse: 'Isaiah 40:31',
-          avatarBg: 'from-[#B45309] to-[#92400E]',
-          avatarInitials: 'YT',
-        },
-        {
-          id: 'selamawit',
-          name: 'Dr. Selamawit Abebe',
-          role: 'Physician',
-          city: 'Hawassa',
-          plan: '6-Month Member',
-          quote: '"Coming off overnight hospital shifts, the morning verse brings true rest to my weary spirit."',
-          favoriteVerse: 'Philippians 4:6-7',
-          avatarBg: 'from-[#0F766E] to-[#115E59]',
-          avatarInitials: 'SA',
-        },
-        {
-          id: 'martha',
-          name: 'Martha Haile',
-          role: 'University Student',
-          city: 'Addis Ababa',
-          plan: '3-Month Member',
-          quote: '"Starting mornings with Scripture during exams gives me calm focus. Reaching me via SMS without data is perfect."',
-          favoriteVerse: 'Matthew 11:28',
-          avatarBg: 'from-[#7C3AED] to-[#5B21B6]',
-          avatarInitials: 'MH',
-        },
-        {
-          id: 'dawit',
-          name: 'Kesis Dawit W/Michael',
-          role: 'Ministry Worker',
-          city: 'Adama',
-          plan: '1-Year Member',
-          quote: '"Carefully chosen with spiritual reverence, these verses anchor everyday life in quiet prayer."',
-          favoriteVerse: 'Psalm 23:1',
-          avatarBg: 'from-[#981C00] to-[#5A1200]',
-          avatarInitials: 'DW',
-        },
-        {
-          id: 'birhanu',
-          name: 'Birhanu Assefa',
-          role: 'Merchant',
-          city: 'Merkato',
-          plan: '6-Month Member',
-          quote: '"Opening my day in the market with God’s Word has become my anchor. Its punctual delivery is admirable."',
-          favoriteVerse: 'Proverbs 3:5-6',
-          avatarBg: 'from-[#C2410C] to-[#9A3412]',
-          avatarInitials: 'BA',
-        },
-      ];
+      {
+        id: 'tesfaye',
+        name: 'Aba Tesfaye G/Mariam',
+        role: 'Retired Teacher',
+        city: 'Addis Ababa',
+        plan: '1-Year Member',
+        quote: '"The 6:30 AM Scripture on my simple phone helps me start each day anchored in God’s peace."',
+        favoriteVerse: 'Psalm 46:1',
+        avatarBg: 'from-[#981C00] to-[#7A1D28]',
+        avatarInitials: 'TG',
+      },
+      {
+        id: 'yonas',
+        name: 'Yonas Tadesse',
+        role: 'Diaspora (Gift for Mother)',
+        city: 'Bahir Dar',
+        plan: '1-Year Member',
+        quote: '"I subscribed for my mother via Telebirr. Every week, she happily shares how the verses encourage her."',
+        favoriteVerse: 'Isaiah 40:31',
+        avatarBg: 'from-[#B45309] to-[#92400E]',
+        avatarInitials: 'YT',
+      },
+      {
+        id: 'selamawit',
+        name: 'Dr. Selamawit Abebe',
+        role: 'Physician',
+        city: 'Hawassa',
+        plan: '6-Month Member',
+        quote: '"Coming off overnight hospital shifts, the morning verse brings true rest to my weary spirit."',
+        favoriteVerse: 'Philippians 4:6-7',
+        avatarBg: 'from-[#0F766E] to-[#115E59]',
+        avatarInitials: 'SA',
+      },
+      {
+        id: 'martha',
+        name: 'Martha Haile',
+        role: 'University Student',
+        city: 'Addis Ababa',
+        plan: '3-Month Member',
+        quote: '"Starting mornings with Scripture during exams gives me calm focus. Reaching me via SMS without data is perfect."',
+        favoriteVerse: 'Matthew 11:28',
+        avatarBg: 'from-[#7C3AED] to-[#5B21B6]',
+        avatarInitials: 'MH',
+      },
+      {
+        id: 'dawit',
+        name: 'Kesis Dawit W/Michael',
+        role: 'Ministry Worker',
+        city: 'Adama',
+        plan: '1-Year Member',
+        quote: '"Carefully chosen with spiritual reverence, these verses anchor everyday life in quiet prayer."',
+        favoriteVerse: 'Psalm 23:1',
+        avatarBg: 'from-[#981C00] to-[#5A1200]',
+        avatarInitials: 'DW',
+      },
+      {
+        id: 'birhanu',
+        name: 'Birhanu Assefa',
+        role: 'Merchant',
+        city: 'Merkato',
+        plan: '6-Month Member',
+        quote: '"Opening my day in the market with God’s Word has become my anchor. Its punctual delivery is admirable."',
+        favoriteVerse: 'Proverbs 3:5-6',
+        avatarBg: 'from-[#C2410C] to-[#9A3412]',
+        avatarInitials: 'BA',
+      },
+    ];
 
   const currentVerse = sampleVerses[activeVerseIndex];
 
@@ -802,11 +809,10 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   <button
                     key={v.reference}
                     onClick={() => setActiveVerseIndex(i)}
-                    className={`px-3 py-1 rounded-md text-xs font-bold transition-all cursor-pointer ${
-                      activeVerseIndex === i
-                        ? 'bg-[#981C00] text-white shadow-xs'
-                        : 'text-[#706A65] dark:text-[#A8A19A] hover:text-[#24211F] dark:hover:text-[#FAF8F5]'
-                    }`}
+                    className={`px-3 py-1 rounded-md text-xs font-bold transition-all cursor-pointer ${activeVerseIndex === i
+                      ? 'bg-[#981C00] text-white shadow-xs'
+                      : 'text-[#706A65] dark:text-[#A8A19A] hover:text-[#24211F] dark:hover:text-[#FAF8F5]'
+                      }`}
                   >
                     <span>{v.day}</span>
                     <span className="ml-1 opacity-80 text-[10px]">({v.reference.split(' ')[0]})</span>
@@ -965,51 +971,42 @@ export const LandingView: React.FC<LandingViewProps> = ({
             {pricingPlans.map((plan) => (
               <div
                 key={plan.id}
-                className={`relative flex flex-col justify-between p-7 sm:p-8 rounded-[15px] transition-all duration-200 ${
-                  plan.recommended
-                    ? 'bg-gradient-to-b from-[#FFFFFF] via-[#FAF6F2] to-[#F5EFE9] dark:from-[#201A18] dark:via-[#191513] dark:to-[#141110] border-2 border-[#981C00] dark:border-[#C43214] shadow-[0_20px_50px_-15px_rgba(152,28,0,0.18),0_1px_3px_rgba(0,0,0,0.06)] md:-translate-y-2'
-                    : 'bg-[#FFFFFF] dark:bg-[#1A1715] border border-[#E2DDD5] dark:border-[#2C2723] hover:border-[#D1C9BE] dark:hover:border-[#3D3732] shadow-[0_4px_24px_-6px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.03)]'
-                }`}
+                className={`relative flex flex-col justify-between p-6 sm:p-7 rounded-2xl transition-colors ${plan.recommended
+                  ? 'bg-[#FAF7F2] dark:bg-[#1F1A17] border-2 border-[#981C00] dark:border-[#C43214]'
+                  : 'bg-[#FFFFFF] dark:bg-[#181513] border border-[#E4DFD7] dark:border-[#2C2723]'
+                  }`}
               >
-                {/* Floating Recommended Luxury Badge */}
-                {plan.recommended && (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                    <span className="px-4 py-1 rounded-[15px] text-[11px] font-black uppercase tracking-wider bg-[#981C00] text-white shadow-md inline-flex items-center gap-1.5 whitespace-nowrap">
-                      <Sparkles className="w-3 h-3 text-[#FFD6A5]" />
-                      <span>{plan.badge}</span>
-                    </span>
-                  </div>
-                )}
-
-                <div className="space-y-5">
-                  {/* Card Title & Top Indicator */}
-                  <div className="flex items-start justify-between gap-3 pt-1">
-                    <div>
-                      <h3 className="text-xl font-bold text-[#24211F] dark:text-[#FAF8F5] tracking-tight">
-                        {plan.name}
-                      </h3>
-                      {!plan.recommended && (
-                        <span className="inline-block mt-1 text-[11px] font-semibold text-[#706A65] dark:text-[#A8A19A] px-2.5 py-0.5 rounded-[15px] bg-[#FAF8F5] dark:bg-[#141211] border border-[#E8E4DF] dark:border-[#2C2825]">
-                          {plan.badge}
-                        </span>
-                      )}
-                    </div>
+                <div className="space-y-4">
+                  {/* Card Header: Title & Integrated Badge */}
+                  <div className="flex items-center justify-between pb-3 border-b border-[#ECE7E1] dark:border-[#2C2723]">
+                    <h3 className="text-lg font-bold text-[#24211F] dark:text-[#FAF8F5] tracking-tight">
+                      {plan.name}
+                    </h3>
+                    {plan.recommended ? (
+                      <span className="text-[11px] font-semibold text-[#8F2B14] dark:text-[#E89382] bg-[#FAF0ED] dark:bg-[#321C18] px-2.5 py-0.5 rounded-md border border-[#F3D5CD] dark:border-[#4A2620]">
+                        {plan.badge}
+                      </span>
+                    ) : (
+                      <span className="text-[11px] font-medium text-[#706A65] dark:text-[#A8A19A] bg-[#F2EDE7] dark:bg-[#25201C] px-2 py-0.5 rounded-md">
+                        {plan.badge}
+                      </span>
+                    )}
                   </div>
 
-                  {/* Substantive Plan Description */}
-                  <p className="text-xs text-[#706A65] dark:text-[#A8A19A] leading-relaxed font-normal min-h-[44px]">
+                  {/* Plan Description */}
+                  <p className="text-xs text-[#706A65] dark:text-[#A8A19A] leading-relaxed min-h-[38px]">
                     {plan.description}
                   </p>
 
                   {/* Price Block */}
-                  <div className="pt-2 pb-1 space-y-1.5">
+                  <div className="pt-1 pb-1 space-y-1">
                     {plan.originalPrice ? (
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-semibold text-[#A8A19A] line-through">
+                        <span className="text-xs text-[#8A847E] dark:text-[#918B84] line-through tabular-nums">
                           {plan.originalPrice} {isAmharic ? 'ብር' : 'ETB'}
                         </span>
                         {plan.savingsBadge && (
-                          <span className="text-[10.5px] font-bold text-[#981C00] dark:text-[#E89382] bg-[#FAF0ED] dark:bg-[#321C18] px-2 py-0.5 rounded-[15px] border border-[#F3D5CD] dark:border-[#4A2620]">
+                          <span className="text-[10.5px] font-semibold text-[#8F2B14] dark:text-[#E89382] bg-[#FAF0ED] dark:bg-[#321C18] px-2 py-0.5 rounded-md">
                             {plan.savingsBadge}
                           </span>
                         )}
@@ -1019,37 +1016,35 @@ export const LandingView: React.FC<LandingViewProps> = ({
                     )}
 
                     <div className="flex items-baseline gap-1.5">
-                      <span className="text-4xl sm:text-5xl font-black text-[#24211F] dark:text-[#FAF8F5] tracking-tight font-sans">
+                      <span className="text-3xl sm:text-4xl font-bold text-[#24211F] dark:text-[#FAF8F5] tracking-tight tabular-nums font-sans">
                         {plan.price}
                       </span>
                       <div className="flex flex-col">
-                        <span className="text-xs font-bold text-[#24211F] dark:text-[#FAF8F5] uppercase tracking-wider leading-none">
+                        <span className="text-xs font-semibold text-[#24211F] dark:text-[#FAF8F5] leading-none">
                           {isAmharic ? 'ብር' : 'ETB'}
                         </span>
-                        <span className="text-[11px] font-medium text-[#706A65] dark:text-[#A8A19A] pt-0.5">
+                        <span className="text-[11px] text-[#706A65] dark:text-[#A8A19A] pt-0.5">
                           {plan.period}
                         </span>
                       </div>
                     </div>
 
                     {/* Monthly Breakdown Value Tag */}
-                    <div className="text-[11px] font-semibold text-[#981C00] dark:text-[#E89382] pt-0.5">
+                    <div className="text-[11px] font-medium text-[#8F2B14] dark:text-[#E89382] pt-0.5">
                       {plan.monthlyBreakdown}
                     </div>
                   </div>
 
                   {/* Features List */}
-                  <div className="pt-5 border-t border-[#EAE5DF] dark:border-[#2C2723] space-y-3">
-                    <p className="text-[10.5px] font-bold uppercase tracking-wider text-[#A8A19A] dark:text-[#706A65]">
+                  <div className="pt-4 border-t border-[#ECE7E1] dark:border-[#2C2723] space-y-2.5">
+                    <p className="text-[11px] font-semibold text-[#706A65] dark:text-[#A8A19A]">
                       {isAmharic ? 'የሚያካትታቸው አገልግሎቶች:' : 'What is included:'}
                     </p>
-                    <div className="space-y-2.5">
+                    <div className="space-y-2">
                       {plan.features.map((feat) => (
-                        <div key={feat} className="flex items-start gap-2.5 text-xs text-[#24211F] dark:text-[#FAF8F5]">
-                          <div className="w-4 h-4 rounded-full bg-[#FAF0ED] dark:bg-[#2A1D1A] flex items-center justify-center shrink-0 mt-0.5 text-[#981C00] dark:text-[#E89382]">
-                            <Check className="w-2.5 h-2.5 stroke-[3]" />
-                          </div>
-                          <span className="leading-snug font-normal">{feat}</span>
+                        <div key={feat} className="flex items-start gap-2 text-xs text-[#24211F] dark:text-[#FAF8F5]">
+                          <Check className="w-3.5 h-3.5 text-[#8F2B14] dark:text-[#E89382] shrink-0 mt-0.5 stroke-[2.25]" />
+                          <span className="leading-snug">{feat}</span>
                         </div>
                       ))}
                     </div>
@@ -1057,17 +1052,16 @@ export const LandingView: React.FC<LandingViewProps> = ({
                 </div>
 
                 {/* Plan Action Button */}
-                <div className="pt-8 mt-4">
+                <div className="pt-6 mt-2">
                   <button
                     onClick={() => handleOpenSubscribe(plan.name, plan.price)}
                     disabled={isClosed}
-                    className={`w-full h-11 px-5 rounded-[15px] text-xs sm:text-sm font-bold tracking-tight transition-all duration-150 cursor-pointer flex items-center justify-center gap-2 ${
-                      isClosed
-                        ? 'bg-[#EAE5DF] text-[#706A65] cursor-not-allowed'
-                        : plan.recommended
-                        ? 'bg-[#981C00] hover:bg-[#7A1D28] text-white shadow-sm hover:shadow'
-                        : 'bg-[#FAF8F5] hover:bg-[#EFEAE4] dark:bg-[#141211] dark:hover:bg-[#25221F] text-[#24211F] dark:text-[#FAF8F5] border border-[#DDD7CF] dark:border-[#2C2723]'
-                    }`}
+                    className={`w-full h-10 px-4 rounded-xl text-xs sm:text-sm font-semibold tracking-tight transition-colors cursor-pointer flex items-center justify-center gap-2 ${isClosed
+                      ? 'bg-[#EAE5DF] text-[#706A65] cursor-not-allowed'
+                      : plan.recommended
+                        ? 'bg-[#981C00] hover:bg-[#801800] text-white'
+                        : 'bg-[#F2EDE7] hover:bg-[#E7E1D8] dark:bg-[#25201C] dark:hover:bg-[#2F2925] text-[#24211F] dark:text-[#FAF8F5] border border-[#DDD7CE] dark:border-[#352F2B]'
+                      }`}
                   >
                     {isClosed ? (
                       <span className="inline-flex items-center gap-1.5">
@@ -1124,58 +1118,76 @@ export const LandingView: React.FC<LandingViewProps> = ({
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-7">
             {/* Pillar 1 */}
-            <div className="p-6 rounded-[15px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
-              <UserCheck className="w-5 h-5 text-[#981C00] dark:text-[#C43214]" />
-              <h3 className="text-sm font-bold text-[#24211F] dark:text-[#FAF8F5]">
-                {isAmharic ? 'ምንም ውጣ ውረድ የለውም' : 'No Account Needed'}
-              </h3>
-              <p className="text-xs text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
-                {isAmharic
+            <NotchedProjectCard
+              badge="01"
+              title={isAmharic ? 'ምንም ውጣ ውረድ የለውም' : 'No Account Needed'}
+              description={
+                isAmharic
                   ? 'ኢሜይል፣ የተጠቃሚ ስም (Username) ወይም ፓስወርድ ሳያስፈልግ በስልክ ቁጥርዎ ብቻ በሰከንዶች ውስጥ ይመዘገባሉ።'
-                  : 'No account registration or passwords to manage. Sign up with your phone number alone.'}
-              </p>
-            </div>
+                  : 'No account registration or passwords to manage. Sign up with your phone number alone.'
+              }
+              image="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80"
+              icon={<UserCheck className="w-5 h-5 stroke-[2]" />}
+              tags={isAmharic ? ['ቀላል ምዝገባ', 'ያለ ፓስወርድ'] : ['Instant Signup', 'No Password']}
+              accent="#981C00"
+              accentForeground="#FFFFFF"
+              surface="var(--bg-primary, #FAF8F5)"
+            />
 
             {/* Pillar 2 */}
-            <div className="p-6 rounded-[15px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
-              <ShieldCheck className="w-5 h-5 text-[#981C00] dark:text-[#C43214]" />
-              <h3 className="text-sm font-bold text-[#24211F] dark:text-[#FAF8F5]">
-                {isAmharic ? 'የስልክ ቁጥርዎ ምስጢራዊነት' : 'Phone Number Privacy'}
-              </h3>
-              <p className="text-xs text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
-                {isAmharic
+            <NotchedProjectCard
+              badge="02"
+              title={isAmharic ? 'የስልክ ቁጥርዎ ምስጢራዊነት' : 'Phone Number Privacy'}
+              description={
+                isAmharic
                   ? 'ስልክ ቁጥርዎ የዕለቱን መንፈሳዊ መልእክት ለመላክ ብቻ ይውላል። ለማንኛውም ሶስተኛ ወገን ወይም ለማስታወቂያ አሳልፈን አንሰጥም።'
-                  : 'Your phone number is strictly guarded and used exclusively for your spiritual SMS.'}
-              </p>
-            </div>
+                  : 'Your phone number is strictly guarded and used exclusively for your spiritual SMS.'
+              }
+              image="https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=800&q=80"
+              icon={<ShieldCheck className="w-5 h-5 stroke-[2]" />}
+              tags={isAmharic ? ['100% ምስጢራዊ', 'ያለ ማስታወቂያ'] : ['Strict Privacy', 'Zero Spam']}
+              accent="#981C00"
+              accentForeground="#FFFFFF"
+              surface="var(--bg-primary, #FAF8F5)"
+            />
 
             {/* Pillar 3 */}
-            <div className="p-6 rounded-[15px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
-              <CheckCircle2 className="w-5 h-5 text-[#981C00] dark:text-[#C43214]" />
-              <h3 className="text-sm font-bold text-[#24211F] dark:text-[#FAF8F5]">
-                {isAmharic ? 'ቅጽበታዊ ማረጋገጫ' : 'Direct Status Verification'}
-              </h3>
-              <p className="text-xs text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
-                {isAmharic
+            <NotchedProjectCard
+              badge="03"
+              title={isAmharic ? 'ቅጽበታዊ ማረጋገጫ' : 'Direct Status Verification'}
+              description={
+                isAmharic
                   ? 'ክፍያዎን ከፈጸሙ በኋላ ስልክ ቁጥርዎን ብቻ በማስገባት የአገልግሎትዎን ሁኔታና ቀሪ ቀናት በማንኛውም ሰዓት ማየት ይችላሉ።'
-                  : 'Check whether your payment has been approved anytime with a simple phone number lookup.'}
-              </p>
-            </div>
+                  : 'Check whether your payment has been approved anytime with a simple phone number lookup.'
+              }
+              image="https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80"
+              icon={<CheckCircle2 className="w-5 h-5 stroke-[2]" />}
+              tags={isAmharic ? ['ቀጥተኛ ማረጋገጫ', 'የቀሪ ቀናት ሁኔታ'] : ['Direct Lookup', 'CBE & Telebirr']}
+              onClick={() => handleTriggerVerifyModal(null)}
+              accent="#981C00"
+              accentForeground="#FFFFFF"
+              surface="var(--bg-primary, #FAF8F5)"
+            />
 
             {/* Pillar 4 */}
-            <div className="p-6 rounded-[15px] bg-[#FFFFFF] dark:bg-[#1D1A18] border border-[#E8E4DF] dark:border-[#2C2825] space-y-3">
-              <MessageSquare className="w-5 h-5 text-[#981C00] dark:text-[#C43214]" />
-              <h3 className="text-sm font-bold text-[#24211F] dark:text-[#FAF8F5]">
-                {isAmharic ? 'ፈጣን የደንበኞች ድጋፍ' : 'Direct Support'}
-              </h3>
-              <p className="text-xs text-[#706A65] dark:text-[#A8A19A] leading-relaxed">
-                {isAmharic
+            <NotchedProjectCard
+              badge="04"
+              title={isAmharic ? 'ፈጣን የደንበኞች ድጋፍ' : 'Direct Support'}
+              description={
+                isAmharic
                   ? 'ማንኛውም ጥያቄ ወይም እገዛ ቢያስፈልግዎት በይፋዊው የቴሌግራም አድራሻችን ፈጣን ምላሽ ያገኛሉ።'
-                  : 'Reach out through our official Telegram channel for prompt and friendly assistance.'}
-              </p>
-            </div>
+                  : 'Reach out through our official Telegram channel for prompt and friendly assistance.'
+              }
+              image="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80"
+              icon={<MessageSquare className="w-5 h-5 stroke-[2]" />}
+              tags={isAmharic ? ['በቴሌግራም', 'ቀጥተኛ እገዛ'] : ['Telegram Support', 'Friendly Help']}
+              href="https://t.me/nazazisupport"
+              accent="#981C00"
+              accentForeground="#FFFFFF"
+              surface="var(--bg-primary, #FAF8F5)"
+            />
           </div>
         </div>
       </section>
@@ -1297,9 +1309,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   >
                     <span className="pr-4 leading-snug">{faq.q}</span>
                     <ChevronDown
-                      className={`w-4 h-4 text-[#706A65] dark:text-[#A8A19A] shrink-0 transition-transform duration-200 ${
-                        isOpen ? 'rotate-180' : ''
-                      }`}
+                      className={`w-4 h-4 text-[#706A65] dark:text-[#A8A19A] shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''
+                        }`}
                     />
                   </button>
                   {isOpen && (
