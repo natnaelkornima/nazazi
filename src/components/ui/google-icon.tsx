@@ -27,6 +27,7 @@ export function GoogleIcon({
         className
       )}
       style={{
+        fontFamily: "'Material Symbols Outlined', sans-serif",
         fontVariationSettings: `'FILL' ${fill ? 1 : 0}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${size || 24}`,
         fontSize: size ? `${size}px` : undefined,
         width: size ? `${size}px` : undefined,

@@ -599,21 +599,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               </button>
             </div>
 
-            {/* Trust Micro-note */}
-            <div className="pt-2 flex items-center gap-4 text-xs text-[#706A65] dark:text-[#A8A19A]">
-              <span className="flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-[#981C00] dark:text-[#C43214] stroke-[3]" />
-                {isAmharic ? 'በቀጥታ በSMS የሚደርስ (ኢንተርኔት አይጠይቅም)' : 'Direct SMS Delivery'}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-[#981C00] dark:text-[#C43214] stroke-[3]" />
-                {isAmharic ? 'አካውንትና ፓስወርድ አያስፈልግም' : 'No Account Needed'}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-[#981C00] dark:text-[#C43214] stroke-[3]" />
-                {isAmharic ? 'በቴሌብር እና በንግድ ባንክ (CBE) ቀላል ክፍያ' : 'CBE & Telebirr'}
-              </span>
-            </div>
+
           </div>
 
           {/* Hero Right Column: Authentic Physical Smartphone & SMS Messages App Preview */}

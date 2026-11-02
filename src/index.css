@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@200..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@200..700&family=Noto+Sans+Ethiopic:wght@100..900&family=Noto+Serif+Ethiopic:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 @import url('https://www.geezarchive.com/css2?family=Shiromeda%2BSemBd&display=swap');
 @import url('https://www.geezarchive.com/css2?family=Habesha%2BSerif&display=swap');
@@ -89,7 +89,8 @@
 
 @theme {
   --font-sans: 'Stack Sans Headline', system-ui, -apple-system, sans-serif;
-  --font-amharic: 'Kefa', 'Shiromeda SemBd', system-ui, sans-serif;
+  --font-amharic: 'Kefa', 'Shiromeda SemBd', 'Noto Sans Ethiopic', system-ui, sans-serif;
+  --font-noto-ethiopic: 'Noto Sans Ethiopic', system-ui, sans-serif;
   --font-kefa: 'Kefa', system-ui, sans-serif;
   --font-shiromeda: 'Shiromeda SemBd', system-ui, sans-serif;
   --font-habesha-serif: 'Habesha Serif', system-ui, -apple-system, sans-serif;
@@ -153,14 +154,39 @@ html[lang="en"]:not(.lang-am) body:not(.lang-am) {
 
 /* ========================================================
    Amharic Typography Engine
-   Default all Amharic texts to "Kefa", system-ui, sans-serif
+   Default all Amharic texts to "Kefa", "Shiromeda SemBd", "Noto Sans Ethiopic", system-ui, sans-serif
    ======================================================== */
 html[lang="am"],
 html[lang="am"] body,
 body.lang-am,
-.lang-am,
-.lang-am * {
-  font-family: "Kefa", "Shiromeda SemBd", system-ui, sans-serif !important;
+.lang-am {
+  font-family: "Kefa", "Shiromeda SemBd", "Noto Sans Ethiopic", system-ui, sans-serif;
+}
+
+/* Ensure Amharic elements inherit properly without breaking Google icons, material symbols, or monospaced tags */
+.lang-am *:not(.material-symbols-outlined):not([class*="material-symbols"]):not([class*="material-icons"]):not(code):not(pre):not(kbd) {
+  font-family: inherit;
+}
+
+/* Material Symbols & Google Font Icons must ALWAYS preserve their font family */
+.material-symbols-outlined,
+.material-symbols-rounded,
+.material-symbols-sharp,
+.material-icons,
+[class*="material-symbols"],
+[class*="material-icons"] {
+  font-family: 'Material Symbols Outlined' !important;
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Special styling ONLY for the brand word ናዛዚ in the home page - Bela Bereka */
