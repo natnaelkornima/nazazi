@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { checkVerifyEtStatus, validateSubscriptionAmount } from '@/lib/verifyEt';
+import {
+  checkVerifyEtStatus,
+  validateSubscriptionAmount,
+  validatePaymentReceiver,
+} from '@/lib/verifyEt';
 import { updateRegistrationStatus } from '@/lib/supabaseServer';
 
 export const dynamic = 'force-dynamic';
@@ -17,6 +21,23 @@ export async function GET(
     const verification = await checkVerifyEtStatus(requestId);
 
     if (verification.verified && verification.status === 'success') {
+      // 🔒 1. Check receiver account & holder (strictly CBE 1000432169948 or Telebirr 0953886865, Holder: Nazazi)
+      const receiverValidation = validatePaymentReceiver(verification);
+      if (!receiverValidation.isValidReceiver) {
+        return NextResponse.json(
+          {
+            success: false,
+            verified: false,
+            status: 'failed',
+            error: receiverValidation.errorAm || receiverValidation.error,
+            receiverName: verification.receiverName,
+            receiverAccount: verification.receiverAccount,
+          },
+          { status: 422 }
+        );
+      }
+
+      // 🔒 2. Check payment amount (strictly 200, 600, or 1000 Birr)
       const amountValidation = validateSubscriptionAmount(verification.amount);
       if (!amountValidation.isValidTier) {
         return NextResponse.json(

@@ -4,6 +4,8 @@ import {
   isVerifyEtConfigured,
   parseEthiopianPaymentSms,
   validateSubscriptionAmount,
+  validatePaymentReceiver,
+  OFFICIAL_NAZAZI_ACCOUNTS,
 } from '@/lib/verifyEt';
 import { saveRegistrationToSupabase } from '@/lib/supabaseServer';
 import { validateFullName, validateStrict09Phone } from '@/lib/validation';
@@ -79,22 +81,48 @@ export async function POST(req: NextRequest) {
     const { planName: initialPlanName, amount: initialAmount } = normalizePlanAndAmount(rawPlan, rawAmount);
 
     // 3. Verify with Verify.et directly (Ethiopian banking integration)
+    const expectedSettlement =
+      bank === 'cbe' || detectedBank === 'cbe'
+        ? OFFICIAL_NAZAZI_ACCOUNTS.cbe.accountNumber
+        : bank === 'telebirr' || detectedBank === 'telebirr'
+        ? OFFICIAL_NAZAZI_ACCOUNTS.telebirr.accountNumber
+        : undefined;
+
     const verification = await verifyTransactionWithVerifyEt({
       reference,
       bank: bank !== 'auto' ? bank : undefined,
       suffix,
       phoneNumber: cleanPhone,
+      settlementAccount: expectedSettlement,
       waitMs: 8000,
     });
 
     const nowIso = new Date().toISOString();
 
     if (verification.verified && verification.status === 'success') {
-      // 🔒 STRICT AMOUNT VALIDATION: Payment MUST be exactly 200, 600, or 1000 Birr
+      // 🔒 1. STRICT RECEIVER & ACCOUNT HOLDER VALIDATION:
+      // Must be made to the official Nazazi account displayed on the website (CBE: 1000432169948, Telebirr: 0953886865, Holder: Nazazi)
+      const receiverValidation = validatePaymentReceiver(verification, bank);
+      if (!receiverValidation.isValidReceiver) {
+        return NextResponse.json(
+          {
+            success: false,
+            verified: false,
+            status: 'failed',
+            error: receiverValidation.errorAm || receiverValidation.error,
+            requestId: verification.requestId,
+            receiverName: verification.receiverName,
+            receiverAccount: verification.receiverAccount,
+          },
+          { status: 422 }
+        );
+      }
+
+      // 🔒 2. STRICT AMOUNT VALIDATION: Payment MUST be confirmed for 200, 600, or 1000 Birr
       const paidAmount = verification.amount ?? smsAmount;
       const amountValidation = validateSubscriptionAmount(paidAmount, initialAmount);
 
-      // Check 1: Does it match a valid plan amount tier (200, 600, or 1000 Birr)?
+      // Check 2a: Does it match a valid plan amount tier (200, 600, or 1000 Birr)?
       if (!amountValidation.isValidTier) {
         return NextResponse.json(
           {
@@ -110,7 +138,7 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      // Check 2: Does it cover the chosen plan amount?
+      // Check 2b: Does it cover the chosen plan amount?
       if (!amountValidation.isCovered) {
         return NextResponse.json(
           {

@@ -8,6 +8,8 @@ import {
   verifyTransactionWithVerifyEt,
   parseEthiopianPaymentSms,
   validateSubscriptionAmount,
+  validatePaymentReceiver,
+  OFFICIAL_NAZAZI_ACCOUNTS,
 } from '@/lib/verifyEt';
 
 export const dynamic = 'force-dynamic';
@@ -201,32 +203,47 @@ export async function POST(req: NextRequest) {
         const cleanRef = parsed.reference;
         const autoBank = (bank && bank !== 'auto' ? bank : parsed.detectedBank) as any;
 
+        const expectedSettlement =
+          autoBank === 'cbe'
+            ? OFFICIAL_NAZAZI_ACCOUNTS.cbe.accountNumber
+            : autoBank === 'telebirr'
+            ? OFFICIAL_NAZAZI_ACCOUNTS.telebirr.accountNumber
+            : undefined;
+
         const verification = await verifyTransactionWithVerifyEt({
           reference: cleanRef,
           bank: autoBank,
           phoneNumber: cleanPhone,
+          settlementAccount: expectedSettlement,
           waitMs: 6000,
         });
 
         if (verification.verified && verification.status === 'success') {
-          // Check payment amount (strictly 200, 600, or 1000 Birr)
-          const paidAmount = verification.amount ?? parsed.extractedAmount;
-          const amountValidation = validateSubscriptionAmount(paidAmount, amount);
+          // 🔒 1. Check receiver account & holder (strictly CBE 1000432169948 or Telebirr 0953886865, Holder: Nazazi)
+          const receiverValidation = validatePaymentReceiver(verification, autoBank);
 
-          if (amountValidation.isValidTier && amountValidation.isCovered) {
-            isAutoApproved = true;
-            verifiedBank = verification.bank || autoBank || 'cbe';
-            verifiedRequestId = verification.requestId;
-            transactionId = verification.transactionNumber || cleanRef;
-            verifiedDetails = {
-              bank: verifiedBank,
-              amount: amountValidation.matchedAmount,
-              senderName: verification.senderName,
-              receiverName: verification.receiverName,
-              timestamp: verification.timestamp,
-            };
+          if (!receiverValidation.isValidReceiver) {
+            verificationError = receiverValidation.errorAm || receiverValidation.error;
           } else {
-            verificationError = amountValidation.errorAm || amountValidation.error || 'Invalid payment amount';
+            // 🔒 2. Check payment amount (strictly 200, 600, or 1000 Birr covering chosen plan)
+            const paidAmount = verification.amount ?? parsed.extractedAmount;
+            const amountValidation = validateSubscriptionAmount(paidAmount, amount);
+
+            if (amountValidation.isValidTier && amountValidation.isCovered) {
+              isAutoApproved = true;
+              verifiedBank = verification.bank || autoBank || 'cbe';
+              verifiedRequestId = verification.requestId;
+              transactionId = verification.transactionNumber || cleanRef;
+              verifiedDetails = {
+                bank: verifiedBank,
+                amount: amountValidation.matchedAmount,
+                senderName: verification.senderName,
+                receiverName: verification.receiverName,
+                timestamp: verification.timestamp,
+              };
+            } else {
+              verificationError = amountValidation.errorAm || amountValidation.error || 'Invalid payment amount';
+            }
           }
         } else if (verification.errorMessage) {
           verificationError = verification.errorMessage;

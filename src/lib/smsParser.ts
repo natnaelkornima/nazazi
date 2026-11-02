@@ -41,24 +41,16 @@ export function validateSubscriptionAmount(
   errorAm?: string;
 } {
   if (typeof verifiedAmount !== 'number' || isNaN(verifiedAmount) || verifiedAmount <= 0) {
-    // If no bank amount was returned, fallback to expected plan amount if it's a valid tier
-    const validExpected = [200, 600, 1000].includes(expectedPlanAmount) ? expectedPlanAmount : 200;
     return {
-      isValidTier: true,
-      isCovered: true,
-      matchedAmount: validExpected,
-      matchedPlanNameAm:
-        validExpected === 1000
-          ? 'የ6 ወር አገልግሎት (1000 ብር)'
-          : validExpected === 600
-          ? 'የ3 ወር አገልግሎት (600 ብር)'
-          : 'የ1 ወር አገልግሎት (200 ብር)',
-      matchedPlanNameEn:
-        validExpected === 1000
-          ? '6 Months Access (1,000 Birr)'
-          : validExpected === 600
-          ? '3 Months Access (600 Birr)'
-          : '1 Month Access (200 Birr)',
+      isValidTier: false,
+      isCovered: false,
+      matchedAmount: 0,
+      matchedPlanNameAm: 'ያልተረጋገጠ የክፍያ መጠን',
+      matchedPlanNameEn: 'Unverified Amount',
+      error:
+        'Verified payment amount was not found in the transaction record. Subscription amount must strictly be confirmed as 200, 600, or 1,000 ETB.',
+      errorAm:
+        'የትራንዛክሽኑ የክፍያ መጠን በባንክ ማረጋገጫ ውስጥ አልተገኘም። የአገልግሎት ክፍያ በትክክል 200፣ 600 ወይም 1,000 ብር መሆኑ መረጋገጥ አለበት።',
     };
   }
 
@@ -113,6 +105,102 @@ export function validateSubscriptionAmount(
     matchedAmount: rounded,
     matchedPlanNameAm: planAm,
     matchedPlanNameEn: planEn,
+  };
+}
+
+export const OFFICIAL_NAZAZI_ACCOUNTS = {
+  cbe: {
+    bank: 'cbe',
+    accountNumber: '1000432169948',
+    holder: 'Nazazi',
+  },
+  telebirr: {
+    bank: 'telebirr',
+    accountNumber: '0953886865',
+    normalizedPhone: '251953886865',
+    holder: 'Nazazi',
+  },
+} as const;
+
+export interface ReceiverValidationResult {
+  isValidReceiver: boolean;
+  matchedAccount?: string;
+  matchedHolder?: string;
+  error?: string;
+  errorAm?: string;
+}
+
+/**
+ * Validates that the transaction was made to the official Nazazi account displayed on the website:
+ * - CBE: 1000432169948 (Account Holder: Nazazi)
+ * - Telebirr: 0953886865 (Account Holder: Nazazi)
+ */
+export function validatePaymentReceiver(
+  verification: {
+    receiverName?: string;
+    receiverAccount?: string;
+    settlementAccountMatch?: { matched?: boolean; ambiguous?: boolean; reason?: string };
+    bank?: string;
+  },
+  fallbackBank?: string
+): ReceiverValidationResult {
+  // 1. If Verify.et evaluated settlementAccountMatch
+  if (verification.settlementAccountMatch) {
+    if (verification.settlementAccountMatch.matched === false) {
+      return {
+        isValidReceiver: false,
+        error:
+          'Payment was not made to the official Nazazi account. Payments must strictly be sent to CBE (1000432169948) or Telebirr (0953886865).',
+        errorAm:
+          'ክፍያው የተፈጸመው በድረ-ገጹ ላይ ወደተጠቀሰው የናዛዚ (Nazazi) አካውንት አይደለም። እባክዎ ወደ ንግድ ባንክ (1000432169948) ወይም ቴሌብር (0953886865) የተከፈለበትን ትክክለኛ ደረሰኝ ያስገቡ።',
+      };
+    }
+  }
+
+  // 2. Validate receiver account number / phone if provided
+  const rawReceiverAcc = (verification.receiverAccount || '').replace(/[^0-9]/g, '');
+  const rawReceiverName = (verification.receiverName || '').trim().toLowerCase();
+
+  const isNazaziName =
+    rawReceiverName.includes('nazazi') ||
+    rawReceiverName.includes('ናዛዚ') ||
+    (verification.receiverName && /nazazi/i.test(verification.receiverName));
+
+  const isCbeAcc =
+    rawReceiverAcc.includes('1000432169948') ||
+    rawReceiverAcc.endsWith('432169948');
+
+  const isTelebirrAcc =
+    rawReceiverAcc.includes('0953886865') ||
+    rawReceiverAcc.includes('251953886865') ||
+    rawReceiverAcc.endsWith('953886865');
+
+  // If receiver account is present, it MUST match CBE or Telebirr
+  if (rawReceiverAcc && rawReceiverAcc.length >= 8) {
+    if (!isCbeAcc && !isTelebirrAcc) {
+      return {
+        isValidReceiver: false,
+        error: `Payment was credited to account ${verification.receiverAccount || rawReceiverAcc}, which does not match the official Nazazi accounts (CBE 1000432169948 / Telebirr 0953886865).`,
+        errorAm: `ክፍያው የተፈጸመው ወደ ${verification.receiverAccount || rawReceiverAcc} ሲሆን ይህ በድረ-ገጹ ላይ ከተጠቀሰው የናዛዚ ንግድ ባንክ (1000432169948) ወይም ቴሌብር (0953886865) ጋር አይዛመድም።`,
+      };
+    }
+  }
+
+  // If receiver name is present, it MUST match Nazazi
+  if (rawReceiverName && rawReceiverName.length >= 3) {
+    if (!isNazaziName) {
+      return {
+        isValidReceiver: false,
+        error: `Payment was credited to "${verification.receiverName}". Payments must strictly be sent to the official Nazazi account displayed on the website.`,
+        errorAm: `ክፍያው የተፈጸመው ለ "${verification.receiverName}" ነው። ክፍያው በድረ-ገጹ ላይ ወደተጠቀሰው የናዛዚ (Nazazi) አካውንት መፈጸም አለበት።`,
+      };
+    }
+  }
+
+  return {
+    isValidReceiver: true,
+    matchedAccount: isCbeAcc ? '1000432169948' : isTelebirrAcc ? '0953886865' : undefined,
+    matchedHolder: 'Nazazi',
   };
 }
 

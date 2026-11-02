@@ -14,6 +14,7 @@ export interface VerifyEtParams {
   bank?: 'cbe' | 'telebirr' | 'cbebirr' | 'dashen' | 'boa' | 'awash' | 'siinqee' | 'kaafiebirr' | 'mpesa' | 'auto';
   suffix?: string;
   phoneNumber?: string;
+  settlementAccount?: string;
   idempotencyKey?: string;
   waitMs?: number;
 }
@@ -28,6 +29,12 @@ export interface VerifyEtResult {
   amount?: number;
   senderName?: string;
   receiverName?: string;
+  receiverAccount?: string;
+  settlementAccountMatch?: {
+    matched?: boolean;
+    ambiguous?: boolean;
+    reason?: string;
+  };
   transactionNumber?: string;
   receiptNumber?: string;
   timestamp?: string;
@@ -54,18 +61,24 @@ export function isVerifyEtConfigured(): boolean {
 
 import {
   type ParsedPaymentInput,
+  type ReceiverValidationResult,
   VALID_SUBSCRIPTION_AMOUNTS,
+  OFFICIAL_NAZAZI_ACCOUNTS,
   extractNumericAmount,
   validateSubscriptionAmount,
+  validatePaymentReceiver,
   parseEthiopianPaymentSms,
   normalizeTransactionReference,
 } from './smsParser';
 
 export {
   type ParsedPaymentInput,
+  type ReceiverValidationResult,
   VALID_SUBSCRIPTION_AMOUNTS,
+  OFFICIAL_NAZAZI_ACCOUNTS,
   extractNumericAmount,
   validateSubscriptionAmount,
+  validatePaymentReceiver,
   parseEthiopianPaymentSms,
   normalizeTransactionReference,
 };
@@ -195,6 +208,14 @@ export async function verifyTransactionWithVerifyEt(params: VerifyEtParams): Pro
   }
   if (params.phoneNumber) {
     payload.phoneNumber = params.phoneNumber.trim();
+  }
+
+  // Ensure settlement account matches official Nazazi CBE or Telebirr account
+  const targetSettlementAccount =
+    params.settlementAccount ||
+    (chosenBank === 'cbe' ? '1000432169948' : chosenBank === 'telebirr' ? '0953886865' : undefined);
+  if (targetSettlementAccount) {
+    payload.settlementAccount = targetSettlementAccount.trim();
   }
 
   try {
@@ -365,7 +386,32 @@ function parseVerifyEtResponse(json: any): VerifyEtResult {
 
   const bank = result?.bank || dataItem?.bank || verification?.bank || undefined;
   const senderName = result?.senderName || dataItem?.senderName || undefined;
-  const receiverName = result?.receiverName || dataItem?.receiverName || undefined;
+  const receiverName =
+    result?.receiverName ||
+    dataItem?.receiverName ||
+    result?.creditorName ||
+    dataItem?.creditorName ||
+    result?.beneficiaryName ||
+    dataItem?.beneficiaryName ||
+    undefined;
+  const receiverAccount =
+    result?.receiverAccount ||
+    dataItem?.receiverAccount ||
+    result?.accountNumber ||
+    dataItem?.accountNumber ||
+    result?.creditedAccount ||
+    dataItem?.creditedAccount ||
+    result?.settlementAccount ||
+    dataItem?.settlementAccount ||
+    result?.receiverPhone ||
+    dataItem?.receiverPhone ||
+    undefined;
+  const settlementAccountMatch =
+    dataItem?.settlementAccountMatch ||
+    result?.settlementAccountMatch ||
+    verification?.settlementAccountMatch ||
+    json?.settlementAccountMatch ||
+    undefined;
   const transactionNumber =
     result?.transactionNumber ||
     result?.referenceNumber ||
@@ -394,6 +440,8 @@ function parseVerifyEtResponse(json: any): VerifyEtResult {
     amount,
     senderName,
     receiverName,
+    receiverAccount,
+    settlementAccountMatch,
     transactionNumber,
     receiptNumber,
     timestamp,
