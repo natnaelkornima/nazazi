@@ -7,7 +7,6 @@ import { SubscribeModal } from '../components/SubscribeModal';
 import { SubscriptionStatusModal } from '../components/SubscriptionStatusModal';
 import { IntegrationBeam } from '../components/ui/IntegrationBeam';
 import { NotchedProjectCard } from '../components/ui/notched-project-card';
-import { GoogleIcon } from '../components/ui/google-icon';
 import { useRegistrationDeadline } from '../hooks/useRegistrationDeadline';
 import { useLanguage } from '../context/LanguageContext';
 import {
@@ -1067,21 +1066,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             ))}
           </div>
 
-          {/* Bottom Assurance Bar */}
-          <div className="pt-8 max-w-4xl mx-auto flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs text-[#706A65] dark:text-[#A8A19A] border-t border-dashed border-[#DDD7CF] dark:border-[#2C2825]">
-            <div className="flex items-center gap-2">
-              <GoogleIcon name="verified_user" size={16} className="text-[#981C00] dark:text-[#C43214]" />
-              <span>{isAmharic ? 'በራሱ ጊዜ ከሂሳብዎ የሚቆርጥ (Auto-renewal) አይደለም — ለመረጡት ጊዜ አንድ ጊዜ ብቻ ይከፍላሉ' : 'One-time payment — no auto-debit renewals'}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <GoogleIcon name="phone_iphone" size={16} className="text-[#981C00] dark:text-[#C43214]" />
-              <span>{isAmharic ? 'በቴሌብር እና በንግድ ባንክ (CBE) የተሳለጠ ክፍያ' : 'Pay seamlessly with Telebirr & CBE'}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <GoogleIcon name="how_to_reg" size={16} className="text-[#981C00] dark:text-[#C43214]" />
-              <span>{isAmharic ? 'ቅጽበታዊ የአባልነት ሁኔታ ማረጋገጫ' : 'Instant phone approval status check'}</span>
-            </div>
-          </div>
+
         </div>
       </section>
 
