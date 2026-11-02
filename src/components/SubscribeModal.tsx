@@ -237,14 +237,14 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
       name: isAmharic ? 'CBE (ንግድ ባንክ)' : 'Commercial Bank of Ethiopia (CBE)',
       shortName: 'CBE',
       accountNumber: '1000432169948',
-      holder: 'Nazazi',
+      holder: 'Eyuel Habtamu Enyew',
     },
     {
       key: 'telebirr',
       name: isAmharic ? 'Telebirr (ቴሌብር)' : 'Telebirr',
       shortName: 'Telebirr',
       accountNumber: '0953886865',
-      holder: 'Nazazi',
+      holder: 'Abel Merga Gonder',
     },
   ];
 
@@ -557,6 +557,10 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                       </div>
                       <p className="font-mono text-sm font-extrabold text-zinc-950 dark:text-white tracking-wider select-all">
                         {acc.accountNumber}
+                      </p>
+                      <p className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium truncate">
+                        {isAmharic ? 'የአካውንት ስም፡ ' : 'Account: '}
+                        <span className="font-semibold text-zinc-700 dark:text-zinc-300">{acc.holder}</span>
                       </p>
                     </div>
 

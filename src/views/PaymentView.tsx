@@ -450,7 +450,7 @@ export const PaymentView: React.FC = () => {
                   </button>
                 </div>
                 <p className="font-mono text-sm font-extrabold tracking-wider text-white select-all">1000432169948</p>
-                <p className="text-[11px] text-zinc-400">Account: Nazazi</p>
+                <p className="text-[11px] text-zinc-400">Account: Eyuel Habtamu Enyew</p>
               </div>
 
               {/* Telebirr */}
@@ -470,7 +470,7 @@ export const PaymentView: React.FC = () => {
                   </button>
                 </div>
                 <p className="font-mono text-sm font-extrabold tracking-wider text-white select-all">0953886865</p>
-                <p className="text-[11px] text-zinc-400">Account: Nazazi</p>
+                <p className="text-[11px] text-zinc-400">Account: Abel Merga Gonder</p>
               </div>
             </div>
           </Card>

@@ -21,7 +21,7 @@ export async function GET(
     const verification = await checkVerifyEtStatus(requestId);
 
     if (verification.verified && verification.status === 'success') {
-      // 🔒 1. Check receiver account & holder (strictly CBE 1000432169948 or Telebirr 0953886865, Holder: Nazazi)
+      // 🔒 1. Check receiver account & holder (CBE: 1000432169948 / Eyuel Habtamu Enyew or Telebirr: 0953886865 / Abel Merga Gonder)
       const receiverValidation = validatePaymentReceiver(verification);
       if (!receiverValidation.isValidReceiver) {
         return NextResponse.json(

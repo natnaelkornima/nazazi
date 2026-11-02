@@ -112,13 +112,13 @@ export const OFFICIAL_NAZAZI_ACCOUNTS = {
   cbe: {
     bank: 'cbe',
     accountNumber: '1000432169948',
-    holder: 'Nazazi',
+    holder: 'Eyuel Habtamu Enyew',
   },
   telebirr: {
     bank: 'telebirr',
     accountNumber: '0953886865',
     normalizedPhone: '251953886865',
-    holder: 'Nazazi',
+    holder: 'Abel Merga Gonder',
   },
 } as const;
 
@@ -131,9 +131,9 @@ export interface ReceiverValidationResult {
 }
 
 /**
- * Validates that the transaction was made to the official Nazazi account displayed on the website:
- * - CBE: 1000432169948 (Account Holder: Nazazi)
- * - Telebirr: 0953886865 (Account Holder: Nazazi)
+ * Validates that the transaction was made to the official accounts:
+ * - CBE: 1000432169948 (Account Holder: Eyuel Habtamu Enyew)
+ * - Telebirr: 0953886865 (Account Holder: Abel Merga Gonder)
  */
 export function validatePaymentReceiver(
   verification: {
@@ -150,9 +150,9 @@ export function validatePaymentReceiver(
       return {
         isValidReceiver: false,
         error:
-          'Payment was not made to the official Nazazi account. Payments must strictly be sent to CBE (1000432169948) or Telebirr (0953886865).',
+          'Payment was not made to the official Nazazi account. Payments must strictly be sent to CBE (1000432169948 / Eyuel Habtamu Enyew) or Telebirr (0953886865 / Abel Merga Gonder).',
         errorAm:
-          'ክፍያው የተፈጸመው በድረ-ገጹ ላይ ወደተጠቀሰው የናዛዚ (Nazazi) አካውንት አይደለም። እባክዎ ወደ ንግድ ባንክ (1000432169948) ወይም ቴሌብር (0953886865) የተከፈለበትን ትክክለኛ ደረሰኝ ያስገቡ።',
+          'ክፍያው የተፈጸመው በድረ-ገጹ ላይ ወደተጠቀሰው የናዛዚ አካውንት አይደለም። እባክዎ ወደ ንግድ ባንክ (1000432169948 / Eyuel Habtamu Enyew) ወይም ቴሌብር (0953886865 / Abel Merga Gonder) የተከፈለበትን ትክክለኛ ደረሰኝ ያስገቡ።',
       };
     }
   }
@@ -160,11 +160,6 @@ export function validatePaymentReceiver(
   // 2. Validate receiver account number / phone if provided
   const rawReceiverAcc = (verification.receiverAccount || '').replace(/[^0-9]/g, '');
   const rawReceiverName = (verification.receiverName || '').trim().toLowerCase();
-
-  const isNazaziName =
-    rawReceiverName.includes('nazazi') ||
-    rawReceiverName.includes('ናዛዚ') ||
-    (verification.receiverName && /nazazi/i.test(verification.receiverName));
 
   const isCbeAcc =
     rawReceiverAcc.includes('1000432169948') ||
@@ -186,21 +181,68 @@ export function validatePaymentReceiver(
     }
   }
 
-  // If receiver name is present, it MUST match Nazazi
+  // 3. Validate receiver name if provided
+  // Official CBE: Eyuel Habtamu Enyew
+  // Official Telebirr: Abel Merga Gonder
+  // Also tolerate legacy/brand name "Nazazi"
+  const isCbeName =
+    rawReceiverName.includes('eyuel') ||
+    rawReceiverName.includes('eyu') ||
+    rawReceiverName.includes('habtamu') ||
+    rawReceiverName.includes('enyew') ||
+    rawReceiverName.includes('እዩኤል') ||
+    rawReceiverName.includes('ሀብታሙ') ||
+    rawReceiverName.includes('እኘው') ||
+    rawReceiverName.includes('እንየው');
+
+  const isTelebirrName =
+    rawReceiverName.includes('abel') ||
+    rawReceiverName.includes('merga') ||
+    rawReceiverName.includes('gonder') ||
+    rawReceiverName.includes('አቤል') ||
+    rawReceiverName.includes('መርጋ') ||
+    rawReceiverName.includes('ጎንደር');
+
+  const isNazaziName =
+    rawReceiverName.includes('nazazi') ||
+    rawReceiverName.includes('ናዛዚ') ||
+    (verification.receiverName && /nazazi/i.test(verification.receiverName));
+
+  const bankContext = (verification.bank || fallbackBank || '').toLowerCase();
+  const isStrictCbe = isCbeAcc || bankContext === 'cbe' || bankContext.includes('commercial');
+  const isStrictTelebirr = isTelebirrAcc || bankContext === 'telebirr';
+
   if (rawReceiverName && rawReceiverName.length >= 3) {
-    if (!isNazaziName) {
+    let isValidName = false;
+
+    if (isStrictCbe && !isTelebirrAcc) {
+      isValidName = isCbeName || isNazaziName;
+    } else if (isStrictTelebirr && !isCbeAcc) {
+      isValidName = isTelebirrName || isNazaziName;
+    } else {
+      isValidName = isCbeName || isTelebirrName || isNazaziName;
+    }
+
+    if (!isValidName) {
       return {
         isValidReceiver: false,
-        error: `Payment was credited to "${verification.receiverName}". Payments must strictly be sent to the official Nazazi account displayed on the website.`,
-        errorAm: `ክፍያው የተፈጸመው ለ "${verification.receiverName}" ነው። ክፍያው በድረ-ገጹ ላይ ወደተጠቀሰው የናዛዚ (Nazazi) አካውንት መፈጸም አለበት።`,
+        error: `Payment was credited to "${verification.receiverName}". Payments must strictly be sent to the official Nazazi accounts (CBE: Eyuel Habtamu Enyew / Telebirr: Abel Merga Gonder).`,
+        errorAm: `ክፍያው የተፈጸመው ለ "${verification.receiverName}" ነው። ክፍያው በድረ-ገጹ ላይ ወደተጠቀሰው አካውንት (ንግድ ባንክ፡ Eyuel Habtamu Enyew ወይም ቴሌብር፡ Abel Merga Gonder) መፈጸም አለበት።`,
       };
     }
   }
 
+  const matchedHolder =
+    isCbeAcc || isCbeName
+      ? 'Eyuel Habtamu Enyew'
+      : isTelebirrAcc || isTelebirrName
+      ? 'Abel Merga Gonder'
+      : 'Eyuel Habtamu Enyew / Abel Merga Gonder';
+
   return {
     isValidReceiver: true,
     matchedAccount: isCbeAcc ? '1000432169948' : isTelebirrAcc ? '0953886865' : undefined,
-    matchedHolder: 'Nazazi',
+    matchedHolder,
   };
 }
 
@@ -234,7 +276,9 @@ export function parseEthiopianPaymentSms(raw: string): ParsedPaymentInput {
   if (
     lowerText.includes('telebirr') ||
     original.includes('ቴሌብር') ||
-    original.includes('0953886865')
+    original.includes('0953886865') ||
+    lowerText.includes('abel merga') ||
+    original.includes('አቤል መርጋ')
   ) {
     detectedBank = 'telebirr';
   } else if (
@@ -242,7 +286,9 @@ export function parseEthiopianPaymentSms(raw: string): ParsedPaymentInput {
     lowerText.includes('cbe.com.et') ||
     lowerText.includes('commercial bank') ||
     original.includes('ንግድ ባንክ') ||
-    original.includes('1000432169948')
+    original.includes('1000432169948') ||
+    lowerText.includes('eyuel habtamu') ||
+    original.includes('እዩኤል ሀብታሙ')
   ) {
     detectedBank = 'cbe';
   } else if (lowerText.includes('cbe birr') || lowerText.includes('cbebirr')) {

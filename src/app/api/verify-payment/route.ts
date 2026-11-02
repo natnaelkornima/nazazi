@@ -101,7 +101,7 @@ export async function POST(req: NextRequest) {
 
     if (verification.verified && verification.status === 'success') {
       // 🔒 1. STRICT RECEIVER & ACCOUNT HOLDER VALIDATION:
-      // Must be made to the official Nazazi account displayed on the website (CBE: 1000432169948, Telebirr: 0953886865, Holder: Nazazi)
+      // Must be made to the official accounts displayed on the website (CBE: 1000432169948 / Eyuel Habtamu Enyew, Telebirr: 0953886865 / Abel Merga Gonder)
       const receiverValidation = validatePaymentReceiver(verification, bank);
       if (!receiverValidation.isValidReceiver) {
         return NextResponse.json(
