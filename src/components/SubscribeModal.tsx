@@ -11,6 +11,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { PaymentSubmission } from '../types';
 import { validateFullName, validateStrict09Phone } from '../lib/validation';
 import { parseEthiopianPaymentSms } from '../lib/smsParser';
+import { cn } from '@/lib/utils';
 import {
   User,
   Smartphone,
@@ -745,84 +746,82 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                   />
                 </div>
 
-                {/* 2. Modern, Polished & Perfectly Aligned Payment Verification Input */}
-                <div className="space-y-2.5 pt-1">
-                  {/* Mode Selector Tabs & Bank Filter */}
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex items-center p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800/90 border border-zinc-200/80 dark:border-zinc-700/80 shadow-2xs">
-                      <button
-                        type="button"
-                        onClick={() => setInputMode('sms')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                          inputMode === 'sms'
-                            ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-2xs'
-                            : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
-                        }`}
-                      >
-                        <MessageSquare className="w-3.5 h-3.5 text-emerald-500" />
-                        <span>{isAmharic ? 'ሙሉ SMS ለጥፍ' : 'Paste Full SMS'}</span>
-                        <span className="px-1.5 py-0.5 text-[9px] font-extrabold uppercase rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300">
-                          {isAmharic ? 'ቀላል' : 'Easy'}
-                        </span>
-                      </button>
+                {/* 2. Clean, Simple & Aligned Payment Verification Input (Shadcn Style) */}
+                <div className="space-y-3 pt-1">
+                  {/* Shadcn Segmented Tabs Control */}
+                  <div className="grid grid-cols-2 gap-1 p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-lg border border-zinc-200/60 dark:border-zinc-700/60 text-xs font-medium">
+                    <button
+                      type="button"
+                      onClick={() => setInputMode('sms')}
+                      className={cn(
+                        "flex items-center justify-center gap-2 py-2 px-3 rounded-md transition-all cursor-pointer font-semibold",
+                        inputMode === 'sms'
+                          ? "bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-2xs font-bold"
+                          : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200"
+                      )}
+                    >
+                      <span>📋</span>
+                      <span>{isAmharic ? 'ሙሉ SMS ለጥፍ' : 'Paste Full SMS'}</span>
+                    </button>
 
-                      <button
-                        type="button"
-                        onClick={() => setInputMode('manual')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                          inputMode === 'manual'
-                            ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-2xs'
-                            : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
-                        }`}
-                      >
-                        <Hash className="w-3.5 h-3.5 text-zinc-400" />
-                        <span>{isAmharic ? 'የትራንዛክሽን ቁጥር ብቻ' : 'Transaction ID Only'}</span>
-                      </button>
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setInputMode('manual')}
+                      className={cn(
+                        "flex items-center justify-center gap-2 py-2 px-3 rounded-md transition-all cursor-pointer font-semibold",
+                        inputMode === 'manual'
+                          ? "bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-2xs font-bold"
+                          : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200"
+                      )}
+                    >
+                      <span>🔢</span>
+                      <span>{isAmharic ? 'የትራንዛክሽን ቁጥር ብቻ' : 'Transaction ID Only'}</span>
+                    </button>
+                  </div>
 
-                    {/* Bank Filter Pills */}
-                    <div className="flex items-center gap-1 p-0.5 rounded-lg bg-zinc-100 dark:bg-zinc-800/80 text-[11px] border border-zinc-200/60 dark:border-zinc-700/60">
+                  {/* Bank Selector Row */}
+                  <div className="flex items-center justify-between text-xs px-1">
+                    <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
+                      {isAmharic ? 'ባንክ ይምረጡ' : 'Select Bank'}
+                    </span>
+                    <div className="inline-flex items-center rounded-md border border-zinc-200/80 dark:border-zinc-700/80 p-0.5 bg-zinc-50 dark:bg-zinc-850">
                       {(['auto', 'cbe', 'telebirr'] as const).map((b) => (
                         <button
                           key={b}
                           type="button"
                           onClick={() => setSelectedBank(b)}
-                          className={`px-2 py-0.5 rounded-md font-semibold transition-all cursor-pointer ${
+                          className={cn(
+                            "px-2.5 py-0.5 text-[11px] font-medium rounded transition-colors cursor-pointer",
                             selectedBank === b
-                              ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-2xs font-bold'
-                              : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
-                          }`}
+                              ? "bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white font-bold shadow-2xs"
+                              : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200"
+                          )}
                         >
                           {b === 'auto'
                             ? (isAmharic ? 'ራስ-ሰር' : 'Auto')
                             : b === 'cbe'
-                            ? 'CBE'
-                            : 'Telebirr'}
+                            ? 'CBE (ንግድ ባንክ)'
+                            : 'Telebirr (ቴሌብር)'}
                         </button>
                       ))}
                     </div>
                   </div>
 
                   {inputMode === 'sms' ? (
-                    /* Mode A: Clean & Spacious Multi-line SMS Paste Box */
+                    /* Mode A: Clean Shadcn Textarea & Live Extraction */
                     <div className="space-y-2.5">
-                      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/90 p-3 shadow-2xs focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-500/15 transition-all">
-                        <div className="flex items-center justify-between pb-2 mb-2 border-b border-zinc-100 dark:border-zinc-800/80">
-                          <span className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
-                            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                            {isAmharic
-                              ? 'ከቴሌብር ወይም ከንግድ ባንክ የደረሰዎትን ሙሉ መልእክት እዚህ ይለጥፉ'
-                              : 'Paste the entire SMS message you received from Telebirr or CBE'}
-                          </span>
-
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between">
+                          <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                            {isAmharic ? 'ከባንክ የደረሰዎትን ሙሉ መልእክት እዚህ ይለጥፉ' : 'Confirmation SMS Message'}
+                          </label>
                           <button
                             type="button"
                             onClick={handlePasteFromClipboard}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-750 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 shadow-2xs transition-all cursor-pointer active:scale-95"
-                            title={isAmharic ? 'ከክሊፕቦርድ ለጥፍ' : 'Paste from clipboard'}
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md border border-zinc-200/80 dark:border-zinc-700/80 bg-zinc-50 dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-750 text-zinc-800 dark:text-zinc-200 shadow-2xs transition-colors cursor-pointer"
                           >
-                            <ClipboardPaste className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                            <span>{isAmharic ? 'ከክሊፕቦርድ ለጥፍ' : 'Paste'}</span>
+                            <ClipboardPaste className="w-3.5 h-3.5 text-zinc-500" />
+                            <span>{isAmharic ? 'ከክሊፕቦርድ ለጥፍ' : 'Paste from Clipboard'}</span>
                           </button>
                         </div>
 
@@ -836,36 +835,48 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                           }}
                           placeholder={
                             isAmharic
-                              ? 'ለምሳሌ፡ "ውድ ደንበኛ፣ 200.00 ብር ወደ 2519****6865 (Abel Merga Gonder) አስተላልፈዋል። የግብይት ቁጥር፡ CI72984X12..."'
+                              ? 'ለምሳሌ፡ "ውድ ደንበኛ፣ 200.00 ብር ወደ 2519****6865 አስተላልፈዋል። የግብይት ቁጥር፡ CI72984X12..."'
                               : 'e.g. "You have transferred ETB 200.00 to Abel Merga Gonder (2519****6865). Transaction number: CI72984X12..."'
                           }
-                          className="w-full bg-transparent text-xs sm:text-sm font-sans text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none resize-none leading-relaxed"
+                          className="flex min-h-[82px] w-full rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2 text-xs sm:text-sm font-sans text-zinc-900 dark:text-zinc-100 shadow-2xs placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-400 dark:focus:ring-zinc-600 leading-relaxed resize-none"
                         />
+                        <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                          {isAmharic
+                            ? '💡 ሙሉውን SMS ሲለጥፉ ባንኩን፣ የትራንዛክሽን ቁጥሩን እና መጠኑን በራሱ ለይቶ ያወጣል'
+                            : "💡 Paste the full SMS text — we'll automatically detect your reference code and fee."}
+                        </p>
                       </div>
 
-                      {/* Live Extracted Summary Card */}
+                      {/* Shadcn Live Extraction Card (የቀጥታ መረጃ ማሳያ) */}
                       {extractedFromSms && (
-                        <div className="rounded-xl border border-emerald-500/30 bg-emerald-50/70 dark:bg-emerald-950/20 p-3 space-y-2 shadow-2xs animate-in fade-in duration-200">
+                        <div className="rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50/50 dark:bg-zinc-850/50 p-3 shadow-2xs space-y-2.5 animate-in fade-in-50 duration-200">
                           <div className="flex items-center justify-between text-xs">
-                            <span className="font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
-                              <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                              {isAmharic ? 'የክፍያ መረጃ በራስ-ሰር ተለይቷል' : 'Payment Data Extracted Successfully'}
-                            </span>
-                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-emerald-500/20 text-emerald-900 dark:text-emerald-200">
-                              {extractedFromSms.bank === 'telebirr' ? 'Telebirr ቴሌብር' : 'CBE ንግድ ባንክ'}
+                            <div className="flex items-center gap-1.5 font-semibold text-zinc-900 dark:text-zinc-100">
+                              <span className="flex size-2 rounded-full bg-emerald-500 ring-2 ring-emerald-500/20 animate-pulse" />
+                              <span>{isAmharic ? 'የቀጥታ መረጃ ማሳያ (Live Extraction)' : 'Live Extraction Card'}</span>
+                            </div>
+                            <span className="inline-flex items-center rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-2 py-0.5 text-[11px] font-bold text-zinc-800 dark:text-zinc-200 shadow-2xs">
+                              {extractedFromSms.bank === 'telebirr' ? 'Telebirr (ቴሌብር)' : 'CBE (ንግድ ባንክ)'}
                             </span>
                           </div>
 
                           <div className="grid grid-cols-2 gap-2 text-xs">
-                            <div className="p-2 rounded-lg bg-white/90 dark:bg-zinc-900/90 border border-emerald-500/20">
-                              <p className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400">{isAmharic ? 'የትራንዛክሽን ቁጥር' : 'Transaction ID'}</p>
-                              <p className="font-mono font-extrabold text-zinc-950 dark:text-white truncate">{extractedFromSms.reference}</p>
+                            <div className="rounded-md border border-zinc-200/70 dark:border-zinc-700/70 bg-white dark:bg-zinc-900 p-2.5 shadow-2xs">
+                              <span className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 block uppercase tracking-wider">
+                                {isAmharic ? 'የትራንዛክሽን ቁጥር' : 'Transaction ID'}
+                              </span>
+                              <span className="font-mono font-bold text-zinc-950 dark:text-white text-xs sm:text-[13px] tracking-wide block mt-0.5 truncate select-all">
+                                {extractedFromSms.reference}
+                              </span>
                             </div>
-                            <div className="p-2 rounded-lg bg-white/90 dark:bg-zinc-900/90 border border-emerald-500/20">
-                              <p className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400">{isAmharic ? 'የተከፈለው መጠን' : 'Detected Amount'}</p>
-                              <p className="font-bold text-emerald-700 dark:text-emerald-400">
-                                {extractedFromSms.amount ? `${extractedFromSms.amount} ብር (ETB)` : `${planAmount} ብር (ETB)`}
-                              </p>
+
+                            <div className="rounded-md border border-zinc-200/70 dark:border-zinc-700/70 bg-white dark:bg-zinc-900 p-2.5 shadow-2xs">
+                              <span className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 block uppercase tracking-wider">
+                                {isAmharic ? 'የተገኘው የብር መጠን' : 'Detected Amount'}
+                              </span>
+                              <span className="font-bold text-emerald-600 dark:text-emerald-400 text-xs sm:text-[13px] block mt-0.5">
+                                {extractedFromSms.amount ? `${extractedFromSms.amount} ETB` : `${planAmount} ETB`}
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -873,7 +884,10 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                     </div>
                   ) : (
                     /* Mode B: Direct Single Transaction ID Input */
-                    <div className="space-y-2.5">
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                        {isAmharic ? 'የትራንዛክሽን መለያ ቁጥር (Transaction ID)' : 'Transaction ID / Reference'}
+                      </label>
                       <div className="relative flex items-center">
                         <input
                           type="text"
@@ -906,11 +920,11 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                               ? 'e.g. fHCxyTVljBclm6Yk4C or https://mbreciept.cbe.com.et/...'
                               : (isAmharic ? 'የትራንዛክሽን ቁጥር እዚህ ያስገቡ...' : 'Enter Transaction ID or Reference...')
                           }
-                          className="w-full h-11 px-3.5 pr-20 text-xs sm:text-sm font-mono font-medium rounded-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border border-zinc-200/90 dark:border-zinc-800 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 focus:ring-2 focus:ring-zinc-900/10 dark:focus:ring-white/10 shadow-2xs transition-all placeholder:text-zinc-400 placeholder:font-sans"
+                          className="flex h-10 w-full rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 pr-20 text-xs sm:text-sm font-mono font-medium text-zinc-900 dark:text-zinc-100 shadow-2xs placeholder:text-zinc-400 placeholder:font-sans focus:outline-none focus:ring-1 focus:ring-zinc-400 dark:focus:ring-zinc-600"
                         />
 
                         {/* Inline Action */}
-                        <div className="absolute right-2 flex items-center">
+                        <div className="absolute right-1.5 flex items-center">
                           {transactionId ? (
                             <button
                               type="button"
@@ -918,7 +932,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                                 setTransactionId('');
                                 setExtractedFromSms(null);
                               }}
-                              className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                              className="p-1 rounded-sm text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors cursor-pointer"
                               title={isAmharic ? 'አጽዳ' : 'Clear'}
                             >
                               <X className="w-3.5 h-3.5" />
@@ -927,11 +941,11 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                             <button
                               type="button"
                               onClick={handlePasteFromClipboard}
-                              className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-750 text-zinc-700 dark:text-zinc-300 border border-zinc-200/60 dark:border-zinc-700 transition-all cursor-pointer shadow-2xs"
+                              className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-750 transition-colors cursor-pointer shadow-2xs"
                               title={isAmharic ? 'ከክሊፕቦርድ ለጥፍ' : 'Paste from clipboard'}
                             >
-                              <ClipboardPaste className="w-3.5 h-3.5 text-zinc-500" />
-                              <span className="text-[11px]">{isAmharic ? 'ለጥፍ' : 'Paste'}</span>
+                              <ClipboardPaste className="w-3 h-3 text-zinc-500" />
+                              <span>{isAmharic ? 'ለጥፍ' : 'Paste'}</span>
                             </button>
                           )}
                         </div>
