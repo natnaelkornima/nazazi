@@ -2,18 +2,6 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { GoogleIcon } from "./google-icon";
 
-/**
- * NotchedProjectCard
- *
- * A project card whose cover has a rounded notch bitten out of its
- * bottom-right corner, with an action disc nested inside it. The cut is
- * concentric with the action disc, and filleted where it meets the cover's
- * edges, so the cover curves into it instead of ending on a point.
- *
- * The notch is drawn by three layers painted in the colour of the surface
- * BEHIND the card (`surface`, the page background by default).
- */
-
 export interface NotchedProjectCardProps {
   href?: string;
   onClick?: () => void;
@@ -22,30 +10,26 @@ export interface NotchedProjectCardProps {
   /** cover photograph */
   image: string;
   imageAlt?: string;
-  /** a pill at the top of the cover, e.g. the year or pillar index */
+  /** a pill at the top of the cover, e.g. the pillar index (01, 02...) */
   badge?: string;
   tags?: string[];
   /** Google icon name (e.g. 'how_to_reg', 'verified_user') or custom icon element */
   icon?: string | React.ReactNode;
-  /** a product screen over the photo (transparent PNG/WebP works best) */
+  /** a product screen over the photo (optional) */
   screen?: { src: string; alt: string; className?: string };
   /** a dark wash between the photo and the screen, 0 to 1 */
   dim?: number;
   monochrome?: boolean;
-  /** the colour behind the card; the notch is painted in it */
+  /** surface color behind card (kept for backwards compatibility) */
   surface?: string;
-  /** the disc's fill on hover (any CSS colour); defaults to Nazazi burgundy */
+  /** the accent colour for hover states; defaults to Nazazi red */
   accent?: string;
-  /** the icon's colour on that fill; pick one that contrasts with `accent` */
+  /** the accent foreground color */
   accentForeground?: string;
-  /** aspect ratio class for the cover photo container (defaults to 'aspect-[4/3]') */
+  /** aspect ratio class for the cover photo container (defaults to 'aspect-[16/10]') */
   aspectRatio?: string;
   className?: string;
 }
-
-const DISC = 56; // the action disc, px
-const BLOCK = 72; // the notch block, px (radius = BLOCK - DISC / 2)
-const FILLET = 24; // the curve where the cut meets the cover's edges, px
 
 export function NotchedProjectCard({
   href,
@@ -60,41 +44,45 @@ export function NotchedProjectCard({
   screen,
   dim = screen ? 0.4 : 0,
   monochrome = false,
-  surface = "var(--bg-primary, #FAF8F5)",
   accent = "#981C00",
-  accentForeground = "#FFFFFF",
-  aspectRatio = "aspect-[4/3]",
+  aspectRatio = "aspect-[16/10]",
   className,
 }: NotchedProjectCardProps) {
   const tone = monochrome
-    ? "grayscale contrast-[0.95] transition-[filter,scale] duration-500 group-hover:grayscale-0 group-focus-visible:grayscale-0"
-    : "transition-[scale] duration-500";
+    ? "grayscale contrast-[0.95] transition-all duration-500 group-hover:grayscale-0"
+    : "transition-transform duration-500 ease-out";
 
   const Comp = href ? "a" : "div";
-  const compProps = href ? { href } : { onClick, role: onClick ? "button" : undefined };
+  const compProps = href
+    ? { href, target: href.startsWith("http") ? "_blank" : undefined, rel: href.startsWith("http") ? "noopener noreferrer" : undefined }
+    : { onClick, role: onClick ? "button" : undefined, tabIndex: onClick ? 0 : undefined };
 
   return (
     <Comp
       {...(compProps as any)}
       className={cn(
-        "group flex flex-col rounded-[26px] outline-none transition-all duration-200",
-        href || onClick ? "cursor-pointer focus-visible:ring-2 focus-visible:ring-[#981C00] focus-visible:ring-offset-2" : "",
+        "group relative flex flex-col rounded-2xl border border-neutral-200/80 dark:border-neutral-800",
+        "bg-white/95 dark:bg-neutral-900/90 backdrop-blur-sm",
+        "shadow-sm hover:shadow-xl hover:border-neutral-300 dark:hover:border-neutral-700",
+        "transition-all duration-300 outline-none overflow-hidden",
+        (href || onClick) && "cursor-pointer hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-[#981C00] focus-visible:ring-offset-2",
         className
       )}
     >
-      <div className="relative">
-        {/* The Cover Photo */}
-        <div className={cn("relative overflow-hidden rounded-[26px] bg-[#F7F4F0] dark:bg-[#1E1B18] border border-[#E5E0D8] dark:border-[#2C2723]", aspectRatio)}>
+      {/* Top Image Preview Container */}
+      <div className="p-2.5 sm:p-3 pb-0">
+        <div className={cn("relative w-full overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800/80 border border-neutral-200/50 dark:border-neutral-800", aspectRatio)}>
           <img
             src={image}
             alt={screen ? "" : imageAlt}
             loading="lazy"
             className={cn(
-              "absolute inset-0 h-full w-full object-cover",
-              tone,
-              !screen && "group-hover:scale-[1.04]"
+              "absolute inset-0 h-full w-full object-cover group-hover:scale-105",
+              tone
             )}
           />
+
+          {/* Optional dim overlay */}
           {dim > 0 && (
             <div
               aria-hidden
@@ -102,102 +90,74 @@ export function NotchedProjectCard({
               style={{ backgroundColor: `rgb(0 0 0 / ${dim})` }}
             />
           )}
+
+          {/* Optional overlaid product screen */}
           {screen && (
             <img
               src={screen.src}
               alt={screen.alt}
               className={cn(
-                "absolute bottom-0 right-0 w-[82%] origin-bottom-right drop-shadow-[0_18px_40px_rgba(0,0,0,0.5)] group-hover:scale-[1.07]",
+                "absolute bottom-0 right-0 w-[82%] origin-bottom-right drop-shadow-[0_18px_40px_rgba(0,0,0,0.5)] group-hover:scale-[1.06] transition-transform duration-500",
                 tone,
                 screen.className
               )}
             />
           )}
+
+          {/* Subtle top gradient shadow for badge readability */}
+          <div className="absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-black/40 to-transparent pointer-events-none" />
+
+          {/* Number / Pillar Badge */}
           {badge && (
-            <div className="pointer-events-none absolute inset-x-0 top-0 flex justify-between items-center px-4 pt-3.5">
-              <span className="rounded-full border border-white/20 bg-black/40 px-2.5 py-0.5 text-[10.5px] font-mono font-medium text-white/90 backdrop-blur-md">
+            <div className="absolute top-2.5 left-2.5 z-10 pointer-events-none">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold tracking-wider text-white bg-black/60 backdrop-blur-md border border-white/20 shadow-sm">
                 {badge}
               </span>
             </div>
           )}
+
+          {/* Floating Action / Feature Disc */}
+          <div className="absolute bottom-2.5 right-2.5 z-10">
+            <span
+              aria-hidden
+              className="flex items-center justify-center size-9 sm:size-10 rounded-full bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md border border-neutral-200/80 dark:border-neutral-700/80 text-[#981C00] dark:text-[#E89382] shadow-md transition-all duration-300 group-hover:scale-110 group-hover:bg-[#981C00] group-hover:text-white group-hover:border-[#981C00]"
+            >
+              {icon ? (
+                <div className="size-5 transition-transform duration-300 group-hover:scale-110 flex items-center justify-center">
+                  {typeof icon === "string" ? <GoogleIcon name={icon} size={20} /> : icon}
+                </div>
+              ) : (
+                <GoogleIcon
+                  name="north_east"
+                  size={20}
+                  className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                />
+              )}
+            </span>
+          </div>
         </div>
-
-        {/* The Notch: A block with a concave corner, painted in `surface` color */}
-        <div
-          aria-hidden
-          className="absolute bottom-0 right-0 pointer-events-none"
-          style={{
-            width: BLOCK,
-            height: BLOCK,
-            borderTopLeftRadius: BLOCK - DISC / 2,
-            background: surface,
-          }}
-        />
-
-        {/* Fillet curves where cut meets cover edges */}
-        {[
-          { bottom: BLOCK, right: 0 },
-          { bottom: 0, right: BLOCK },
-        ].map((pos, i) => (
-          <div
-            key={i}
-            aria-hidden
-            className="absolute pointer-events-none"
-            style={{
-              ...pos,
-              width: FILLET,
-              height: FILLET,
-              background: `radial-gradient(circle at top left, transparent ${FILLET - 0.5}px, ${surface} ${FILLET}px)`,
-            }}
-          />
-        ))}
-
-        {/* The Action Disc nested directly inside the notch */}
-        <span
-          aria-hidden
-          className="absolute bottom-0 right-0 flex items-center justify-center rounded-full bg-[#FFFFFF] dark:bg-[#1E1B18] border border-[#E5E0D8] dark:border-[#2E2824] text-[#8F2B14] dark:text-[#E89382] shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:bg-[#981C00] group-hover:text-white group-hover:border-[#981C00]"
-          style={
-            {
-              width: DISC,
-              height: DISC,
-              "--card-accent": accent,
-              "--card-accent-fg": accentForeground,
-            } as React.CSSProperties
-          }
-        >
-          {icon ? (
-            <div className="size-6 transition-transform duration-300 group-hover:scale-110 flex items-center justify-center">
-              {typeof icon === "string" ? <GoogleIcon name={icon} size={22} /> : icon}
-            </div>
-          ) : (
-            <GoogleIcon
-              name="north_east"
-              size={22}
-              className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-            />
-          )}
-        </span>
       </div>
 
-      {/* Card Content */}
-      <div className="pt-4 flex flex-col justify-between flex-1">
+      {/* Card Content Section */}
+      <div className="p-4 sm:p-5 pt-3.5 flex flex-col justify-between flex-1">
         <div>
-          <h3 className="text-base sm:text-lg font-bold tracking-tight text-[#24211F] dark:text-[#FAF8F5]">
+          <h3 className="text-base sm:text-lg font-semibold tracking-tight text-neutral-900 dark:text-neutral-100 group-hover:text-[#981C00] dark:group-hover:text-[#E89382] transition-colors line-clamp-1">
             {title}
           </h3>
           {description && (
-            <p className="mt-1.5 text-xs sm:text-[13px] leading-relaxed text-[#706A65] dark:text-[#A8A19A]">
+            <p className="mt-1.5 text-xs sm:text-[13px] leading-relaxed text-neutral-600 dark:text-neutral-400 line-clamp-3">
               {description}
             </p>
           )}
         </div>
 
+        {/* Minimal Tags */}
         {tags.length > 0 && (
-          <ul className="mt-3.5 flex flex-wrap gap-1.5">
+          <ul className="mt-4 flex flex-wrap gap-1.5 pt-2 border-t border-neutral-100 dark:border-neutral-800/80">
             {tags.map((t, i) => (
               <li
                 key={`${t}-${i}`}
-                className="rounded-md bg-[#FAF0ED] dark:bg-[#2A1D1A] border border-[#F3D5CD] dark:border-[#3E2520] px-2 py-0.5 text-[10.5px] font-medium text-[#8F2B14] dark:text-[#E89382]"
+                className="inline-flex items-center rounded-md bg-neutral-100 dark:bg-neutral-800/90 border border-neutral-200/60 dark:border-neutral-700/60 px-2 py-0.5 text-[11px] font-medium text-neutral-700 dark:text-neutral-300"
               >
                 {t}
               </li>

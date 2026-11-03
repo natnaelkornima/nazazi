@@ -35,6 +35,7 @@ import {
   CheckCircle2,
   MessageSquare,
   Hash,
+  AlertTriangle,
 } from 'lucide-react';
 
 export const PaymentView: React.FC = () => {
@@ -70,6 +71,11 @@ export const PaymentView: React.FC = () => {
   } | null>(null);
   const [inputMode, setInputMode] = useState<'sms' | 'manual'>('sms');
   const [rawSmsText, setRawSmsText] = useState('');
+  const [existingPlanPrompt, setExistingPlanPrompt] = useState<{
+    phone: string;
+    currentPlan: string;
+    currentStatus?: string;
+  } | null>(null);
 
   // Phone Lookup State
   const [phoneQuery, setPhoneQuery] = useState(user?.phone || '0911234567');
@@ -211,10 +217,26 @@ export const PaymentView: React.FC = () => {
           screenshotUrl: screenshotDataUrl || undefined,
         });
 
+        if (verifyRes.alreadyExists) {
+          setExistingPlanPrompt({
+            phone: phoneVal.cleanPhone,
+            currentPlan: verifyRes.currentPlan || (isAmharic ? 'የቀድሞ እቅድ' : 'Existing Plan'),
+            currentStatus: verifyRes.currentStatus || 'approved',
+          });
+          info(
+            isAmharic ? 'ስልክ ቁጥሩ ቀድሞውኑ ተመዝግቧል' : 'Phone Already Registered',
+            isAmharic
+              ? `ይህ ስልክ ቁጥር ቀድሞውኑ በ "${verifyRes.currentPlan || 'የቀድሞ እቅድ'}" ተመዝግቧል። እቅድዎን መቀየር ይፈልጋሉ?`
+              : `This phone is already registered with ${verifyRes.currentPlan}. Do you want to change your plan?`
+          );
+          return;
+        }
+
         if (verifyRes.success && verifyRes.verified && verifyRes.submission) {
           setSelectedPlanForCheckout(null);
           setLookedUpSubmission(verifyRes.submission);
           setIsStatusModalOpen(true);
+          setExistingPlanPrompt(null);
           success(
             isAmharic ? '✅ ክፍያዎ በ Verify.ET ተረጋግጧል!' : '✅ Payment Verified via Verify.ET!',
             isAmharic ? 'የአገልግሎት ምዝገባዎ ወዲያውኑ ገቢር ሆኗል (ራስ-ሰር ማረጋገጫ ተጠናቋል)' : 'Your subscription has been activated immediately!'
@@ -225,6 +247,7 @@ export const PaymentView: React.FC = () => {
           setSelectedPlanForCheckout(null);
           setLookedUpSubmission(verifyRes.submission);
           setIsStatusModalOpen(true);
+          setExistingPlanPrompt(null);
           info(
             isAmharic ? 'ክፍያዎ በማረጋገጥ ላይ ይገኛል' : 'Verification In Progress',
             verifyRes.message || (isAmharic ? 'የባንክ ማረጋገጫ በሂደት ላይ ነው።' : 'Verification is processing.')
@@ -256,13 +279,70 @@ export const PaymentView: React.FC = () => {
       setSelectedPlanForCheckout(null);
       setLookedUpSubmission(newSub);
       setIsStatusModalOpen(true);
+      setExistingPlanPrompt(null);
       success(
         isAmharic ? 'የክፍያ መረጃ ተልኳል!' : 'Payment Submitted!',
         isAmharic ? 'የማረጋገጫ ሁኔታ፡ በማረጋገጥ ላይ' : 'Status set to Pending Approval.'
       );
-    } catch (err) {
+    } catch (err: any) {
+      if (err?.alreadyExists) {
+        setExistingPlanPrompt({
+          phone: phoneVal.cleanPhone,
+          currentPlan: err.currentPlan || (isAmharic ? 'የቀድሞ እቅድ' : 'Existing Plan'),
+          currentStatus: err.currentStatus || 'approved',
+        });
+        info(
+          isAmharic ? 'ስልክ ቁጥሩ ቀድሞውኑ ተመዝግቧል' : 'Phone Already Registered',
+          err.message
+        );
+        return;
+      }
       console.error(err);
       error(isAmharic ? 'ስህተት ተከስቷል' : 'Error', 'Failed to process payment');
+    } finally {
+      setIsSubmitting(false);
+      setIsVerifyingWithBank(false);
+    }
+  };
+
+  const handleConfirmPlanChange = async () => {
+    if (!existingPlanPrompt) return;
+    setIsSubmitting(true);
+    setIsVerifyingWithBank(true);
+    const cleanRef = transactionId.trim();
+    const isSixMonth = plan.includes('6 Month') || plan.includes('የ6 ወር') || plan.includes('1000');
+    const isOneMonth = plan.includes('1 Month') || plan.includes('የ1 ወር') || plan.includes('200');
+    const amount = isSixMonth ? 1000 : isOneMonth ? 200 : 600;
+
+    try {
+      const verifyRes = await verifyPaymentOnline({
+        reference: cleanRef,
+        bank: selectedBank !== 'auto' ? selectedBank : undefined,
+        name: payerName.trim() || 'Valued Subscriber',
+        phone: existingPlanPrompt.phone,
+        planName: plan,
+        amount,
+        screenshotUrl: screenshotDataUrl || undefined,
+        confirmPlanChange: true,
+      });
+
+      if (verifyRes.success && verifyRes.submission) {
+        setSelectedPlanForCheckout(null);
+        setLookedUpSubmission(verifyRes.submission);
+        setIsStatusModalOpen(true);
+        setExistingPlanPrompt(null);
+        success(
+          isAmharic ? '✅ እቅድዎ በተሳካ ሁኔታ ተቀይሯል!' : '✅ Plan Successfully Changed!',
+          isAmharic ? `አዲሱ እቅድዎ (${plan}) ገቢር ሆኗል` : `Your new plan (${plan}) is now active!`
+        );
+      } else {
+        error(
+          isAmharic ? 'እቅድ መቀየር አልተሳካም' : 'Plan Change Failed',
+          verifyRes.error || (isAmharic ? 'እባክዎ በትክክል ያረጋግጡ።' : 'Could not change plan.')
+        );
+      }
+    } catch (err: any) {
+      error(isAmharic ? 'ስህተት ተከስቷል' : 'Error', err.message);
     } finally {
       setIsSubmitting(false);
       setIsVerifyingWithBank(false);
@@ -727,6 +807,66 @@ export const PaymentView: React.FC = () => {
                 onFileSelect={(dataUrl) => setScreenshotDataUrl(dataUrl)}
                 onClear={() => setScreenshotDataUrl(null)}
               />
+
+              {/* 🔒 Change Plan Prompt (Double Activation Prevention) */}
+              {existingPlanPrompt && (
+                <div className="rounded-xl border border-amber-300 dark:border-amber-700/80 bg-amber-50/95 dark:bg-amber-950/40 p-4 space-y-3 animate-in fade-in zoom-in-95 duration-200">
+                  <div className="flex items-start gap-3">
+                    <div className="size-8 rounded-lg bg-amber-200/70 dark:bg-amber-900/60 flex items-center justify-center shrink-0 text-amber-700 dark:text-amber-300">
+                      <AlertTriangle className="w-4 h-4" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="text-xs font-bold text-amber-900 dark:text-amber-200">
+                        {isAmharic ? 'ይህ ስልክ ቁጥር ቀድሞውኑ ተመዝግቧል!' : 'Phone Number Already Registered!'}
+                      </h4>
+                      <p className="text-[12px] text-amber-800/90 dark:text-amber-300/90 mt-1 leading-relaxed">
+                        {isAmharic
+                          ? `ይህ ስልክ ቁጥር (${existingPlanPrompt.phone}) ቀድሞውኑ በ "${existingPlanPrompt.currentPlan}" ተመዝግቧል። ተጨማሪ ክፍያ ሳያስፈልግዎት እቅድዎን ወደ ${plan} መቀየር ይፈልጋሉ?`
+                          : `This phone number (${existingPlanPrompt.phone}) already has an active registration with "${existingPlanPrompt.currentPlan}". Would you like to change your plan to ${plan}?`}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-amber-200/60 dark:border-amber-800/60">
+                    <Button
+                      type="button"
+                      size="sm"
+                      onClick={handleConfirmPlanChange}
+                      isLoading={isSubmitting}
+                      className="bg-[#981C00] hover:bg-[#7A1600] text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm cursor-pointer"
+                      leftIcon={<Sparkles className="w-3.5 h-3.5" />}
+                    >
+                      {isAmharic ? 'አዎ፣ እቅዴን ቀይር ⚡' : 'Yes, Change My Plan ⚡'}
+                    </Button>
+
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        setPhoneQuery(existingPlanPrompt.phone);
+                        const foundLocal = getSubmissionByPhone(existingPlanPrompt.phone);
+                        setLookedUpSubmission(foundLocal || null);
+                        setIsStatusModalOpen(true);
+                      }}
+                      className="text-xs border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-200 bg-white dark:bg-amber-950/60 cursor-pointer"
+                    >
+                      {isAmharic ? 'ያለኝን አገልግሎት አሳይ' : 'View My Active Plan'}
+                    </Button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setExistingPlanPrompt(null);
+                        setUserPhone('');
+                      }}
+                      className="text-[11px] font-semibold text-amber-800 hover:text-amber-950 dark:text-amber-300 dark:hover:text-amber-100 underline ml-auto cursor-pointer"
+                    >
+                      {isAmharic ? 'ስልክ ቁጥር ቀይር' : 'Change phone number'}
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {/* Submit Button */}
               <Button

@@ -29,6 +29,7 @@ import {
   X,
   MessageSquare,
   Hash,
+  AlertTriangle,
 } from 'lucide-react';
 import { useRegistrationDeadline } from '../hooks/useRegistrationDeadline';
 
@@ -101,6 +102,11 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
   } | null>(null);
   const [inputMode, setInputMode] = useState<'sms' | 'manual'>('sms');
   const [rawSmsText, setRawSmsText] = useState('');
+  const [existingPlanPrompt, setExistingPlanPrompt] = useState<{
+    phone: string;
+    currentPlan: string;
+    currentStatus?: string;
+  } | null>(null);
 
   // Phone input handler enforcing strict 09 format
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -316,6 +322,21 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
         amount: planAmount,
       });
 
+      if (verifyRes.alreadyExists) {
+        setExistingPlanPrompt({
+          phone: cleanPhone,
+          currentPlan: verifyRes.currentPlan || (isAmharic ? 'የቀድሞ እቅድ' : 'Existing Plan'),
+          currentStatus: verifyRes.currentStatus || 'approved',
+        });
+        info(
+          isAmharic ? 'ስልክ ቁጥሩ ቀድሞውኑ ተመዝግቧል' : 'Phone Already Registered',
+          isAmharic
+            ? `ይህ ስልክ ቁጥር ቀድሞውኑ በ "${verifyRes.currentPlan || 'የቀድሞ እቅድ'}" ተመዝግቧል። እቅድዎን መቀየር ይፈልጋሉ?`
+            : `This phone number is already registered with "${verifyRes.currentPlan || 'Current Plan'}". Would you like to change your plan?`
+        );
+        return;
+      }
+
       if (verifyRes.success && verifyRes.submission) {
         if (verifyRes.verified) {
           success(
@@ -338,6 +359,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
         setTransactionId('');
         setTransactionIdTouched(false);
         setExtractedFromSms(null);
+        setExistingPlanPrompt(null);
         setCurrentStep(1);
 
         onClose();
@@ -357,6 +379,57 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
       console.error('Submission error:', err);
       const errMsg = err instanceof Error ? err.message : 'An error occurred during submission';
       error(isAmharic ? 'የምዝገባ ስህተት' : 'Submission Error', errMsg);
+    } finally {
+      setIsSubmitting(false);
+      setIsVerifyingWithBank(false);
+    }
+  };
+
+  const handleConfirmPlanChange = async () => {
+    if (!existingPlanPrompt) return;
+    setIsSubmitting(true);
+    setIsVerifyingWithBank(true);
+    const cleanRef = transactionId.trim();
+
+    try {
+      const verifyRes = await verifyPaymentOnline({
+        reference: cleanRef,
+        bank: selectedBank !== 'auto' ? selectedBank : undefined,
+        name: name.trim() || 'Valued Subscriber',
+        phone: existingPlanPrompt.phone,
+        planName: selectedPlan,
+        amount: planAmount,
+        confirmPlanChange: true,
+      });
+
+      if (verifyRes.success && verifyRes.submission) {
+        success(
+          isAmharic ? '✅ እቅድዎ በተሳካ ሁኔታ ተቀይሯል!' : '✅ Plan Successfully Changed!',
+          isAmharic
+            ? `አዲሱ እቅድዎ (${selectedPlan}) ገቢር ሆኗል`
+            : `Your new plan (${selectedPlan}) is now active!`
+        );
+        setExistingPlanPrompt(null);
+        setName('');
+        setNameTouched(false);
+        setPhone('');
+        setPhoneTouched(false);
+        setTransactionId('');
+        setTransactionIdTouched(false);
+        setExtractedFromSms(null);
+        setCurrentStep(1);
+
+        onClose();
+        onSuccess(verifyRes.submission);
+      } else {
+        error(
+          isAmharic ? 'እቅድ መቀየር አልተሳካም' : 'Plan Change Failed',
+          verifyRes.error || (isAmharic ? 'እባክዎ በትክክል ያረጋግጡ።' : 'Could not change plan.')
+        );
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Error changing plan';
+      error(isAmharic ? 'ስህተት' : 'Error', msg);
     } finally {
       setIsSubmitting(false);
       setIsVerifyingWithBank(false);
@@ -866,6 +939,68 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
                     </div>
                   )}
                 </div>
+
+                {/* 🔒 Change Plan Prompt (Double Activation Prevention) */}
+                {existingPlanPrompt && (
+                  <div className="rounded-xl border border-amber-300 dark:border-amber-700/80 bg-amber-50/95 dark:bg-amber-950/40 p-4 space-y-3 animate-in fade-in zoom-in-95 duration-200">
+                    <div className="flex items-start gap-3">
+                      <div className="size-8 rounded-lg bg-amber-200/70 dark:bg-amber-900/60 flex items-center justify-center shrink-0 text-amber-700 dark:text-amber-300">
+                        <AlertTriangle className="w-4 h-4" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-xs font-bold text-amber-900 dark:text-amber-200">
+                          {isAmharic ? 'ይህ ስልክ ቁጥር ቀድሞውኑ ተመዝግቧል!' : 'Phone Number Already Registered!'}
+                        </h4>
+                        <p className="text-[12px] text-amber-800/90 dark:text-amber-300/90 mt-1 leading-relaxed">
+                          {isAmharic
+                            ? `ይህ ስልክ ቁጥር (${existingPlanPrompt.phone}) ቀድሞውኑ በ "${existingPlanPrompt.currentPlan}" ተመዝግቧል። ተጨማሪ ክፍያ ሳያስፈልግዎት እቅድዎን ወደ ${selectedPlan} መቀየር ይፈልጋሉ?`
+                            : `This phone number (${existingPlanPrompt.phone}) already has an active registration with "${existingPlanPrompt.currentPlan}". Would you like to change your plan to ${selectedPlan}?`}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-amber-200/60 dark:border-amber-800/60">
+                      <Button
+                        type="button"
+                        size="sm"
+                        onClick={handleConfirmPlanChange}
+                        isLoading={isSubmitting}
+                        className="bg-[#981C00] hover:bg-[#7A1600] text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm cursor-pointer"
+                        leftIcon={<Sparkles className="w-3.5 h-3.5" />}
+                      >
+                        {isAmharic ? 'አዎ፣ እቅዴን ቀይር ⚡' : 'Yes, Change My Plan ⚡'}
+                      </Button>
+
+                      {onOpenVerifyModal && (
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          onClick={() => {
+                            onClose();
+                            onOpenVerifyModal();
+                          }}
+                          className="text-xs border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-200 bg-white dark:bg-amber-950/60 cursor-pointer"
+                        >
+                          {isAmharic ? 'ያለኝን አገልግሎት አሳይ' : 'View My Active Plan'}
+                        </Button>
+                      )}
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setExistingPlanPrompt(null);
+                          setPhone('');
+                          setPhoneTouched(false);
+                          goToPrevStep();
+                        }}
+                        className="text-[11px] font-semibold text-amber-800 hover:text-amber-950 dark:text-amber-300 dark:hover:text-amber-100 underline ml-auto cursor-pointer"
+                      >
+                        {isAmharic ? 'ስልክ ቁጥር ቀይር' : 'Change phone number'}
+                      </button>
+                    </div>
+                  </div>
+                )}
 
                 {/* Bottom Actions with Breathing Room */}
                 <div className="flex items-center justify-between gap-3 pt-6 border-t border-zinc-100 dark:border-zinc-800">

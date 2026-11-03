@@ -675,7 +675,10 @@ export async function saveRegistrationToSupabase(data: {
   // Record plan metadata in memory cache and flush to disk
   recordPlanMeta(fallbackId, record.phone_number, record.plan_name, record.amount);
 
-  // Always keep in-memory cache updated immediately
+  // Always keep in-memory cache updated immediately (deduplicating by phone to prevent double records)
+  inMemoryRegistrations = inMemoryRegistrations.filter(
+    (r) => !phoneMatches(r.phone_number, record.phone_number)
+  );
   inMemoryRegistrations.unshift(record);
 
   const client = getSupabaseClient();

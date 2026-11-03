@@ -7,7 +7,7 @@ import {
   validatePaymentReceiver,
   OFFICIAL_NAZAZI_ACCOUNTS,
 } from '@/lib/verifyEt';
-import { saveRegistrationToSupabase } from '@/lib/supabaseServer';
+import { saveRegistrationToSupabase, getRegistrationByPhone, updateRegistrationPlan } from '@/lib/supabaseServer';
 import { validateFullName, validateStrict09Phone } from '@/lib/validation';
 import { normalizePlanAndAmount } from '@/lib/planUtils';
 import { isRegistrationClosed } from '@/lib/deadlineConfig';
@@ -79,6 +79,34 @@ export async function POST(req: NextRequest) {
 
     const cleanPhone = phoneValidation.cleanPhone;
     const { planName: initialPlanName, amount: initialAmount } = normalizePlanAndAmount(rawPlan, rawAmount);
+
+    // 🔒 Prevent Double Activation: Check if this phone number already has a registered plan
+    const confirmPlanChange = Boolean(body.confirmPlanChange || body.changePlan || body.isPlanChange);
+    const existingRegistration = await getRegistrationByPhone(cleanPhone);
+
+    if (existingRegistration && !confirmPlanChange) {
+      const currentPlan = existingRegistration.plan_name || 'የቀድሞ እቅድ';
+      return NextResponse.json(
+        {
+          success: false,
+          alreadyExists: true,
+          currentPlan,
+          currentStatus: existingRegistration.status,
+          currentAmount: existingRegistration.amount,
+          error: `ይህ ስልክ ቁጥር (${cleanPhone}) ቀድሞ የተመዘገበ አገልግሎት አለው (${currentPlan})። እቅድዎን መቀየር (Change Plan) ይፈልጋሉ?`,
+          errorEn: `This phone number (${cleanPhone}) already has an active registration (${currentPlan}). Would you like to change your plan?`,
+          existingRegistration: {
+            id: existingRegistration.id,
+            name: existingRegistration.name,
+            phone_number: existingRegistration.phone_number,
+            plan_name: existingRegistration.plan_name,
+            amount: existingRegistration.amount,
+            status: existingRegistration.status,
+          },
+        },
+        { status: 409 }
+      );
+    }
 
     // 3. Verify with Verify.et directly (Ethiopian banking integration)
     const expectedSettlement =
@@ -159,6 +187,10 @@ export async function POST(req: NextRequest) {
       const finalPlanName = amountValidation.matchedPlanNameAm;
 
       // ✅ AUTOMATIC APPROVAL: Payment verified by Ethiopian bank network for exact valid amount!
+      if (existingRegistration?.id) {
+        await updateRegistrationPlan(existingRegistration.id, finalPlanName, finalAmount, cleanPhone);
+      }
+
       const { record, savedToSupabase, error: dbError } = await saveRegistrationToSupabase({
         name: rawName,
         phone_number: cleanPhone,

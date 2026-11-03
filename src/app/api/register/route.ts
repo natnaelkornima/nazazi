@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { uploadPaymentImageToCloudinary } from '@/lib/cloudinaryServer';
-import { saveRegistrationToSupabase } from '@/lib/supabaseServer';
+import { saveRegistrationToSupabase, getRegistrationByPhone, updateRegistrationPlan } from '@/lib/supabaseServer';
 import { validateFullName, validateStrict09Phone } from '@/lib/validation';
 import { normalizePlanAndAmount } from '@/lib/planUtils';
 import { isRegistrationClosed } from '@/lib/deadlineConfig';
@@ -62,6 +62,7 @@ export async function POST(req: NextRequest) {
 
     let transactionId: string | null = null;
     let bank: string | null = null;
+    let confirmPlanChange = searchParams.get('confirmPlanChange') === 'true';
 
     if (contentType.includes('application/json')) {
       const body = await req.json();
@@ -70,6 +71,9 @@ export async function POST(req: NextRequest) {
       paymentImage = body.payment_image || body.paymentImage || body.screenshotUrl || body.image;
       transactionId = body.transaction_id || body.transactionId || body.reference;
       bank = body.bank || null;
+      if (body.confirmPlanChange || body.changePlan || body.isPlanChange) {
+        confirmPlanChange = true;
+      }
       if (body.plan_name || body.planName) rawPlanName = body.plan_name || body.planName;
       if (body.amount !== undefined && body.amount !== null && body.amount !== '') {
         rawAmount = body.amount;
@@ -81,6 +85,9 @@ export async function POST(req: NextRequest) {
       paymentImage = formData.get('payment_image') || formData.get('paymentImage') || formData.get('screenshotUrl');
       transactionId = (formData.get('transaction_id') || formData.get('transactionId') || formData.get('reference')) as string | null;
       bank = formData.get('bank') as string | null;
+      if (formData.get('confirmPlanChange') || formData.get('changePlan') || formData.get('isPlanChange')) {
+        confirmPlanChange = true;
+      }
       const pName = formData.get('plan_name') || formData.get('planName');
       if (pName && typeof pName === 'string' && pName.trim()) {
         rawPlanName = pName.trim();
@@ -119,6 +126,32 @@ export async function POST(req: NextRequest) {
     }
 
     const cleanPhone = phoneValidation.cleanPhone;
+
+    // 🔒 Prevent Double Activation: Check if this phone number already has a registered plan
+    const existingRegistration = await getRegistrationByPhone(cleanPhone);
+    if (existingRegistration && !confirmPlanChange) {
+      const currentPlan = existingRegistration.plan_name || 'የቀድሞ እቅድ';
+      return NextResponse.json(
+        {
+          success: false,
+          alreadyExists: true,
+          currentPlan,
+          currentStatus: existingRegistration.status,
+          currentAmount: existingRegistration.amount,
+          error: `ይህ ስልክ ቁጥር (${cleanPhone}) ቀድሞ የተመዘገበ አገልግሎት አለው (${currentPlan})። እቅድዎን መቀየር (Change Plan) ይፈልጋሉ?`,
+          errorEn: `This phone number (${cleanPhone}) already has an active registration (${currentPlan}). Would you like to change your plan?`,
+          existingRegistration: {
+            id: existingRegistration.id,
+            name: existingRegistration.name,
+            phone_number: existingRegistration.phone_number,
+            plan_name: existingRegistration.plan_name,
+            amount: existingRegistration.amount,
+            status: existingRegistration.status,
+          },
+        },
+        { status: 409 }
+      );
+    }
 
     // 3. Validate Transaction ID (Strictly required for Verify.et automated verification)
     if (!transactionId || !transactionId.trim()) {
@@ -254,6 +287,15 @@ export async function POST(req: NextRequest) {
     }
 
     // 6. Store in Supabase / State (auto-approved if verified by Verify.et!)
+    if (existingRegistration?.id) {
+      await updateRegistrationPlan(
+        existingRegistration.id,
+        planName,
+        isNaN(amount) ? 200 : amount,
+        cleanPhone
+      );
+    }
+
     const { record, savedToSupabase, error: dbError } = await saveRegistrationToSupabase({
       name: name.trim(),
       phone_number: cleanPhone,

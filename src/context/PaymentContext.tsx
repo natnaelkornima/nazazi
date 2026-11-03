@@ -35,6 +35,7 @@ interface PaymentContextType {
     bank?: string;
     verifiedAt?: string;
     verifyRequestId?: string;
+    confirmPlanChange?: boolean;
   }) => Promise<PaymentSubmission>;
   verifyPaymentOnline: (data: {
     reference: string;
@@ -45,6 +46,7 @@ interface PaymentContextType {
     amount: number;
     screenshotUrl?: string;
     suffix?: string;
+    confirmPlanChange?: boolean;
   }) => Promise<{
     success: boolean;
     verified: boolean;
@@ -53,6 +55,10 @@ interface PaymentContextType {
     message?: string;
     error?: string;
     details?: any;
+    alreadyExists?: boolean;
+    currentPlan?: string;
+    currentStatus?: string;
+    existingRegistration?: any;
   }>;
   approvePayment: (id: string, phone?: string) => Promise<void>;
   rejectPayment: (id: string, phone?: string) => Promise<void>;
@@ -412,6 +418,7 @@ export const PaymentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     bank?: string;
     verifiedAt?: string;
     verifyRequestId?: string;
+    confirmPlanChange?: boolean;
   }): Promise<PaymentSubmission> => {
     // If an authentic server record ID is already provided, use it directly
     if (data.id) {
@@ -467,8 +474,19 @@ export const PaymentProvider: React.FC<{ children: React.ReactNode }> = ({ child
           amount: data.amount,
           transaction_id: data.transactionId,
           bank: data.bank,
+          confirmPlanChange: Boolean(data.confirmPlanChange),
         }),
       });
+
+      if (response.status === 409) {
+        const conflictData = await response.json().catch(() => ({}));
+        const err: any = new Error(conflictData.error || 'Phone number already registered');
+        err.alreadyExists = true;
+        err.currentPlan = conflictData.currentPlan;
+        err.currentStatus = conflictData.currentStatus;
+        err.existingRegistration = conflictData.existingRegistration;
+        throw err;
+      }
 
       if (response.ok) {
         const resData = await response.json();
@@ -531,6 +549,7 @@ export const PaymentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     amount: number;
     screenshotUrl?: string;
     suffix?: string;
+    confirmPlanChange?: boolean;
   }) => {
     removeLocalTombstone(data.phone);
     try {
@@ -543,6 +562,20 @@ export const PaymentProvider: React.FC<{ children: React.ReactNode }> = ({ child
       });
 
       const resJson = await response.json().catch(() => ({}));
+
+      // Check for duplicate / already exists
+      if (resJson.alreadyExists || response.status === 409) {
+        return {
+          success: false,
+          verified: false,
+          status: 'exists',
+          alreadyExists: true,
+          currentPlan: resJson.currentPlan,
+          currentStatus: resJson.currentStatus,
+          existingRegistration: resJson.existingRegistration,
+          error: resJson.error || 'This phone number already has an active registration.',
+        };
+      }
 
       if (response.ok && resJson.success && resJson.registration) {
         const finalSubmission = mapRecordToSubmission(resJson.registration);
