@@ -122,6 +122,129 @@ export const OFFICIAL_NAZAZI_ACCOUNTS = {
   },
 } as const;
 
+/**
+ * Checks if an account or phone number (masked or unmasked) matches the official Telebirr account:
+ * - 0953886865 / 251953886865 / +251953886865
+ * - Masked formats: 2519****6865, 09****6865, 2519***6865, 2519XXXX6865, 095****6865, etc.
+ */
+export function isMatchingTelebirrAccount(account?: string): boolean {
+  if (!account) return false;
+  const str = account.trim();
+
+  // 1. Direct digit match
+  const digitsOnly = str.replace(/[^0-9]/g, '');
+  if (
+    digitsOnly === '0953886865' ||
+    digitsOnly === '251953886865' ||
+    digitsOnly.endsWith('953886865') ||
+    digitsOnly.endsWith('53886865')
+  ) {
+    return true;
+  }
+
+  // 2. Masked phone matching (Telebirr standard output in SMS and API)
+  const lower = str.toLowerCase();
+  const endsWith6865 =
+    lower.endsWith('6865') ||
+    lower.endsWith('86865') ||
+    lower.endsWith('886865');
+
+  const startsWithTelebirrPrefix =
+    lower.startsWith('2519') ||
+    lower.startsWith('+2519') ||
+    lower.startsWith('09') ||
+    lower.startsWith('95') ||
+    lower.startsWith('*') ||
+    lower.startsWith('x');
+
+  if (endsWith6865 && startsWithTelebirrPrefix) {
+    return true;
+  }
+
+  // Regex pattern matching: e.g. 2519****6865, 09****6865, +2519****6865
+  if (/^(?:\+?2519|095|09|\*)[\s*xX\-._]+(?:886865|86865|6865)$/.test(str)) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Checks if an account number (masked or unmasked) matches the official CBE account:
+ * - 1000432169948 / 432169948
+ * - Masked formats: 1000****69948, 10004****9948, 1000******9948, 1000XXXX69948, etc.
+ */
+export function isMatchingCbeAccount(account?: string): boolean {
+  if (!account) return false;
+  const str = account.trim();
+
+  // 1. Direct digit match
+  const digitsOnly = str.replace(/[^0-9]/g, '');
+  if (
+    digitsOnly === '1000432169948' ||
+    digitsOnly.endsWith('1000432169948') ||
+    digitsOnly.endsWith('432169948')
+  ) {
+    return true;
+  }
+
+  // 2. Masked CBE account matching
+  const lower = str.toLowerCase();
+  const endsWithCbeSuffix =
+    lower.endsWith('69948') ||
+    lower.endsWith('9948') ||
+    lower.endsWith('169948') ||
+    lower.endsWith('2169948');
+
+  const startsWith1000 =
+    lower.startsWith('1000') ||
+    lower.startsWith('10004') ||
+    lower.startsWith('*') ||
+    lower.startsWith('x');
+
+  if (endsWithCbeSuffix && startsWith1000) {
+    return true;
+  }
+
+  if (/^1000[0-9]*[\s*xX\-._]+(?:69948|9948)$/.test(str)) {
+    return true;
+  }
+
+  return false;
+}
+
+export function isMatchingTelebirrHolder(name?: string): boolean {
+  if (!name) return false;
+  const n = name.trim().toLowerCase();
+  return (
+    n.includes('abel') ||
+    n.includes('merga') ||
+    n.includes('gonder') ||
+    n.includes('አቤል') ||
+    n.includes('መርጋ') ||
+    n.includes('ጎንደር') ||
+    n.includes('nazazi') ||
+    n.includes('ናዛዚ')
+  );
+}
+
+export function isMatchingCbeHolder(name?: string): boolean {
+  if (!name) return false;
+  const n = name.trim().toLowerCase();
+  return (
+    n.includes('eyuel') ||
+    n.includes('eyu') ||
+    n.includes('habtamu') ||
+    n.includes('enyew') ||
+    n.includes('እዩኤል') ||
+    n.includes('ሀብታሙ') ||
+    n.includes('እኘው') ||
+    n.includes('እንየው') ||
+    n.includes('nazazi') ||
+    n.includes('ናዛዚ')
+  );
+}
+
 export interface ReceiverValidationResult {
   isValidReceiver: boolean;
   matchedAccount?: string;
@@ -131,9 +254,11 @@ export interface ReceiverValidationResult {
 }
 
 /**
- * Validates that the transaction was made to the official accounts:
+ * Validates that the transaction was made to the official accounts displayed on the website:
  * - CBE: 1000432169948 (Account Holder: Eyuel Habtamu Enyew)
  * - Telebirr: 0953886865 (Account Holder: Abel Merga Gonder)
+ * 
+ * Supports both full and masked numbers (e.g. 2519****6865 or 1000****69948) returned by banks.
  */
 export function validatePaymentReceiver(
   verification: {
@@ -144,89 +269,61 @@ export function validatePaymentReceiver(
   },
   fallbackBank?: string
 ): ReceiverValidationResult {
-  // 1. If Verify.et evaluated settlementAccountMatch
-  if (verification.settlementAccountMatch) {
-    if (verification.settlementAccountMatch.matched === false) {
-      return {
-        isValidReceiver: false,
-        error:
-          'Payment was not made to the official Nazazi account. Payments must strictly be sent to CBE (1000432169948 / Eyuel Habtamu Enyew) or Telebirr (0953886865 / Abel Merga Gonder).',
-        errorAm:
-          'ክፍያው የተፈጸመው በድረ-ገጹ ላይ ወደተጠቀሰው የናዛዚ አካውንት አይደለም። እባክዎ ወደ ንግድ ባንክ (1000432169948 / Eyuel Habtamu Enyew) ወይም ቴሌብር (0953886865 / Abel Merga Gonder) የተከፈለበትን ትክክለኛ ደረሰኝ ያስገቡ።',
-      };
-    }
-  }
-
-  // 2. Validate receiver account number / phone if provided
-  const rawReceiverAcc = (verification.receiverAccount || '').replace(/[^0-9]/g, '');
+  const receiverAcc = (verification.receiverAccount || '').trim();
   const rawReceiverName = (verification.receiverName || '').trim().toLowerCase();
+  const detectedBank = (verification.bank || fallbackBank || '').toLowerCase();
 
-  const isCbeAcc =
-    rawReceiverAcc.includes('1000432169948') ||
-    rawReceiverAcc.endsWith('432169948');
+  const isCbeAcc = isMatchingCbeAccount(receiverAcc);
+  const isTelebirrAcc = isMatchingTelebirrAccount(receiverAcc);
 
-  const isTelebirrAcc =
-    rawReceiverAcc.includes('0953886865') ||
-    rawReceiverAcc.includes('251953886865') ||
-    rawReceiverAcc.endsWith('953886865');
+  const isCbeName = isMatchingCbeHolder(rawReceiverName);
+  const isTelebirrName = isMatchingTelebirrHolder(rawReceiverName);
 
-  // If receiver account is present, it MUST match CBE or Telebirr
-  if (rawReceiverAcc && rawReceiverAcc.length >= 8) {
+  const isBankCbe = detectedBank === 'cbe' || detectedBank.includes('commercial');
+  const isBankTelebirr = detectedBank === 'telebirr';
+
+  // 1. Account Number Validation
+  // If an account number was returned, check if it matches official website accounts (full or masked e.g. 2519****6865)
+  if (receiverAcc && receiverAcc.length >= 6) {
     if (!isCbeAcc && !isTelebirrAcc) {
+      // It is confirmed to belong to a third party account
       return {
         isValidReceiver: false,
-        error: `Payment was credited to account ${verification.receiverAccount || rawReceiverAcc}, which does not match the official Nazazi accounts (CBE 1000432169948 / Telebirr 0953886865).`,
-        errorAm: `ክፍያው የተፈጸመው ወደ ${verification.receiverAccount || rawReceiverAcc} ሲሆን ይህ በድረ-ገጹ ላይ ከተጠቀሰው የናዛዚ ንግድ ባንክ (1000432169948) ወይም ቴሌብር (0953886865) ጋር አይዛመድም።`,
+        error: `Payment was credited to account ${receiverAcc}, which does not match the official accounts (CBE 1000432169948 / Telebirr 0953886865).`,
+        errorAm: `ክፍያው የተፈጸመው ወደ ${receiverAcc} ሲሆን ይህ በድረ-ገጹ ላይ ከተጠቀሰው የንግድ ባንክ (1000432169948) ወይም ቴሌብር (0953886865) ጋር አይዛመድም።`,
       };
     }
   }
 
-  // 3. Validate receiver name if provided
-  // Official CBE: Eyuel Habtamu Enyew
-  // Official Telebirr: Abel Merga Gonder
-  // Also tolerate legacy/brand name "Nazazi"
-  const isCbeName =
-    rawReceiverName.includes('eyuel') ||
-    rawReceiverName.includes('eyu') ||
-    rawReceiverName.includes('habtamu') ||
-    rawReceiverName.includes('enyew') ||
-    rawReceiverName.includes('እዩኤል') ||
-    rawReceiverName.includes('ሀብታሙ') ||
-    rawReceiverName.includes('እኘው') ||
-    rawReceiverName.includes('እንየው');
+  // 2. Settlement Account Match Check from Verify.et
+  // Note: Only reject if Verify.et explicitly says false AND our account matcher also failed
+  if (verification.settlementAccountMatch?.matched === false && !isCbeAcc && !isTelebirrAcc) {
+    return {
+      isValidReceiver: false,
+      error:
+        'Payment was not made to the official accounts. Payments must strictly be sent to CBE: 1000432169948 (Eyuel Habtamu Enyew) or Telebirr: 0953886865 (Abel Merga Gonder).',
+      errorAm:
+        'ክፍያው የተፈጸመው በድረ-ገጹ ላይ ወደተጠቀሰው አካውንት አይደለም። እባክዎ ወደ ንግድ ባንክ (1000432169948 - Eyuel Habtamu Enyew) ወይም ቴሌብር (0953886865 - Abel Merga Gonder) የተከፈለበትን ትክክለኛ ደረሰኝ ያስገቡ።',
+    };
+  }
 
-  const isTelebirrName =
-    rawReceiverName.includes('abel') ||
-    rawReceiverName.includes('merga') ||
-    rawReceiverName.includes('gonder') ||
-    rawReceiverName.includes('አቤል') ||
-    rawReceiverName.includes('መርጋ') ||
-    rawReceiverName.includes('ጎንደር');
-
-  const isNazaziName =
-    rawReceiverName.includes('nazazi') ||
-    rawReceiverName.includes('ናዛዚ') ||
-    (verification.receiverName && /nazazi/i.test(verification.receiverName));
-
-  const bankContext = (verification.bank || fallbackBank || '').toLowerCase();
-  const isStrictCbe = isCbeAcc || bankContext === 'cbe' || bankContext.includes('commercial');
-  const isStrictTelebirr = isTelebirrAcc || bankContext === 'telebirr';
-
+  // 3. Name Validation (only if name is present and account wasn't already 100% matched)
   if (rawReceiverName && rawReceiverName.length >= 3) {
     let isValidName = false;
 
-    if (isStrictCbe && !isTelebirrAcc) {
-      isValidName = isCbeName || isNazaziName;
-    } else if (isStrictTelebirr && !isCbeAcc) {
-      isValidName = isTelebirrName || isNazaziName;
+    if (isCbeAcc || isBankCbe) {
+      isValidName = isCbeName || isTelebirrName || isCbeAcc;
+    } else if (isTelebirrAcc || isBankTelebirr) {
+      isValidName = isTelebirrName || isCbeName || isTelebirrAcc;
     } else {
-      isValidName = isCbeName || isTelebirrName || isNazaziName;
+      isValidName = isCbeName || isTelebirrName || isCbeAcc || isTelebirrAcc;
     }
 
-    if (!isValidName) {
+    // Only reject on name if the account was NOT a confirmed match
+    if (!isValidName && !isCbeAcc && !isTelebirrAcc) {
       return {
         isValidReceiver: false,
-        error: `Payment was credited to "${verification.receiverName}". Payments must strictly be sent to the official Nazazi accounts (CBE: Eyuel Habtamu Enyew / Telebirr: Abel Merga Gonder).`,
+        error: `Payment was credited to "${verification.receiverName}". Payments must strictly be sent to the official accounts (CBE: Eyuel Habtamu Enyew / Telebirr: Abel Merga Gonder).`,
         errorAm: `ክፍያው የተፈጸመው ለ "${verification.receiverName}" ነው። ክፍያው በድረ-ገጹ ላይ ወደተጠቀሰው አካውንት (ንግድ ባንክ፡ Eyuel Habtamu Enyew ወይም ቴሌብር፡ Abel Merga Gonder) መፈጸም አለበት።`,
       };
     }
@@ -247,6 +344,58 @@ export function validatePaymentReceiver(
 }
 
 /**
+ * High-accuracy amount extractor for Ethiopian banking SMS.
+ * Automatically avoids "current balance / ቀሪ ሂሳብ" numbers and focuses on the transferred fee.
+ */
+export function extractEthiopianSmsAmount(text: string): number | undefined {
+  if (!text) return undefined;
+
+  // 1. First priority: amounts explicitly tied to transfer/payment keywords
+  // English: "transferred ETB 200.00", "transferred 200 ETB", "debited with ETB 200.00", "payment of ETB 200.00", "paid 200 Birr"
+  // Amharic: "200.00 ብር ወደ ... አስተላልፈዋል", "200 ብር ተቀንሶ", "መጠን፡ 200", "ክፍያ 200 ብር"
+  const priorityPatterns = [
+    // "200.00 ብር ወደ", "200 ብር ወደ", "200.00 ETB to"
+    /([0-9]{1,3}(?:,[0-9]{3})*(?:\.[0-9]{1,2})?|[0-9]+(?:\.[0-9]{1,2})?)\s*(?:ETB|Birr|ብር)\s*(?:ወደ|ገቢ|ተላልፏል|አስተላልፈዋል|ለ|to)/i,
+    // "transferred ETB 200.00", "transferred 200 ETB", "paid ETB 200", "payment of ETB 200"
+    /(?:transferred|paid|payment(?:\s+of)?|debited(?:\s+with)?)\s*(?:ETB|Birr|ብር)?\s*([0-9]{1,3}(?:,[0-9]{3})*(?:\.[0-9]{1,2})?|[0-9]+(?:\.[0-9]{1,2})?)/i,
+    // "ETB 200.00 transferred", "200.00 ETB transferred"
+    /(?:ETB|Birr|ብር)\s*([0-9]{1,3}(?:,[0-9]{3})*(?:\.[0-9]{1,2})?|[0-9]+(?:\.[0-9]{1,2})?)\s*(?:transferred|paid|debited|ተላልፏል|ገቢ|ተቀንሷል)/i,
+    // Amharic: "መጠን፡ 200 ብር", "የክፍያ መጠን 200"
+    /(?:መጠን|ክፍያ)\s*[:\-ነው\s]*(?:ETB|Birr|ብር)?\s*([0-9]{1,3}(?:,[0-9]{3})*(?:\.[0-9]{1,2})?|[0-9]+(?:\.[0-9]{1,2})?)/i,
+    // "ከሂሳብዎ 200 ብር"
+    /(?:ከሂሳብዎ|ከአካውንትዎ)\s*([0-9]{1,3}(?:,[0-9]{3})*(?:\.[0-9]{1,2})?|[0-9]+(?:\.[0-9]{1,2})?)\s*(?:ETB|Birr|ብር)/i,
+  ];
+
+  for (const pat of priorityPatterns) {
+    const m = text.match(pat);
+    if (m && m[1]) {
+      const val = extractNumericAmount(m[1]);
+      if (val && val > 0) return val;
+    }
+  }
+
+  // 2. Second priority: find any amount in text, explicitly ignoring balance
+  const textWithoutBalance = text
+    .replace(/(?:current\s+balance|balance|bal|ቀሪ\s*ሂሳብ|ቀሪ)\s*(?:is|ነው|:)?\s*(?:ETB|Birr|ብር)?\s*[0-9,.]+(?:\s*(?:ETB|Birr|ብር))?/gi, '');
+
+  // Look for subscription tiers in textWithoutBalance: 1000, 600, 200
+  const tierMatch = textWithoutBalance.match(/\b(1000|1,000|600|200)(?:\.00)?\s*(?:ETB|Birr|ብር)?\b/i);
+  if (tierMatch && tierMatch[1]) {
+    const val = extractNumericAmount(tierMatch[1]);
+    if (val && [200, 600, 1000].includes(Math.round(val))) return val;
+  }
+
+  // Fallback: any ETB amount in textWithoutBalance
+  const fallbackMatch = textWithoutBalance.match(/(?:ETB|Birr|ብር)\s*([0-9,.]+)|([0-9,.]+)\s*(?:ETB|Birr|ብር)/i);
+  if (fallbackMatch) {
+    const val = extractNumericAmount(fallbackMatch[1] || fallbackMatch[2]);
+    if (val && val > 0) return val;
+  }
+
+  return undefined;
+}
+
+/**
  * Intelligent Ethiopian Banking & Mobile Money SMS Parser
  * 
  * Automatically detects and extracts:
@@ -264,12 +413,12 @@ export function parseEthiopianPaymentSms(raw: string): ParsedPaymentInput {
 
   // Detect whether this is multi-word SMS text or a single token
   const hasMultipleWords = /\s{2,}|\n/.test(original) || original.split(/\s+/).length > 3;
-  const containsSmsKeywords = /(?:customer|transferred|debited|balance|receipt|ግብይት|ትራንዛክሽን|ደንበኛ|ደረሰኝ|ብር|etb|telebirr|cbe)/i.test(original);
+  const containsSmsKeywords = /(?:customer|transferred|debited|balance|receipt|ግብይት|ትራንዛክሽን|ደንበኛ|ደረሰኝ|ብር|etb|telebirr|cbe|ሂሳብ)/i.test(original);
   const isSms = hasMultipleWords || containsSmsKeywords;
 
   let detectedBank: ParsedPaymentInput['detectedBank'] = undefined;
   let reference = '';
-  let extractedAmount: number | undefined = undefined;
+  const extractedAmount = isSms ? extractEthiopianSmsAmount(original) : undefined;
 
   // 1. Bank detection keywords
   const lowerText = original.toLowerCase();
@@ -277,7 +426,10 @@ export function parseEthiopianPaymentSms(raw: string): ParsedPaymentInput {
     lowerText.includes('telebirr') ||
     original.includes('ቴሌብር') ||
     original.includes('0953886865') ||
+    original.includes('2519****6865') ||
+    original.includes('251953886865') ||
     lowerText.includes('abel merga') ||
+    lowerText.includes('abel gonder') ||
     original.includes('አቤል መርጋ')
   ) {
     detectedBank = 'telebirr';
@@ -287,7 +439,9 @@ export function parseEthiopianPaymentSms(raw: string): ParsedPaymentInput {
     lowerText.includes('commercial bank') ||
     original.includes('ንግድ ባንክ') ||
     original.includes('1000432169948') ||
+    original.includes('1000****69948') ||
     lowerText.includes('eyuel habtamu') ||
+    lowerText.includes('habtamu enyew') ||
     original.includes('እዩኤል ሀብታሙ')
   ) {
     detectedBank = 'cbe';
@@ -303,31 +457,12 @@ export function parseEthiopianPaymentSms(raw: string): ParsedPaymentInput {
     detectedBank = 'mpesa';
   }
 
-  // 2. Extract Amount from SMS text if present
-  // Matches: "ETB 200.00", "ETB 1,000", "200.00 ETB", "200 ብር", "ብር 200.00", "debited with ETB 200.00", "1,000.00 ብር"
-  const amountPatterns = [
-    /(?:ETB|Birr|ብር)\s*([0-9]{1,3}(?:,[0-9]{3})*(?:\.[0-9]{1,2})?|[0-9]+(?:\.[0-9]{1,2})?)/i,
-    /([0-9]{1,3}(?:,[0-9]{3})*(?:\.[0-9]{1,2})?|[0-9]+(?:\.[0-9]{1,2})?)\s*(?:ETB|Birr|ብር)/i,
-    /(?:transferred|debited(?:\s+with)?|paid|መጠን|ክፍያ)\s*(?:ETB|Birr|ብር)?\s*([0-9]{1,3}(?:,[0-9]{3})*(?:\.[0-9]{1,2})?|[0-9]+(?:\.[0-9]{1,2})?)/i,
-  ];
-
-  for (const pat of amountPatterns) {
-    const match = original.match(pat);
-    if (match && match[1]) {
-      const parsed = extractNumericAmount(match[1]);
-      if (parsed && parsed > 0) {
-        extractedAmount = parsed;
-        break;
-      }
-    }
-  }
-
-  // 3. Extract Reference / Transaction ID
+  // 2. Extract Reference / Transaction ID
 
   // A. Check for CBE Receipt URL (full URL or path)
   const cbeUrlMatch = original.match(/(?:https?:\/\/)?(?:www\.)?(?:mbreciept\.cbe\.com\.et|cbe\.com\.et)\/([a-zA-Z0-9_\-]{8,64})/i);
   if (cbeUrlMatch) {
-    reference = `https://mbreciept.cbe.com.et/${cbeUrlMatch[1]}`;
+    reference = `https://mbreciept.cbe.com.et/${cbeUrlMatch[1].replace(/[.,;:\s።]+$/, '').trim()}`;
     detectedBank = 'cbe';
     return {
       reference,
@@ -339,19 +474,18 @@ export function parseEthiopianPaymentSms(raw: string): ParsedPaymentInput {
   }
 
   // B. Check for explicit keywords indicating the transaction ID in SMS
-  // Examples:
+  // Matches:
   // "Transaction number: CI72984X12"
   // "Transaction ID: CI72984X12"
   // "Txn Id: CI72984X12"
-  // "Receipt ID: fHCxyTVljBclm6Yk4C"
+  // "የግብይት ቁጥር፡ CI72984X12"
   // "የግብይት ቁጥር CI72984X12"
-  // "የትራንዛክሽን ቁጥር: CI72984X12"
+  // "የትራንዛክሽን ቁጥር፡ CI72984X12"
   // "የደረሰኝ ቁጥር፡ b8e88ce8334411ee8a32"
-  // "Ref: CI72984X12"
-  const keywordRegex = /(?:transaction\s*(?:number|no\.?|id|code)?|txn\s*(?:number|no\.?|id|code)?|receipt\s*(?:number|no\.?|id|code)?|reference\s*(?:number|no\.?|id|code)?|ref\b|የግብይት\s*ቁጥር|የትራንዛክሽን\s*(?:ቁጥር|መለያ)|የደረሰኝ\s*(?:ቁጥር|መለያ))\s*[:\-isነው\s]*([A-Za-z0-9_\-]{8,64})/i;
+  const keywordRegex = /(?:transaction\s*(?:number|no\.?|id|code)?|txn\s*(?:number|no\.?|id|code)?|receipt\s*(?:number|no\.?|id|code)?|reference\s*(?:number|no\.?|id|code)?|ref\b|የግብይት\s*(?:ቁጥር|መለያ)|የትራንዛክሽን\s*(?:ቁጥር|መለያ)|የደረሰኝ\s*(?:ቁጥር|መለያ)|መለያ\s*ቁጥር)\s*[:\-isነው\s]*([A-Za-z0-9_\-]{8,64})/i;
   const keywordMatch = original.match(keywordRegex);
   if (keywordMatch && keywordMatch[1]) {
-    reference = keywordMatch[1].replace(/[.,;:\s።]+$/, '').trim();
+    reference = keywordMatch[1].replace(/[.,;:\s።"'`]+$/, '').trim();
     if (/^[A-Za-z0-9]{10}$/.test(reference)) {
       if (!detectedBank) detectedBank = 'telebirr';
     } else if (reference.length >= 12 && !detectedBank) {
@@ -369,7 +503,7 @@ export function parseEthiopianPaymentSms(raw: string): ParsedPaymentInput {
   // C. Check for legacy CBE FT Reference (e.g. FT24305XXXXX)
   const ftMatch = original.match(/\b(FT[0-9A-Za-z]{8,18})\b/i);
   if (ftMatch) {
-    reference = ftMatch[1].toUpperCase();
+    reference = ftMatch[1].toUpperCase().replace(/[.,;:\s።]+$/, '');
     detectedBank = 'cbe';
     return {
       reference,
@@ -397,10 +531,10 @@ export function parseEthiopianPaymentSms(raw: string): ParsedPaymentInput {
     }
   }
 
-  // E. Standalone token fallback (removes accidental spaces)
-  let clean = original.replace(/\s+/g, '');
+  // E. Standalone token fallback (removes accidental spaces and punctuation)
+  let clean = original.replace(/[.,;:\s።"'`]+$/, '').replace(/\s+/g, '');
   if (/^[A-Za-z0-9]{10}$/.test(clean)) {
-    reference = clean;
+    reference = clean.toUpperCase();
     if (!detectedBank) detectedBank = 'telebirr';
   } else if (/^[A-Za-z0-9_\-]{12,64}$/.test(clean) && !clean.startsWith('FT')) {
     reference = clean;

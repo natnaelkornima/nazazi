@@ -33,6 +33,8 @@ import {
   ClipboardPaste,
   X,
   CheckCircle2,
+  MessageSquare,
+  Hash,
 } from 'lucide-react';
 
 export const PaymentView: React.FC = () => {
@@ -66,6 +68,8 @@ export const PaymentView: React.FC = () => {
     bank?: string;
     amount?: number;
   } | null>(null);
+  const [inputMode, setInputMode] = useState<'sms' | 'manual'>('sms');
+  const [rawSmsText, setRawSmsText] = useState('');
 
   // Phone Lookup State
   const [phoneQuery, setPhoneQuery] = useState(user?.phone || '0911234567');
@@ -150,6 +154,8 @@ export const PaymentView: React.FC = () => {
       if (typeof navigator !== 'undefined' && navigator.clipboard?.readText) {
         const text = await navigator.clipboard.readText();
         if (text) {
+          setRawSmsText(text);
+          setInputMode('sms');
           handleProcessTransactionInput(text);
         }
       }
@@ -520,161 +526,198 @@ export const PaymentView: React.FC = () => {
                 required
               />
 
-              {/* Bank Selector & Transaction ID */}
-              <div className="space-y-2 p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800">
-                <div className="flex items-center justify-between">
-                  <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-                    {isAmharic ? 'የክፍያ ዘዴ' : 'Bank / Method'}
-                  </label>
-                  <div className="flex items-center gap-1">
+              {/* Modern, Polished & Perfectly Aligned Payment Verification Input */}
+              <div className="space-y-3 p-3.5 sm:p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800 shadow-2xs">
+                {/* Mode Selector Tabs & Bank Selector */}
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-200/80 dark:border-zinc-800/80 pb-2.5">
+                  <div className="flex items-center p-1 rounded-xl bg-zinc-200/60 dark:bg-zinc-800 border border-zinc-300/60 dark:border-zinc-700/60 shadow-2xs">
                     <button
                       type="button"
-                      onClick={() => setSelectedBank('auto')}
-                      className={`px-2 py-0.5 rounded-md text-[10px] font-bold cursor-pointer transition-colors ${
-                        selectedBank === 'auto'
-                          ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900'
-                          : 'bg-zinc-200/80 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300'
+                      onClick={() => setInputMode('sms')}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                        inputMode === 'sms'
+                          ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-2xs'
+                          : 'text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-100'
                       }`}
                     >
-                      {isAmharic ? 'ራስ-ሰር' : 'Auto'}
+                      <MessageSquare className="w-3.5 h-3.5 text-emerald-500" />
+                      <span>{isAmharic ? 'ሙሉ SMS ለጥፍ' : 'Paste Full SMS'}</span>
+                      <span className="px-1.5 py-0.5 text-[9px] font-extrabold uppercase rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300">
+                        {isAmharic ? 'ቀላል' : 'Easy'}
+                      </span>
                     </button>
+
                     <button
                       type="button"
-                      onClick={() => setSelectedBank('cbe')}
-                      className={`px-2 py-0.5 rounded-md text-[10px] font-bold cursor-pointer transition-colors ${
-                        selectedBank === 'cbe' ? 'bg-amber-600 text-white' : 'bg-zinc-200/80 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300'
+                      onClick={() => setInputMode('manual')}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                        inputMode === 'manual'
+                          ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-2xs'
+                          : 'text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-100'
                       }`}
                     >
-                      CBE
+                      <Hash className="w-3.5 h-3.5 text-zinc-400" />
+                      <span>{isAmharic ? 'የትራንዛክሽን ቁጥር ብቻ' : 'Transaction ID Only'}</span>
                     </button>
-                    <button
-                      type="button"
-                      onClick={() => setSelectedBank('telebirr')}
-                      className={`px-2 py-0.5 rounded-md text-[10px] font-bold cursor-pointer transition-colors ${
-                        selectedBank === 'telebirr' ? 'bg-emerald-600 text-white' : 'bg-zinc-200/80 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300'
-                      }`}
-                    >
-                      Telebirr
-                    </button>
+                  </div>
+
+                  {/* Bank Filter Pills */}
+                  <div className="flex items-center gap-1 p-0.5 rounded-lg bg-zinc-200/60 dark:bg-zinc-800 text-[11px] border border-zinc-300/60 dark:border-zinc-700/60">
+                    {(['auto', 'cbe', 'telebirr'] as const).map((b) => (
+                      <button
+                        key={b}
+                        type="button"
+                        onClick={() => setSelectedBank(b)}
+                        className={`px-2 py-0.5 rounded-md font-semibold transition-all cursor-pointer ${
+                          selectedBank === b
+                            ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-2xs font-bold'
+                            : 'text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-200'
+                        }`}
+                      >
+                        {b === 'auto'
+                          ? (isAmharic ? 'ራስ-ሰር' : 'Auto')
+                          : b === 'cbe'
+                          ? 'CBE'
+                          : 'Telebirr'}
+                      </button>
+                    ))}
                   </div>
                 </div>
 
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-                    {isAmharic ? 'የትራንዛክሽን ቁጥር ወይም ሙሉ የ SMS መልእክት' : 'Transaction ID / Reference or Full Payment SMS'}
-                  </label>
-                  <div className="relative flex items-center">
-                    <input
-                      type="text"
-                      value={transactionId}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        if (val.length > 18 && parseEthiopianPaymentSms(val).isSms) {
-                          handleProcessTransactionInput(val);
-                        } else {
-                          setTransactionId(val);
-                        }
-                      }}
-                      onPaste={(e) => {
-                        const text = e.clipboardData?.getData('text');
-                        if (text && (parseEthiopianPaymentSms(text).isSms || text.length > 25)) {
-                          e.preventDefault();
-                          handleProcessTransactionInput(text);
-                        }
-                      }}
-                      placeholder={
-                        selectedBank === 'telebirr'
-                          ? (isAmharic ? 'ምሳሌ፡ CI72984X12 ወይም ሙሉ የቴሌብር SMS እዚህ ይለጥፉ' : 'e.g. CI72984X12 or paste Telebirr SMS')
-                          : selectedBank === 'cbe'
-                          ? (isAmharic ? 'ምሳሌ፡ fHCxyTV... ወይም የደረሰኝ ሊንክ/SMS' : 'e.g. fHCxyTV... or CBE receipt link/SMS')
-                          : (isAmharic ? 'የትራንዛክሽን ቁጥር ወይም ሙሉ SMS እዚህ ይለጥፉ...' : 'Enter Transaction ID or paste full bank SMS...')
-                      }
-                      className="w-full h-11 px-3.5 pr-20 text-xs sm:text-sm font-mono font-medium rounded-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border border-zinc-300 dark:border-zinc-700 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 shadow-2xs transition-all placeholder:text-zinc-400 placeholder:font-sans"
-                      required
-                    />
+                {inputMode === 'sms' ? (
+                  /* Mode A: Clean & Spacious Multi-line SMS Paste Box */
+                  <div className="space-y-2.5">
+                    <div className="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-3 shadow-2xs focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-500/15 transition-all">
+                      <div className="flex items-center justify-between pb-2 mb-2 border-b border-zinc-100 dark:border-zinc-800">
+                        <span className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
+                          <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                          {isAmharic
+                            ? 'ከቴሌብር ወይም ከንግድ ባንክ የደረሰዎትን ሙሉ መልእክት እዚህ ይለጥፉ'
+                            : 'Paste the entire SMS message you received from Telebirr or CBE'}
+                        </span>
 
-                    {/* Inline Clear or Paste Action */}
-                    <div className="absolute right-2 flex items-center">
-                      {transactionId ? (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setTransactionId('');
-                            setExtractedFromSms(null);
-                          }}
-                          className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
-                          title={isAmharic ? 'አጽዳ' : 'Clear'}
-                        >
-                          <X className="w-3.5 h-3.5" />
-                        </button>
-                      ) : (
                         <button
                           type="button"
                           onClick={handlePasteFromClipboard}
-                          className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-zinc-200/80 hover:bg-zinc-300 dark:bg-zinc-750 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 border border-zinc-300/60 dark:border-zinc-650 transition-all cursor-pointer shadow-2xs"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-750 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 shadow-2xs transition-all cursor-pointer active:scale-95"
                           title={isAmharic ? 'ከክሊፕቦርድ ለጥፍ' : 'Paste from clipboard'}
                         >
-                          <ClipboardPaste className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-300" />
-                          <span className="text-[11px]">{isAmharic ? 'ለጥፍ' : 'Paste'}</span>
+                          <ClipboardPaste className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                          <span>{isAmharic ? 'ከክሊፕቦርድ ለጥፍ' : 'Paste'}</span>
                         </button>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Noticeable, Clear & Polished Smart SMS Helper Card */}
-                  <div className="relative overflow-hidden rounded-xl border border-amber-300/90 dark:border-amber-500/40 bg-gradient-to-br from-amber-50/95 via-amber-50/60 to-orange-50/40 dark:from-amber-950/35 dark:via-amber-950/20 dark:to-zinc-900/40 p-3.5 sm:p-4 shadow-2xs mt-2">
-                    <div className="flex items-start gap-3">
-                      <div className="p-2 rounded-xl bg-amber-500/20 dark:bg-amber-500/25 text-amber-800 dark:text-amber-300 shrink-0 mt-0.5 shadow-2xs">
-                        <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                       </div>
-                      <div className="flex-1 min-w-0 space-y-1.5">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-amber-200/80 dark:bg-amber-500/25 text-amber-900 dark:text-amber-200 border border-amber-300/80 dark:border-amber-500/30">
-                            <Zap className="w-2.5 h-2.5 text-amber-700 dark:text-amber-300" />
-                            {isAmharic ? 'ፈጣን አማራጭ' : 'Smart Shortcut'}
+
+                      <textarea
+                        rows={3}
+                        value={rawSmsText}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setRawSmsText(val);
+                          handleProcessTransactionInput(val);
+                        }}
+                        placeholder={
+                          isAmharic
+                            ? 'ለምሳሌ፡ "ውድ ደንበኛ፣ 200.00 ብር ወደ 2519****6865 (Abel Merga Gonder) አስተላልፈዋል። የግብይት ቁጥር፡ CI72984X12..."'
+                            : 'e.g. "You have transferred ETB 200.00 to Abel Merga Gonder (2519****6865). Transaction number: CI72984X12..."'
+                        }
+                        className="w-full bg-transparent text-xs sm:text-sm font-sans text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none resize-none leading-relaxed"
+                      />
+                    </div>
+
+                    {/* Live Extracted Summary Card */}
+                    {extractedFromSms && (
+                      <div className="rounded-xl border border-emerald-500/30 bg-emerald-50/70 dark:bg-emerald-950/20 p-3 space-y-2 shadow-2xs animate-in fade-in duration-200">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                            {isAmharic ? 'የክፍያ መረጃ በራስ-ሰር ተለይቷል' : 'Payment Data Extracted Successfully'}
                           </span>
-                          {extractedFromSms && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30">
-                              <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600 dark:text-emerald-400" />
-                              {isAmharic ? 'SMS ተለይቷል' : 'SMS Recognized'}
-                            </span>
-                          )}
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-emerald-500/20 text-emerald-900 dark:text-emerald-200">
+                            {extractedFromSms.bank === 'telebirr' ? 'Telebirr ቴሌብር' : 'CBE ንግድ ባንክ'}
+                          </span>
                         </div>
 
-                        <p className="text-xs sm:text-[13px] font-bold text-zinc-950 dark:text-zinc-50 leading-snug">
-                          {isAmharic
-                            ? 'ከባንክ ወይም ከቴሌብር የደረሰዎትን ሙሉ የ SMS መልእክት እዚህ መለጠፍ ይችላሉ።'
-                            : 'You can paste the entire SMS message you received from CBE or Telebirr here.'}
-                        </p>
+                        <div className="grid grid-cols-2 gap-2 text-xs">
+                          <div className="p-2 rounded-lg bg-white/90 dark:bg-zinc-900/90 border border-emerald-500/20">
+                            <p className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400">{isAmharic ? 'የትራንዛክሽን ቁጥር' : 'Transaction ID'}</p>
+                            <p className="font-mono font-extrabold text-zinc-950 dark:text-white truncate">{extractedFromSms.reference}</p>
+                          </div>
+                          <div className="p-2 rounded-lg bg-white/90 dark:bg-zinc-900/90 border border-emerald-500/20">
+                            <p className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400">{isAmharic ? 'የተከፈለው መጠን' : 'Detected Amount'}</p>
+                            <p className="font-bold text-emerald-700 dark:text-emerald-400">
+                              {extractedFromSms.amount ? `${extractedFromSms.amount} ብር (ETB)` : 'ተረጋግጧል (Verified)'}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  /* Mode B: Direct Single Transaction ID Input */
+                  <div className="space-y-2.5">
+                    <div className="relative flex items-center">
+                      <input
+                        type="text"
+                        value={transactionId}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          if (val.length > 20 && parseEthiopianPaymentSms(val).isSms) {
+                            setInputMode('sms');
+                            setRawSmsText(val);
+                            handleProcessTransactionInput(val);
+                          } else {
+                            setTransactionId(val);
+                          }
+                        }}
+                        onPaste={(e) => {
+                          const text = e.clipboardData?.getData('text');
+                          if (text && (parseEthiopianPaymentSms(text).isSms || text.length > 25)) {
+                            e.preventDefault();
+                            setInputMode('sms');
+                            setRawSmsText(text);
+                            handleProcessTransactionInput(text);
+                          }
+                        }}
+                        placeholder={
+                          selectedBank === 'telebirr'
+                            ? 'e.g. CI72984X12'
+                            : selectedBank === 'cbe'
+                            ? 'e.g. fHCxyTVljBclm6Yk4C or https://mbreciept.cbe.com.et/...'
+                            : (isAmharic ? 'የትራንዛክሽን ቁጥር እዚህ ያስገቡ...' : 'Enter Transaction ID or Reference...')
+                        }
+                        className="w-full h-11 px-3.5 pr-20 text-xs sm:text-sm font-mono font-medium rounded-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border border-zinc-300 dark:border-zinc-700 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 shadow-2xs transition-all placeholder:text-zinc-400 placeholder:font-sans"
+                        required={inputMode === 'manual'}
+                      />
 
-                        <p className="text-[11px] sm:text-xs text-zinc-600 dark:text-zinc-300 leading-normal">
-                          {isAmharic
-                            ? 'የትራንዛክሽን ቁጥሩ (Transaction ID) በራስ-ሰር ተለይቶ ይገባል — ፈልጎ መጻፍ አያስፈልግዎትም!'
-                            : 'The Transaction ID is extracted automatically — no manual typing or searching needed!'}
-                        </p>
-
-                        <div className="pt-1 flex flex-wrap items-center gap-2">
+                      {/* Inline Action */}
+                      <div className="absolute right-2 flex items-center">
+                        {transactionId ? (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setTransactionId('');
+                              setExtractedFromSms(null);
+                            }}
+                            className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                            title={isAmharic ? 'አጽዳ' : 'Clear'}
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        ) : (
                           <button
                             type="button"
                             onClick={handlePasteFromClipboard}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-600 hover:bg-amber-700 active:scale-[0.98] text-white shadow-xs transition-all cursor-pointer"
+                            className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-750 text-zinc-700 dark:text-zinc-300 border border-zinc-200/60 dark:border-zinc-700 transition-all cursor-pointer shadow-2xs"
+                            title={isAmharic ? 'ከክሊፕቦርድ ለጥፍ' : 'Paste from clipboard'}
                           >
-                            <ClipboardPaste className="w-3.5 h-3.5" />
-                            <span>{isAmharic ? 'የ SMS መልእክቱን እዚህ ይለጥፉ' : 'Paste SMS Message Here'}</span>
+                            <ClipboardPaste className="w-3.5 h-3.5 text-zinc-500" />
+                            <span className="text-[11px]">{isAmharic ? 'ለጥፍ' : 'Paste'}</span>
                           </button>
-
-                          {extractedFromSms && (
-                            <span className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 px-2.5 py-1 rounded-md">
-                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                              {isAmharic ? 'የተለየው ቁጥር' : 'Extracted ID'}: <strong>{extractedFromSms.reference}</strong>
-                              {extractedFromSms.bank ? ` (${extractedFromSms.bank.toUpperCase()})` : ''}
-                            </span>
-                          )}
-                        </div>
+                        )}
                       </div>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {/* Optional Glass Folder File Upload */}
