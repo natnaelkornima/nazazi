@@ -153,6 +153,14 @@ export const PaymentView: React.FC = () => {
     } else {
       setTransactionId(trimmed);
       setExtractedFromSms(null);
+      // Automatically detect bank in background
+      if (trimmed.includes('cbe.com.et') || trimmed.toUpperCase().startsWith('FT') || trimmed.length > 14) {
+        setSelectedBank('cbe');
+      } else if (/^C[A-Z0-9]{8,12}$/i.test(trimmed)) {
+        setSelectedBank('telebirr');
+      } else {
+        setSelectedBank('auto');
+      }
     }
   };
 
@@ -640,34 +648,6 @@ export const PaymentView: React.FC = () => {
                   </button>
                 </div>
 
-                {/* Bank Selector Row */}
-                <div className="flex items-center justify-between text-xs px-1">
-                  <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
-                    {isAmharic ? 'ባንክ ይምረጡ' : 'Select Bank'}
-                  </span>
-                  <div className="inline-flex items-center rounded-md border border-zinc-200/80 dark:border-zinc-700/80 p-0.5 bg-zinc-50 dark:bg-zinc-850">
-                    {(['auto', 'cbe', 'telebirr'] as const).map((b) => (
-                      <button
-                        key={b}
-                        type="button"
-                        onClick={() => setSelectedBank(b)}
-                        className={cn(
-                          "px-2.5 py-0.5 text-[11px] font-medium rounded transition-colors cursor-pointer",
-                          selectedBank === b
-                            ? "bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white font-bold shadow-2xs"
-                            : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200"
-                        )}
-                      >
-                        {b === 'auto'
-                          ? (isAmharic ? 'ራስ-ሰር' : 'Auto')
-                          : b === 'cbe'
-                          ? 'CBE (ንግድ ባንክ)'
-                          : 'Telebirr (ቴሌብር)'}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
                 {inputMode === 'sms' ? (
                   /* Mode A: Clean Shadcn Textarea & Live Extraction */
                   <div className="space-y-2.5">
@@ -701,11 +681,6 @@ export const PaymentView: React.FC = () => {
                         }
                         className="flex min-h-[82px] w-full rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2 text-xs sm:text-sm font-sans text-zinc-900 dark:text-zinc-100 shadow-2xs placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-400 dark:focus:ring-zinc-600 leading-relaxed resize-none"
                       />
-                      <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                        {isAmharic
-                          ? '💡 ሙሉውን SMS ሲለጥፉ ባንኩን፣ የትራንዛክሽን ቁጥሩን እና መጠኑን በራሱ ለይቶ ያወጣል'
-                          : "💡 Paste the full SMS text — we'll automatically detect your reference code and fee."}
-                      </p>
                     </div>
 
                     {/* Shadcn Live Extraction Card (የቀጥታ መረጃ ማሳያ) */}
