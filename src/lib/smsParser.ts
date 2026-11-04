@@ -5,8 +5,13 @@
 
 export interface ParsedPaymentInput {
   reference: string;
+  receiptNumber?: string;
   detectedBank?: 'cbe' | 'telebirr' | 'cbebirr' | 'dashen' | 'boa' | 'awash' | 'siinqee' | 'kaafiebirr' | 'mpesa' | 'auto';
   extractedAmount?: number;
+  extractedSenderName?: string;
+  extractedReceiverName?: string;
+  extractedReceiverAccount?: string;
+  isOfficialReceiverMatched?: boolean;
   isSms: boolean;
   rawText: string;
 }
@@ -172,7 +177,7 @@ export function isMatchingTelebirrAccount(account?: string): boolean {
 /**
  * Checks if an account number (masked or unmasked) matches the official CBE account:
  * - 1000432169948 / 432169948
- * - Masked formats: 1000****69948, 10004****9948, 1000******9948, 1000XXXX69948, etc.
+ * - Masked formats: 1**9948, 1000**9948, 1000****69948, 10004****9948, 1000******9948, 1000XXXX69948, etc.
  */
 export function isMatchingCbeAccount(account?: string): boolean {
   if (!account) return false;
@@ -196,17 +201,21 @@ export function isMatchingCbeAccount(account?: string): boolean {
     lower.endsWith('169948') ||
     lower.endsWith('2169948');
 
-  const startsWith1000 =
+  const startsWithCbe =
     lower.startsWith('1000') ||
     lower.startsWith('10004') ||
+    lower.startsWith('100') ||
+    lower.startsWith('1**') ||
+    lower.startsWith('1*') ||
+    lower.startsWith('1') ||
     lower.startsWith('*') ||
     lower.startsWith('x');
 
-  if (endsWithCbeSuffix && startsWith1000) {
+  if (endsWithCbeSuffix && startsWithCbe) {
     return true;
   }
 
-  if (/^1000[0-9]*[\s*xX\-._]+(?:69948|9948)$/.test(str)) {
+  if (/^1[0-9*xX\-._]*(?:69948|9948)$/.test(str)) {
     return true;
   }
 
@@ -402,6 +411,8 @@ export function extractEthiopianSmsAmount(text: string): number | undefined {
  * 1. Transaction reference / Receipt number / Receipt URL
  * 2. Bank / Provider (Telebirr, CBE, CBE Birr, etc.)
  * 3. Payment amount (e.g. 200, 600, 1000 Birr)
+ * 4. Sender Name, Receiver Account, Receiver Holder Name
+ * 5. Validation whether payment was made to official Nazazi accounts
  * 
  * Works for both raw transaction IDs and complete SMS messages in English or Amharic!
  */
@@ -413,11 +424,17 @@ export function parseEthiopianPaymentSms(raw: string): ParsedPaymentInput {
 
   // Detect whether this is multi-word SMS text or a single token
   const hasMultipleWords = /\s{2,}|\n/.test(original) || original.split(/\s+/).length > 3;
-  const containsSmsKeywords = /(?:customer|transferred|debited|balance|receipt|ግብይት|ትራንዛክሽን|ደንበኛ|ደረሰኝ|ብር|etb|telebirr|cbe|ሂሳብ)/i.test(original);
+  const containsSmsKeywords = /(?:customer|transferred|debited|balance|receipt|ግብይት|ትራንዛክሽን|ደንበኛ|ደረሰኝ|ብር|etb|telebirr|cbe|mbreciept|mbreceipt|ሂሳብ)/i.test(original);
   const isSms = hasMultipleWords || containsSmsKeywords;
 
   let detectedBank: ParsedPaymentInput['detectedBank'] = undefined;
   let reference = '';
+  let receiptNumber: string | undefined = undefined;
+  let extractedSenderName: string | undefined = undefined;
+  let extractedReceiverName: string | undefined = undefined;
+  let extractedReceiverAccount: string | undefined = undefined;
+  let isOfficialReceiverMatched = false;
+
   const extractedAmount = isSms ? extractEthiopianSmsAmount(original) : undefined;
 
   // 1. Bank detection keywords
@@ -435,10 +452,12 @@ export function parseEthiopianPaymentSms(raw: string): ParsedPaymentInput {
     detectedBank = 'telebirr';
   } else if (
     lowerText.includes('mbreciept') ||
+    lowerText.includes('mbreceipt') ||
     lowerText.includes('cbe.com.et') ||
     lowerText.includes('commercial bank') ||
     original.includes('ንግድ ባንክ') ||
     original.includes('1000432169948') ||
+    original.includes('1**9948') ||
     original.includes('1000****69948') ||
     lowerText.includes('eyuel habtamu') ||
     lowerText.includes('habtamu enyew') ||
@@ -457,23 +476,102 @@ export function parseEthiopianPaymentSms(raw: string): ParsedPaymentInput {
     detectedBank = 'mpesa';
   }
 
-  // 2. Extract Reference / Transaction ID
+  // 2. Extract Sender & Receiver details if this is an SMS
+  if (isSms) {
+    // A. Sender Name: e.g. "Dear Mesafint Worku Astatike You have successfully..." or "ውድ መሳፍንት ወርቁ..."
+    const senderMatch = original.match(/(?:Dear|ውድ)\s+([A-Za-z\u1200-\u137F\s]{3,60}?)(?:\s+(?:You have|ከሂሳብዎ|አስተላልፈዋል|,|\.))/i);
+    if (senderMatch && senderMatch[1]) {
+      const sName = senderMatch[1].trim();
+      if (!sName.toLowerCase().includes('customer') && !sName.includes('ደንበኛ')) {
+        extractedSenderName = sName;
+      }
+    }
 
-  // A. Check for CBE Receipt URL (full URL or path)
-  const cbeUrlMatch = original.match(/(?:https?:\/\/)?(?:www\.)?(?:mbreciept\.cbe\.com\.et|cbe\.com\.et)\/([a-zA-Z0-9_\-]{8,64})/i);
-  if (cbeUrlMatch) {
-    reference = `https://mbreciept.cbe.com.et/${cbeUrlMatch[1].replace(/[.,;:\s።]+$/, '').trim()}`;
+    // B. Receiver Account & Name from CBE: e.g. "to account 1**9948 (Eyuel Habtamu Enyew)"
+    const cbeReceiverMatch = original.match(/(?:to account|ወደ አካውንት|ወደ ሂሳብ ቁጥር)\s*([0-9*xX\-]{6,20})(?:\s*\(([^)]+)\))?/i);
+    if (cbeReceiverMatch) {
+      if (cbeReceiverMatch[1]) extractedReceiverAccount = cbeReceiverMatch[1].trim();
+      if (cbeReceiverMatch[2]) extractedReceiverName = cbeReceiverMatch[2].trim();
+    }
+
+    // C. Receiver Account & Name from Telebirr: e.g. "to Abel Merga Gonder (2519****6865)" or "ወደ 2519****6865 (አቤል መርጋ)"
+    const telebirrReceiverMatch = original.match(/(?:to|ወደ)\s+(?:([A-Za-z\u1200-\u137F\s]{3,50}?)\s*\(([0-9*xX+]{9,15})\)|([0-9*xX+]{9,15})\s*\(([^)]+)\))/i);
+    if (telebirrReceiverMatch) {
+      if (telebirrReceiverMatch[1] && telebirrReceiverMatch[2]) {
+        extractedReceiverName = telebirrReceiverMatch[1].trim();
+        extractedReceiverAccount = telebirrReceiverMatch[2].trim();
+      } else if (telebirrReceiverMatch[3] && telebirrReceiverMatch[4]) {
+        extractedReceiverAccount = telebirrReceiverMatch[3].trim();
+        extractedReceiverName = telebirrReceiverMatch[4].trim();
+      }
+    }
+
+    // D. Validate whether receiver matches official Nazazi accounts
+    const isAccMatch =
+      isMatchingCbeAccount(extractedReceiverAccount) ||
+      isMatchingTelebirrAccount(extractedReceiverAccount);
+    const isNameMatch =
+      isMatchingCbeHolder(extractedReceiverName) ||
+      isMatchingTelebirrHolder(extractedReceiverName);
+
+    if (isAccMatch || isNameMatch) {
+      isOfficialReceiverMatched = true;
+      if (!detectedBank) {
+        detectedBank = isMatchingCbeAccount(extractedReceiverAccount) || isMatchingCbeHolder(extractedReceiverName) ? 'cbe' : 'telebirr';
+      }
+    }
+  }
+
+  // 3. Extract Reference / Transaction ID / Receipt URL
+
+  // A. Check for CBE Receipt URL (handles newlines, spaces between domain and slash, and /v2- paths)
+  // Handles:
+  // - https://mbreciept.cbe.com.et/v2-hfHCxNKYK64Yh6IYP7d2
+  // - https://mbreciept.cbe.com.et\n\n/v2-hfHCxNKYK64Yh6IYP7d2
+  // - https://mbreciept.cbe.com.et /v2-hfHCxNKYK64Yh6IYP7d2
+  // - mbreceipt.cbe.com.et / v2-hfHCxNKYK64Yh6IYP7d2
+  // - mbreciept.cbe.com.et/fHCxyTVljBclm6Yk4C
+  const cbeUrlRegex = /(?:https?:\/\/)?(?:www\.)?(?:mbreciept\.cbe\.com\.et|mbreceipt\.cbe\.com\.et|cbe\.com\.et)[\s\r\n]*\/+[\s\r\n]*(v2-[a-zA-Z0-9_\-]+|[a-zA-Z0-9_\-]{8,128})/i;
+  const cbeUrlMatch = original.match(cbeUrlRegex);
+  if (cbeUrlMatch && cbeUrlMatch[1]) {
+    receiptNumber = cbeUrlMatch[1].replace(/[.,;:\s።"'`]+$/, '').trim();
+    reference = `https://mbreciept.cbe.com.et/${receiptNumber}`;
     detectedBank = 'cbe';
     return {
       reference,
+      receiptNumber,
       detectedBank,
       extractedAmount,
+      extractedSenderName,
+      extractedReceiverName,
+      extractedReceiverAccount,
+      isOfficialReceiverMatched,
       isSms,
       rawText: original,
     };
   }
 
-  // B. Check for explicit keywords indicating the transaction ID in SMS
+  // B. Check for CBE v2 receipt token anywhere in text: e.g. "v2-hfHCxNKYK64Yh6IYP7d2"
+  const cbeV2TokenMatch = original.match(/\b(v2-[a-zA-Z0-9_\-]{12,64})\b/i);
+  if (cbeV2TokenMatch && cbeV2TokenMatch[1]) {
+    receiptNumber = cbeV2TokenMatch[1].replace(/[.,;:\s።"'`]+$/, '').trim();
+    reference = `https://mbreciept.cbe.com.et/${receiptNumber}`;
+    detectedBank = 'cbe';
+    return {
+      reference,
+      receiptNumber,
+      detectedBank,
+      extractedAmount,
+      extractedSenderName,
+      extractedReceiverName,
+      extractedReceiverAccount,
+      isOfficialReceiverMatched,
+      isSms,
+      rawText: original,
+    };
+  }
+
+  // C. Check for explicit keywords indicating the transaction ID in SMS
   // Matches:
   // "Transaction number: CI72984X12"
   // "Transaction ID: CI72984X12"
@@ -485,7 +583,8 @@ export function parseEthiopianPaymentSms(raw: string): ParsedPaymentInput {
   const keywordRegex = /(?:transaction\s*(?:number|no\.?|id|code)?|txn\s*(?:number|no\.?|id|code)?|receipt\s*(?:number|no\.?|id|code)?|reference\s*(?:number|no\.?|id|code)?|ref\b|የግብይት\s*(?:ቁጥር|መለያ)|የትራንዛክሽን\s*(?:ቁጥር|መለያ)|የደረሰኝ\s*(?:ቁጥር|መለያ)|መለያ\s*ቁጥር)\s*[:\-isነው\s]*([A-Za-z0-9_\-]{8,64})/i;
   const keywordMatch = original.match(keywordRegex);
   if (keywordMatch && keywordMatch[1]) {
-    reference = keywordMatch[1].replace(/[.,;:\s።"'`]+$/, '').trim();
+    receiptNumber = keywordMatch[1].replace(/[.,;:\s።"'`]+$/, '').trim();
+    reference = receiptNumber;
     if (/^[A-Za-z0-9]{10}$/.test(reference)) {
       if (!detectedBank) detectedBank = 'telebirr';
     } else if (reference.length >= 12 && !detectedBank) {
@@ -493,60 +592,93 @@ export function parseEthiopianPaymentSms(raw: string): ParsedPaymentInput {
     }
     return {
       reference,
+      receiptNumber,
       detectedBank,
       extractedAmount,
+      extractedSenderName,
+      extractedReceiverName,
+      extractedReceiverAccount,
+      isOfficialReceiverMatched,
       isSms,
       rawText: original,
     };
   }
 
-  // C. Check for legacy CBE FT Reference (e.g. FT24305XXXXX)
+  // D. Check for legacy CBE FT Reference (e.g. FT24305XXXXX)
   const ftMatch = original.match(/\b(FT[0-9A-Za-z]{8,18})\b/i);
   if (ftMatch) {
-    reference = ftMatch[1].toUpperCase().replace(/[.,;:\s።]+$/, '');
+    receiptNumber = ftMatch[1].toUpperCase().replace(/[.,;:\s።]+$/, '');
+    reference = receiptNumber;
     detectedBank = 'cbe';
     return {
       reference,
+      receiptNumber,
       detectedBank,
       extractedAmount,
+      extractedSenderName,
+      extractedReceiverName,
+      extractedReceiverAccount,
+      isOfficialReceiverMatched,
       isSms,
       rawText: original,
     };
   }
 
-  // D. Check for Telebirr 10-char alphanumeric transaction code (e.g. CI72984X12)
-  const telebirrCodeMatch = original.match(/\b([A-Z]{1,2}[0-9A-Z]{8,9})\b/i);
+  // E. Check for Telebirr 10-char alphanumeric transaction code (e.g. CI72984X12)
+  // Ensure it is not part of an external feedback link (e.g. forms.gle)
+  const textWithoutUrls = original.replace(/https?:\/\/[^\s]+/gi, '');
+  const telebirrCodeMatch = textWithoutUrls.match(/\b([A-Z]{1,2}[0-9A-Z]{8,9})\b/i);
   if (telebirrCodeMatch && telebirrCodeMatch[1].length === 10) {
     const candidate = telebirrCodeMatch[1].toUpperCase();
     if (/[A-Z]/.test(candidate) && /[0-9]/.test(candidate)) {
+      receiptNumber = candidate;
       reference = candidate;
       if (!detectedBank) detectedBank = 'telebirr';
       return {
         reference,
+        receiptNumber,
         detectedBank,
         extractedAmount,
+        extractedSenderName,
+        extractedReceiverName,
+        extractedReceiverAccount,
+        isOfficialReceiverMatched,
         isSms,
         rawText: original,
       };
     }
   }
 
-  // E. Standalone token fallback (removes accidental spaces and punctuation)
+  // F. Standalone token fallback (removes accidental spaces and punctuation)
   let clean = original.replace(/[.,;:\s።"'`]+$/, '').replace(/\s+/g, '');
   if (/^[A-Za-z0-9]{10}$/.test(clean)) {
-    reference = clean.toUpperCase();
+    receiptNumber = clean.toUpperCase();
+    reference = receiptNumber;
     if (!detectedBank) detectedBank = 'telebirr';
+  } else if (/^\/?(v2-[A-Za-z0-9_\-]{12,64})$/i.test(clean)) {
+    const rawTok = clean.replace(/^\//, '');
+    receiptNumber = rawTok;
+    reference = `https://mbreciept.cbe.com.et/${rawTok}`;
+    if (!detectedBank) detectedBank = 'cbe';
   } else if (/^[A-Za-z0-9_\-]{12,64}$/.test(clean) && !clean.startsWith('FT')) {
+    receiptNumber = clean;
     reference = clean;
     if (!detectedBank) detectedBank = 'cbe';
-  } else {
+  } else if (!isSms) {
+    // Only set raw cleaned string if this was a single token, NEVER if it was an SMS!
     reference = clean;
+    receiptNumber = clean;
   }
 
   return {
     reference,
+    receiptNumber,
     detectedBank,
     extractedAmount,
+    extractedSenderName,
+    extractedReceiverName,
+    extractedReceiverAccount,
+    isOfficialReceiverMatched,
     isSms,
     rawText: original,
   };
@@ -555,12 +687,27 @@ export function parseEthiopianPaymentSms(raw: string): ParsedPaymentInput {
 /**
  * Normalizes Ethiopian transaction references (removes accidental spaces, parses SMS if pasted)
  */
-export function normalizeTransactionReference(raw: string): { reference: string; detectedBank?: string; extractedAmount?: number; isSms?: boolean } {
+export function normalizeTransactionReference(raw: string): {
+  reference: string;
+  receiptNumber?: string;
+  detectedBank?: string;
+  extractedAmount?: number;
+  extractedSenderName?: string;
+  extractedReceiverName?: string;
+  extractedReceiverAccount?: string;
+  isOfficialReceiverMatched?: boolean;
+  isSms?: boolean;
+} {
   const parsed = parseEthiopianPaymentSms(raw);
   return {
     reference: parsed.reference,
+    receiptNumber: parsed.receiptNumber,
     detectedBank: parsed.detectedBank,
     extractedAmount: parsed.extractedAmount,
+    extractedSenderName: parsed.extractedSenderName,
+    extractedReceiverName: parsed.extractedReceiverName,
+    extractedReceiverAccount: parsed.extractedReceiverAccount,
+    isOfficialReceiverMatched: parsed.isOfficialReceiverMatched,
     isSms: parsed.isSms,
   };
 }

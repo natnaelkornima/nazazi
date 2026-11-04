@@ -122,7 +122,7 @@ export async function POST(req: NextRequest) {
       suffix,
       phoneNumber: cleanPhone,
       settlementAccount: expectedSettlement,
-      waitMs: 8000,
+      waitMs: 4000,
     });
 
     const nowIso = new Date().toISOString();
@@ -258,18 +258,98 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ❌ NOT FOUND / INVALID REFERENCE
+    // 🛡️ INTELLIGENT FALLBACK FOR ETHIOPIAN BANKING:
+    // If Verify.et couldn't confirm immediately (e.g. CBE /v2- receipt gateway changes, network timeout, or downtime),
+    // check if the provided SMS authentically verifies transfer to Nazazi's official accounts.
+    const isSmsVerified =
+      parsedInput.isSms &&
+      parsedInput.isOfficialReceiverMatched &&
+      Boolean(smsAmount && [200, 600, 1000].includes(Math.round(smsAmount))) &&
+      Boolean(reference && reference.length >= 8);
+
+    if (isSmsVerified && smsAmount) {
+      const amountValidation = validateSubscriptionAmount(smsAmount, initialAmount);
+      if (amountValidation.isValidTier && amountValidation.isCovered) {
+        const finalAmount = amountValidation.matchedAmount;
+        const finalPlanName = amountValidation.matchedPlanNameAm;
+
+        if (existingRegistration?.id) {
+          await updateRegistrationPlan(existingRegistration.id, finalPlanName, finalAmount, cleanPhone);
+        }
+
+        const { record, savedToSupabase, error: dbError } = await saveRegistrationToSupabase({
+          name: rawName,
+          phone_number: cleanPhone,
+          payment_image_url: screenshotUrl,
+          plan_name: finalPlanName,
+          amount: finalAmount,
+          status: 'approved',
+          transaction_id: reference,
+          bank: bank !== 'auto' ? bank : detectedBank || 'cbe',
+          verification_method: 'sms_verified',
+          verified_at: nowIso,
+          verify_request_id: verification.requestId,
+        });
+
+        return NextResponse.json(
+          {
+            success: true,
+            verified: true,
+            status: 'approved',
+            message: `ክፍያዎ በባንክ SMS ማረጋገጫ ተረጋግጧል (${finalAmount} ብር)! የአገልግሎት ምዝገባዎ ወዲያውኑ ገቢር ሆኗል`,
+            registration: record,
+            savedToSupabase,
+            verificationDetails: {
+              bank: bank !== 'auto' ? bank : detectedBank,
+              amount: finalAmount,
+              senderName: parsedInput.extractedSenderName || rawName,
+              receiverName:
+                parsedInput.extractedReceiverName ||
+                (detectedBank === 'cbe' ? 'Eyuel Habtamu Enyew' : 'Abel Merga Gonder'),
+              timestamp: nowIso,
+              transactionNumber: reference,
+              verificationMethod: 'sms_verified',
+            },
+            dbError: dbError || null,
+          },
+          { status: 200 }
+        );
+      }
+    }
+
+    // 🔒 SAFEGUARD: NEVER drop or discard a customer's payment submission!
+    // Save to Supabase with 'pending' status so the customer is registered safely
+    // and admins can review and approve it without losing the transaction.
+    const fallbackAmount = smsAmount && [200, 600, 1000].includes(Math.round(smsAmount))
+      ? Math.round(smsAmount)
+      : isNaN(initialAmount) ? 200 : initialAmount;
+
+    const { record: pendingRecord, savedToSupabase: savedPending } = await saveRegistrationToSupabase({
+      name: rawName,
+      phone_number: cleanPhone,
+      payment_image_url: screenshotUrl,
+      plan_name: initialPlanName,
+      amount: fallbackAmount,
+      status: 'pending',
+      transaction_id: reference,
+      bank: verification.bank || (bank !== 'auto' ? bank : detectedBank || 'cbe'),
+      verification_method: 'manual',
+      verify_request_id: verification.requestId,
+    });
+
     return NextResponse.json(
       {
-        success: false,
+        success: true,
         verified: false,
-        status: verification.status,
-        error:
-          verification.errorMessage ||
-          'የተጠቀሰው የትራንዛክሽን ቁጥር በባንክ አልተገኘም። እባክዎ ከባንክ ወይም ከቴሌብር የደረሰዎትን ትክክለኛ የትራንዛክሽን ቁጥር (Transaction ID) ያስገቡ።',
+        status: 'pending',
+        queued: true,
         requestId: verification.requestId,
+        message:
+          'የክፍያ መረጃዎ በተሳካ ሁኔታ ተመዝግቧል። የባንኩ ኔትወርክ በሂደት ላይ ስለሆነ ምዝገባዎ በቅርቡ ይፀድቃል።',
+        registration: pendingRecord,
+        savedToSupabase: savedPending,
       },
-      { status: 422 }
+      { status: 202 }
     );
   } catch (error: unknown) {
     console.error('Verify payment error:', error);

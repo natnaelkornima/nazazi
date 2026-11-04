@@ -108,7 +108,7 @@ export interface PaymentSubmission {
   submittedAt: string;
   reviewedAt?: string;
   notes?: string;
-  verificationMethod?: 'verify_et' | 'manual';
+  verificationMethod?: 'verify_et' | 'manual' | 'sms_verified';
   bank?: string;
   verifiedAt?: string;
   verifyRequestId?: string;

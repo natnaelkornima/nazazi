@@ -146,6 +146,9 @@ export const PaymentView: React.FC = () => {
           setPlan(isAmharic ? 'የ1 ወር አገልግሎት (200 ብር)' : '1 Month Access Plan (200 Birr)');
         }
       }
+      if (parsed.extractedSenderName && !payerName.trim()) {
+        setPayerName(parsed.extractedSenderName);
+      }
       info(
         isAmharic ? 'ከ SMS የትራንዛክሽን ቁጥር ተለይቷል' : 'Extracted from SMS',
         `${parsed.reference} (${parsed.detectedBank === 'cbe' ? 'CBE' : parsed.detectedBank === 'telebirr' ? 'Telebirr' : 'Bank'}${parsed.extractedAmount ? ` • ${parsed.extractedAmount} ETB` : ''})`

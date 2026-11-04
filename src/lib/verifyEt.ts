@@ -119,7 +119,7 @@ function verifyEtHttpRequest(
           method: options.method,
           family: 4, // Force IPv4 to prevent unreachable IPv6 connection hangs
           headers,
-          timeout: options.timeoutMs || 15000,
+          timeout: options.timeoutMs || 10000,
         },
         (res) => {
           const chunks: Buffer[] = [];
@@ -195,7 +195,7 @@ export async function verifyTransactionWithVerifyEt(params: VerifyEtParams): Pro
   const idempotencyKey =
     params.idempotencyKey ||
     `nazazi_${cleanRef.replace(/[^a-zA-Z0-9]/g, '').slice(-16)}_${Date.now()}`;
-  const waitMs = params.waitMs ?? 7000;
+  const waitMs = params.waitMs ?? 4000;
 
   // Build payload
   const payload: Record<string, any> = {};
@@ -228,7 +228,7 @@ export async function verifyTransactionWithVerifyEt(params: VerifyEtParams): Pro
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
-      timeoutMs: Math.max(15000, waitMs + 6000),
+      timeoutMs: Math.max(10000, waitMs + 4000),
     });
 
     const resJson = response.data;

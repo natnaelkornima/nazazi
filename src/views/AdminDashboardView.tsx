@@ -268,7 +268,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
     const otherBankCount = submissions.length - telebirrCount - cbeCount;
 
     // Verification counts
-    const verifyEtCount = submissions.filter((s) => s.verificationMethod === 'verify_et').length;
+    const verifyEtCount = submissions.filter((s) => s.verificationMethod === 'verify_et' || s.verificationMethod === 'sms_verified').length;
     const manualCount = submissions.filter((s) => s.verificationMethod === 'manual' || (!s.verificationMethod && !s.verifiedAt)).length;
     const withScreenshotCount = submissions.filter((s) => !!s.screenshotUrl).length;
 
@@ -364,7 +364,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
       const pickedVerification = filterValue.verification || [];
       if (pickedVerification.length > 0) {
         const matchesVerif = pickedVerification.some((v) => {
-          if (v === 'verify_et') return sub.verificationMethod === 'verify_et';
+          if (v === 'verify_et') return sub.verificationMethod === 'verify_et' || sub.verificationMethod === 'sms_verified';
           if (v === 'manual') return sub.verificationMethod === 'manual' || !sub.verificationMethod;
           if (v === 'screenshot') return Boolean(sub.screenshotUrl);
           return false;
@@ -1663,7 +1663,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                               <div className="flex items-center gap-1.5 flex-wrap mt-1">
                                 <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-[6px] text-[10px] font-semibold bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
                                   <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
-                                  <span>Verify.ET</span>
+                                  <span>{sub.verificationMethod === 'sms_verified' ? 'SMS Verified' : 'Verify.ET'}</span>
                                   {sub.bank && <span className="uppercase font-mono text-[9px]">{sub.bank}</span>}
                                 </span>
                                 {sub.transactionId && (
@@ -1903,7 +1903,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                                 <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
                                   <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-[6px] text-[10px] font-semibold bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
                                     <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
-                                    <span>Verify.ET</span>
+                                    <span>{sub.verificationMethod === 'sms_verified' ? 'SMS Verified' : 'Verify.ET'}</span>
                                     {sub.bank && <span className="uppercase font-mono text-[9px]">{sub.bank}</span>}
                                   </span>
                                   {sub.transactionId && (
@@ -2277,7 +2277,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onExitAd
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                   <span className="font-semibold text-emerald-800 dark:text-emerald-300">
-                    Verify.ET Automated Verification
+                    {previewSubmission.verificationMethod === 'sms_verified' ? 'Bank SMS Verified' : 'Verify.ET Automated Verification'}
                   </span>
                   {previewSubmission.bank && (
                     <span className="uppercase text-[10px] px-2 py-0.5 rounded-[6px] bg-emerald-700 text-white font-mono font-bold">

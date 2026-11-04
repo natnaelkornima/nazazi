@@ -33,7 +33,7 @@ export interface RegistrationRecord {
   reviewed_at?: string | null;
   transaction_id?: string;
   bank?: string;
-  verification_method?: 'verify_et' | 'manual';
+  verification_method?: 'verify_et' | 'manual' | 'sms_verified';
   verified_at?: string;
   verify_request_id?: string;
 }
@@ -564,14 +564,6 @@ async function discoverTableInfo(client: SupabaseClient): Promise<{ tableName: s
   const candidateTables = [
     'registrations',
     'payments',
-    'subscriptions',
-    'subscribers',
-    'users',
-    'registration',
-    'payment',
-    'subscription',
-    'members',
-    'profiles',
   ];
 
   for (const tableName of candidateTables) {
@@ -625,7 +617,7 @@ export async function saveRegistrationToSupabase(data: {
   status?: 'pending' | 'approved' | 'rejected';
   transaction_id?: string;
   bank?: string;
-  verification_method?: 'verify_et' | 'manual';
+  verification_method?: 'verify_et' | 'manual' | 'sms_verified';
   verified_at?: string;
   verify_request_id?: string;
 }): Promise<{ record: RegistrationRecord; savedToSupabase: boolean; error?: string }> {
@@ -1107,14 +1099,6 @@ export async function getAllRegistrations(): Promise<{
   const candidateTables = [
     'registrations',
     'payments',
-    'subscriptions',
-    'subscribers',
-    'users',
-    'registration',
-    'payment',
-    'subscription',
-    'members',
-    'profiles',
   ];
 
   for (const tableName of candidateTables) {
@@ -1300,14 +1284,6 @@ export async function updateRegistrationPlan(
   const candidateTables = [
     'registrations',
     'payments',
-    'subscriptions',
-    'subscribers',
-    'users',
-    'registration',
-    'payment',
-    'subscription',
-    'members',
-    'profiles',
   ];
   const cleanDigits = rawPhone.replace(/\D/g, '');
   const last8 = cleanDigits.slice(-8);
@@ -1347,7 +1323,7 @@ export async function updateRegistrationPlan(
             }
           }
         }
-        if (updated) break;
+        if (updated) return { success: true };
       }
     } catch (err) {
       console.warn(`Plan update notice for ${tableName}:`, err);
@@ -1438,7 +1414,7 @@ export async function updateRegistrationStatus(
             }
           }
         }
-        if (updated) break;
+        if (updated) return { success: true };
       }
     } catch {
       // Ignore schema column errors

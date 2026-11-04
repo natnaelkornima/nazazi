@@ -31,7 +31,7 @@ interface PaymentContextType {
     payerName?: string;
     transactionId?: string;
     status?: PaymentStatus;
-    verificationMethod?: 'verify_et' | 'manual';
+    verificationMethod?: 'verify_et' | 'manual' | 'sms_verified';
     bank?: string;
     verifiedAt?: string;
     verifyRequestId?: string;
@@ -414,7 +414,7 @@ export const PaymentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     payerName?: string;
     transactionId?: string;
     status?: PaymentStatus;
-    verificationMethod?: 'verify_et' | 'manual';
+    verificationMethod?: 'verify_et' | 'manual' | 'sms_verified';
     bank?: string;
     verifiedAt?: string;
     verifyRequestId?: string;

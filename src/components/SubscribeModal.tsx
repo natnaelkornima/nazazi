@@ -185,6 +185,10 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
         else if (parsed.extractedAmount === 600) handleSelectPlan('3m');
         else if (parsed.extractedAmount === 200) handleSelectPlan('1m');
       }
+      if (parsed.extractedSenderName && !name.trim()) {
+        setName(parsed.extractedSenderName);
+        setNameTouched(true);
+      }
       info(
         isAmharic ? 'ከ SMS የትራንዛክሽን ቁጥር ተለይቷል' : 'Extracted from SMS',
         `${parsed.reference} (${parsed.detectedBank === 'cbe' ? 'CBE' : parsed.detectedBank === 'telebirr' ? 'Telebirr' : 'Bank'}${parsed.extractedAmount ? ` • ${parsed.extractedAmount} ETB` : ''})`

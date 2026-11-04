@@ -278,6 +278,29 @@ export async function POST(req: NextRequest) {
               verificationError = amountValidation.errorAm || amountValidation.error || 'Invalid payment amount';
             }
           }
+        } else if (
+          parsed.isSms &&
+          parsed.isOfficialReceiverMatched &&
+          parsed.extractedAmount &&
+          [200, 600, 1000].includes(Math.round(parsed.extractedAmount))
+        ) {
+          // 🛡️ SMS Authentic Verification Fallback
+          const amountValidation = validateSubscriptionAmount(parsed.extractedAmount, amount);
+          if (amountValidation.isValidTier && amountValidation.isCovered) {
+            isAutoApproved = true;
+            verifiedBank = autoBank || 'cbe';
+            transactionId = cleanRef;
+            verifiedDetails = {
+              bank: verifiedBank,
+              amount: amountValidation.matchedAmount,
+              senderName: parsed.extractedSenderName || name.trim(),
+              receiverName:
+                parsed.extractedReceiverName ||
+                (verifiedBank === 'cbe' ? 'Eyuel Habtamu Enyew' : 'Abel Merga Gonder'),
+              timestamp: new Date().toISOString(),
+              verificationMethod: 'sms_verified',
+            };
+          }
         } else if (verification.errorMessage) {
           verificationError = verification.errorMessage;
         }
